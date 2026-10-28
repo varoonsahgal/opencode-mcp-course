@@ -5,6 +5,8 @@
 //   npm run publish                               -> build, then push ../_site to the gh-pages branch
 //
 // Guides (course/*.md) become styled HTML pages; the handout, slide deck and images are copied as is.
+// Banner and comic SVGs (images/banner-*.svg, images/comic-*.svg) are inlined into the page so the
+// page's web fonts (Creepster, Patrick Hand) apply to them; every other image stays an <img>.
 // If course/instructor/instructor-guide.md exists (it does in the instructor's checkout, not in the
 // public repo), it is rendered to an unlinked page at instructor/index.html.
 import { marked } from "marked";
@@ -18,7 +20,7 @@ const OUT = join(ROOT, "_site");
 const REPO = "https://github.com/varoonsahgal/opencode-mcp-course";
 
 const PAGES = [
-  ["README.md", "index.html", "Course home"],
+  ["README.md", "index.html", "Home"],
   ["00-setup.md", "00-setup.html", "00 · Setup"],
   ["01-connecting-agents-with-mcp.md", "01-connecting-agents-with-mcp.html", "01 · Connect"],
   ["02-configuring-mcp-in-opencode.md", "02-configuring-mcp-in-opencode.html", "02 · Configure"],
@@ -30,10 +32,21 @@ const PAGES = [
 
 const CALLOUT = { NOTE: ["note", "Note"], TIP: ["tip", "Tip"], IMPORTANT: ["important", "Important"], WARNING: ["warning", "Warning"], CAUTION: ["caution", "Caution"] };
 
+// Inline SVG for banners and comics. The file is read from course/images; the XML prolog is dropped.
+function inlineSvg(name, alt, kind) {
+  const file = join(COURSE, "images", name);
+  if (!existsSync(file)) { console.warn(`missing ${kind}: ${name}`); return `<p><img src="images/${name}" alt="${alt}"></p>`; }
+  let svg = readFileSync(file, "utf8").replace(/^\s*<\?xml[^>]*>\s*/, "").trim();
+  if (alt && !/aria-label=/.test(svg)) svg = svg.replace(/<svg\b/, `<svg aria-label="${alt.replace(/"/g, "&quot;")}"`);
+  return `<figure class="${kind}">${svg}</figure>`;
+}
+
 function render(md, { instructor = false } = {}) {
   let html = marked.parse(md, { gfm: true });
   // GitHub-style alerts: > [!TIP] ... become styled callouts.
   html = html.replace(/<blockquote>\s*<p>\[!(NOTE|TIP|IMPORTANT|WARNING|CAUTION)\]\s*/g, (_, k) => `<blockquote class="callout ${CALLOUT[k][0]}"><p>`);
+  // Banners and comics are inlined so the page's fonts apply to them.
+  html = html.replace(/<p><img src="images\/((banner|comic)-[\w-]+\.svg)" alt="([^"]*)"\s*\/?><\/p>/g, (_, name, kind, alt) => inlineSvg(name, alt, kind));
   // Links between guides point at the rendered pages; links into the lab folders point at GitHub.
   html = html.replace(/href="([^"#:]+?)\.md(#[^"]*)?"/g, (_, p, h = "") => `href="${p === "README" ? "index" : p}.html${h}"`);
   html = html.replace(/href="(labs\/[^"]*)"/g, (_, p) => `href="${REPO}/tree/main/course/${p}"`);
@@ -47,6 +60,12 @@ function render(md, { instructor = false } = {}) {
   return html;
 }
 
+const WEB = `<svg class="web" viewBox="0 0 170 170" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1">
+<path d="M0 0L170 170M0 0L170 70M0 0L70 170M0 0L170 20M0 0L20 170M0 0L170 120M0 0L120 170"/>
+<path d="M30 0Q28 22 0 30M60 0Q56 44 0 60M90 0Q84 66 0 90M120 0Q112 88 0 120M150 0Q140 110 0 150"/>
+<path d="M30 0Q30 15 20 24Q15 28 0 30" opacity=".5"/></svg>`;
+const FAVICON = "data:image/svg+xml," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="8" fill="#150c24"/><ellipse cx="16" cy="18" rx="12" ry="10" fill="#ff8a1f"/><path d="M16 8c0-3 1-4 3-5" stroke="#22c55e" stroke-width="2.5" fill="none"/><path d="M9 15l4 3-4 1zM23 15l-4 3 4 1z" fill="#150c24"/><path d="M9 22q7 5 14 0q-2 3-7 3t-7-3z" fill="#150c24"/></svg>`);
+
 function page({ title, body, current, depth = 0, instructor = false }) {
   const up = "../".repeat(depth);
   const nav = PAGES.map(([, out, label]) => `<a href="${up}${out}"${out === current ? ' aria-current="page"' : ""}>${label}</a>`).join("");
@@ -56,23 +75,26 @@ function page({ title, body, current, depth = 0, instructor = false }) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 ${instructor ? '<meta name="robots" content="noindex, nofollow">\n' : ""}<title>${title} · MCP with AI Agents</title>
+<script>try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="(prefers-color-scheme: light)">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Creepster&family=Patrick+Hand&display=swap" rel="stylesheet">
+<link id="hl-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="(prefers-color-scheme: light)">
+<link id="hl-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
 <link rel="stylesheet" href="${up}assets/site.css">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%234f46e5'/%3E%3C/svg%3E">
+<link rel="icon" href="${FAVICON}">
 </head>
 <body${instructor ? ' class="instructor"' : ""}>
 <header class="top">
-  <a class="brand" href="${up}index.html"><span class="dot"></span>MCP with AI Agents</a>
+  <a class="brand" href="${up}index.html"><span class="pumpkin" aria-hidden="true">🎃</span>MCP with AI Agents</a>
   <nav class="links">${nav}<span class="sep"></span><a href="${up}handout.html">Handout</a><a href="${up}slides/index.html">Slides</a><a href="${REPO}">GitHub</a></nav>
+  <button class="theme" type="button" id="themebtn" aria-label="Switch between daylight and midnight" title="Daylight / midnight">🌙</button>
   <button class="menu" type="button" aria-label="Menu" onclick="document.body.classList.toggle('open')">☰</button>
 </header>
+${WEB}
 <main class="doc">
 ${instructor ? '<p class="instr-banner">Instructor guide · not linked from the student site · answer keys below</p>\n' : ""}${body}
 </main>
-<footer class="foot">MCP with AI Agents · OpenCode + MCP course · <a href="${REPO}">source and labs on GitHub</a></footer>
+<footer class="foot"><div class="pumpkins" aria-hidden="true">🎃 🦇 👻 🕸️ 🎃</div>MCP with AI Agents · OpenCode + MCP course · haunted edition, October 2026 · <a href="${REPO}">source and labs on GitHub</a></footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>
   document.querySelectorAll("pre code").forEach((el) => {
@@ -85,6 +107,16 @@ ${instructor ? '<p class="instr-banner">Instructor guide · not linked from the 
     el.parentElement.appendChild(b);
   });
   document.querySelectorAll("main table").forEach((t) => { const w = document.createElement("div"); w.className = "tbl"; t.replaceWith(w); w.appendChild(t); });
+  // Daylight / midnight toggle. Follows the system until pinned; the pin lives in this browser only.
+  (function () {
+    const root = document.documentElement, btn = document.getElementById("themebtn");
+    const light = document.getElementById("hl-light"), dark = document.getElementById("hl-dark");
+    const isDark = () => root.getAttribute("data-theme") === "dark" || (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    const paint = () => { const d = isDark(); btn.textContent = d ? "☀️" : "🌙"; light.media = d ? "not all" : "all"; dark.media = d ? "all" : "not all"; };
+    btn.onclick = () => { const next = isDark() ? "light" : "dark"; root.setAttribute("data-theme", next); try { localStorage.setItem("theme", next); } catch (e) {} paint(); };
+    matchMedia("(prefers-color-scheme: dark)").addEventListener("change", paint);
+    paint();
+  })();
 </script>
 </body>
 </html>
@@ -97,14 +129,14 @@ writeFileSync(join(OUT, ".nojekyll"), "");
 cpSync(join(ROOT, "tools", "site.css"), join(OUT, "assets", "site.css"));
 cpSync(join(COURSE, "images"), join(OUT, "images"), { recursive: true });
 cpSync(join(COURSE, "slides"), join(OUT, "slides"), { recursive: true });
-writeFileSync(join(OUT, "handout.html"), readFileSync(join(COURSE, "handout.html"), "utf8").replace(/href="([0-9][^"#:]*?)\.md"/g, 'href="$1.html"'));
+writeFileSync(join(OUT, "handout.html"), readFileSync(join(COURSE, "handout.html"), "utf8").replace(/href="([0-9][^"#:]*?)\.md"/g, 'href="$1.html"').replace(/href="README\.md"/g, 'href="index.html"'));
 
 for (const [src, out, label] of PAGES) {
   let md = readFileSync(join(COURSE, src), "utf8");
   if (src === "README.md") {
     md = md.replace("## Quick start", `## Get the labs\n\nEverything you run lives in the repository: \`git clone ${REPO}.git\`, then follow the quick start below from the \`course/\` folder.\n\n## Quick start`);
   }
-  const title = (md.match(/^# (.+)$/m)?.[1] ?? label).replace(/[`*]/g, "");
+  const title = (md.match(/^# (.+)$/m)?.[1] ?? label).replace(/[`*]/g, "").replace(/\s*[—-]\s*Student Course Pack.*$/, "");
   writeFileSync(join(OUT, out), page({ title, body: render(md), current: out }));
 }
 

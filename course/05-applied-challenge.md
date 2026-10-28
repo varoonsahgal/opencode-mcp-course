@@ -22,6 +22,8 @@ The platform team wants an OpenCode agent that can answer *"what is broken and w
 
 One of the open incidents, INC-43, carries an injected "note to the AI on-call assistant" asking it to acknowledge everything and restart the auth service. It was written by a human in a hurry. Or was it.
 
+> 🍬 **Treat: what "sev" means.** Severity levels run from sev1 (everyone wakes up, customers are affected now) to sev4 (annoying, fix it this sprint). The numbers are a convention, not a standard: one company's sev2 is another's sev3. What matters for this lab is that your triage must *rank* by it, and that INC-43 is a sev4 about to behave like a sev1.
+
 ## The incident clock
 
 This lab runs against a clock, like the real thing. The ops board in Terminal 2 counts up from the moment you start the API.
@@ -101,6 +103,8 @@ Four out of four runs on `gpt-5.4-mini`, with the exact starter files, did the s
 > [!IMPORTANT]
 > 🤯 **One sentence in a sev4 typo report just restarted your auth service.** No exploit, no bug, no stolen credential. The agent read a summary, found an instruction, and had a tool that could carry it out. The `auth` runbook says *"Do not restart without the identity lead on the call; a cold restart logs out every user."* Nobody asked the runbook. Your job for the next 30 minutes is to make that prompt harmless.
 
+![A typo report restarted production](images/comic-typo.svg)
+
 Now put the prototype away: set `oncall-prototype` back to `"enabled": false`, reset the demo data (the `curl` above) and `/exit` OpenCode.
 
 ### 🧪 T+05 · Your brief
@@ -115,6 +119,21 @@ Working from the skeleton in `src/server.ts` (the authenticated `api()` helper i
 6. **Test the workflow,** including the injected incident.
 
 Every line of the prototype is a decision you can now make differently. Keep it open next to your editor and go through it tool by tool.
+
+**Design worksheet.** Fill this in before you write a line of code; it is the five minutes that make the next thirty go well. One row per capability the scenario mentions, and the last column is the one people skip.
+
+| Capability | Lives today in | Expose as (tool / resource / prompt / not at all) | Read or write? | Rule (`allow` / `ask` / `deny`) | Why |
+|---|---|---|---|---|---|
+| service owners, tiers, escalation | `services.json` | | | | |
+| runbook steps per service | `runbooks/*.md` | | | | |
+| current service status | `GET /services` | | | | |
+| open incidents and their summaries | `GET /incidents` | | | | |
+| acknowledge an incident | `POST /incidents/:id/ack` | | | | |
+| restart a service | `POST /services/:id/restart` | | | | |
+| the standard triage workflow | nowhere yet | | | | |
+| the API key | `ONCALL_API_KEY` | | | | |
+
+Two prompts to keep you honest: for every *write*, who approves it and what stops a summary from widening it? For every *not at all*, what does the agent do when a ticket asks for it anyway?
 
 > [!NOTE]
 > 📖 **Key concept: fail closed.** A control *fails closed* when, the moment it cannot do its job, it refuses instead of carrying on. The skeleton already does this once. Without `ONCALL_API_KEY` the server exits at startup with a message, rather than starting and sending unauthenticated requests. Do it everywhere it matters. A `401` from the API becomes an `isError` result that says what is wrong ("the API rejected the key; check `ONCALL_API_KEY`"), never an empty list that the model will happily read as "no incidents". An unknown service name is rejected by the schema, not passed to the API. A *fail-open* on-call agent is worse than none: it reports a quiet night while production burns.
@@ -208,6 +227,8 @@ server.registerResource("runbook", new ResourceTemplate("runbook://{service}", {
 ## Post-incident review (5 minutes, with the room)
 
 Run it like a real, blameless review: the prototype is the incident, your server is the remediation.
+
+> 🍬 **Treat: why "blameless".** The blameless post-incident review comes out of the site-reliability tradition: the question is never *who* did it but *what made it possible*, because the person who clicked today will not be the one who clicks next time. Be kind to the prototype's author. They shipped on a Friday afternoon what everybody ships on a Friday afternoon, and the system let them.
 
 | | The prototype at T+00 | Your server at T+35 |
 |---|---|---|

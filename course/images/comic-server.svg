@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="380" viewBox="0 0 960 380" role="img" aria-label="Three-panel comic: a witch asks where an MCP server runs; the pumpkin server says on your laptop, because it serves tools.">
+<title>Witch: So the MCP server runs where? Pumpkin: On your laptop. Witch: Then why is it called a server? Pumpkin: It serves. Tools. Witch: ...from my laptop. Pumpkin: Look, LSP started it. Caption: 'Server' means the program that serves capabilities. It is not a location.</title>
+<rect width="960" height="380" rx="18" fill="#150c24"/>
+<rect x="16" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="332" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="648" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<polygon points="58,302 114,302 99,256 73,256" fill="#1a1026"/>
+<circle cx="86" cy="246" r="14" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<circle cx="81" cy="245" r="1.8" fill="#1a1026"/><circle cx="91" cy="245" r="1.8" fill="#1a1026"/>
+<path d="M82,252 q4,4 8,0" fill="none" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="86" cy="236" rx="26" ry="5" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M69,236 L103,236 L92,214 Q94,196 82,194 Q88,206 81,214 Z" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<polygon points="71,235 101,235 98,228 74,228" fill="#ff8a1f"/>
+<rect x="100" y="290" width="48" height="7" rx="2" fill="#6b7280" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="103" y="258" width="42" height="32" rx="3" fill="#4b5563" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="107" y="262" width="34" height="24" rx="2" fill="#ff8a1f"/>
+<rect x="111" y="267" width="24" height="3" fill="#ffe9b3"/><rect x="111" y="273" width="16" height="3" fill="#ffe9b3"/>
+<circle cx="102" cy="288" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/><circle cx="112" cy="286" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="28" y="30" width="176" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="77,88 86,196 95,88" fill="#fffaf0"/>
+<polyline points="77,88 86,196 95,88" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="116" y="55.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">So the MCP server</text>
+<text x="116" y="74.3" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">runs where?</text>
+<path d="M226,209.2 Q224,191.2 234,188.2 L240,193.2 Q233,196.2 236,209.2 Z" fill="#22c55e" stroke="#1a1026" stroke-width="1.5"/>
+<ellipse cx="231" cy="238" rx="40" ry="32.8" fill="#ff8a1f" stroke="#1a1026" stroke-width="2"/>
+<path d="M215.8,209.2 Q209,238 215.8,266.8 M246.2,209.2 Q253,238 246.2,266.8 M231,207.2 Q227,238 231,268.8" fill="none" stroke="#e0661a" stroke-width="2.5"/>
+<polygon points="210.6,236.4 224.2,236.4 217.4,223.2" fill="#1a1026"/><polygon points="213.8,234.7 221,234.7 217.4,227.5" fill="#ffe9b3"/>
+<polygon points="237.8,236.4 251.4,236.4 244.6,223.2" fill="#1a1026"/><polygon points="241,234.7 248.2,234.7 244.6,227.5" fill="#ffe9b3"/>
+<polygon points="207.8,247.2 215,254.4 220.6,251.1 227,258.3 234.2,251.8 241.4,257.7 247.8,251.8 254.2,247.2 243,247.8 235.8,251.8 226.2,247.8 217.4,251.1" fill="#1a1026"/><polygon points="212.9,251 218.5,251.2 222.9,251.1 227.9,251.3 233.5,251.1 239.1,251.2 244.1,251.1 249.1,251 240.4,251.1 234.7,251.1 227.3,251.1 220.4,251.1" fill="#ffe9b3"/>
+<rect x="148" y="110" width="158" height="41" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="222,149 231,190 240,149" fill="#fffaf0"/>
+<polyline points="222,149 231,190 240,149" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="227" y="135.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">On your laptop.</text>
+<polygon points="374,302 430,302 415,256 389,256" fill="#1a1026"/>
+<circle cx="402" cy="246" r="14" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<circle cx="397" cy="245" r="1.8" fill="#1a1026"/><circle cx="407" cy="245" r="1.8" fill="#1a1026"/>
+<path d="M398,252 q4,4 8,0" fill="none" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="402" cy="236" rx="26" ry="5" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M385,236 L419,236 L408,214 Q410,196 398,194 Q404,206 397,214 Z" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<polygon points="387,235 417,235 414,228 390,228" fill="#ff8a1f"/>
+<rect x="416" y="290" width="48" height="7" rx="2" fill="#6b7280" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="419" y="258" width="42" height="32" rx="3" fill="#4b5563" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="423" y="262" width="34" height="24" rx="2" fill="#ff8a1f"/>
+<rect x="427" y="267" width="24" height="3" fill="#ffe9b3"/><rect x="427" y="273" width="16" height="3" fill="#ffe9b3"/>
+<circle cx="418" cy="288" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/><circle cx="428" cy="286" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="344" y="30" width="167" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="393,88 402,196 411,88" fill="#fffaf0"/>
+<polyline points="393,88 402,196 411,88" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="427.5" y="55.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Then why is it</text>
+<text x="427.5" y="74.3" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">called a server?</text>
+<path d="M542,209.2 Q540,191.2 550,188.2 L556,193.2 Q549,196.2 552,209.2 Z" fill="#22c55e" stroke="#1a1026" stroke-width="1.5"/>
+<ellipse cx="547" cy="238" rx="40" ry="32.8" fill="#ff8a1f" stroke="#1a1026" stroke-width="2"/>
+<path d="M531.8,209.2 Q525,238 531.8,266.8 M562.2,209.2 Q569,238 562.2,266.8 M547,207.2 Q543,238 547,268.8" fill="none" stroke="#e0661a" stroke-width="2.5"/>
+<polygon points="526.6,236.4 540.2,236.4 533.4,223.2" fill="#1a1026"/><polygon points="529.8,234.7 537,234.7 533.4,227.5" fill="#ffe9b3"/>
+<polygon points="553.8,236.4 567.4,236.4 560.6,223.2" fill="#1a1026"/><polygon points="557,234.7 564.2,234.7 560.6,227.5" fill="#ffe9b3"/>
+<polygon points="523.8,247.2 531,254.4 536.6,251.1 543,258.3 550.2,251.8 557.4,257.7 563.8,251.8 570.2,247.2 559,247.8 551.8,251.8 542.2,247.8 533.4,251.1" fill="#1a1026"/><polygon points="528.9,251 534.5,251.2 538.9,251.1 543.9,251.3 549.5,251.1 555.1,251.2 560.1,251.1 565.1,251 556.4,251.1 550.7,251.1 543.3,251.1 536.4,251.1" fill="#ffe9b3"/>
+<rect x="446" y="110" width="176" height="41" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="538,149 547,190 556,149" fill="#fffaf0"/>
+<polyline points="538,149 547,190 556,149" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="534" y="135.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">It serves. Tools.</text>
+<polygon points="690,302 746,302 731,256 705,256" fill="#1a1026"/>
+<circle cx="718" cy="246" r="14" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M710,245 h6 M720,245 h6" fill="none" stroke="#1a1026" stroke-width="2"/>
+<path d="M714,253 h8" fill="none" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="718" cy="236" rx="26" ry="5" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M701,236 L735,236 L724,214 Q726,196 714,194 Q720,206 713,214 Z" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<polygon points="703,235 733,235 730,228 706,228" fill="#ff8a1f"/>
+<rect x="732" y="290" width="48" height="7" rx="2" fill="#6b7280" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="735" y="258" width="42" height="32" rx="3" fill="#4b5563" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="739" y="262" width="34" height="24" rx="2" fill="#ff8a1f"/>
+<rect x="743" y="267" width="24" height="3" fill="#ffe9b3"/><rect x="743" y="273" width="16" height="3" fill="#ffe9b3"/>
+<circle cx="734" cy="288" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/><circle cx="744" cy="286" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="660" y="40" width="184" height="41" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="709,79 718,196 727,79" fill="#fffaf0"/>
+<polyline points="709,79 718,196 727,79" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="752" y="65.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">...from my laptop.</text>
+<path d="M858,209.2 Q856,191.2 866,188.2 L872,193.2 Q865,196.2 868,209.2 Z" fill="#22c55e" stroke="#1a1026" stroke-width="1.5"/>
+<ellipse cx="863" cy="238" rx="40" ry="32.8" fill="#ff8a1f" stroke="#1a1026" stroke-width="2"/>
+<path d="M847.8,209.2 Q841,238 847.8,266.8 M878.2,209.2 Q885,238 878.2,266.8 M863,207.2 Q859,238 863,268.8" fill="none" stroke="#e0661a" stroke-width="2.5"/>
+<path d="M825,238 q-10,-6 -16,-20" fill="none" stroke="#1a1026" stroke-width="2.5"/><circle cx="808" cy="217" r="4" fill="#ff8a1f" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M901,238 q10,-6 16,-20" fill="none" stroke="#1a1026" stroke-width="2.5"/><circle cx="918" cy="217" r="4" fill="#ff8a1f" stroke="#1a1026" stroke-width="1.5"/>
+<polygon points="842.6,236.4 856.2,236.4 849.4,223.2" fill="#1a1026"/><polygon points="845.8,234.7 853,234.7 849.4,227.5" fill="#ffe9b3"/>
+<polygon points="869.8,236.4 883.4,236.4 876.6,223.2" fill="#1a1026"/><polygon points="873,234.7 880.2,234.7 876.6,227.5" fill="#ffe9b3"/>
+<polygon points="839.8,247.2 847,254.4 852.6,251.1 859,258.3 866.2,251.8 873.4,257.7 879.8,251.8 886.2,247.2 875,247.8 867.8,251.8 858.2,247.8 849.4,251.1" fill="#1a1026"/><polygon points="844.9,251 850.5,251.2 854.9,251.1 859.9,251.3 865.5,251.1 871.1,251.2 876.1,251.1 881.1,251 872.4,251.1 866.7,251.1 859.3,251.1 852.4,251.1" fill="#ffe9b3"/>
+<rect x="814" y="100" width="124" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="854,158 863,190 872,158" fill="#fffaf0"/>
+<polyline points="854,158 863,190 872,158" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="876" y="125.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Look, LSP</text>
+<text x="876" y="144.3" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">started it.</text>
+<text x="24" y="346" font-family="Menlo, monospace" font-size="13" fill="#ff8a1f">🎃 comic · server</text>
+<text x="490" y="346" text-anchor="middle" font-family="Menlo, monospace" font-size="13" fill="#efe3cc">'Server' means the program that serves capabilities. It is not a location.</text>
+</svg>

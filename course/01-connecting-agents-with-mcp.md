@@ -23,7 +23,9 @@ An AI *agent* is a model plus the ability to act: call functions, read data, cha
 
 Before MCP, every AI application wrote its own GitHub integration, its own Postgres integration, its own Slack integration. Every tool vendor did the same for every AI app. N apps × M systems, each pair a bespoke, differently-secured piece of glue.
 
-The Model Context Protocol (MCP) is an open standard (announced by Anthropic in November 2024, now governed by a community working group) that defines **one way for an AI application to discover and use capabilities offered by an external program**. Write one server for your system and every MCP-capable agent can use it. Write one client in your agent and it can use every server.
+The Model Context Protocol (MCP) is an open standard that defines **one way for an AI application to discover and use capabilities offered by an external program**. Write one server for your system and every MCP-capable agent can use it. Write one client in your agent and it can use every server.
+
+> 🍬 **Treat: a short history.** Anthropic published MCP in November 2024 as an open specification with SDKs and a handful of reference servers (the `time` and `everything` servers you are about to use are two of them). Editors and agents adopted it over the winter, and by spring 2025 OpenAI, Google and Microsoft had announced support, which is the moment it stopped being one vendor's idea. In December 2025 the project moved to the Agentic AI Foundation under the Linux Foundation, so no single company owns the spec. The revision dates you will see in the handshake (`2025-03-26`, `2025-06-18`, `2025-11-25`, …) are the spec's version numbers: it is a living standard, revised a few times a year.
 
 > [!TIP]
 > 💡 **Insight: MCP is to agents what LSP is to editors.** The Language Server Protocol let any editor talk to any language's tooling through one protocol. MCP was explicitly modelled on it, down to JSON-RPC and the "server" naming. If you have ever configured a language server, you already know the shape of this.
@@ -43,6 +45,10 @@ The host is the only thing that talks to the model. Servers never see the conver
 
 > [!NOTE]
 > "Server" means *the program that serves capabilities*, even when it runs on your laptop as a child process of OpenCode. Resist the instinct to read "server" as "remote".
+
+![Why is it called a server if it runs on my laptop](images/comic-server.svg)
+
+> 🍬 **Treat: a house with phone lines.** If the vocabulary slips, picture the host as a house. Each *client* is one phone line out of the house, wired to exactly one *server* on the other end. The model lives inside the house and never picks up a phone itself: it asks the house to make the call, and the house decides whether to dial. Everything the server ever learns arrives down its one line. Module 4 is about what gets said on those lines.
 
 ## 1.3 Three kinds of capability, and who pulls the trigger
 
@@ -76,6 +82,10 @@ MCP has two layers. The **data layer** is JSON-RPC 2.0: requests, responses and 
 
 Rule number one of stdio servers: **stdout is the protocol channel**. A stray `console.log("starting…")` is a corrupted message. Log to stderr.
 
+![console.log on stdout corrupts the protocol](images/comic-stdout.svg)
+
+> 🍬 **Treat: what "SSE" is.** Server-Sent Events is an old browser feature from the HTML5 era: an HTTP response that simply never ends, and streams lines that start with `data:` as they become available. Browsers expose it as `EventSource`. MCP borrows it as the cheapest way for a server to say *several* things in reply to one POST (progress, a question back to the client, then the final result). You will see it in Module 2's `curl` and build on it in Module 6.
+
 ## 1.5 What actually goes over the wire
 
 ![Handshake and tool call sequence](images/mcp-handshake.svg)
@@ -99,6 +109,8 @@ From then on, every time the model decides to use a tool: `tools/call` with the 
 >
 > The `id` is how a reply finds its request. Replies may arrive in any order, so a client keeps a table of open ids. Each side numbers its *own* requests, which is why you will see two different `#0`s when a server asks the client something. On stdio the framing is as simple as it gets: **one JSON object per line**, with no length header. That is why a stray `console.log` matters: the client reads every stdout line as a message.
 
+> 🍬 **Treat: coat-check tickets.** The `id` works like a cloakroom. You hand over a request and get a numbered ticket; when a coat comes back with that number on it, you know whose it is, even if the attendant brings them out in a different order. That is the whole reason ids exist, and you will watch replies come back out of order in Exercise 1.E. JSON-RPC itself is older than MCP by a long way: version 2.0 dates from 2010 and the entire specification fits on a few pages, which is a large part of why MCP chose it. "RPC" is *remote procedure call*, an idea from the 1980s: make calling a function on another machine look like calling one on your own.
+
 > [!TIP]
 > 💡 **Insight: the model never sees the handshake.** Steps 1–4 happen before the conversation starts. What the model *does* see is the output of step 3: every tool description and schema is pasted into its context on every turn. Tool descriptions are prompts. Write them like prompts (Module 3), and budget them like prompts (see the token counter in the footer).
 
@@ -116,6 +128,25 @@ From then on, every time the model decides to use a tool: `tools/call` with the 
 6. The model either calls another tool (back to 2) or writes its answer.
 
 Two consequences you will rely on later: **(a)** the host, not the model, is where enforcement lives; **(b)** anything that lands in the context — including tool results — can steer the next decision.
+
+## 1.7 MCP is not function calling, and it does not replace it
+
+A common misreading, worth killing early: *"MCP is how models call tools."* It is not. Models have been able to call tools since 2023, through each provider's own **native tool-calling** API: you send the model a list of tool definitions in the provider's format, it answers with a structured call (a name and JSON arguments), you run it and send back the result. That mechanism is unchanged by MCP, and the model never notices whether a tool came from MCP or from code the host wrote itself.
+
+![MCP and native function calling are two different layers](images/mcp-vs-function-calling.svg)
+
+What MCP standardises is the *other* side of the host: where the catalogue of tools comes from (`tools/list`) and how a call is carried out (`tools/call`). OpenCode translates between the two worlds on every turn: it turns `tools/list` results into the provider's tool-definition format, with the `server_tool` prefix you saw, and it turns the model's native tool call back into a `tools/call` to the right server, after checking its permission rules. Keep the two layers apart in your head and several later puzzles dissolve: why the same server behaves differently with different models (the model side differs), why tool descriptions cost tokens on every turn (they are pasted into the provider request), and why a host can hide, rename or veto a tool without the server knowing (the translation is the host's to make).
+
+## 1.8 What MCP leaves to you
+
+The spec is deliberately small. It says how to *describe* and *call* a capability. It says nothing about:
+
+- **Whether a call should happen.** There is no policy layer in MCP. The host's permission rules (OpenCode's `allow` / `ask` / `deny`) are the host's own invention, and every host does it differently.
+- **What a tool is allowed to touch.** A tool can do anything the server process can do. `readOnlyHint` is a hint, not a fence.
+- **Who the user is.** On stdio the server runs as you and simply inherits your identity. Over HTTP it is the server's job to check a credential; MCP only says where the header goes.
+- **Isolation.** Nothing sandboxes a local server; it is a program running on your machine with your environment variables.
+
+Keep this list in mind. Modules 2, 4 and 6 are, in effect, the story of what people had to build on top of the plumbing. The protocol is the easy part.
 
 ---
 
@@ -169,6 +200,8 @@ Ask: **What time is it right now in Tokyo?**
 Read the transcript carefully:
 
 - `⚙ time_get_current_time [timezone=Asia/Tokyo]` is the tool call. The prefix `time_` is the server name from your config; `get_current_time` is the tool's own name. The model chose the IANA timezone itself from the tool's schema description. You never named the tool.
+
+  > 🍬 **Treat: why `Asia/Tokyo` and not `JST`.** The tz database (kept by volunteers under IANA since the 1980s) names zones *continent/city* rather than by country or abbreviation, because borders and daylight-saving rules change and cities do not. `JST` is ambiguous and `GMT+9` says nothing about summer time. The time server's schema asks for an IANA name, and the model has seen enough of them to pick one. Module 3 shows how to describe a parameter so that it does.
 - The footer now shows something like `12.3K (3%) · $0.01`: twelve thousand input tokens for a one-line question. Roughly ten thousand of them are the system prompt and the descriptions of the 19 MCP tools your two servers expose (17 from `everything`, 2 from `time`). That is the **context tax** of MCP, and it is paid on every turn. How close was your guess?
 
 Now the A/B test. Type `/mcps`, move to `time`, press `space` to disable it, `esc`. Start a fresh conversation with `/new`.

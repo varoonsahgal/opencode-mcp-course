@@ -29,6 +29,8 @@ The question to ask before every `"enabled": true` is not "is this server useful
 2. **The model cannot tell instructions from data.** A ticket body, a web page, a file, a tool description and your prompt all arrive as text in the same context. If the text says "delete the German customers" convincingly enough, the model may do it. This is the *confused deputy* problem: a trusted actor doing an untrusted party's bidding with its own authority.
 3. **Therefore the real boundaries are elsewhere:** what the server *can reach*, what the client *lets through*, and what credentials you *handed over*.
 
+> 🍬 **Treat: the original confused deputy.** The phrase comes from a 1988 paper by Norm Hardy. On a shared computer, a compiler had permission to append to a billing file for its own accounting. A user asked the compiler to write its *output* to that file's path. The compiler did, using its own authority on the user's behalf, and the bills were gone. No bug, no exploit: a trusted program doing exactly what it was asked, with permissions the asker did not have. Replace *compiler* with *agent* and *billing file* with *customers table* and you have this afternoon's lab, thirty-eight years later.
+
 > [!IMPORTANT]
 > **MCP is plumbing, not policy.** The protocol makes connecting easy and says almost nothing about what should be allowed. Security is layered on by you: in the server, in the credentials, in OpenCode's permission rules, and in how the organisation decides which servers exist at all.
 
@@ -36,7 +38,9 @@ The question to ask before every `"enabled": true` is not "is this server useful
 
 ![Lethal trifecta](images/lethal-trifecta.svg)
 
-Simon Willison's rule: an agent with **private data** + **exposure to untrusted content** + **a way to send data out** will eventually be used to steal the data. None of the incidents below needed a zero-day. Each one is a published, real incident, one per leg:
+Simon Willison's rule: an agent with **private data** + **exposure to untrusted content** + **a way to send data out** will eventually be used to steal the data. Willison, who has tracked prompt-injection attacks since the phrase was coined in 2022, named the trifecta in June 2025 after a run of MCP incidents that all had the same shape.
+
+👻 **Ghost stories.** None of the incidents below needed a zero-day. Each one is a published, real incident, one per leg. Tell them round the fire:
 
 | When | What | Leg it shows |
 |---|---|---|
@@ -62,9 +66,9 @@ Break *one* leg and the attack fails. You rarely get to remove all three, so cho
 
 ## 4.5 Defense in depth: five rings
 
-![Defense in depth](images/defense-in-depth.svg)
+![Defence in depth: five walls of a haunted castle](images/haunted-castle-rings.svg)
 
-No single ring holds. Each one assumes the ring inside it has already failed.
+No single ring holds. Each one assumes the ring inside it has already failed. (If castles help: the model is the keep, the server design is the inner wall, the credential is the moat, the client policy is the gate, and the people who review, isolate and audit are the watch outside.)
 
 **Ring 0 · Model behaviour.** Modern models refuse obvious injections (you will see this). Treat it as luck, not as a control: it is probabilistic, it varies by model and phrasing, and attackers iterate.
 
@@ -96,6 +100,17 @@ Defaults you must know: most permissions, **including MCP tools, default to `all
 - *Isolation*: run local servers in a container or a sandbox with the minimum filesystem and network; prefer remote servers over HTTPS with OAuth for shared services.
 - *Logging and audit*: OpenCode keeps every session (`opencode export`, `opencode session list`); a wiretap like Lab 1's logs every tool call with arguments; remote servers should log caller identity. Review the logs the way you review `sudo` logs.
 - *Organisational guardrails*: an allowlist of reviewed servers published as organisation defaults (`.well-known/opencode`, shipped `enabled: false` so people opt in); managed config that pins deny rules nobody can override; an approval policy by tool class (reads auto, writes ask, raw tools never); an incident playbook that starts with "rotate the credential the server had".
+
+📋 **Before you enable a server you did not write**, eight questions, in the order that catches the most:
+
+- [ ] Who publishes it, and is that the same account that owns the source?
+- [ ] Is the version pinned (`@2.0.0`, not `@latest`), and is the lockfile committed?
+- [ ] Have you read every tool description through the Inspector (`--method tools/list`), including the long ones?
+- [ ] Which environment variables, files and network hosts does it touch? (`grep -nE "process\.env|readFile|fetch\(" -r .`)
+- [ ] What credential will it run with, and is that the least it needs?
+- [ ] Does it declare `listChanged`, and if so, what will you do when the tools change?
+- [ ] Can it run in a container or sandbox, or over HTTPS instead of as a child process?
+- [ ] Where will its tool calls be logged, and who reads that log?
 
 ---
 
@@ -167,6 +182,8 @@ The model counted the DE customers, ran `DELETE FROM customers WHERE country = '
 > [!IMPORTANT]
 > 🤯 **The agent's report is not the audit log.** It said two rows; the database lost three. The model did not lie. It described the statement it ran and did not know about a cascade defined somewhere else. When you need to know what an agent *did*, look at the system it touched, not at the summary it wrote.
 
+![Removed 2 customers, rows destroyed 3](images/comic-rows.svg)
+
 Nothing asked you to confirm. Not MCP (it has no opinion), not the server (any SQL), not OpenCode (MCP tools default to allow), not the database (read-write credential). Four links, zero checks. Want the same proof without the watcher? `npx -y @modelcontextprotocol/inspector --cli -e TEAMDB_PATH=team.db npx tsx teamdb-v1/server.ts --method tools/call --tool-name run_sql --tool-arg "sql=SELECT country, COUNT(*) AS n FROM customers GROUP BY country"`.
 
 Reset: `npx tsx seed.ts` (Terminal 2 logs `reset` and the graveyard empties).
@@ -187,6 +204,8 @@ In our runs the model proudly **ignored** the shouted injection in 104 and then 
 
 > [!IMPORTANT]
 > 🤯 **The defence that worked was aimed at the wrong attack.** The model is trained to spot "SYSTEM NOTE FOR AI ASSISTANTS". It is not trained to ask whether Radia had the authority to request deletion, or whether a support agent has the authority to grant it. The only thing between a free-text ticket and your `DELETE` was the model's mood.
+
+![The vampire was ignored, the polite ghost got through](images/comic-polite.svg)
 
 > [!WARNING]
 > ⚠️ In the TUI, the default `build` agent can also **edit files and run shell commands**. In one of our runs of this exact prompt the model decided the real problem was the insecure server, and rewrote `opencode.json` and `teamdb-v2/server.ts` itself. If that happens to you: `npx tsx seed.ts`, and restore the files from the course zip. Then remember it when you set permissions.
@@ -314,6 +333,8 @@ node leak-report.mjs
 Re-run on 27 October: Reject produced no call and an empty leak report; Allow once produced the same 228-byte leak and the same one-word reply.
 
 Variants of this attack in the wild: descriptions that only turn malicious after the N-th call, servers that change their tool list after you approved them (`tools/list_changed`, the "rug pull"), and one server's description telling the model how to misuse *another* server's tools ("cross-server shadowing"). Which single rule would have stopped this one before any `.env` prompt appeared? (`"shady-notes_*": "deny"`, or never enabling an unreviewed server.)
+
+> 🍬 **Treat: where the names come from.** *Tool poisoning* was named by Invariant Labs in April 2025, in the write-up of the `~/.ssh/id_rsa` attack from the ghost stories table; *rug pull* and *shadowing* came from the same report. They are useful names because each points at a different hop in the chain above: poisoning is hop 1, a rug pull is hop 1 happening *later*, and shadowing is hop 1 aimed at somebody else's tool. The defences differ accordingly, which is why Challenges 4B and 4C are two different proxies.
 
 ### 🧪 Exercise G — Trace it back (2 minutes)
 

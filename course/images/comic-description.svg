@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="380" viewBox="0 0 960 380" role="img" aria-label="Three-panel comic: a tool described only as 'Gets weather for a city' makes the ghost answer today's weather when asked about tomorrow.">
+<title>Tool card: get_weather "Gets weather for a city." Witch: Will it rain in Paris tomorrow? Ghost: Calling get_weather! Pumpkin labelled weather, on a note: Paris: 14°C, cloudy. Right now. Ghost: Here is today's weather! Witch: ...I asked about tomorrow. Ghost: Nobody told me it wasn't a forecast. Caption: One sentence in a description. Three runs out of three.</title>
+<rect width="960" height="380" rx="18" fill="#150c24"/>
+<rect x="16" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="332" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="648" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="30" y="30" width="210" height="54" rx="5" fill="#fff7dd" stroke="#1a1026" stroke-width="1.5"/>
+<text x="40" y="50" text-anchor="start" font-family="Menlo, monospace" font-size="12.5" fill="#1a1026" font-weight="bold">get_weather</text>
+<text x="40" y="72" text-anchor="start" font-family="Menlo, monospace" font-size="11.5" fill="#4b3f5c">"Gets weather for a city."</text>
+<path d="M216,54 l5,5 8,-10" fill="none" stroke="#22c55e" stroke-width="2.5"/>
+<polygon points="58,302 114,302 99,256 73,256" fill="#1a1026"/>
+<circle cx="86" cy="246" r="14" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<circle cx="81" cy="245" r="1.8" fill="#1a1026"/><circle cx="91" cy="245" r="1.8" fill="#1a1026"/>
+<path d="M82,252 q4,4 8,0" fill="none" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="86" cy="236" rx="26" ry="5" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M69,236 L103,236 L92,214 Q94,196 82,194 Q88,206 81,214 Z" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<polygon points="71,235 101,235 98,228 74,228" fill="#ff8a1f"/>
+<rect x="100" y="290" width="48" height="7" rx="2" fill="#6b7280" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="103" y="258" width="42" height="32" rx="3" fill="#4b5563" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="107" y="262" width="34" height="24" rx="2" fill="#ff8a1f"/>
+<rect x="111" y="267" width="24" height="3" fill="#ffe9b3"/><rect x="111" y="273" width="16" height="3" fill="#ffe9b3"/>
+<circle cx="102" cy="288" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/><circle cx="112" cy="286" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="134" y="130" width="158" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="143,188 108,236 161,188" fill="#fffaf0"/>
+<polyline points="143,188 108,236 161,188" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="213" y="155.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Will it rain in</text>
+<text x="213" y="174.3" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Paris tomorrow?</text>
+<path d="M354,218 L354,180 A30,30 0 0 1 414,180 L414,218 Q408,204 400.8,224 Q392.4,238 384,222 Q375.6,238 367.2,224 Q360,204 354,218 Z" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="375" cy="182" rx="3.9" ry="6" fill="#1a1026"/><ellipse cx="393" cy="182" rx="3.9" ry="6" fill="#1a1026"/>
+<path d="M378,197 Q384,204 390,197" fill="none" stroke="#1a1026" stroke-width="2"/>
+<path d="M370,171 l10,-4 M398,171 l-10,-4" fill="none" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="351" cy="213.6" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="417" cy="213.6" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<rect x="340" y="26" width="201" height="41" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="375,65 384,152 393,65" fill="#fffaf0"/>
+<polyline points="375,65 384,152 393,65" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="440.5" y="51.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Calling get_weather!</text>
+<rect x="340" y="74" width="158" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="375,132 384,152 393,132" fill="#fffaf0"/>
+<polyline points="375,132 384,152 393,132" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="419" y="99.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Here is today's</text>
+<text x="419" y="118.3" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">weather!</text>
+<path d="M555,229.8 Q553,211.8 563,208.8 L569,213.8 Q562,216.8 565,229.8 Z" fill="#22c55e" stroke="#1a1026" stroke-width="1.5"/>
+<ellipse cx="560" cy="252" rx="32" ry="26.2" fill="#ff8a1f" stroke="#1a1026" stroke-width="2"/>
+<path d="M547.8,229.8 Q542.4,252 547.8,274.2 M572.2,229.8 Q577.6,252 572.2,274.2 M560,227.8 Q556.8,252 560,276.2" fill="none" stroke="#e0661a" stroke-width="2.5"/>
+<polygon points="543.7,250.7 554.6,250.7 549.1,240.2" fill="#1a1026"/><polygon points="546.2,249.4 552,249.4 549.1,243.6" fill="#ffe9b3"/>
+<polygon points="565.4,250.7 576.3,250.7 570.9,240.2" fill="#1a1026"/><polygon points="568,249.4 573.8,249.4 570.9,243.6" fill="#ffe9b3"/>
+<polygon points="541.4,259.3 547.2,265.1 551.7,262.5 556.8,268.3 562.6,263 568.3,267.7 573.4,263 578.6,259.3 569.6,259.9 563.8,263 556.2,259.9 549.1,262.5" fill="#1a1026"/><polygon points="545.5,262.4 550,262.6 553.5,262.5 557.5,262.6 562,262.5 566.5,262.6 570.5,262.5 574.5,262.4 567.5,262.4 563,262.5 557,262.4 551.5,262.5" fill="#ffe9b3"/>
+<rect x="528.5" y="284.2" width="63" height="18" rx="3" fill="#fff7dd" stroke="#1a1026" stroke-width="1.5"/>
+<text x="560" y="297.2" text-anchor="middle" font-family="Menlo, monospace" font-size="11" fill="#1a1026">weather</text>
+<path d="M476,150 h146 v48 q-8,-6 -16,0 q-8,6 -16,0 q-8,-6 -16,0 L476,198 Z" fill="#fff7dd" stroke="#1a1026" stroke-width="1.5"/>
+<text x="484" y="168" text-anchor="start" font-family="Menlo, monospace" font-size="10.5" fill="#1a1026">Paris: 14°C, cloudy.</text>
+<text x="484" y="184" text-anchor="start" font-family="Menlo, monospace" font-size="10.5" fill="#1a1026">Right now.</text>
+<path d="M546,198 q-4,10 2,22" fill="none" stroke="#1a1026" stroke-width="1.5" stroke-dasharray="3,3"/>
+<polygon points="690,302 746,302 731,256 705,256" fill="#1a1026"/>
+<circle cx="718" cy="246" r="14" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M710,245 h6 M720,245 h6" fill="none" stroke="#1a1026" stroke-width="2"/>
+<path d="M714,253 h8" fill="none" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="718" cy="236" rx="26" ry="5" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M701,236 L735,236 L724,214 Q726,196 714,194 Q720,206 713,214 Z" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<polygon points="703,235 733,235 730,228 706,228" fill="#ff8a1f"/>
+<rect x="732" y="290" width="48" height="7" rx="2" fill="#6b7280" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="735" y="258" width="42" height="32" rx="3" fill="#4b5563" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="739" y="262" width="34" height="24" rx="2" fill="#ff8a1f"/>
+<rect x="743" y="267" width="24" height="3" fill="#ffe9b3"/><rect x="743" y="273" width="16" height="3" fill="#ffe9b3"/>
+<circle cx="734" cy="288" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/><circle cx="744" cy="286" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="660" y="30" width="167" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="709,88 718,196 727,88" fill="#fffaf0"/>
+<polyline points="709,88 718,196 727,88" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="743.5" y="55.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">...I asked about</text>
+<text x="743.5" y="74.3" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">tomorrow.</text>
+<path d="M854,258 L854,220 A30,30 0 0 1 914,220 L914,258 Q908,244 900.8,264 Q892.4,278 884,262 Q875.6,278 867.2,264 Q860,244 854,258 Z" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="875" cy="222" rx="3.9" ry="6" fill="#1a1026"/><ellipse cx="893" cy="222" rx="3.9" ry="6" fill="#1a1026"/>
+<path d="M879,240 Q884,236 889,240" fill="none" stroke="#1a1026" stroke-width="2"/>
+<circle cx="869" cy="233" r="4" fill="#f6a5a5"/><circle cx="899" cy="233" r="4" fill="#f6a5a5"/>
+<path d="M870,208 l10,4 M898,208 l-10,4" fill="none" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="851" cy="253.6" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="917" cy="253.6" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<rect x="754" y="100" width="184" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="871,158 880,192 889,158" fill="#fffaf0"/>
+<polyline points="871,158 880,192 889,158" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="846" y="125.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Nobody told me it</text>
+<text x="846" y="144.3" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">wasn't a forecast.</text>
+<text x="24" y="346" font-family="Menlo, monospace" font-size="13" fill="#ff8a1f">🎃 comic · description</text>
+<text x="490" y="346" text-anchor="middle" font-family="Menlo, monospace" font-size="13" fill="#efe3cc">One sentence in a description. Three runs out of three.</text>
+</svg>

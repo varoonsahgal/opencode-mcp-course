@@ -6,11 +6,25 @@
 
 Before the second break you will have watched an AI agent delete customers from a database because a support ticket asked it to, and you will know four separate places to stop it. Everything before that is how you get there; everything after is proof you can.
 
+🎃 **Why the pumpkins?** It is October, and this course is about giving a ghost hands and then finding out what else is in the house. The decorations are decorations. The labs, the numbers and the incidents are real.
+
 ![Course map](images/course-map.svg)
 
 **Prefer one page?** [`handout.html`](handout.html) is the student handout: every lab's key commands, predictions that keep score, the cheat sheet, and an operator card that fills in as you go. Open it in a browser next to your terminals.
 
 **Want the concepts in depth?** [`slides/`](slides/index.html) is the reference deck: every concept in the course with diagrams and speaker notes (press `N`), a cheat sheet and a glossary. `R` turns it into one scrolling page.
+
+## MCP in sixty seconds
+
+A language model on its own can only produce text. To *do* anything it has to be wrapped in an application that carries out what it asks for. That application is the **host**; in this course the host is OpenCode. The **Model Context Protocol** is the standard way for a host to ask an outside program *"what can you do?"* and then *"do it"*. The outside program is an **MCP server**. A server can offer three things: **tools** (actions the model may decide to call), **resources** (data a person attaches to the conversation) and **prompts** (templates a person runs on purpose). A server runs either as a child process on your machine or as a service over HTTPS, and the messages are the same either way: JSON, one object at a time.
+
+![Three primitives, told apart by who pulls the trigger](images/who-pulls-the-trigger.svg)
+
+That is the whole protocol. Everything else in these four hours is about what happens when a model is allowed to pull those levers, who decides which levers exist, and how to find out what it actually did.
+
+What MCP is **not**, because the name invites confusion: it is not a model, not an agent framework, not an app store and not a security product. It is plumbing, and plumbing has no opinion about what flows through it. By Module 4 that sentence will be the point of the whole course.
+
+![A ghost with no clock gets hands](images/comic-tokyo.svg)
 
 ## The six moments this course is built around
 
@@ -105,6 +119,9 @@ Every lab's `opencode.json` sets the model to **`opencode/gpt-5.4-mini`** throug
 | 🏆 **Challenge** | Optional stretch work with an instructor solution |
 | ⚠️ **Security** | A risk you will meet in the wild |
 | 🏅 **Mission complete** | What you can now do that you could not an hour ago |
+| 🍬 **Treat** | A small extra fact: history, a number, a name for the thing you just saw. Skippable, but tasty |
+| 👻 **Ghost story** | A real incident from the wild. Every one of them is documented and none of them needed a zero-day |
+| 🎃 **Comic relief** | A three-panel strip. The joke is also the lesson, so do not skip the caption |
 
 Write your 🔮 predictions down, on paper or in a scratch file. A guess you only made in your head is a guess you will remember making correctly.
 

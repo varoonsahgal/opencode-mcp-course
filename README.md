@@ -4,6 +4,8 @@ Connect, configure, build and secure **Model Context Protocol** integrations for
 
 **Read the course online: <https://varoonsahgal.github.io/opencode-mcp-course/>**
 
+🎃 **Haunted edition (October 2026):** the student site now carries a Halloween theme, a comic strip per module, 🍬 *Treat* tidbits and 👻 *Ghost story* incident callouts, plus new sections on MCP versus native function calling and on what the protocol leaves to you. The labs and numbers are unchanged.
+
 | | |
 |---|---|
 | [Course home](https://varoonsahgal.github.io/opencode-mcp-course/) | schedule, how the guides work, quick start |

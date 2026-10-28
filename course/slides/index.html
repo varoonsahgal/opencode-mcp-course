@@ -7,12 +7,12 @@
 <meta name="description" content="MCP with AI Agents: the instructor and student reference deck. Architecture, configuration, building servers, security, and advanced MCP.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Creepster&display=swap" rel="stylesheet">
 <style>
 /* ───────────── tokens ───────────── */
 :root {
-  --bg: #f8fafc; --stage: #e9eef5; --surface: #ffffff; --surface-2: #f1f5f9; --code-bg: #f6f8fc;
-  --line: #e2e8f0; --line-2: #cbd5e1; --text: #0f172a; --muted: #475569; --faint: #94a3b8;
+  --bg: #fbf6ec; --stage: #ebe2d2; --surface: #fffaf0; --surface-2: #f4ebdb; --code-bg: #f7f1e6;
+  --line: #e6d9c4; --line-2: #cfc0a6; --text: #231433; --muted: #5d4e6e; --faint: #9a8aa8;
   --indigo: #4f46e5; --cyan: #0e7490; --amber: #b45309; --rose: #e11d48; --green: #15803d; --violet: #7e22ce;
   --c-key: #7c3aed; --c-str: #0f766e; --c-num: #c2410c; --c-com: #94a3b8; --c-prop: #1d4ed8; --c-fn: #be185d;
   --grid: rgba(15, 23, 42, .045); --shadow: 0 30px 80px -30px rgba(15, 23, 42, .35);
@@ -23,8 +23,8 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #070b17; --stage: #03060e; --surface: #0e1528; --surface-2: #131c33; --code-bg: #0a1122;
-    --line: #1e293b; --line-2: #334155; --text: #e2e8f0; --muted: #94a3b8; --faint: #64748b;
+    --bg: #0f0919; --stage: #06030d; --surface: #170e27; --surface-2: #1f1333; --code-bg: #0d0817;
+    --line: #2a1a44; --line-2: #3d2a5e; --text: #efe3cc; --muted: #a898bd; --faint: #6f5f80;
     --indigo: #818cf8; --cyan: #22d3ee; --amber: #fbbf24; --rose: #fb7185; --green: #4ade80; --violet: #c084fc;
     --c-key: #c4b5fd; --c-str: #86efac; --c-num: #fdba74; --c-com: #64748b; --c-prop: #93c5fd; --c-fn: #f9a8d4;
     --grid: rgba(148, 163, 184, .06); --shadow: 0 30px 80px -30px rgba(0, 0, 0, .8);
@@ -32,8 +32,8 @@
   }
 }
 :root[data-theme="dark"] {
-  --bg: #070b17; --stage: #03060e; --surface: #0e1528; --surface-2: #131c33; --code-bg: #0a1122;
-  --line: #1e293b; --line-2: #334155; --text: #e2e8f0; --muted: #94a3b8; --faint: #64748b;
+  --bg: #0f0919; --stage: #06030d; --surface: #170e27; --surface-2: #1f1333; --code-bg: #0d0817;
+  --line: #2a1a44; --line-2: #3d2a5e; --text: #efe3cc; --muted: #a898bd; --faint: #6f5f80;
   --indigo: #818cf8; --cyan: #22d3ee; --amber: #fbbf24; --rose: #fb7185; --green: #4ade80; --violet: #c084fc;
   --c-key: #c4b5fd; --c-str: #86efac; --c-num: #fdba74; --c-com: #64748b; --c-prop: #93c5fd; --c-fn: #f9a8d4;
   --grid: rgba(148, 163, 184, .06); --shadow: 0 30px 80px -30px rgba(0, 0, 0, .8);
@@ -75,6 +75,7 @@ body { background: var(--stage); color: var(--text); font-family: var(--font); -
 /* ───────────── slide typography ───────────── */
 .slide h1, .slide h2, .slide h3, .slide p { margin: 0; }
 .slide h1 { font-size: var(--fs-h1); line-height: 1.04; letter-spacing: -.035em; font-weight: 800; }
+.divider h1 { font-family: Creepster, "Chalkboard SE", Impact, var(--font); font-weight: 400; letter-spacing: .02em; }
 .slide h2 { font-size: var(--fs-h2); line-height: 1.12; letter-spacing: -.028em; font-weight: 750; text-wrap: balance; }
 .slide h3 { font-size: calc(var(--fs-body) + 1px); line-height: 1.25; font-weight: 700; letter-spacing: -.01em; }
 .slide .kicker { font: 600 var(--fs-kicker)/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
@@ -306,7 +307,7 @@ body.overview .frame::after { content: attr(data-n); position: absolute; right: 
 
 <!-- ═════════════════════════ INTRO ═════════════════════════ -->
 <section class="slide title-slide divider" data-ch="intro" id="title">
-  <p class="num">Reference deck · instructor &amp; student edition</p>
+  <p class="num">Reference deck · instructor &amp; student edition · 🎃 haunted</p>
   <h1>MCP with AI Agents</h1>
   <p class="lead">How agents discover and call tools they have never seen, how to wire them up in OpenCode, how to build your own server, and how to keep all of it from being talked into doing something stupid.</p>
   <ul class="toc"><li>Why MCP</li><li>Architecture</li><li>Configure</li><li>Build</li><li>Secure</li><li>Apply</li><li>Advanced</li><li>Cheat sheet</li></ul>

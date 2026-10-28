@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520" role="img" aria-label="Defence in depth drawn as a haunted castle: five walls, none of them optional" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Defence in depth: five walls, none of them optional</title>
+  <defs>
+    <linearGradient id="hc-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a0612"/>
+      <stop offset="1" stop-color="#1f1333"/>
+    </linearGradient>
+    <g id="hc-torch">
+      <circle r="10" fill="#e11d48" opacity=".22"/>
+      <line y1="-1" y2="9" stroke="#9a3412" stroke-width="2.5"/>
+      <path d="M0 -10 C3 -7 4 -3 2 0 C1 1.5 -1 1.5 -2 0 C-4 -3 -3 -7 0 -10 Z" fill="#ff8a1f"/>
+      <path d="M0 -6 C1.5 -4.5 1.5 -2 0 -0.5 C-1.5 -2 -1.5 -4.5 0 -6 Z" fill="#ffe9b3"/>
+    </g>
+    <g id="hc-tower">
+      <rect x="-7" y="-10" width="14" height="20" fill="#2a1a3a" stroke="#e11d48" stroke-width="1.5"/>
+      <path d="M-7 -13 h4 v3 h-4 z M-2 -13 h4 v3 h-4 z M3 -13 h4 v3 h-4 z" fill="#e11d48"/>
+      <rect x="-2" y="-4" width="4" height="6" fill="#ff8a1f"/>
+    </g>
+    <path id="hc-bat" d="M-16 -2 C-12 -7 -6 -7 -2 -3 L-3 -7 L0 -4 L3 -7 L2 -3 C6 -7 12 -7 16 -2 C12 -1 10 2 11 6 C8 3 5 4 3 7 L0 4 L-3 7 C-5 4 -8 3 -11 6 C-10 2 -12 -1 -16 -2 Z"/>
+  </defs>
+  <rect width="960" height="520" rx="18" fill="url(#hc-sky)"/>
+  <g fill="#efe3cc">
+    <circle cx="140" cy="86" r="1.3"/><circle cx="196" cy="74" r="1" opacity=".7"/><circle cx="330" cy="88" r="1.2"/><circle cx="398" cy="78" r="1" opacity=".6"/><circle cx="452" cy="104" r="1.4"/><circle cx="470" cy="236" r="1" opacity=".7"/><circle cx="40" cy="236" r="1.1"/><circle cx="34" cy="470" r="1" opacity=".6"/><circle cx="468" cy="470" r="1.2"/><circle cx="700" cy="60" r="1"/><circle cx="764" cy="48" r="1.3" opacity=".8"/><circle cx="836" cy="64" r="1"/><circle cx="890" cy="44" r="1.2"/><circle cx="928" cy="72" r="1" opacity=".6"/>
+  </g>
+  <text x="32" y="40" font-size="22" font-weight="700" fill="#fff3dc">Defence in depth: five walls, none of them optional</text>
+  <text x="32" y="64" font-size="13.5" fill="#c9b8a0">Each wall assumes the one inside it has already fallen. 'The ghost will behave' is not a wall.</text>
+
+  <!-- moon and bats -->
+  <circle cx="76" cy="118" r="34" fill="#ffe9b3" opacity=".1"/>
+  <circle cx="76" cy="118" r="22" fill="#ffe9b3"/>
+  <circle cx="68" cy="112" r="3" fill="#e8d3a0" opacity=".6"/><circle cx="84" cy="124" r="2" fill="#e8d3a0" opacity=".6"/>
+  <use href="#hc-bat" transform="translate(90 106)" fill="#0a0612"/>
+  <use href="#hc-bat" transform="translate(430 150) scale(.9)" fill="#3a2a5c" stroke="#9d8fc2" stroke-width=".6"/>
+
+  <!-- the castle, seen from above -->
+  <g transform="translate(250 300)">
+    <circle r="204" fill="#170d26"/>
+    <circle r="186" fill="none" stroke="#e11d48" stroke-width="1.2" stroke-dasharray="3 7" opacity=".75"/>
+    <use href="#hc-torch" transform="translate(189.1 33.3)"/>
+    <use href="#hc-torch" transform="translate(65.7 180.4)"/>
+    <use href="#hc-torch" transform="translate(-65.7 180.4)"/>
+    <use href="#hc-torch" transform="translate(-189.1 33.3)"/>
+    <use href="#hc-torch" transform="translate(-189.1 -33.3)"/>
+    <use href="#hc-torch" transform="translate(-110.1 -157.3)"/>
+    <use href="#hc-torch" transform="translate(110.1 -157.3)"/>
+    <use href="#hc-torch" transform="translate(189.1 -33.3)"/>
+    <use href="#hc-tower" transform="translate(134.4 134.4)"/>
+    <use href="#hc-tower" transform="translate(-134.4 134.4)"/>
+    <!-- outer wall -->
+    <circle r="160" fill="#1a1230" stroke="#a855f7" stroke-width="12"/>
+    <circle r="169" fill="none" stroke="#a855f7" stroke-width="5" stroke-dasharray="8 8"/>
+    <!-- moat -->
+    <circle r="118" fill="none" stroke="#ff8a1f" stroke-width="28" opacity=".42"/>
+    <circle r="104" fill="none" stroke="#ffb066" stroke-width="1.2" opacity=".8"/>
+    <circle r="132" fill="none" stroke="#ffb066" stroke-width="1.2" opacity=".8"/>
+    <circle r="110" fill="none" stroke="#ffd9a8" stroke-width="1.4" stroke-dasharray="9 15" opacity=".85"/>
+    <circle r="118" fill="none" stroke="#ffd9a8" stroke-width="1.2" stroke-dasharray="7 19" stroke-dashoffset="13" opacity=".7"/>
+    <circle r="126" fill="none" stroke="#ffd9a8" stroke-width="1.4" stroke-dasharray="11 17" stroke-dashoffset="6" opacity=".85"/>
+    <!-- inner wall -->
+    <circle r="80" fill="#1d1535" stroke="#22c55e" stroke-width="10"/>
+    <circle r="88" fill="none" stroke="#22c55e" stroke-width="4" stroke-dasharray="6 7"/>
+    <!-- keep with the ghost -->
+    <circle r="44" fill="#2a2152" stroke="#818cf8" stroke-width="3"/>
+    <g transform="translate(0 -9)">
+      <path d="M0 -15 C-8 -15 -11 -8 -11 -2 L-11 13 L-7 9 L-3.5 13 L0 9 L3.5 13 L7 9 L11 13 L11 -2 C11 -8 8 -15 0 -15 Z" fill="#f8fafc" stroke="#c7d2fe" stroke-width=".8"/>
+      <circle cx="-4" cy="-5" r="1.8" fill="#1e1b4b"/><circle cx="4" cy="-5" r="1.8" fill="#1e1b4b"/>
+      <ellipse cy="1" rx="1.6" ry="2.4" fill="#1e1b4b"/>
+    </g>
+    <!-- portcullis gate -->
+    <g transform="translate(0 160)">
+      <rect x="-15" y="-16" width="30" height="32" rx="3" fill="#0a0612" stroke="#a855f7" stroke-width="2"/>
+      <path d="M-9 -13 v26 M-3 -13 v26 M3 -13 v26 M9 -13 v26 M-12 0 h24" stroke="#a855f7" stroke-width="1.5"/>
+      <rect x="-16" y="18" width="32" height="16" rx="8" fill="#a855f7"/>
+      <text y="30" text-anchor="middle" font-size="11" font-weight="700" fill="#120a1f">ask</text>
+    </g>
+    <!-- ring labels -->
+    <g text-anchor="middle" font-size="11" font-weight="800" fill="#120a1f">
+      <rect x="-35" y="14" width="70" height="18" rx="9" fill="#818cf8"/><text y="27">0 · MODEL</text>
+      <rect x="-64" y="-89" width="128" height="18" rx="9" fill="#22c55e"/><text y="-76">1 · SERVER DESIGN</text>
+      <rect x="-58" y="-127" width="116" height="18" rx="9" fill="#ff8a1f"/><text y="-114">2 · CREDENTIALS</text>
+      <rect x="-60" y="-169" width="120" height="18" rx="9" fill="#a855f7"/><text y="-156">3 · CLIENT POLICY</text>
+      <rect x="-79" y="-195" width="158" height="18" rx="9" fill="#e11d48"/><text y="-182" fill="#fff3dc">4 · ISOLATION + HUMANS</text>
+    </g>
+  </g>
+
+  <!-- legend -->
+  <g font-size="11.5" fill="#efe3cc">
+    <rect x="486" y="84" width="442" height="74" rx="10" fill="#1a1230" stroke="#818cf8" stroke-width="1.2"/>
+    <rect x="492" y="94" width="4" height="54" rx="2" fill="#818cf8"/>
+    <text x="506" y="109" font-size="12.5" font-weight="700" fill="#818cf8">0 · MODEL BEHAVIOUR</text>
+    <text x="506" y="129">the keep: refuses obvious injections; luck, not a control</text>
+    <text x="506" y="145">the one thing you do not control — every wall outside assumes it fell</text>
+
+    <rect x="486" y="168" width="442" height="74" rx="10" fill="#1a1230" stroke="#22c55e" stroke-width="1.2"/>
+    <rect x="492" y="178" width="4" height="54" rx="2" fill="#22c55e"/>
+    <text x="506" y="193" font-size="12.5" font-weight="700" fill="#22c55e">1 · SERVER DESIGN</text>
+    <text x="506" y="213">inner wall: intent-level tools, reads ≠ writes, parameterised</text>
+    <text x="506" y="229">queries, allowlists, minimal output</text>
+
+    <rect x="486" y="252" width="442" height="74" rx="10" fill="#1a1230" stroke="#ff8a1f" stroke-width="1.2"/>
+    <rect x="492" y="262" width="4" height="54" rx="2" fill="#ff8a1f"/>
+    <text x="506" y="277" font-size="12.5" font-weight="700" fill="#ff8a1f">2 · CREDENTIALS</text>
+    <text x="506" y="297">the moat: read-only DB user, scoped short-lived tokens,</text>
+    <text x="506" y="313">{env:} / {file:} — never a literal secret in config</text>
+
+    <rect x="486" y="336" width="442" height="74" rx="10" fill="#1a1230" stroke="#a855f7" stroke-width="1.2"/>
+    <rect x="492" y="346" width="4" height="54" rx="2" fill="#a855f7"/>
+    <text x="506" y="361" font-size="12.5" font-weight="700" fill="#a855f7">3 · CLIENT POLICY (OpenCode)</text>
+    <text x="506" y="381">outer wall and portcullis gate: allow / ask / deny,</text>
+    <text x="506" y="397">per-agent rules, enabled:false — 'ask' means a human decides</text>
+
+    <rect x="486" y="420" width="442" height="74" rx="10" fill="#1a1230" stroke="#e11d48" stroke-width="1.2"/>
+    <rect x="492" y="430" width="4" height="54" rx="2" fill="#e11d48"/>
+    <text x="506" y="445" font-size="12.5" font-weight="700" fill="#fb7185">4 · ISOLATION, REVIEW, AUDIT, HUMANS</text>
+    <text x="506" y="465">the village watch outside: pinned versions, read the source,</text>
+    <text x="506" y="481">containers, logs, org allowlist of servers</text>
+  </g>
+</svg>

@@ -34,6 +34,8 @@ One URL (by convention `/mcp`) and three HTTP methods:
 - **GET** opens a long-lived SSE stream for messages the *server* starts, such as `notifications/tools/list_changed`. Without it, a server can only speak when spoken to.
 - **DELETE** ends the session.
 
+> 🍬 **Treat: three status codes that are not errors.** `202 Accepted` is HTTP for *received, nothing to tell you*: a notification has no reply by definition, so the body is empty. `404` for an unknown session is deliberate, and it is not `401`: the credential was fine, but the *thing you named* no longer exists, so start a new one. And `405 Method Not Allowed` on a `GET` is a server politely saying it does not offer a server→client stream at all; a client must cope with that and simply never receive `list_changed`.
+
 **Sessions.** When the server answers `initialize` it may mint an id in the `Mcp-Session-Id` response header. The client sends it on every later request, along with `MCP-Protocol-Version`. If the server no longer knows the id (it restarted, or expired the session) it answers **404**, and the client starts again with a new `initialize`.
 
 > [!TIP]
@@ -48,6 +50,8 @@ One URL (by convention `/mcp`) and three HTTP methods:
 1. The client sends `Authorization: Bearer <token>` on every request (`headers` in `opencode.json`, with `{env:…}` so the token never sits in a committed file).
 2. The server verifies the token and turns it into an identity. In the SDK, `requireBearerAuth({ verifier })` returns an `AuthInfo` (`clientId`, `scopes`, `expiresAt`) or a ready-made `401` carrying a `WWW-Authenticate` header.
 3. Every handler receives that identity as `ctx.http.authInfo` and decides what this person may do.
+
+> 🍬 **Treat: "bearer" means what it says.** Whoever *bears* the token is treated as its owner, no questions asked, like a bearer bond or a cloakroom ticket. That one word explains most of the rules around tokens: send them only over TLS, make them expire, scope them to one resource, and never write them to disk in the clear. Exercise 6.F is the last of those.
 
 The model never touches steps 2 or 3. It cannot claim to be Bob; whatever it asks for travels with the token the host was given. That is why OpenCode's `permission` rules (Module 4) and the server's scope checks are different rings: **OpenCode's rules are this user's own brakes; the server's checks are the organisation's policy.** A user can edit their own `opencode.json`. They cannot edit the server.
 
@@ -284,6 +288,8 @@ Bob's OpenCode re-fetched `tools/list` within milliseconds of the notification, 
 
 > [!IMPORTANT]
 > 🤯 **Carol changed what Bob's agent can do, from another terminal, mid-conversation.** No restart, no config change, nothing on Bob's screen. That is the power of a shared remote server, and it is exactly the mechanism of a rug pull: the tool list you reviewed is not a contract. Notice also that `deploy` still refuses during a freeze when called directly (try it with `curl`). Withdrawing the tool is UX; the check in the handler is the control.
+
+![Carol took Bob's deploy tool from another terminal](images/comic-freeze.svg)
 
 > [!NOTE]
 > 🔬 **Under the hood.** The notification only reaches clients that keep a GET stream open (`◉ listening`). A session whose client has gone away still sits in server memory, so the desk closes any session with no open stream for a minute (`idle for 60 s: closed`). Without a rule like that, every `opencode run` that exits without sending `DELETE` would leak a session. Every stateful HTTP server needs one.

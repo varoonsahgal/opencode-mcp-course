@@ -12,27 +12,27 @@
 <style>
 /* Layout: dark patch-panel hero, a route card that overlaps it, then a sticky contents rail beside one reading column. */
 :root {
-  --paper: #f3f5f9;
-  --card: #ffffff;
-  --card-2: #edf1f7;
-  --ink: #0c2040;
-  --text: #24334d;
-  --muted: #5b6b85;
-  --line: #dce3ee;
-  --signal: #ff4a00;
-  --signal-ink: #c93a00;
-  --signal-soft: #fff0e8;
+  --paper: #f6ecdc;
+  --card: #fff8ec;
+  --card-2: #f1e3cf;
+  --ink: #231433;
+  --text: #35264a;
+  --muted: #6f5f80;
+  --line: #e3d2bb;
+  --signal: #ff7a1a;
+  --signal-ink: #c2501a;
+  --signal-soft: #ffeedd;
   --ok: #00a88c;
   --ok-soft: #e3f7f2;
   --bad: #d61f45;
   --bad-soft: #fde8ec;
-  --code-bg: #0c1a33;
+  --code-bg: #150c24;
   --code-fg: #dbe6f7;
   --code-dim: #7d8fb0;
-  --hero-a: #08152c;
-  --hero-b: #13284d;
+  --hero-a: #0a0612;
+  --hero-b: #1f1333;
   --hero-fg: #f4f7fc;
-  --hero-muted: #a9b8d3;
+  --hero-muted: #b9aacd;
   --m1: #6366f1; --m2: #0891b2; --m3: #d97706; --m4: #e11d48; --m5: #16a34a; --m6: #7c3aed;
   --shadow: 0 18px 50px -20px rgba(12, 32, 64, .28);
   --font-display: "Space Grotesk", "Avenir Next", "Segoe UI", system-ui, sans-serif;
@@ -42,18 +42,18 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper: #0a1426; --card: #0f1d36; --card-2: #15264380; --ink: #eef3fb; --text: #cdd8ea; --muted: #93a3be; --line: #22355a;
+    --paper: #0b0712; --card: #150c24; --card-2: #1f133380; --ink: #efe3cc; --text: #d9cdb8; --muted: #a898bd; --line: #2a1a44;
     --signal: #ff6a2b; --signal-ink: #ff8a55; --signal-soft: #ff6a2b1f; --ok: #2dd4b5; --ok-soft: #2dd4b51c; --bad: #fb7185; --bad-soft: #fb71851c;
-    --code-bg: #071022; --code-fg: #dbe6f7; --code-dim: #7d8fb0;
+    --code-bg: #0a0612; --code-fg: #efe3cc; --code-dim: #8e7fa5;
     --m1: #818cf8; --m2: #22d3ee; --m3: #fbbf24; --m4: #fb7185; --m5: #4ade80; --m6: #a78bfa;
     --shadow: 0 18px 50px -20px rgba(0, 0, 0, .7);
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --paper: #0a1426; --card: #0f1d36; --card-2: #15264380; --ink: #eef3fb; --text: #cdd8ea; --muted: #93a3be; --line: #22355a;
+  --paper: #0b0712; --card: #150c24; --card-2: #1f133380; --ink: #efe3cc; --text: #d9cdb8; --muted: #a898bd; --line: #2a1a44;
   --signal: #ff6a2b; --signal-ink: #ff8a55; --signal-soft: #ff6a2b1f; --ok: #2dd4b5; --ok-soft: #2dd4b51c; --bad: #fb7185; --bad-soft: #fb71851c;
-  --code-bg: #071022; --code-fg: #dbe6f7; --code-dim: #7d8fb0;
+  --code-bg: #0a0612; --code-fg: #efe3cc; --code-dim: #8e7fa5;
   --m1: #818cf8; --m2: #22d3ee; --m3: #fbbf24; --m4: #fb7185; --m5: #4ade80; --m6: #a78bfa;
   --shadow: 0 18px 50px -20px rgba(0, 0, 0, .7);
   color-scheme: dark;
@@ -414,9 +414,11 @@ footer { border-top: 1px solid var(--line); padding-block: 28px 40px; font-size:
   <span class="ghost" style="top:70%;left:52%" aria-hidden="true">notifications/initialized</span>
   <span class="ghost" style="top:84%;left:12%" aria-hidden="true">isError: true</span>
   <span class="ghost" style="top:40%;left:88%" aria-hidden="true">deny</span>
+  <span class="ghost" style="top:14%;left:70%;font-size:22px;color:#ffffff22" aria-hidden="true">🦇</span>
+  <span class="ghost" style="top:62%;left:30%;font-size:16px;color:#ffffff1c" aria-hidden="true">🦇</span>
   <div class="wrap hero-grid">
     <div>
-      <div class="tagrow"><span class="pill">Student handout</span><span class="eyebrow">4 hours · 5 labs · OpenCode</span></div>
+      <div class="tagrow"><span class="pill">Student handout · 🎃 haunted edition</span><span class="eyebrow">4 hours · 5 labs · OpenCode</span></div>
       <h1>Give it hands. <span>Then take some away.</span></h1>
       <p class="lede">MCP lets an AI agent find and call tools it has never seen: a clock, a database, a status API, a server you wrote ten minutes ago. It never decides which of those calls should happen. Today you connect an agent to real systems, watch every byte it sends, and then <b>make the dangerous calls impossible instead of unlikely.</b></p>
       <div class="chips">

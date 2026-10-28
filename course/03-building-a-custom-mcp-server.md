@@ -24,6 +24,8 @@ With the TypeScript SDK v2 (`@modelcontextprotocol/server`), a server is four th
 
 Schemas are **zod v4** objects; the SDK converts them to JSON Schema for the wire and validates incoming arguments *before* your handler runs. Logging goes to `console.error`, never `console.log`.
 
+> 🍬 **Treat: the cast, so the imports make sense.** Three packages do the work. `@modelcontextprotocol/server` is the MCP TypeScript SDK, version 2 (version 1 lived in a single package called `@modelcontextprotocol/sdk`, which is what most blog posts still show). `zod` is a schema library: describe a shape once and you get both a TypeScript type and runtime validation. `tsx` runs TypeScript directly with no build step, which is why the command in `opencode.json` is `npx tsx src/server.ts`. One more thing that looks odd: `serveStdio` takes a *factory* even though a stdio server only ever has one client. That is on purpose. Module 6 hands the same factory to an HTTP server, which runs it once per connection.
+
 ## 3.2 Designing capabilities worth exposing
 
 ![Tool design spectrum](images/tool-design-spectrum.svg)
@@ -36,6 +38,8 @@ The model chooses tools by reading their names, descriptions and schemas. Design
 - **Constrain inputs.** `z.enum([...])`, `.min()`, `.max()`, `.regex()`. Every constraint is one less way for a confused model (or a confused *deputy*, Module 4) to do harm.
 - **Separate reads from writes.** One tool per business action. A read-only tool can be auto-approved; a write tool can be gated. A tool that does both can only be gated as a whole.
 - **Annotate.** `annotations: { readOnlyHint, destructiveHint, idempotentHint, openWorldHint }` tell hosts how to present the tool. They are hints; hosts must treat them as untrusted. Set them honestly anyway.
+
+> 🍬 **Treat: `name` is for machines, `title` is for people.** The model calls the `name`, permission rules match it, and the host prefixes it with the server's name. The optional `title` is what a UI may show a human instead: *Current weather* where the transcript says `weather_get_weather`. Write both, and never let the title carry a fact the description does not, because the model may never see it.
 
 ## 3.3 Inputs and outputs
 
@@ -52,6 +56,8 @@ A tool result is `{ content: ContentPart[], structuredContent?, isError? }`:
 
 > [!TIP]
 > 💡 **Insight: your tool's output is somebody's prompt.** Everything you return is pasted into the model's context, where it costs tokens and can *steer* the model. Return the fields that answer the question, not the whole upstream JSON. A 40 KB API response is both a waste and an attack surface.
+
+> 🍬 **Treat: why say the same thing twice?** `content` and `structuredContent` carry the same facts because they have different readers. The model only ever reads `content`, and clients that predate `outputSchema` read nothing else. `structuredContent` is for code: the host, a test harness, or another tool that wants to chain on the result without parsing prose. The spec asks a server that declares an `outputSchema` to always send the structured copy, and the SDK checks that it matches.
 
 ## 3.4 Errors the model can recover from
 
@@ -77,6 +83,8 @@ Invalid arguments never reach your handler: the SDK answers with an `isError` re
 
 `fetch` with `AbortSignal.timeout(8000)`, check `res.ok`, map the response to a compact shape, and never put credentials into the result text. Rate limits and transient failures are part of normal life: fail with an `isError` message that says *what to do next* ("try again in a minute"), not a stack trace.
 
+> 🍬 **Treat: the API behind the lab.** Open-Meteo aggregates national weather services and needs no key for non-commercial use, which is why the lab can call it with no secrets at all. Its geocoding endpoint turns *Paris* into coordinates (the starter's `geocode()` helper wraps it), and its forecast endpoint takes those coordinates and a list of variables. Real APIs usually want a key: that is Module 2's `{env:…}` pattern, and Module 5 shows a server failing closed when the key is missing.
+
 ## 3.6 Register, discover, test, iterate
 
 1. Add the server to `opencode.json` (`"command": ["npx", "tsx", "src/server.ts"]`).
@@ -85,6 +93,15 @@ Invalid arguments never reach your handler: the SDK answers with an `isError` re
 4. Execution through the protocol: Inspector `tools/call`.
 5. Execution through *language*: in OpenCode, ask the question a user would ask, without naming the tool. If the model does not pick the tool, your description is the bug.
 6. After every code change, restart OpenCode (it spawns the server at startup). Toggling the server off and on in `/mcps` also respawns it.
+
+> [!WARNING]
+> ⚠️ **Six ways a first server goes wrong**, in the order people usually hit them:
+> 1. **`console.log` for logging** (Module 1.4). Symptom: `Connection closed`, or `✗ not JSON on the protocol channel` in the wiretap.
+> 2. **Not restarting OpenCode** after a change. Symptom: the model keeps seeing yesterday's description, and you blame the model.
+> 3. **A vague description.** Symptom: the model answers from memory, or calls the tool for a question it cannot answer (Exercise 3.B).
+> 4. **Returning the whole upstream payload.** Symptom: tokens, and a model steered by fields it should never have seen (3.3).
+> 5. **Swallowing errors**: `catch { return { content: [{ type: "text", text: "" }] } }`. Symptom: the model reads an empty result as *no data* and carries on confidently. Fail closed with `isError` (Module 5 makes this a rule).
+> 6. **No timeout on `fetch`.** Symptom: one slow upstream call pins the whole turn until OpenCode's `timeout` gives up.
 
 ---
 
@@ -222,6 +239,8 @@ Now quit OpenCode and sabotage the tool. Replace the whole `description:` value 
 
 > [!IMPORTANT]
 > 🤯 **One sentence changed the model's behaviour, 3 times out of 3.** No code changed, and the handler is identical. "Not a forecast" was enough to stop a pointless call, and deleting it made the model use the tool for a question it cannot answer. The cheaper description saved 73 tokens a turn and bought a wrong call every time. The flip side is just as telling: with the good description, the model told the user it could not forecast instead of looking elsewhere. Descriptions steer hard, in both directions. Test them like code.
+
+![One sentence in a description, three runs out of three](images/comic-description.svg)
 
 Put the original description and `.describe()` back (undo in your editor) and confirm terminal 2 shows **8/10** again.
 

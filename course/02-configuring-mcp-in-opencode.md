@@ -17,7 +17,20 @@ Every server you will ever run in OpenCode is one entry in one JSON object. Lear
 
 ![Config anatomy](images/config-anatomy.svg)
 
-Everything lives under the `mcp` key of `opencode.json` (or `opencode.jsonc` if you like comments). The **key** you choose is the server's name and the prefix of all its tools, so pick something short and stable.
+Before the field-by-field tour, here is a complete, working file. It is Lab 1's config with two entries removed:
+
+```jsonc
+{
+  "$schema": "https://opencode.ai/config.json",     // editor autocomplete and validation
+  "model": "opencode/gpt-5.4-mini",                  // provider/model the agent uses
+  "small_model": "opencode/gpt-5.4-nano",            // for OpenCode's own housekeeping (titles, summaries)
+  "mcp": {
+    "time": { "type": "local", "command": ["uvx", "mcp-server-time"], "enabled": true, "timeout": 60000 }
+  }
+}
+```
+
+Everything MCP-related lives under the `mcp` key of `opencode.json` (or `opencode.jsonc` if you like comments). The **key** you choose is the server's name and the prefix of all its tools, so pick something short and stable.
 
 | Field | Applies to | Meaning |
 |---|---|---|
@@ -35,6 +48,8 @@ Two substitutions keep secrets out of files you might commit:
 
 - `{env:NAME}` → the value of an environment variable (empty string if unset)
 - `{file:~/.secrets/token}` → the contents of a file
+
+> 🍬 **Treat: JSONC, and why `$schema` goes first.** OpenCode reads its config as JSONC: ordinary JSON plus `//` comments and trailing commas. The `"$schema"` line is not for OpenCode at all; it is for your editor. VS Code and most others fetch that schema and then autocomplete field names, show each field's documentation on hover, and underline a `command` written as a string instead of an array before you ever save the file. Challenge 2B has a bug that only a schema-aware editor catches instantly.
 
 ## 2.2 Where configuration lives, and who wins
 
@@ -67,6 +82,8 @@ A local server is a child process of OpenCode. It runs as **you**, in your home 
 
 Also: `npx -y some-package` and `uvx some-package` **download and execute code** when the server starts. Pin versions (`@2.0.0`) so that what you reviewed is what runs. Module 4 returns to this.
 
+> 🍬 **Treat: what the `-y` is for.** When a package is not in its cache, `npx` stops to ask *Ok to proceed? (y)*. A server's stdin is wired to OpenCode, which is waiting for JSON and will never type `y`. Depending on the npm version the server then either exits (*npx canceled due to missing packages*, which OpenCode reports as `Connection closed`) or sits there until the `timeout` expires. `-y` answers the question in advance. The same reasoning applies to anything interactive: a server that prompts, pages or waits for a keypress on stdin is a server that never connects.
+
 ## 2.4 Remote servers: someone else's process
 
 The trade flips: a remote server cannot see your laptop, but everything you send it leaves your laptop.
@@ -87,6 +104,8 @@ opencode mcp debug <name>    # test connectivity and the OAuth discovery steps
 > curl -s -m 10 -X POST https://mcp.deepwiki.com/mcp -H 'Content-Type: application/json' -H 'Accept: application/json, text/event-stream' \
 >   -d '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-11-25","capabilities":{},"clientInfo":{"name":"curl","version":"0"}}}'
 > ```
+
+> 🍬 **Treat: OAuth 2.1 in one breath.** It is *"log in with…"* done properly. The client never sees your password: a browser page asks you to approve, and an authorization server hands the client a short-lived access token that is only good for this one resource. The "2.1" is the tidied-up 2.0: the PKCE check is always on, the old implicit flow is gone, and passwords never travel in a token request. Module 6 walks through the MCP flavour of it header by header.
 
 Public servers used in this lab need no login: **DeepWiki** (`https://mcp.deepwiki.com/mcp`, AI-generated documentation for any GitHub repo) and **Microsoft Learn** (`https://learn.microsoft.com/api/mcp`, official Microsoft docs search).
 
@@ -111,6 +130,10 @@ opencode mcp list                                      # status + error message 
 npx -y @modelcontextprotocol/inspector --cli node env-peek.mjs --method tools/list   # talk to a server directly, no OpenCode
 node context-tax.mjs --watch                           # (lab folder) status + token cost per server, live as you edit
 ```
+
+Read them as a ladder, bottom to top. Each rung rules something out, and the fastest debuggers climb exactly as far as they need to:
+
+![The debugging ladder: four rungs, each one rules something out](images/debug-ladder.svg)
 
 | Symptom in `opencode mcp list` | Usual cause | Fix |
 |---|---|---|
@@ -184,6 +207,8 @@ Now look at the last line of the wizard's output and at `opencode.json` in the l
 opencode debug config | grep -A3 mslearn
 ```
 
+> 🍬 **Treat: why a global file exists at all.** Global config is for servers that follow *you*: a personal notes server, your company's docs search. Project config is for servers the *project* needs, committed so that a teammate's checkout behaves like yours. The wizard assumes the first because it cannot know the second. The trap is that global servers also follow you into every project's token budget, which Exercise 2.F puts a number on.
+
 Decide where you want it. For this course, move it into the lab's `opencode.json` (or simply delete it from the global file) so your classmates' config and yours stay reproducible. A global entry follows you into *every* project, and into every turn's context. Microsoft Learn's tools are `microsoft_docs_search`, `microsoft_docs_fetch` and `microsoft_code_sample_search`; try *"Using Microsoft Learn, what is the default timeout of an Azure Function on the Consumption plan?"*.
 
 ### 🧪 Exercise 2.C — Environment variables (and what the server can see)
@@ -202,6 +227,8 @@ The tool reports those two values, plus the **count** of every other variable th
 
 > [!IMPORTANT]
 > 🤯 **You configured two variables. The server got all of them.** On a typical developer laptop that is 60–100 variables (83 on the machine we tested with), and the names that match `TOKEN|SECRET|KEY|PASSWORD` are usually real credentials. `environment` *adds* to what a local server inherits; it never limits it. The only thing that stopped those values reaching the model was a line of code in `env-peek` that chose not to print them.
+
+![environment adds, it never subtracts](images/comic-env.svg)
 
 > [!WARNING]
 > ⚠️ **Security:** `env-peek` chooses to print names only. The `everything` server's `get-env` tool prints every value, straight into the model's context (and therefore to the model provider). A local MCP server can read anything your shell can. Treat installing one like installing a shell script that runs as you, because that is what it is.
