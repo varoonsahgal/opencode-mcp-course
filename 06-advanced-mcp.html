@@ -1,0 +1,602 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 6 · Advanced MCP: Going Remote · MCP with AI Agents</title>
+<script>try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Creepster&family=Patrick+Hand&display=swap" rel="stylesheet">
+<link id="hl-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="(prefers-color-scheme: light)">
+<link id="hl-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%228%22%20fill%3D%22%23150c24%22%2F%3E%3Cellipse%20cx%3D%2216%22%20cy%3D%2218%22%20rx%3D%2212%22%20ry%3D%2210%22%20fill%3D%22%23ff8a1f%22%2F%3E%3Cpath%20d%3D%22M16%208c0-3%201-4%203-5%22%20stroke%3D%22%2322c55e%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M9%2015l4%203-4%201zM23%2015l-4%203%204%201z%22%20fill%3D%22%23150c24%22%2F%3E%3Cpath%20d%3D%22M9%2022q7%205%2014%200q-2%203-7%203t-7-3z%22%20fill%3D%22%23150c24%22%2F%3E%3C%2Fsvg%3E">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="pumpkin" aria-hidden="true">🎃</span>MCP with AI Agents</a>
+  <nav class="links"><a href="index.html">Home</a><a href="00-setup.html">00 · Setup</a><a href="01-connecting-agents-with-mcp.html">01 · Connect</a><a href="02-configuring-mcp-in-opencode.html">02 · Configure</a><a href="03-building-a-custom-mcp-server.html">03 · Build</a><a href="04-securing-mcp-integrations.html">04 · Secure</a><a href="05-applied-challenge.html">05 · Apply</a><a href="06-advanced-mcp.html" aria-current="page">06 · Go remote</a><span class="sep"></span><a href="handout.html">Handout</a><a href="slides/index.html">Slides</a><a href="https://github.com/varoonsahgal/opencode-mcp-course">GitHub</a></nav>
+  <button class="theme" type="button" id="themebtn" aria-label="Switch between daylight and midnight" title="Daylight / midnight">🌙</button>
+  <button class="menu" type="button" aria-label="Menu" onclick="document.body.classList.toggle('open')">☰</button>
+</header>
+<svg class="web" viewBox="0 0 170 170" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1">
+<path d="M0 0L170 170M0 0L170 70M0 0L70 170M0 0L170 20M0 0L20 170M0 0L170 120M0 0L120 170"/>
+<path d="M30 0Q28 22 0 30M60 0Q56 44 0 60M90 0Q84 66 0 90M120 0Q112 88 0 120M150 0Q140 110 0 150"/>
+<path d="M30 0Q30 15 20 24Q15 28 0 30" opacity=".5"/></svg>
+<main class="doc">
+<figure class="banner"><svg xmlns="http://www.w3.org/2000/svg" width="960" height="220" viewBox="0 0 960 220" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="Module 6: advanced MCP. Three people with three tokens connect over HTTP to one shared release-desk server; a freeze withdraws the deploy tool from every session.">
+ <title>Module 6 · Advanced MCP</title>
+ <style>
+  .b6-tw { animation: b6-tw 3.2s ease-in-out infinite; }
+  .b6-fly { animation: b6-fly 6s ease-in-out infinite; }
+  .b6-flk { animation: b6-flk 3.1s steps(1) infinite; }
+  .b6-flow { stroke-dasharray: 4 10; animation: b6-flow 1.4s linear infinite; }
+  .b6-flowback { stroke-dasharray: 3 9; animation: b6-flowback 1.8s linear infinite; }
+  .b6-pulse { animation: b6-pulse 2.4s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+  .b6-fade { animation: b6-fade 4s ease-in-out infinite; }
+  @keyframes b6-tw { 0%,100% { opacity: .15; } 50% { opacity: 1; } }
+  @keyframes b6-fly { 0%,100% { transform: translate(0,0) rotate(0); } 50% { transform: translate(12px,-7px) rotate(-8deg); } }
+  @keyframes b6-flk { 0%,64% { opacity: 1; } 65%,70% { opacity: .3; } 71%,78% { opacity: 1; } 79%,82% { opacity: .4; } 83%,100% { opacity: 1; } }
+  @keyframes b6-flow { to { stroke-dashoffset: -28; } }
+  @keyframes b6-flowback { to { stroke-dashoffset: 24; } }
+  @keyframes b6-pulse { 0% { opacity: .55; transform: scale(.96); } 100% { opacity: 0; transform: scale(1.45); } }
+  @keyframes b6-fade { 0%,45% { opacity: 1; } 55%,90% { opacity: .18; } 100% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .b6-tw, .b6-fly, .b6-flk, .b6-flow, .b6-flowback, .b6-pulse, .b6-fade { animation: none !important; } }
+ </style>
+ <defs>
+  <linearGradient id="b6-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0612"/><stop offset="1" stop-color="#1f1333"/></linearGradient>
+  <pattern id="b6-grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#2a1a44"/></pattern>
+  <radialGradient id="b6-glow" cx="0.74" cy="0.5" r="0.45"><stop offset="0" stop-color="#c084fc" stop-opacity=".3"/><stop offset="1" stop-color="#c084fc" stop-opacity="0"/></radialGradient>
+  <radialGradient id="b6-mg"><stop offset=".3" stop-color="#ffe9b3" stop-opacity=".3"/><stop offset="1" stop-color="#ffe9b3" stop-opacity="0"/></radialGradient>
+  <filter id="b6-tg" x="-6%" y="-40%" width="112%" height="180%"><feGaussianBlur stdDeviation="5" result="b"/><feFlood flood-color="#ff8a1f" flood-opacity=".8"/><feComposite in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="b6-fg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <path id="b6-bat" d="M0,-4L-2,-8L-3,-3C-9,-9 -15,-8 -19,-4C-15,-3 -14,0 -13,3C-10,0 -8,1 -7,4C-5,2 -3,3 -2,5L0,4L2,5C3,3 5,2 7,4C8,1 10,0 13,3C14,0 15,-3 19,-4C15,-8 9,-9 3,-3L2,-8Z" fill="#0a0612" stroke="#a855f7" stroke-opacity=".6" stroke-width=".9" stroke-linejoin="round"/>
+  <g id="b6-pk"><path d="M-2,-19C-3,-24 0,-28 6,-30C4,-27 5,-22 4,-19Z" fill="#22c55e"/><ellipse cy="1" rx="24" ry="19" fill="#e0661a"/><ellipse rx="17" ry="20" fill="#ff8a1f"/><path d="M-9,-19C-13,-6 -13,8 -9,20M9,-19C13,-6 13,8 9,20" fill="none" stroke="#e0661a" stroke-width="1.4"/></g>
+  <path id="b6-pf" d="M-13,-1L-8,-10L-3,-1ZM3,-1L8,-10L13,-1ZM-2,6L0,2L2,6ZM-13,8Q0,18 13,8L10,8 9,12 6,8 -6,8 -9,12 -10,8Z"/>
+  <g id="b6-gh"><path d="M-6,7V-2a6,6 0 0 1 12,0V7l-2,-2-2,2-2,-2-2,2-2,-2z" fill="#efe3cc" opacity=".9"/><circle cx="-2.2" cy="-2" r="1.1" fill="#0a0612"/><circle cx="2.2" cy="-2" r="1.1" fill="#0a0612"/></g>
+ </defs>
+ <rect width="960" height="220" rx="20" fill="url(#b6-bg)"/>
+ <rect width="960" height="220" rx="20" fill="url(#b6-grid)" opacity=".5"/>
+ <rect width="960" height="220" rx="20" fill="url(#b6-glow)"/>
+ <g fill="#fff"><circle cx="97" cy="25" r="1.4" opacity="0.55"/><circle cx="880" cy="17" r="1.1" opacity="0.85"/><circle cx="213" cy="9" r="0.8" opacity="0.32"/><circle cx="426" cy="11" r="0.8" opacity="0.48"/><circle cx="391" cy="27" r="0.7" opacity="0.69"/><circle cx="847" cy="24" r="0.8" opacity="0.39"/><circle cx="364" cy="8" r="1.4" opacity="0.76"/><circle cx="758" cy="22" r="1.4" opacity="0.53"/><circle class="b6-tw" style="animation-delay:-2.8s" cx="67" cy="16" r="1.0"/><circle class="b6-tw" style="animation-delay:-0.9s" cx="33" cy="27" r="0.9"/><circle cx="575" cy="27" r="1.1" opacity="0.74"/><circle cx="425" cy="17" r="0.7" opacity="0.82"/><circle cx="784" cy="53" r="0.8" opacity="0.62"/><circle cx="830" cy="196" r="1.0" opacity="0.63"/><circle cx="832" cy="41" r="1.4" opacity="0.53"/><circle cx="944" cy="183" r="1.3" opacity="0.39"/><circle class="b6-tw" style="animation-delay:-2.3s" cx="737" cy="115" r="0.9"/><circle cx="679" cy="133" r="1.2" opacity="0.71"/><circle cx="875" cy="169" r="1.0" opacity="0.69"/><circle class="b6-tw" style="animation-delay:-2.5s" cx="861" cy="43" r="1.2"/><circle class="b6-tw" style="animation-delay:-0.7s" cx="614" cy="81" r="1.2"/><circle cx="770" cy="188" r="1.1" opacity="0.31"/></g>
+ <circle cx="926" cy="32" r="42" fill="url(#b6-mg)"/>
+ <path transform="translate(926 32) rotate(-20)" d="M0,-15A15,15 0 0,0 0,15A18.3,18.3 0 0,1 0,-15Z" fill="#ffe9b3"/>
+ <g transform="translate(578 24) scale(0.5)"><use href="#b6-bat" class="b6-fly" style="animation-duration:6s;animation-delay:-1s"/></g><g transform="translate(770 28) scale(0.45)"><use href="#b6-bat" class="b6-fly" style="animation-duration:7s;animation-delay:-3s"/></g><g transform="translate(884 22) scale(0.5)"><use href="#b6-bat" class="b6-fly" style="animation-duration:5.5s;animation-delay:-2s"/></g>
+ <path d="M960,220L892.5,198.1M960,220L902.6,178.3M960,220L918.3,162.6M960,220L938.1,152.5M943.0,220.0Q944.9,217.6 943.8,214.7Q946.4,213.1 946.2,210.0Q949.2,209.2 950.0,206.2Q953.1,206.4 954.7,203.8Q957.6,204.9 960.0,203.0M927.0,220.0Q930.7,215.4 928.6,209.8Q933.5,206.5 933.3,200.6Q939.0,199.0 940.6,193.3Q946.5,193.5 949.8,188.6Q955.4,190.7 960.0,187.0M911.0,220.0Q916.4,213.1 913.4,204.9Q920.7,200.0 920.4,191.2Q928.8,188.8 931.2,180.4Q940.0,180.7 944.9,173.4Q953.1,176.4 960.0,171.0M895.0,220.0Q902.2,210.8 898.2,199.9Q907.9,193.4 907.4,181.8Q918.6,178.6 921.8,167.4Q933.4,167.9 939.9,158.2Q950.8,162.2 960.0,155.0" fill="none" stroke="#efe3cc" stroke-opacity=".25" stroke-width=".8"/>
+
+ <!-- left: words -->
+ <text x="40" y="50" font-family="Menlo, 'JetBrains Mono', monospace" font-size="12" letter-spacing="2.5" fill="#c084fc">MODULE 06 · 50 MIN · OPTIONAL · LAB: lab6-advanced</text>
+ <text x="38" y="100" font-family="Creepster, 'Chalkboard SE', Impact, fantasy" font-size="44" letter-spacing="1" fill="#efe3cc" filter="url(#b6-tg)" textLength="507" lengthAdjust="spacingAndGlyphs">Advanced MCP: Going Remote</text>
+ <text x="40" y="132" font-size="17" fill="#d8cfc0">One server, many people, one endpoint. Tokens that say who,</text>
+ <text x="40" y="154" font-size="17" fill="#d8cfc0">tools that come and go, <tspan fill="#fb7185" font-weight="700">and a host you have to interrogate.</tspan></text>
+ <g font-weight="700">
+  <rect x="40" y="174" width="140" height="26" rx="13" fill="#c084fc" fill-opacity=".2" stroke="#c084fc"/><text x="110" y="191" text-anchor="middle" fill="#e9d5ff" font-size="12">Streamable HTTP</text>
+  <rect x="190" y="174" width="112" height="26" rx="13" fill="#c084fc" fill-opacity=".2" stroke="#c084fc"/><text x="246" y="191" text-anchor="middle" fill="#e9d5ff" font-size="12">identity</text>
+  <rect x="312" y="174" width="112" height="26" rx="13" fill="#c084fc" fill-opacity=".2" stroke="#c084fc"/><text x="368" y="191" text-anchor="middle" fill="#e9d5ff" font-size="12">progress</text>
+  <rect x="434" y="174" width="128" height="26" rx="13" fill="#c084fc" fill-opacity=".2" stroke="#c084fc"/><text x="498" y="191" text-anchor="middle" fill="#e9d5ff" font-size="12">list_changed</text>
+ </g>
+
+ <!-- three clients, three ghosts with tokens -->
+ <g font-family="Menlo, 'JetBrains Mono', monospace" font-size="11" fill="#e9d5ff" text-anchor="middle">
+  <rect x="592" y="40" width="126" height="34" rx="8" fill="#120a1e" stroke="#c084fc"/><use href="#b6-gh" x="606" y="57"/><text x="668" y="61">alice · read</text>
+  <rect x="592" y="94" width="126" height="34" rx="8" fill="#120a1e" stroke="#c084fc"/><use href="#b6-gh" x="606" y="111"/><text x="668" y="115">bob · deploy</text>
+  <rect x="592" y="148" width="126" height="34" rx="8" fill="#120a1e" stroke="#c084fc"/><use href="#b6-gh" x="606" y="165"/><text x="668" y="169">carol · freeze</text>
+ </g>
+ <g fill="none" stroke-width="2">
+  <path class="b6-flow" d="M718 57 C772 57 772 104 846 104" stroke="#c084fc"/>
+  <path class="b6-flow" d="M718 111 C772 111 772 104 846 104" stroke="#c084fc"/>
+  <path class="b6-flow" d="M718 165 C772 165 772 104 846 104" stroke="#c084fc"/>
+  <path class="b6-flowback" d="M846 112 C790 112 780 160 718 160" stroke="#f0abfc" opacity=".7"/>
+ </g>
+ <!-- the shared server -->
+ <circle class="b6-pulse" cx="868" cy="104" r="50" fill="none" stroke="#c084fc" stroke-width="2"/>
+ <g transform="translate(868 104) scale(1.15)"><use href="#b6-pk"/><use href="#b6-pf" fill="#ffe9b3" filter="url(#b6-fg)"/></g>
+ <text x="868" y="148" text-anchor="middle" font-size="13" font-weight="800" fill="#efe3cc">release desk</text>
+ <text x="868" y="162" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="10" fill="#e9d5ff">POST /mcp</text>
+ <g class="b6-fade"><rect x="832" y="170" width="72" height="18" rx="9" fill="#e11d48" fill-opacity=".35" stroke="#fb7185"/><text x="868" y="183" text-anchor="middle" font-size="10" font-weight="700" fill="#fecdd3">deploy</text></g>
+</svg></figure>
+<h1>Module 6 · Advanced MCP: Going Remote</h1>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Time</strong></td>
+<td>50 minutes (15 concepts · 35 lab). Optional extension: run it after Module 5, or as a follow-up session</td>
+</tr>
+<tr>
+<td><strong>Lab folder</strong></td>
+<td><code>course/labs/lab6-advanced</code></td>
+</tr>
+<tr>
+<td><strong>You will</strong></td>
+<td>run an MCP server that nobody spawns, speak to it in raw HTTP, connect three people to it with three tokens, enforce who may do what <em>on the server</em>, stream progress from a slow tool and cancel it, withdraw a tool from every connected agent at once, rotate the credentials, and find out what your host can and cannot do</td>
+</tr>
+<tr>
+<td><strong>You&#39;ll pull off</strong></td>
+<td>a freeze declared in one terminal makes the <code>deploy</code> tool vanish from an agent in another terminal, mid-session, without anyone restarting anything</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>🎬 <strong>Cold open.</strong> Every server so far was a child process: OpenCode started it, it served exactly one client, and it died when you quit. The servers your company will actually run are not like that. The release desk runs on a box somewhere, all day. Alice, Bob and Carol connect to it at the same time from their own agents. Alice may look, Bob may ship, Carol may stop everyone from shipping. MCP itself has no idea who any of them are. By the end of this module you will know exactly where that knowledge lives, and what it takes to keep it there.</p>
+</blockquote>
+<h2 id="6-1-what-changes-when-a-server-is-remote"><a class="anchor" href="#6-1-what-changes-when-a-server-is-remote" aria-hidden="true">#</a>6.1 What changes when a server is remote</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>stdio server (Modules 1–5)</th>
+<th>Streamable HTTP server (this module)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Who starts it</td>
+<td>the host, as a child process</td>
+<td>nobody; it is already running</td>
+</tr>
+<tr>
+<td>Clients per process</td>
+<td>exactly one</td>
+<td>as many as connect</td>
+</tr>
+<tr>
+<td>Who is calling</td>
+<td>always you, the user who started the host</td>
+<td>unknown until a credential says so</td>
+</tr>
+<tr>
+<td>Lifetime of its state</td>
+<td>one OpenCode session</td>
+<td>as long as the process runs, shared by everyone</td>
+</tr>
+<tr>
+<td>What it can reach of yours</td>
+<td>your whole environment and filesystem (Module 2.3)</td>
+<td>only what you send it</td>
+</tr>
+<tr>
+<td>Typical failure</td>
+<td>the process never starts</td>
+<td>401, 403, 404, timeouts, an expired session</td>
+</tr>
+</tbody></table>
+<p>The protocol messages are the same: <code>initialize</code>, <code>tools/list</code>, <code>tools/call</code>. What changes is everything around them, and that is where the hard problems are: identity, shared state, and connections that outlive a single question.</p>
+<h2 id="6-2-streamable-http-byte-by-byte"><a class="anchor" href="#6-2-streamable-http-byte-by-byte" aria-hidden="true">#</a>6.2 Streamable HTTP, byte by byte</h2>
+<p><img src="images/streamable-http.svg" alt="Streamable HTTP: one endpoint, three methods"></p>
+<p>One URL (by convention <code>/mcp</code>) and three HTTP methods:</p>
+<ul>
+<li><strong>POST</strong> carries one JSON-RPC message from client to server. The client must send <code>Accept: application/json, text/event-stream</code>. The server answers a request either with plain JSON or with an <strong>SSE stream</strong> (<code>content-type: text/event-stream</code>) that can carry notifications <em>before</em> the final result, which is how progress reaches you mid-call. A notification (no <code>id</code>) gets <code>202 Accepted</code> and no body.</li>
+<li><strong>GET</strong> opens a long-lived SSE stream for messages the <em>server</em> starts, such as <code>notifications/tools/list_changed</code>. Without it, a server can only speak when spoken to.</li>
+<li><strong>DELETE</strong> ends the session.</li>
+</ul>
+<blockquote>
+<p>🍬 <strong>Treat: three status codes that are not errors.</strong> <code>202 Accepted</code> is HTTP for <em>received, nothing to tell you</em>: a notification has no reply by definition, so the body is empty. <code>404</code> for an unknown session is deliberate, and it is not <code>401</code>: the credential was fine, but the <em>thing you named</em> no longer exists, so start a new one. And <code>405 Method Not Allowed</code> on a <code>GET</code> is a server politely saying it does not offer a server→client stream at all; a client must cope with that and simply never receive <code>list_changed</code>.</p>
+</blockquote>
+<p><strong>Sessions.</strong> When the server answers <code>initialize</code> it may mint an id in the <code>Mcp-Session-Id</code> response header. The client sends it on every later request, along with <code>MCP-Protocol-Version</code>. If the server no longer knows the id (it restarted, or expired the session) it answers <strong>404</strong>, and the client starts again with a new <code>initialize</code>.</p>
+<blockquote class="callout tip"><p>💡 <strong>Insight: a session id is a lookup key, not a credential.</strong> It travels in a header, gets logged by proxies, and sits in client memory. If knowing a session id were enough to act as its owner, any leaked log would be an account takeover. The desk checks the bearer token on <em>every</em> request and refuses a session that belongs to a different user (you will see the <code>403</code>). The spec says the same: servers must not use sessions for authentication.</p>
+</blockquote>
+<p><strong>DNS rebinding.</strong> A web page in your browser can send requests to <code>http://127.0.0.1:8790</code> (a malicious DNS record can point a domain there). A local MCP server that accepts any <code>Host</code> or <code>Origin</code> header can therefore be driven by any website you visit. Local servers bind to <code>127.0.0.1</code> (never <code>0.0.0.0</code>) and reject unexpected <code>Host</code>/<code>Origin</code> values. The desk does both, using the SDK&#39;s <code>hostHeaderValidationResponse</code> and <code>originValidationResponse</code>.</p>
+<h2 id="6-3-identity-authentication-authorization-and-where-each-one-lives"><a class="anchor" href="#6-3-identity-authentication-authorization-and-where-each-one-lives" aria-hidden="true">#</a>6.3 Identity: authentication, authorization, and where each one lives</h2>
+<p><strong>Authentication</strong> answers <em>who is this?</em> <strong>Authorization</strong> answers <em>may they do this?</em> For a remote MCP server, both belong to the <strong>server</strong>:</p>
+<ol>
+<li>The client sends <code>Authorization: Bearer &lt;token&gt;</code> on every request (<code>headers</code> in <code>opencode.json</code>, with <code>{env:…}</code> so the token never sits in a committed file).</li>
+<li>The server verifies the token and turns it into an identity. In the SDK, <code>requireBearerAuth({ verifier })</code> returns an <code>AuthInfo</code> (<code>clientId</code>, <code>scopes</code>, <code>expiresAt</code>) or a ready-made <code>401</code> carrying a <code>WWW-Authenticate</code> header.</li>
+<li>Every handler receives that identity as <code>ctx.http.authInfo</code> and decides what this person may do.</li>
+</ol>
+<blockquote>
+<p>🍬 <strong>Treat: &quot;bearer&quot; means what it says.</strong> Whoever <em>bears</em> the token is treated as its owner, no questions asked, like a bearer bond or a cloakroom ticket. That one word explains most of the rules around tokens: send them only over TLS, make them expire, scope them to one resource, and never write them to disk in the clear. Exercise 6.F is the last of those.</p>
+</blockquote>
+<p>The model never touches steps 2 or 3. It cannot claim to be Bob; whatever it asks for travels with the token the host was given. That is why OpenCode&#39;s <code>permission</code> rules (Module 4) and the server&#39;s scope checks are different rings: <strong>OpenCode&#39;s rules are this user&#39;s own brakes; the server&#39;s checks are the organisation&#39;s policy.</strong> A user can edit their own <code>opencode.json</code>. They cannot edit the server.</p>
+<p><strong>OAuth 2.1, the production version.</strong> Static tokens are fine for a lab. In production an MCP server is an OAuth <em>resource server</em>:</p>
+<ol>
+<li>An unauthenticated request gets <code>401</code> with <code>WWW-Authenticate: Bearer resource_metadata=&quot;https://desk.example.com/.well-known/oauth-protected-resource&quot;</code>.</li>
+<li>The client fetches that <strong>protected resource metadata</strong> document, which names the authorization server.</li>
+<li>The client registers (dynamic client registration, or a pre-registered <code>clientId</code>), sends the user through a browser login, and receives a short-lived access token whose <strong>audience</strong> is this server (RFC 8707 resource indicators).</li>
+<li>The server checks issuer, audience, expiry and scopes on every request, and <strong>never forwards the token</strong> to upstream APIs; it uses its own credentials for those (&quot;no token passthrough&quot;).</li>
+</ol>
+<p>OpenCode runs steps 1–3 automatically when a remote server answers <code>401</code> and <code>oauth</code> is not <code>false</code> (Module 2.4: <code>opencode mcp auth</code>, <code>opencode mcp debug</code>). The lab sets <code>&quot;oauth&quot;: false</code> because its tokens are static.</p>
+<h2 id="6-4-capability-negotiation-what-your-host-really-supports"><a class="anchor" href="#6-4-capability-negotiation-what-your-host-really-supports" aria-hidden="true">#</a>6.4 Capability negotiation: what your host really supports</h2>
+<p>During <code>initialize</code> the client declares its <strong>client capabilities</strong>: the features it is willing to provide to servers.</p>
+<table>
+<thead>
+<tr>
+<th>Client capability</th>
+<th>What it lets a server do</th>
+<th>OpenCode 1.18.34 (probed 27 Oct 2026)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>roots</code></td>
+<td>ask which directories the user is working in</td>
+<td>✅ declared; answered with the project folder</td>
+</tr>
+<tr>
+<td><code>elicitation</code></td>
+<td>pause a tool and ask the <em>user</em> a question through the host&#39;s UI</td>
+<td>❌ not declared. The SDK refuses before sending: &quot;Client does not support form elicitation.&quot;</td>
+</tr>
+<tr>
+<td><code>sampling</code></td>
+<td>borrow the host&#39;s model to generate text</td>
+<td>❌ not declared. The request gets <code>Method not found</code></td>
+</tr>
+<tr>
+<td>progress (no flag)</td>
+<td>stream <code>notifications/progress</code> during a call</td>
+<td>✅ a <code>progressToken</code> on every <code>tools/call</code>; the TUI does not display progress</td>
+</tr>
+<tr>
+<td>logging (no flag)</td>
+<td>send <code>notifications/message</code> log lines</td>
+<td>✅ accepted; not shown in the TUI</td>
+</tr>
+</tbody></table>
+<p>So the honest answer to &quot;can my server ask the user to confirm a deploy?&quot; is: <strong>not through OpenCode, not today.</strong> Design for the floor. Anything your server needs from a human must work through the conversation, the host&#39;s own approval prompts (<code>ask</code>), or a channel outside MCP entirely (Challenge 6A builds one).</p>
+<h2 id="6-5-long-running-tools-progress-and-cancellation"><a class="anchor" href="#6-5-long-running-tools-progress-and-cancellation" aria-hidden="true">#</a>6.5 Long-running tools: progress and cancellation</h2>
+<p>A client that wants progress puts a <code>progressToken</code> in the request&#39;s <code>_meta</code>. The server may then send <code>notifications/progress</code> with <code>{ progressToken, progress, total?, message? }</code> as often as it likes; the result arrives when the work is done. Over HTTP those notifications ride the same SSE stream as the response.</p>
+<p>Cancellation runs the other way: the client sends <code>notifications/cancelled</code> with the request id, and the SDK fires <code>ctx.mcpReq.signal</code>. <strong>Cancellation is cooperative.</strong> Nothing stops your handler unless it checks the signal or hands it to whatever it is waiting on (<code>fetch(url, { signal })</code>, a timer). A handler that ignores it keeps running, and keeps spending, after the user has moved on.</p>
+<h2 id="6-6-dynamic-capabilities-tools-that-come-and-go"><a class="anchor" href="#6-6-dynamic-capabilities-tools-that-come-and-go" aria-hidden="true">#</a>6.6 Dynamic capabilities: tools that come and go</h2>
+<p>A server that declared <code>tools: { listChanged: true }</code> may change its tool list at any time and send <code>notifications/tools/list_changed</code>; the client then re-fetches <code>tools/list</code>. In the SDK, <code>registerTool</code> returns a handle with <code>.disable()</code>, <code>.enable()</code>, <code>.update()</code> and <code>.remove()</code>, and each one sends the notification for you.</p>
+<p>Used well, this keeps the model&#39;s world honest: a deploy freeze can <em>remove</em> the deploy tool, so the model never tries. Used badly, it is Module 4&#39;s <strong>rug pull</strong>: the tools you reviewed are not the tools you are running. Same mechanism, different intent. Two rules follow:</p>
+<ul>
+<li><strong>Hiding a tool is UX, not enforcement.</strong> The handler must still refuse, because a client may hold a stale list, or may not be a well-behaved client at all.</li>
+<li><strong>Clients should notice changes.</strong> Module 4&#39;s Challenge 4B pins tool definitions and alerts when they change.</li>
+</ul>
+<h2 id="6-7-where-the-spec-is-heading"><a class="anchor" href="#6-7-where-the-spec-is-heading" aria-hidden="true">#</a>6.7 Where the spec is heading</h2>
+<p>The SDK you are using (TypeScript SDK v2) already speaks protocol revision <strong>2026-07-28</strong> next to the 2025 revisions that OpenCode 1.18 proposes. The SDK&#39;s own deprecation notes spell out three changes that affect server design:</p>
+<ul>
+<li><strong>Server-to-client requests become <code>input_required</code> results.</strong> Instead of a tool calling <code>elicitInput()</code> and holding a connection open while it waits, it <em>returns</em> an <code>input_required</code> result and the client retries the call with the answers attached. That works over stateless HTTP and behind load balancers. <code>ctx.mcpReq.elicitInput()</code> and <code>requestSampling()</code> throw on a 2026-era request.</li>
+<li><strong>Sampling and the logging channel are deprecated</strong> (SEP-2577): call your model provider directly, and log to stderr or OpenTelemetry.</li>
+<li><strong>Stateless by default.</strong> <code>createMcpHandler(factory)</code> serves each request from a fresh server instance, with no session. Challenge 6C asks what you lose and what you gain.</li>
+</ul>
+<p>None of this changes the lab: OpenCode proposes <code>2025-11-25</code> and the desk speaks it.</p>
+<hr>
+<h2 id="lab-6-the-release-desk-35-minutes"><a class="anchor" href="#lab-6-the-release-desk-35-minutes" aria-hidden="true">#</a>Lab 6 · The release desk (35 minutes)</h2>
+<h3 id="mission"><a class="anchor" href="#mission" aria-hidden="true">#</a>🎯 Mission</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Talk to an MCP server with nothing but <code>curl</code>, and read every header that matters</li>
+<li><input disabled="" type="checkbox"> Connect OpenCode to a server it did not start, as a named person</li>
+<li><input disabled="" type="checkbox"> Make the server, not the client, decide who may deploy</li>
+<li><input disabled="" type="checkbox"> Stream progress from a slow tool, and cancel it from the TUI</li>
+<li><input disabled="" type="checkbox"> Withdraw a tool from every connected agent with one command</li>
+<li><input disabled="" type="checkbox"> Rotate the desk&#39;s credentials so nothing on disk can be replayed</li>
+<li><input disabled="" type="checkbox"> Find out what your host supports, and what it does not</li>
+</ul>
+<h3 id="split-screen-three-terminals"><a class="anchor" href="#split-screen-three-terminals" aria-hidden="true">#</a>🖥️ Split screen (three terminals)</h3>
+<pre><code>┌─ T1 · the desk ───────────────┐ ┌─ T2 · alice / bob ───────────┐ ┌─ T3 · curl, carol ───────────┐
+│ cd course/labs/lab6-advanced  │ │ cd course/labs/lab6-advanced │ │ cd course/labs/lab6-advanced │
+│ npx tsx server.ts             │ │ export DESK_TOKEN=…          │ │                              │
+│                               │ │ opencode                     │ │                              │
+│ the board: sessions, freeze,  │ │                              │ │                              │
+│ progress bars, every request  │ │                              │ │                              │
+└───────────────────────────────┘ └──────────────────────────────┘ └──────────────────────────────┘
+</code></pre>
+<p>T1 runs the desk and redraws on every request: who is connected, with which client and protocol version, whether each session has its server→client stream open (<code>◉ listening</code>), preflight progress bars, and a feed of every HTTP request and tool call. <code>npx tsx server.ts --plain</code> prints one log line per event instead.</p>
+<p>The starter <code>server.ts</code> works end to end and has four TODOs. Its demo tokens are printed on the board at startup: <code>alice-dev-token</code> (read), <code>bob-releaser-token</code> (read, deploy), <code>carol-lead-token</code> (read, deploy, freeze).</p>
+<p><img src="images/shot-lab6-desk-board.png" alt="The release desk board: three sessions, a freeze, and Bob's preflight at 3 of 5"></p>
+<h3 id="exercise-6-a-speak-http-to-it-6-minutes"><a class="anchor" href="#exercise-6-a-speak-http-to-it-6-minutes" aria-hidden="true">#</a>🧪 Exercise 6.A — Speak HTTP to it (6 minutes)</h3>
+<p>Before any agent gets involved, be the client yourself. In T3:</p>
+<pre><code class="language-bash">U=http://127.0.0.1:8790/mcp
+H=(-H &#39;content-type: application/json&#39; -H &#39;accept: application/json, text/event-stream&#39;)
+curl -si -X POST $U &quot;${H[@]}&quot; -d &#39;{}&#39; | head -4
+</code></pre>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> (1) What status comes back without a token, and what tells a client how to fix it? (2) When you <code>initialize</code> with a token, will the answer be JSON or an event stream? (3) Who chooses the session id: you or the server?</p>
+</blockquote>
+<pre><code class="language-bash">curl -si -X POST $U &quot;${H[@]}&quot; -H &#39;authorization: Bearer alice-dev-token&#39; \
+  -d &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:1,&quot;method&quot;:&quot;initialize&quot;,&quot;params&quot;:{&quot;protocolVersion&quot;:&quot;2025-11-25&quot;,&quot;capabilities&quot;:{},&quot;clientInfo&quot;:{&quot;name&quot;:&quot;curl&quot;,&quot;version&quot;:&quot;1&quot;}}}&#39;
+</code></pre>
+<details><summary>Our run</summary>
+
+<pre><code>HTTP/1.1 401 Unauthorized
+www-authenticate: Bearer error=&quot;invalid_token&quot;, error_description=&quot;Missing Authorization header&quot;, scope=&quot;releases:read&quot;
+
+HTTP/1.1 200 OK
+content-type: text/event-stream
+mcp-session-id: 8990e1e1-1a58-413b-9803-9c67fde1f50e
+
+event: message
+data: {&quot;result&quot;:{&quot;protocolVersion&quot;:&quot;2025-11-25&quot;,&quot;capabilities&quot;:{&quot;tools&quot;:{&quot;listChanged&quot;:true}},&quot;serverInfo&quot;:{&quot;name&quot;:&quot;release-desk&quot;,&quot;version&quot;:&quot;1.0.0&quot;},&quot;instructions&quot;:&quot;…&quot;},&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:1}
+</code></pre>
+</details>
+
+<p>Put the session id in a variable and carry on by hand, watching T1 after each command:</p>
+<pre><code class="language-bash">SID=8990e1e1-…        # yours
+A=(-H &#39;authorization: Bearer alice-dev-token&#39; -H &quot;mcp-session-id: $SID&quot; -H &#39;mcp-protocol-version: 2025-11-25&#39;)
+curl -s -X POST $U &quot;${H[@]}&quot; &quot;${A[@]}&quot; -d &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;method&quot;:&quot;notifications/initialized&quot;}&#39; -w &#39;%{http_code}\n&#39;
+curl -s -X POST $U &quot;${H[@]}&quot; &quot;${A[@]}&quot; -d &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:2,&quot;method&quot;:&quot;tools/list&quot;}&#39; | cut -c1-200
+curl -sN -X POST $U &quot;${H[@]}&quot; &quot;${A[@]}&quot; -d &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:3,&quot;method&quot;:&quot;tools/call&quot;,&quot;params&quot;:{&quot;name&quot;:&quot;run_preflight&quot;,&quot;arguments&quot;:{&quot;service&quot;:&quot;web&quot;,&quot;version&quot;:&quot;4.12.0&quot;},&quot;_meta&quot;:{&quot;progressToken&quot;:&quot;p1&quot;}}}&#39;
+</code></pre>
+<p>The notification gets <code>202</code> and no body. The preflight answers after six seconds with a single <code>event: message</code>. Remember that: after TODO 2 the same call streams five progress events first.</p>
+<p>Two more, to find the edges of a session:</p>
+<pre><code class="language-bash">curl -s -X POST $U &quot;${H[@]}&quot; -H &#39;authorization: Bearer bob-releaser-token&#39; -H &quot;mcp-session-id: $SID&quot; -d &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:4,&quot;method&quot;:&quot;tools/list&quot;}&#39; -w &#39; → %{http_code}\n&#39;
+curl -s -X POST $U &quot;${H[@]}&quot; &quot;${A[@]}&quot; -H &#39;origin: http://evil.example&#39; -d &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:5,&quot;method&quot;:&quot;tools/list&quot;}&#39; -w &#39; → %{http_code}\n&#39;
+</code></pre>
+<p>A valid token on somebody else&#39;s session: <code>403</code>. A request that claims to come from a web page: <code>403 Invalid Origin</code>. Both show up on the board in red.</p>
+<blockquote class="callout note"><p>🔬 <strong>Under the hood.</strong> <code>handle()</code> near the bottom of <code>server.ts</code> processes every request in the order a real server must: validate <code>Host</code>/<code>Origin</code>, authenticate, then route by <code>Mcp-Session-Id</code>. A request without a session id must be an <code>initialize</code>; it gets a fresh <code>McpServer</code> and a <code>WebStandardStreamableHTTPServerTransport</code>, and the transport mints the id. <code>toRequest()</code> and <code>send()</code> convert between Node&#39;s <code>http</code> module and web-standard <code>Request</code>/<code>Response</code>, which is why the same MCP code runs unchanged on Node, Deno, Bun or Cloudflare Workers.</p>
+</blockquote>
+<h3 id="exercise-6-b-connect-opencode-as-alice-4-minutes"><a class="anchor" href="#exercise-6-b-connect-opencode-as-alice-4-minutes" aria-hidden="true">#</a>🧪 Exercise 6.B — Connect OpenCode as Alice (4 minutes)</h3>
+<p><code>opencode.json</code> already has the remote entry:</p>
+<pre><code class="language-jsonc">&quot;desk&quot;: { &quot;type&quot;: &quot;remote&quot;, &quot;url&quot;: &quot;http://127.0.0.1:8790/mcp&quot;,
+          &quot;headers&quot;: { &quot;Authorization&quot;: &quot;Bearer {env:DESK_TOKEN}&quot; }, &quot;oauth&quot;: false, &quot;enabled&quot;: true }
+</code></pre>
+<p>In T2, first without a token:</p>
+<pre><code class="language-bash">unset DESK_TOKEN; opencode mcp list
+</code></pre>
+<p>You get <code>✗ desk failed · SSE error: Non-200 status code (401)</code>. Read it twice. The server answered <code>401</code> to a Streamable HTTP POST; OpenCode then fell back to the <em>older</em> SSE transport (a GET), got <code>401</code> again, and reported the fallback&#39;s error. The board shows both: a <code>401 POST</code> and a <code>401 GET</code>. When a remote server reports &quot;an SSE error&quot;, check the credential first.</p>
+<pre><code class="language-bash">export DESK_TOKEN=alice-dev-token
+opencode mcp list          # desk connected
+opencode
+</code></pre>
+<p>Ask: <strong>Who am I on the release desk, and what am I allowed to do?</strong> The board shows a session for <code>alice</code> from <code>opencode 1.18.34</code>, protocol <code>2025-11-25</code>, marked <code>◉ listening</code>: OpenCode opened the GET stream straight after <code>initialize</code>, so the server can reach it later. You will need that in 6.E.</p>
+<h3 id="exercise-6-c-todo-1-the-server-decides-7-minutes"><a class="anchor" href="#exercise-6-c-todo-1-the-server-decides-7-minutes" aria-hidden="true">#</a>🧪 Exercise 6.C — TODO 1: the server decides (7 minutes)</h3>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> Alice&#39;s token has only <code>releases:read</code>. In the starter, will <strong>&quot;Run the preflight for web 4.12.0 and then deploy it.&quot;</strong> succeed? Which part of the system would stop it?</p>
+</blockquote>
+<p>Ask it in T2 and watch T1.</p>
+<details><summary>Our run</summary>
+
+<p><code>✎ DEPLOY web 4.11.0 → 4.12.0 by alice</code>. The token was verified, the server knew exactly who was calling and which scopes she held, and nobody <em>checked</em>. Authentication without authorization is a name badge on an unlocked door.</p>
+</details>
+
+<p>Implement TODO 1 in <code>deploy</code>: if <code>!can(ctx, &quot;releases:deploy&quot;)</code>, log a <code>refused</code> event and return an <code>isError</code> result that says who was refused and why. Restart the desk (<code>ctrl+c</code>, <code>npx tsx server.ts</code>). You do <strong>not</strong> need to restart OpenCode: its next request gets <code>404</code> for the old session id and it initializes again by itself. The board logs <code>used unknown session … → 404</code>.</p>
+<p>Ask again. In our runs (4 of 4) the model reported the refusal accurately, along the lines of <em>&quot;You are alice with releases:read only, not releases:deploy… someone with deploy rights needs to run it,&quot;</em> and stopped there. Now quit, <code>export DESK_TOKEN=bob-releaser-token</code>, start OpenCode again and ask for the same deploy as Bob: it goes through, and the board says <code>by bob</code>.</p>
+<blockquote class="callout important"><p>🤯 <strong>Same tool, same arguments, same model, two different answers, and neither user can change that.</strong> Alice could set <code>&quot;desk_deploy&quot;: &quot;allow&quot;</code> in her own <code>opencode.json</code> and nothing would change, because her config is not where the decision lives. That is the difference between a client-side permission (Module 4, ring 3: the user&#39;s own brakes) and server-side authorization (rings 1 and 2: the organisation&#39;s policy).</p>
+</blockquote>
+<h3 id="exercise-6-d-todo-2-progress-and-cancellation-7-minutes"><a class="anchor" href="#exercise-6-d-todo-2-progress-and-cancellation-7-minutes" aria-hidden="true">#</a>🧪 Exercise 6.D — TODO 2: progress and cancellation (7 minutes)</h3>
+<p>Implement TODO 2 in <code>run_preflight</code>:</p>
+<ul>
+<li><strong>2a</strong> before each step, if <code>ctx.mcpReq.signal.aborted</code>, mark the run <code>cancelled</code>, log it and return an <code>isError</code> result;</li>
+<li><strong>2b</strong> if <code>ctx.mcpReq._meta?.progressToken</code> is set, send <code>notifications/progress</code> with <code>{ progressToken, progress: i, total, message: label }</code> through <code>ctx.mcpReq.notify(…)</code>;</li>
+<li><strong>2c</strong> replace the plain <code>setTimeout</code> wait with <code>sleep(STEP_MS, ctx.mcpReq.signal)</code>.</li>
+</ul>
+<p>Restart the desk and re-run the <code>curl -sN … run_preflight</code> from 6.A: five <code>notifications/progress</code> events now stream in, one every 1.2 s, before the result.</p>
+<p>In T2 (Bob), ask <strong>Run the preflight for payments 7.3.0.</strong> and watch the progress bar in T1. Ask again, and this time press <code>esc</code> while the bar is moving.</p>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> When you press <code>esc</code>, does the server find out? If so, how quickly, and through which message?</p>
+</blockquote>
+<details><summary>Our run</summary>
+
+<pre><code>17:06:59 bob → run_preflight payments@7.3.0 (progressToken 2)
+17:07:02 progress 1/5 → bob: integration tests
+17:07:04 progress 2/5 → bob: migration dry-run
+17:07:05 bob POST notifications/cancelled
+17:07:07 bob cancelled preflight payments@7.3.0 at step 3/5
+</code></pre>
+<p>That run was <em>without</em> 2c: the cancel arrived at 17:07:05, but the handler was asleep and only noticed at the next step, two seconds later. With 2c the wait ends the moment the cancel arrives. The TUI marks the turn <code>interrupted</code>. It never draws the progress: OpenCode receives the notifications but does not display them.</p>
+</details>
+
+<blockquote class="callout tip"><p>💡 <strong>Insight:</strong> OpenCode sends <code>notifications/cancelled</code> after <em>every</em> tool call, finished ones included (you saw it in Lab 1&#39;s wiretap). A server must treat a cancel for a request it already answered as a no-op. The SDK does: a finished request has no signal left to abort.</p>
+</blockquote>
+<h3 id="exercise-6-e-todo-3-withdraw-a-tool-from-everyone-8-minutes"><a class="anchor" href="#exercise-6-e-todo-3-withdraw-a-tool-from-everyone-8-minutes" aria-hidden="true">#</a>🧪 Exercise 6.E — TODO 3: withdraw a tool from everyone (8 minutes)</h3>
+<p><code>declare_freeze</code> and <code>lift_freeze</code> already call <code>setDeployAvailable(on)</code>, which is empty. Implement TODO 3: for every live session with a <code>deployTool</code>, call <code>.disable()</code> or <code>.enable()</code> and log a <code>notify</code> event. Each call makes the SDK send <code>notifications/tools/list_changed</code> down that session&#39;s GET stream.</p>
+<p>Restart the desk, then:</p>
+<ul>
+<li><strong>T2:</strong> Bob&#39;s OpenCode, open (<code>DESK_TOKEN=bob-releaser-token opencode</code>). Ask <strong>Which desk tools do you have?</strong> so his session exists.</li>
+<li><strong>T3:</strong> Carol, one shot: <code>DESK_TOKEN=carol-lead-token opencode run &quot;Freeze deploys: payments incident in progress.&quot; &lt; /dev/null</code></li>
+</ul>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> Bob&#39;s session was opened before the freeze and has not been restarted. When he now asks <strong>Deploy api 2.31.0</strong>, will his agent (a) call <code>deploy</code> and get refused, (b) have no <code>deploy</code> tool at all, or (c) try something else?</p>
+</blockquote>
+<details><summary>Our run</summary>
+
+<pre><code>17:05:26 ❄ FREEZE declared by carol: payments incident in progress
+17:05:26 tools/list_changed → bob (session daee2ae9): deploy removed
+17:05:26 bob POST tools/list
+</code></pre>
+<p>Bob&#39;s OpenCode re-fetched <code>tools/list</code> within milliseconds of the notification, before Bob typed anything. On his next turn the model listed <code>declare_freeze, lift_freeze, release_status, run_preflight, whoami</code> and said <em>&quot;I can&#39;t deploy from this session because there&#39;s no deploy tool available here.&quot;</em> After Carol&#39;s <code>Lift the deploy freeze.</code>, the same session received <code>deploy added</code>, and Bob&#39;s next deploy went through.</p>
+</details>
+
+<blockquote class="callout important"><p>🤯 <strong>Carol changed what Bob&#39;s agent can do, from another terminal, mid-conversation.</strong> No restart, no config change, nothing on Bob&#39;s screen. That is the power of a shared remote server, and it is exactly the mechanism of a rug pull: the tool list you reviewed is not a contract. Notice also that <code>deploy</code> still refuses during a freeze when called directly (try it with <code>curl</code>). Withdrawing the tool is UX; the check in the handler is the control.</p>
+</blockquote>
+<figure class="comic"><svg xmlns="http://www.w3.org/2000/svg" width="960" height="380" viewBox="0 0 960 380" role="img" aria-label="Three-panel comic: Bob the skeleton asks his ghost to deploy, but the deploy tool vanished because Carol declared a freeze from another terminal.">
+<title>Bob (a skeleton): Deploy api 2.31.0. Ghost: Sure, let me… wait. Ghost, looking at an empty toolbelt: My deploy tool is gone. Bob: Gone where? Ghost: Carol took it. Carol, a witch in another terminal beside a frozen cauldron: Freeze declared. Payments incident. Bob: From ANOTHER TERMINAL? Caption: A shared server can change your agent's world mid-sentence. So can a rug pull.</title>
+<rect width="960" height="380" rx="18" fill="#150c24"/>
+<rect x="16" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="332" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="648" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<line x1="68" y1="240" x2="56" y2="274" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="68" y1="240" x2="56" y2="274" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="104" y1="240" x2="116" y2="274" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="104" y1="240" x2="116" y2="274" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="78" y1="276" x2="76" y2="300" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="78" y1="276" x2="76" y2="300" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="94" y1="276" x2="96" y2="300" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="94" y1="276" x2="96" y2="300" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<rect x="68" y="234" width="36" height="42" rx="5" fill="#475569" stroke="#1a1026" stroke-width="1.5"/>
+<text x="86" y="260" text-anchor="middle" font-family="Menlo, monospace" font-size="11" fill="#fffdf7" font-weight="bold">BOB</text>
+<circle cx="86" cy="218" r="15" fill="#fffdf7" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="80" cy="216" rx="3.5" ry="4.5" fill="#1a1026"/><ellipse cx="92" cy="216" rx="3.5" ry="4.5" fill="#1a1026"/>
+<path d="M80,227 h12 M83,227 v4 M86,227 v4 M89,227 v4" fill="none" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="28" y="30" width="184" height="41" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="77,69 86,200 95,69" fill="#fffaf0"/>
+<polyline points="77,69 86,200 95,69" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="120" y="55.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Deploy api 2.31.0.</text>
+<path d="M222,264 L222,226 A30,30 0 0 1 282,226 L282,264 Q276,250 268.8,270 Q260.4,284 252,268 Q243.6,284 235.2,270 Q228,250 222,264 Z" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="243" cy="228" rx="3.9" ry="6" fill="#1a1026"/><ellipse cx="261" cy="228" rx="3.9" ry="6" fill="#1a1026"/>
+<path d="M244,245 q4,-4 8,0 q4,4 8,0" fill="none" stroke="#1a1026" stroke-width="2"/>
+<path d="M256,216 l10,-5" fill="none" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="219" cy="259.6" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="285" cy="259.6" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<rect x="162" y="100" width="141" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="239,158 248,198 257,158" fill="#fffaf0"/>
+<polyline points="239,158 248,198 257,158" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="232.5" y="125.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Sure, let me…</text>
+<text x="232.5" y="144.3" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">wait.</text>
+<path d="M372,248 L372,205 A33,33 0 0 1 438,205 L438,248 Q431.4,234 423.5,254 Q414.2,268 405,252 Q395.8,268 386.5,254 Q378.6,234 372,248 Z" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="395.1" cy="207" rx="4.3" ry="6.6" fill="#1a1026"/><ellipse cx="414.9" cy="207" rx="4.3" ry="6.6" fill="#1a1026"/>
+<path d="M397,224 q4,-4 8,0 q4,4 8,0" fill="none" stroke="#1a1026" stroke-width="2"/>
+<path d="M409.9,195 l10,-5" fill="none" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="366" cy="226.6" rx="8" ry="5" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="444" cy="226.6" rx="8" ry="5" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<rect x="371" y="234" width="68" height="10" rx="2" fill="#8b5a2b" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="392" y="244" width="26" height="16" rx="3" fill="none" stroke="#1a1026" stroke-width="1.5" stroke-dasharray="3,2"/>
+<text x="405" y="257" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="12" fill="#1a1026">?</text>
+<rect x="340" y="26" width="150" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="396,84 405,174 414,84" fill="#fffaf0"/>
+<polyline points="396,84 405,174 414,84" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="415" y="51.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">My deploy tool</text>
+<text x="415" y="70.3" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">is gone.</text>
+<line x1="540" y1="240" x2="528" y2="274" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="540" y1="240" x2="528" y2="274" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="576" y1="240" x2="588" y2="274" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="576" y1="240" x2="588" y2="274" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="550" y1="276" x2="548" y2="300" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="550" y1="276" x2="548" y2="300" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="566" y1="276" x2="568" y2="300" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="566" y1="276" x2="568" y2="300" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<rect x="540" y="234" width="36" height="42" rx="5" fill="#475569" stroke="#1a1026" stroke-width="1.5"/>
+<text x="558" y="260" text-anchor="middle" font-family="Menlo, monospace" font-size="11" fill="#fffdf7" font-weight="bold">BOB</text>
+<circle cx="558" cy="218" r="15" fill="#fffdf7" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="552" cy="216" rx="3.5" ry="4.5" fill="#1a1026"/><ellipse cx="564" cy="216" rx="3.5" ry="4.5" fill="#1a1026"/>
+<path d="M552,227 h12 M555,227 v4 M558,227 v4 M561,227 v4" fill="none" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="498" y="40" width="124" height="41" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="549,79 558,200 567,79" fill="#fffaf0"/>
+<polyline points="549,79 558,200 567,79" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="560" y="65.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Gone where?</text>
+<rect x="340" y="100" width="150" height="41" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="403,139 412,174 421,139" fill="#fffaf0"/>
+<polyline points="403,139 412,174 421,139" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="415" y="125.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Carol took it.</text>
+<rect x="780" y="90" width="160" height="212" rx="6" fill="#e9dcc0" stroke="#1a1026" stroke-width="2"/>
+<path d="M780,106 h160" stroke="#1a1026" stroke-width="2"/><rect x="781" y="92" width="158" height="14" fill="#4b5563"/>
+<circle cx="790" cy="99" r="3" fill="#ef4444"/><circle cx="800" cy="99" r="3" fill="#f59e0b"/><circle cx="810" cy="99" r="3" fill="#22c55e"/>
+<text x="822" y="102" text-anchor="start" font-family="Menlo, monospace" font-size="8.5" fill="#efe3cc">carol — terminal 2</text>
+<ellipse cx="902" cy="272" rx="30" ry="22" fill="#2d2440" stroke="#1a1026" stroke-width="2"/><ellipse cx="902" cy="256" rx="32" ry="7" fill="#9fd6f2" stroke="#1a1026" stroke-width="2"/>
+<polygon points="878,260 888,260 883,278" fill="#bfe9ff" stroke="#1a1026" stroke-width="1"/><polygon points="898,260 908,260 903,282" fill="#bfe9ff" stroke="#1a1026" stroke-width="1"/><polygon points="916,260 926,260 921,274" fill="#bfe9ff" stroke="#1a1026" stroke-width="1"/>
+<polygon points="796,298 852,298 837,252 811,252" fill="#1a1026"/>
+<circle cx="824" cy="242" r="14" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<circle cx="819" cy="241" r="1.8" fill="#1a1026"/><circle cx="829" cy="241" r="1.8" fill="#1a1026"/>
+<path d="M820,248 q4,4 8,0" fill="none" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="824" cy="232" rx="26" ry="5" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M807,232 L841,232 L830,200.1 Q832,174 820,172 Q826,188.5 819,200.1 Z" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<polygon points="809,231 839,231 836,224 812,224" fill="#ff8a1f"/>
+<circle cx="840" cy="278" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="783" y="114" width="155" height="53" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="815,165 824,190 833,165" fill="#fffaf0"/>
+<polyline points="815,165 824,190 833,165" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="860.5" y="136.7" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="13" fill="#1a1026">Freeze declared.</text>
+<text x="860.5" y="152.3" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="13" fill="#1a1026">Payments incident.</text>
+<line x1="692" y1="240" x2="680" y2="274" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="692" y1="240" x2="680" y2="274" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="728" y1="240" x2="740" y2="274" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="728" y1="240" x2="740" y2="274" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="702" y1="276" x2="700" y2="300" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="702" y1="276" x2="700" y2="300" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="718" y1="276" x2="720" y2="300" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="718" y1="276" x2="720" y2="300" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<rect x="692" y="234" width="36" height="42" rx="5" fill="#475569" stroke="#1a1026" stroke-width="1.5"/>
+<text x="710" y="260" text-anchor="middle" font-family="Menlo, monospace" font-size="11" fill="#fffdf7" font-weight="bold">BOB</text>
+<circle cx="710" cy="218" r="15" fill="#fffdf7" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="704" cy="216" rx="3.5" ry="4.5" fill="#1a1026"/><ellipse cx="716" cy="216" rx="3.5" ry="4.5" fill="#1a1026"/>
+<path d="M704,227 h12 M707,227 v4 M710,227 v4 M713,227 v4" fill="none" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="654" y="96" width="120" height="56" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="701,150 710,200 719,150" fill="#fffaf0"/>
+<polyline points="701,150 710,200 719,150" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="714" y="119.5" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="14" fill="#1a1026">From ANOTHER</text>
+<text x="714" y="136.3" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="14" fill="#1a1026">TERMINAL?</text>
+<text x="24" y="346" font-family="Menlo, monospace" font-size="13" fill="#ff8a1f">🎃 comic · freeze</text>
+<text x="490" y="346" text-anchor="middle" font-family="Menlo, monospace" font-size="13" fill="#efe3cc">A shared server can change your agent's world mid-sentence. So can a rug pull.</text>
+</svg></figure>
+<blockquote class="callout note"><p>🔬 <strong>Under the hood.</strong> The notification only reaches clients that keep a GET stream open (<code>◉ listening</code>). A session whose client has gone away still sits in server memory, so the desk closes any session with no open stream for a minute (<code>idle for 60 s: closed</code>). Without a rule like that, every <code>opencode run</code> that exits without sending <code>DELETE</code> would leak a session. Every stateful HTTP server needs one.</p>
+</blockquote>
+<h3 id="exercise-6-f-todo-4-rotate-and-hash-the-tokens-5-minutes"><a class="anchor" href="#exercise-6-f-todo-4-rotate-and-hash-the-tokens-5-minutes" aria-hidden="true">#</a>🧪 Exercise 6.F — TODO 4: rotate and hash the tokens (5 minutes)</h3>
+<p>The board has been warning you since T1 started: <strong><code>⚠ demo tokens are in plain text in server.ts</code></strong>. Those three strings sit in a file in the project, next to everything else that runs as you: your editor, your shell history, and the agent&#39;s <code>read</code> and <code>bash</code> tools. Module 4&#39;s ring 2 applies here too: a credential is only as strong as the places it is stored.</p>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> After you rotate, what will the board say when someone connects with <code>alice-dev-token</code>?</p>
+</blockquote>
+<ol>
+<li>Run <code>node issue-tokens.mjs</code>. It generates a random token per person, prints each one <strong>once</strong>, and writes only their SHA-256 hashes to <code>tokens.json</code>.</li>
+<li>Implement TODO 4: delete the plain-text table, load <code>tokens.json</code>, look tokens up by <code>sha256(token)</code>, and make the server <strong>exit with a clear message if <code>tokens.json</code> is missing</strong>. No file, no server: a fallback &quot;demo mode&quot; would be a back door.</li>
+<li>Restart the desk and reconnect each person with their new token (<code>export DESK_TOKEN=desk_alice_…</code>).</li>
+</ol>
+<details><summary>Our run</summary>
+
+<p><code>release desk: tokens.json not found. Run node issue-tokens.mjs first</code> on a start without the file; <code>tokens: 3 hashed tokens loaded from tokens.json</code> with it; <code>401 … without a valid token</code> for every old demo token; and the same refusals and deploys as before for the new ones.</p>
+</details>
+
+<blockquote class="callout tip"><p>💡 <strong>Insight: hashing protects the copy at rest, not the token in flight.</strong> Anyone holding a live token can still use it: it is in <code>DESK_TOKEN</code>, in OpenCode&#39;s memory, and in every request. That is why production tokens are short-lived and scoped (6.3), and why a remote server should really be <em>remote</em>: on a machine and account that the people and agents calling it cannot reach.</p>
+</blockquote>
+<h3 id="exercise-6-g-interrogate-your-host-4-minutes"><a class="anchor" href="#exercise-6-g-interrogate-your-host-4-minutes" aria-hidden="true">#</a>🧪 Exercise 6.G — Interrogate your host (4 minutes)</h3>
+<p><code>probe.ts</code> is a small stdio server with one tool, <code>probe_host</code>, that tries every feature a server can ask of a client and writes the results to <code>host-report.txt</code>. Enable <code>probe</code> in <code>opencode.json</code> (and disable <code>desk</code> to keep the context small), start OpenCode and ask <strong>Probe the host.</strong></p>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> Tick the ones you think OpenCode supports: progress tokens · log messages · roots · elicitation · sampling.</p>
+</blockquote>
+<details><summary>Our run (OpenCode 1.18.34 and the Inspector CLI, 27 Oct 2026)</summary>
+
+<pre><code>                                    OpenCode 1.18.34             Inspector CLI 0.5.1
+declared capabilities               {&quot;roots&quot;:{}}                 {}
+progressToken on tools/call         YES  token 2                 no
+logging (notifications/message)     YES                          YES
+roots/list                          YES  file:///…/lab6-advanced no  Method not found
+elicitation (ask the user)          no   Client does not support form elicitation.
+sampling (borrow the host&#39;s model)  no   Method not found
+</code></pre>
+</details>
+
+<p>Same server, two hosts, two different sets of abilities. Try it in any other MCP host you use (the Inspector&#39;s web UI, another editor or agent) and compare notes with your neighbour. Whatever your favourite blog post says a server &quot;can do&quot;, this table is what it can do <em>here</em>.</p>
+<h3 id="mission-complete"><a class="anchor" href="#mission-complete" aria-hidden="true">#</a>🏅 Mission complete</h3>
+<ul>
+<li><strong>Spoke the transport by hand.</strong> You can read a 401 challenge, a session header and an SSE stream, and you know why OpenCode called a 401 an &quot;SSE error&quot;.</li>
+<li><strong>Put authorization where it belongs.</strong> The same deploy request got two different answers for two people, and no client config could change either one.</li>
+<li><strong>Made a slow tool polite.</strong> It reports progress, and it stops the moment the user does.</li>
+<li><strong>Changed every connected agent&#39;s toolset at once</strong>, and you know the handler check is what actually enforces the freeze.</li>
+<li><strong>Rotated the credentials</strong>, and the server now refuses to run without them rather than falling back to something weaker.</li>
+<li><strong>Measured your host</strong> instead of assuming it.</li>
+</ul>
+<h3 id="check-yourself"><a class="anchor" href="#check-yourself" aria-hidden="true">#</a>✅ Check yourself</h3>
+<details><summary>1. Bob's agent kept a tool list from before the freeze (say his client ignores <code>list_changed</code>). He asks it to deploy. What happens, and which line of code made sure of it?</summary>
+
+<p>The call reaches the server and is refused: <code>if (desk.freeze) return refuse(…)</code> in the <code>deploy</code> handler. Withdrawing the tool only stops well-behaved clients from <em>trying</em>; the handler check is what stops the deploy.</p>
+</details>
+
+<details><summary>2. Why does the desk check the bearer token on every request, instead of once at <code>initialize</code>?</summary>
+
+<p>Because the session id is not a credential. It can leak through logs or proxies, and a token can be revoked or expire mid-session. Checking every request also lets the server refuse a valid token on someone else&#39;s session (the <code>403</code> in 6.A).</p>
+</details>
+
+<details><summary>3. <code>opencode mcp list</code> says <code>SSE error: Non-200 status code (401)</code>, but the server only speaks Streamable HTTP. What happened?</summary>
+
+<p>The Streamable HTTP POST got <code>401</code>, OpenCode fell back to the legacy SSE transport (a GET), which also got <code>401</code>, and the fallback&#39;s error is what you see. The real problem is the credential: a missing or unset <code>DESK_TOKEN</code>.</p>
+</details>
+
+<details><summary>4. Your server needs a human to confirm a deploy. Which MCP feature is designed for that, and what do you do in OpenCode 1.18 where it is missing?</summary>
+
+<p>Elicitation (in the 2026-07-28 revision: an <code>input_required</code> result). OpenCode does not declare it, so use the host&#39;s own approval (<code>&quot;desk_deploy&quot;: &quot;ask&quot;</code>), and if the confirmation must come from outside the model&#39;s reach, an out-of-band channel such as a code shown only to the human (Challenge 6A).</p>
+</details>
+
+<details><summary>5. You pressed <code>esc</code> and the TUI said "interrupted", but the board kept counting for two more seconds. Bug or feature?</summary>
+
+<p>A bug in the handler: cancellation is cooperative. The server got <code>notifications/cancelled</code> at once, but the handler only checked the signal between steps. Passing the signal into the wait (TODO 2c), and into any <code>fetch</code>, makes it stop immediately.</p>
+</details>
+
+<details><summary>6. Why must a local HTTP MCP server bind to <code>127.0.0.1</code> and validate <code>Origin</code>, when it already requires a bearer token?</summary>
+
+<p>Defence in depth. <code>0.0.0.0</code> exposes it to your whole network; a missing <code>Origin</code>/<code>Host</code> check lets any web page you visit send it requests through DNS rebinding. The token stops strangers without one; the bind and the header checks stop the attacks that do not need one, like probing for unauthenticated endpoints or exhausting sessions.</p>
+</details>
+
+<h3 id="challenges-optional-and-the-hardest-in-the-course"><a class="anchor" href="#challenges-optional-and-the-hardest-in-the-course" aria-hidden="true">#</a>🏆 Challenges (optional, and the hardest in the course)</h3>
+<p><strong>6A · A human in the loop the model cannot fake (25 min).</strong> OpenCode has no elicitation, and an <code>ask</code> rule is approved in the same window the model works in. Build a two-phase deploy: <code>request_deploy(service, version)</code> runs every check, then prints a one-time six-digit code <strong>only on the desk&#39;s board</strong> (never in a tool result) and returns a request id. <code>confirm_deploy(request_id, code)</code> deploys if the code matches, belongs to the same user, is under two minutes old and has not been used. Prove that the model cannot complete a deploy without a human reading the code off the board, and that a wrong or reused code is refused. Then argue both sides: what does this protect against that <code>ask</code> does not, and what does it cost?</p>
+<p><strong>6B · Show people only what they can use (15 min).</strong> Today Alice&#39;s agent is offered <code>deploy</code>, <code>declare_freeze</code> and <code>lift_freeze</code>, which she can never use. Build the tool list from the token&#39;s scopes at <code>initialize</code> time, so each person&#39;s model only sees what they are allowed to call. Measure the difference in <code>tools/list</code> size for Alice before and after (bytes ÷ 4 ≈ tokens per turn), and explain why the handler checks must stay.</p>
+<p><strong>6C · Stateless (20 min).</strong> Re-serve the desk with <code>createMcpHandler(factory)</code>, the SDK&#39;s stateless entry point, so that every request gets a fresh server instance and no session id. Before you run it, predict which features from this lab keep working (authentication, authorization, progress, cancellation, the freeze, <code>list_changed</code>) and which do not. Then test each one with <code>curl</code> and OpenCode. What would you have to build to get the freeze notification back, and what do you get in exchange for losing sessions?</p>
+<p>📼 <strong>Next episode: your own servers.</strong> Pick one MCP server your team runs or wants to run remotely. Write down where authentication happens, where authorization happens, which tools a freeze-like control should withdraw, and which host features you are relying on that your host may not have. Then probe the host.</p>
+<p><a href="index.html">← Back to the course home</a></p>
+
+</main>
+<footer class="foot"><div class="pumpkins" aria-hidden="true">🎃 🦇 👻 🕸️ 🎃</div>MCP with AI Agents · OpenCode + MCP course · haunted edition, October 2026 · <a href="https://github.com/varoonsahgal/opencode-mcp-course">source and labs on GitHub</a></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+  document.querySelectorAll("pre code").forEach((el) => {
+    const m = el.className.match(/language-(\w+)/);
+    if (m && m[1] === "jsonc") el.className = "language-json";
+    if (!m) el.classList.add("nohighlight");
+    window.hljs && hljs.highlightElement(el);
+    const b = document.createElement("button"); b.className = "copy"; b.type = "button"; b.textContent = "Copy";
+    b.onclick = () => { navigator.clipboard.writeText(el.innerText).then(() => { b.textContent = "Copied"; setTimeout(() => (b.textContent = "Copy"), 1200); }); };
+    el.parentElement.appendChild(b);
+  });
+  document.querySelectorAll("main table").forEach((t) => { const w = document.createElement("div"); w.className = "tbl"; t.replaceWith(w); w.appendChild(t); });
+  // Daylight / midnight toggle. Follows the system until pinned; the pin lives in this browser only.
+  (function () {
+    const root = document.documentElement, btn = document.getElementById("themebtn");
+    const light = document.getElementById("hl-light"), dark = document.getElementById("hl-dark");
+    const isDark = () => root.getAttribute("data-theme") === "dark" || (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    const paint = () => { const d = isDark(); btn.textContent = d ? "☀️" : "🌙"; light.media = d ? "not all" : "all"; dark.media = d ? "all" : "not all"; };
+    btn.onclick = () => { const next = isDark() ? "light" : "dark"; root.setAttribute("data-theme", next); try { localStorage.setItem("theme", next); } catch (e) {} paint(); };
+    matchMedia("(prefers-color-scheme: dark)").addEventListener("change", paint);
+    paint();
+  })();
+</script>
+</body>
+</html>

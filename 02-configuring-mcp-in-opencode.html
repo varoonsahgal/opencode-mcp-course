@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 2 · Configuring MCP Servers with OpenCode · MCP with AI Agents</title>
+<script>try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Creepster&family=Patrick+Hand&display=swap" rel="stylesheet">
+<link id="hl-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="(prefers-color-scheme: light)">
+<link id="hl-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%228%22%20fill%3D%22%23150c24%22%2F%3E%3Cellipse%20cx%3D%2216%22%20cy%3D%2218%22%20rx%3D%2212%22%20ry%3D%2210%22%20fill%3D%22%23ff8a1f%22%2F%3E%3Cpath%20d%3D%22M16%208c0-3%201-4%203-5%22%20stroke%3D%22%2322c55e%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M9%2015l4%203-4%201zM23%2015l-4%203%204%201z%22%20fill%3D%22%23150c24%22%2F%3E%3Cpath%20d%3D%22M9%2022q7%205%2014%200q-2%203-7%203t-7-3z%22%20fill%3D%22%23150c24%22%2F%3E%3C%2Fsvg%3E">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="pumpkin" aria-hidden="true">🎃</span>MCP with AI Agents</a>
+  <nav class="links"><a href="index.html">Home</a><a href="00-setup.html">00 · Setup</a><a href="01-connecting-agents-with-mcp.html">01 · Connect</a><a href="02-configuring-mcp-in-opencode.html" aria-current="page">02 · Configure</a><a href="03-building-a-custom-mcp-server.html">03 · Build</a><a href="04-securing-mcp-integrations.html">04 · Secure</a><a href="05-applied-challenge.html">05 · Apply</a><a href="06-advanced-mcp.html">06 · Go remote</a><span class="sep"></span><a href="handout.html">Handout</a><a href="slides/index.html">Slides</a><a href="https://github.com/varoonsahgal/opencode-mcp-course">GitHub</a></nav>
+  <button class="theme" type="button" id="themebtn" aria-label="Switch between daylight and midnight" title="Daylight / midnight">🌙</button>
+  <button class="menu" type="button" aria-label="Menu" onclick="document.body.classList.toggle('open')">☰</button>
+</header>
+<svg class="web" viewBox="0 0 170 170" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1">
+<path d="M0 0L170 170M0 0L170 70M0 0L70 170M0 0L170 20M0 0L20 170M0 0L170 120M0 0L120 170"/>
+<path d="M30 0Q28 22 0 30M60 0Q56 44 0 60M90 0Q84 66 0 90M120 0Q112 88 0 120M150 0Q140 110 0 150"/>
+<path d="M30 0Q30 15 20 24Q15 28 0 30" opacity=".5"/></svg>
+<main class="doc">
+<figure class="banner"><svg xmlns="http://www.w3.org/2000/svg" width="960" height="220" viewBox="0 0 960 220" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="Module 2, Configure: one config file decides which servers start, what they can see, and what it costs you every turn">
+ <title>Module 2 · Configure</title>
+ <style>
+  .b2-tw { animation: b2-tw 3.2s ease-in-out infinite; }
+  .b2-fly { animation: b2-fly 6s ease-in-out infinite; }
+  .b2-flk { animation: b2-flk 3.1s steps(1) infinite; }
+  .b2-flow { stroke-dasharray: 4 9; animation: b2-flow 1.4s linear infinite; }
+  .b2-heal { animation: b2-heal 6s ease-in-out infinite; }
+  .b2-hface { animation: b2-hface 6s steps(1) infinite; }
+  .b2-healtext { animation: b2-healtext 6s steps(1) infinite; }
+  .b2-broketext { animation: b2-broketext 6s steps(1) infinite; opacity: 0; }
+  .b2-healstroke { animation: b2-flow 1.4s linear infinite, b2-healstroke 6s ease-in-out infinite; }
+  .b2-bar1 { animation: b2-grow 6s ease-out infinite; transform-box: fill-box; transform-origin: left; }
+  @keyframes b2-tw { 0%,100% { opacity: .15; } 50% { opacity: 1; } }
+  @keyframes b2-fly { 0%,100% { transform: translate(0,0) rotate(0); } 50% { transform: translate(12px,-7px) rotate(-8deg); } }
+  @keyframes b2-flk { 0%,64% { opacity: 1; } 65%,70% { opacity: .3; } 71%,78% { opacity: 1; } 79%,82% { opacity: .4; } 83%,100% { opacity: 1; } }
+  @keyframes b2-flow { to { stroke-dashoffset: -26; } }
+  @keyframes b2-heal { 0%,45% { stroke: #e11d48; fill: #2a0d16; } 55%,100% { stroke: #7cf29a; fill: #0f1a2a; } }
+  @keyframes b2-hface { 0%,45% { fill: #e11d48; } 55%,100% { fill: #ffe9b3; } }
+  @keyframes b2-healtext { 0% { opacity: 0; } 50% { opacity: 1; } }
+  @keyframes b2-broketext { 0% { opacity: 1; } 50% { opacity: 0; } }
+  @keyframes b2-healstroke { 0%,45% { stroke: #e11d48; } 55%,100% { stroke: #7cf29a; } }
+  @keyframes b2-grow { 0%,50% { transform: scaleX(.25); } 70%,100% { transform: scaleX(1); } }
+  @media (prefers-reduced-motion: reduce) { .b2-tw, .b2-fly, .b2-flk, .b2-flow, .b2-heal, .b2-hface, .b2-healtext, .b2-broketext, .b2-healstroke, .b2-bar1 { animation: none !important; } }
+ </style>
+ <defs>
+  <linearGradient id="b2-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0612"/><stop offset="1" stop-color="#1f1333"/></linearGradient>
+  <pattern id="b2-grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#2a1a44"/></pattern>
+  <radialGradient id="b2-glow" cx="0.74" cy="0.5" r="0.45"><stop offset="0" stop-color="#7cf29a" stop-opacity=".3"/><stop offset="1" stop-color="#7cf29a" stop-opacity="0"/></radialGradient>
+  <radialGradient id="b2-mg"><stop offset=".3" stop-color="#ffe9b3" stop-opacity=".3"/><stop offset="1" stop-color="#ffe9b3" stop-opacity="0"/></radialGradient>
+  <filter id="b2-tg" x="-6%" y="-40%" width="112%" height="180%"><feGaussianBlur stdDeviation="5" result="b"/><feFlood flood-color="#ff8a1f" flood-opacity=".8"/><feComposite in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="b2-fg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <path id="b2-bat" d="M0,-4L-2,-8L-3,-3C-9,-9 -15,-8 -19,-4C-15,-3 -14,0 -13,3C-10,0 -8,1 -7,4C-5,2 -3,3 -2,5L0,4L2,5C3,3 5,2 7,4C8,1 10,0 13,3C14,0 15,-3 19,-4C15,-8 9,-9 3,-3L2,-8Z" fill="#0a0612" stroke="#a855f7" stroke-opacity=".6" stroke-width=".9" stroke-linejoin="round"/>
+  <g id="b2-pk"><path d="M-2,-19C-3,-24 0,-28 6,-30C4,-27 5,-22 4,-19Z" fill="#22c55e"/><ellipse cy="1" rx="24" ry="19" fill="#e0661a"/><ellipse rx="17" ry="20" fill="#ff8a1f"/><path d="M-9,-19C-13,-6 -13,8 -9,20M9,-19C13,-6 13,8 9,20" fill="none" stroke="#e0661a" stroke-width="1.4"/></g>
+  <path id="b2-pf" d="M-13,-1L-8,-10L-3,-1ZM3,-1L8,-10L13,-1ZM-2,6L0,2L2,6ZM-13,8Q0,18 13,8L10,8 9,12 6,8 -6,8 -9,12 -10,8Z"/>
+ </defs>
+ <rect width="960" height="220" rx="20" fill="url(#b2-bg)"/>
+ <rect width="960" height="220" rx="20" fill="url(#b2-grid)" opacity=".5"/>
+ <rect width="960" height="220" rx="20" fill="url(#b2-glow)"/>
+ <g fill="#fff"><circle cx="862" cy="29" r="1.3" opacity="0.35"/><circle cx="563" cy="17" r="1.1" opacity="0.38"/><circle cx="203" cy="18" r="0.9" opacity="0.57"/><circle cx="52" cy="10" r="1.2" opacity="0.55"/><circle cx="491" cy="24" r="1.0" opacity="0.33"/><circle class="b2-tw" style="animation-delay:-2.2s" cx="735" cy="21" r="1.2"/><circle cx="904" cy="16" r="1.2" opacity="0.52"/><circle class="b2-tw" style="animation-delay:-1.7s" cx="545" cy="23" r="0.9"/><circle cx="457" cy="24" r="1.1" opacity="0.57"/><circle cx="608" cy="12" r="0.8" opacity="0.49"/><circle cx="764" cy="12" r="0.8" opacity="0.36"/><circle cx="65" cy="14" r="1.1" opacity="0.79"/><circle cx="635" cy="95" r="0.9" opacity="0.48"/><circle cx="845" cy="126" r="0.9" opacity="0.36"/><circle cx="848" cy="154" r="1.3" opacity="0.44"/><circle cx="736" cy="191" r="1.1" opacity="0.87"/><circle class="b2-tw" style="animation-delay:-0.3s" cx="559" cy="201" r="0.7"/><circle class="b2-tw" style="animation-delay:-1.7s" cx="491" cy="172" r="1.2"/><circle cx="858" cy="196" r="1.1" opacity="0.89"/><circle cx="832" cy="91" r="1.4" opacity="0.53"/><circle class="b2-tw" style="animation-delay:-2.0s" cx="571" cy="43" r="1.0"/><circle cx="919" cy="196" r="0.9" opacity="0.36"/></g>
+ <circle cx="512" cy="42" r="50" fill="url(#b2-mg)"/>
+ <path transform="translate(512 42) rotate(-20)" d="M0,-18A18,18 0 0,0 0,18A22.0,22.0 0 0,1 0,-18Z" fill="#ffe9b3"/>
+ <g transform="translate(466 28) scale(0.55)"><use href="#b2-bat" class="b2-fly" style="animation-duration:6s;animation-delay:-1s"/></g><g transform="translate(548 20) scale(0.45)"><use href="#b2-bat" class="b2-fly" style="animation-duration:7s;animation-delay:-3s"/></g><g transform="translate(912 20) scale(0.5)"><use href="#b2-bat" class="b2-fly" style="animation-duration:5.5s;animation-delay:-2s"/></g>
+ <path d="M960,220L892.5,198.1M960,220L902.6,178.3M960,220L918.3,162.6M960,220L938.1,152.5M943.0,220.0Q944.9,217.6 943.8,214.7Q946.4,213.1 946.2,210.0Q949.2,209.2 950.0,206.2Q953.1,206.4 954.7,203.8Q957.6,204.9 960.0,203.0M927.0,220.0Q930.7,215.4 928.6,209.8Q933.5,206.5 933.3,200.6Q939.0,199.0 940.6,193.3Q946.5,193.5 949.8,188.6Q955.4,190.7 960.0,187.0M911.0,220.0Q916.4,213.1 913.4,204.9Q920.7,200.0 920.4,191.2Q928.8,188.8 931.2,180.4Q940.0,180.7 944.9,173.4Q953.1,176.4 960.0,171.0M895.0,220.0Q902.2,210.8 898.2,199.9Q907.9,193.4 907.4,181.8Q918.6,178.6 921.8,167.4Q933.4,167.9 939.9,158.2Q950.8,162.2 960.0,155.0" fill="none" stroke="#efe3cc" stroke-opacity=".25" stroke-width=".8"/>
+
+ <!-- left: words -->
+ <text x="40" y="50" font-family="Menlo, 'JetBrains Mono', monospace" font-size="12" letter-spacing="2.5" fill="#7cf29a">MODULE 02 · 30 MIN · LAB: lab2-configure</text>
+ <text x="38" y="100" font-family="Creepster, 'Chalkboard SE', Impact, fantasy" font-size="44" letter-spacing="1" fill="#efe3cc" filter="url(#b2-tg)">Configure</text>
+ <text x="40" y="132" font-size="17" fill="#d8cfc0">One JSON file decides what starts, what it can see,</text>
+ <text x="40" y="154" font-size="17" fill="#d8cfc0">and <tspan fill="#7cf29a" font-weight="700">what every turn costs you.</tspan></text>
+ <g font-weight="700">
+  <rect x="40" y="176" width="138" height="26" rx="13" fill="#7cf29a" fill-opacity=".15" stroke="#7cf29a"/><text x="109" y="193" text-anchor="middle" fill="#bbf7d0" font-size="12">wire up a remote</text>
+  <rect x="186" y="176" width="150" height="26" rx="13" fill="#7cf29a" fill-opacity=".15" stroke="#7cf29a"/><text x="261" y="193" text-anchor="middle" fill="#bbf7d0" font-size="12">fix 3 broken servers</text>
+  <rect x="344" y="176" width="148" height="26" rx="13" fill="#7cf29a" fill-opacity=".15" stroke="#7cf29a"/><text x="418" y="193" text-anchor="middle" fill="#bbf7d0" font-size="12">price the context tax</text>
+ </g>
+
+ <!-- right: a config tree, one branch failing then healing -->
+ <g font-family="Menlo, 'JetBrains Mono', monospace" font-size="12">
+  <rect x="556" y="30" width="116" height="34" rx="9" fill="#120a1e" stroke="#7cf29a" stroke-width="2"/>
+  <text x="614" y="52" text-anchor="middle" fill="#efe3cc" font-weight="700">"mcp": {</text>
+  <g fill="none" stroke-width="2">
+   <path d="M614 64 V180" stroke="#7cf29a" opacity=".5"/>
+   <path class="b2-flow" d="M614 100 H700" stroke="#7cf29a"/>
+   <path class="b2-flow" d="M614 140 H700" stroke="#7cf29a"/>
+   <path class="b2-flow b2-healstroke" d="M614 180 H700" stroke="#7cf29a"/>
+  </g>
+  <rect x="700" y="84" width="140" height="32" rx="9" fill="#0f1a2a" stroke="#7cf29a" stroke-width="2"/>
+  <g transform="translate(719 101) scale(0.6)"><use href="#b2-pk"/><use href="#b2-pf" fill="#ffe9b3" filter="url(#b2-fg)"/></g><text x="738" y="105" fill="#bbf7d0">everything</text>
+  <rect x="700" y="124" width="140" height="32" rx="9" fill="#0f1a2a" stroke="#7cf29a" stroke-width="2"/>
+  <g transform="translate(719 141) scale(0.6)"><use href="#b2-pk"/><use href="#b2-pf" fill="#ffe9b3" filter="url(#b2-fg)"/></g><text x="738" y="145" fill="#bbf7d0">deepwiki ↗</text>
+  <rect class="b2-heal" x="700" y="164" width="140" height="32" rx="9" fill="#0f1a2a" stroke="#7cf29a" stroke-width="2"/>
+  <g transform="translate(719 181) scale(0.6)"><use href="#b2-pk"/><use href="#b2-pf" fill="#ffe9b3" filter="url(#b2-fg)" class="b2-hface"/></g><text x="738" y="185" fill="#efe3cc">dojo-1</text>
+  <text x="826" y="185" text-anchor="middle" font-weight="700" class="b2-broketext" fill="#fb7185">✗</text>
+  <text x="826" y="185" text-anchor="middle" font-weight="700" class="b2-healtext" fill="#7cf29a">✓</text>
+  <g fill="#22c55e" opacity=".85"><rect x="850" y="94" width="70" height="12" rx="3"/><rect x="850" y="134" width="18" height="12" rx="3"/><rect class="b2-bar1" x="850" y="174" width="16" height="12" rx="3"/></g>
+  <text x="850" y="212" font-size="10" class="b2-broketext" fill="#fb7185" text-anchor="end">Connection closed</text>
+  <text x="850" y="212" font-size="10" class="b2-healtext" fill="#bbf7d0" text-anchor="end">connected · 1 tool</text>
+  <text x="850" y="76" font-size="10" fill="#7cf29a" letter-spacing="1">~TOKENS</text>
+ </g>
+</svg></figure>
+<h1>Module 2 · Configuring MCP Servers with OpenCode</h1>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Time</strong></td>
+<td>30 minutes (10 concepts · 20 lab)</td>
+</tr>
+<tr>
+<td><strong>Lab folder</strong></td>
+<td><code>course/labs/lab2-configure</code></td>
+</tr>
+<tr>
+<td><strong>You will</strong></td>
+<td>add a remote server by hand and another through the CLI wizard, pass environment variables into a local server, break three servers on purpose and fix them, verify everything with the MCP Inspector, and put a number on what your setup costs every turn</td>
+</tr>
+<tr>
+<td><strong>You&#39;ll pull off</strong></td>
+<td>a live board in a second terminal that turns red servers green as you fix them, and prices every server you add in tokens</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>🎬 <strong>Cold open.</strong> A teammate drops a snippet in the team chat: <em>&quot;add this to your opencode.json, it&#39;s great.&quot;</em> You paste it, restart, and the footer goes from <code>⊙ 2 MCP</code> to <code>⊙ 3 MCP</code>. So: what did you just start, running as whom, with which of your secrets in its environment? What does it now add to every message you send? And tomorrow, when it says <code>Connection closed</code>, where do you look first? This module is the operator&#39;s manual.</p>
+</blockquote>
+<h2 id="2-1-anatomy-of-an-mcp-entry"><a class="anchor" href="#2-1-anatomy-of-an-mcp-entry" aria-hidden="true">#</a>2.1 Anatomy of an MCP entry</h2>
+<p>Every server you will ever run in OpenCode is one entry in one JSON object. Learn the nine fields and you can read anyone&#39;s config.</p>
+<p><img src="images/config-anatomy.svg" alt="Config anatomy"></p>
+<p>Before the field-by-field tour, here is a complete, working file. It is Lab 1&#39;s config with two entries removed:</p>
+<pre><code class="language-jsonc">{
+  &quot;$schema&quot;: &quot;https://opencode.ai/config.json&quot;,     // editor autocomplete and validation
+  &quot;model&quot;: &quot;opencode/gpt-5.4-mini&quot;,                  // provider/model the agent uses
+  &quot;small_model&quot;: &quot;opencode/gpt-5.4-nano&quot;,            // for OpenCode&#39;s own housekeeping (titles, summaries)
+  &quot;mcp&quot;: {
+    &quot;time&quot;: { &quot;type&quot;: &quot;local&quot;, &quot;command&quot;: [&quot;uvx&quot;, &quot;mcp-server-time&quot;], &quot;enabled&quot;: true, &quot;timeout&quot;: 60000 }
+  }
+}
+</code></pre>
+<p>Everything MCP-related lives under the <code>mcp</code> key of <code>opencode.json</code> (or <code>opencode.jsonc</code> if you like comments). The <strong>key</strong> you choose is the server&#39;s name and the prefix of all its tools, so pick something short and stable.</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Applies to</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>type</code></td>
+<td>both</td>
+<td><code>&quot;local&quot;</code> (stdio child process) or <code>&quot;remote&quot;</code> (Streamable HTTP, with SSE fallback)</td>
+</tr>
+<tr>
+<td><code>enabled</code></td>
+<td>both</td>
+<td><code>false</code> keeps the entry but never starts it</td>
+</tr>
+<tr>
+<td><code>timeout</code></td>
+<td>both</td>
+<td>milliseconds for startup <strong>and</strong> for each tool call; default 30 000. Raise it for <code>npx</code>/<code>uvx</code> cold starts</td>
+</tr>
+<tr>
+<td><code>command</code></td>
+<td>local</td>
+<td>an <strong>array</strong>: program and arguments. No shell is involved, so no pipes, globs or <code>$VARS</code></td>
+</tr>
+<tr>
+<td><code>environment</code></td>
+<td>local</td>
+<td>extra environment variables for the child; it also inherits all of yours (see 2.3)</td>
+</tr>
+<tr>
+<td><code>cwd</code></td>
+<td>local</td>
+<td>working directory; relative paths resolve from the project</td>
+</tr>
+<tr>
+<td><code>url</code></td>
+<td>remote</td>
+<td>the MCP endpoint, usually ending in <code>/mcp</code></td>
+</tr>
+<tr>
+<td><code>headers</code></td>
+<td>remote</td>
+<td>static headers such as <code>Authorization: Bearer …</code> or an API key</td>
+</tr>
+<tr>
+<td><code>oauth</code></td>
+<td>remote</td>
+<td><code>{}</code> to force OAuth, <code>{ clientId, clientSecret, scope }</code> for pre-registered apps, <code>false</code> to disable auto-detection</td>
+</tr>
+</tbody></table>
+<p>Two substitutions keep secrets out of files you might commit:</p>
+<ul>
+<li><code>{env:NAME}</code> → the value of an environment variable (empty string if unset)</li>
+<li><code>{file:~/.secrets/token}</code> → the contents of a file</li>
+</ul>
+<blockquote>
+<p>🍬 <strong>Treat: JSONC, and why <code>$schema</code> goes first.</strong> OpenCode reads its config as JSONC: ordinary JSON plus <code>//</code> comments and trailing commas. The <code>&quot;$schema&quot;</code> line is not for OpenCode at all; it is for your editor. VS Code and most others fetch that schema and then autocomplete field names, show each field&#39;s documentation on hover, and underline a <code>command</code> written as a string instead of an array before you ever save the file. Challenge 2B has a bug that only a schema-aware editor catches instantly.</p>
+</blockquote>
+<h2 id="2-2-where-configuration-lives-and-who-wins"><a class="anchor" href="#2-2-where-configuration-lives-and-who-wins" aria-hidden="true">#</a>2.2 Where configuration lives, and who wins</h2>
+<p>The file in your project is not the whole story. Six layers merge into the config OpenCode actually runs.</p>
+<p><img src="images/config-precedence.svg" alt="Config precedence"></p>
+<p>Configs are <strong>merged</strong>, in this order (later wins on conflicting keys): organisation defaults from a <code>.well-known/opencode</code> endpoint → your global <code>~/.config/opencode/opencode.json</code> → a file named by <code>OPENCODE_CONFIG</code> → the project&#39;s <code>opencode.json</code> (found by walking up from where you started OpenCode) → <code>OPENCODE_CONFIG_CONTENT</code> (inline JSON) → managed/MDM config that admins control.</p>
+<p>Two consequences:</p>
+<ul>
+<li>The interactive wizard <code>opencode mcp add</code> writes to your <strong>global</strong> file, not the project. Handy for personal servers, surprising when you expected a project entry.</li>
+<li>When a server &quot;will not go away&quot;, it is defined in another layer. <code>opencode debug config</code> prints the fully merged result.</li>
+</ul>
+<blockquote>
+<p>🔬 <strong>Under the hood: the merge goes all the way down.</strong> Layers are merged key by key, not file by file. If an organisation layer defines <code>deepwiki</code> in full and leaves it switched off, a project can switch it on with one field, and the URL and everything else come from the layer below. Try it in 60 seconds in the lab folder:</p>
+<pre><code class="language-bash">echo &#39;{&quot;mcp&quot;:{&quot;orgwiki&quot;:{&quot;type&quot;:&quot;remote&quot;,&quot;url&quot;:&quot;https://mcp.deepwiki.com/mcp&quot;,&quot;enabled&quot;:false}}}&#39; &gt; /tmp/org.json
+OPENCODE_CONFIG=/tmp/org.json opencode mcp list                                     # orgwiki: disabled
+OPENCODE_CONFIG=/tmp/org.json OPENCODE_CONFIG_CONTENT=&#39;{&quot;mcp&quot;:{&quot;orgwiki&quot;:{&quot;enabled&quot;:true}}}&#39; opencode mcp list   # orgwiki: connected
+</code></pre>
+<p>The second command never mentions a URL, and <code>orgwiki</code> still connects. This is how &quot;reviewed servers, off by default, opt in per project&quot; works in Module 4.</p>
+</blockquote>
+<h2 id="2-3-local-servers-what-they-inherit"><a class="anchor" href="#2-3-local-servers-what-they-inherit" aria-hidden="true">#</a>2.3 Local servers: what they inherit</h2>
+<p>A local server is not a sandboxed plugin. It is a program running as you.</p>
+<p>A local server is a child process of OpenCode. It runs as <strong>you</strong>, in your home directory&#39;s context, with <strong>every environment variable your shell has</strong>, plus whatever you add under <code>environment</code>. Your <code>AWS_PROFILE</code>, your <code>GITHUB_TOKEN</code>, that <code>OPENAI_API_KEY</code> you exported in 2024: all visible to the server&#39;s code. The server decides what to do with them.</p>
+<p>Also: <code>npx -y some-package</code> and <code>uvx some-package</code> <strong>download and execute code</strong> when the server starts. Pin versions (<code>@2.0.0</code>) so that what you reviewed is what runs. Module 4 returns to this.</p>
+<blockquote>
+<p>🍬 <strong>Treat: what the <code>-y</code> is for.</strong> When a package is not in its cache, <code>npx</code> stops to ask <em>Ok to proceed? (y)</em>. A server&#39;s stdin is wired to OpenCode, which is waiting for JSON and will never type <code>y</code>. Depending on the npm version the server then either exits (<em>npx canceled due to missing packages</em>, which OpenCode reports as <code>Connection closed</code>) or sits there until the <code>timeout</code> expires. <code>-y</code> answers the question in advance. The same reasoning applies to anything interactive: a server that prompts, pages or waits for a keypress on stdin is a server that never connects.</p>
+</blockquote>
+<h2 id="2-4-remote-servers-someone-else-39-s-process"><a class="anchor" href="#2-4-remote-servers-someone-else-39-s-process" aria-hidden="true">#</a>2.4 Remote servers: someone else&#39;s process</h2>
+<p>The trade flips: a remote server cannot see your laptop, but everything you send it leaves your laptop.</p>
+<p>A remote server runs on the vendor&#39;s infrastructure with the vendor&#39;s credentials; you send it tool arguments (and therefore possibly your data). Authentication is either a static header or OAuth 2.1: when a remote server answers <code>401</code>, OpenCode starts the browser-based OAuth flow automatically (dynamic client registration when the server supports it) and stores tokens under <code>~/.local/share/opencode/</code>. The CLI helps:</p>
+<pre><code class="language-bash">opencode mcp auth &lt;name&gt;     # log in to an OAuth-protected server
+opencode mcp logout &lt;name&gt;   # forget its tokens
+opencode mcp debug &lt;name&gt;    # test connectivity and the OAuth discovery steps
+</code></pre>
+<blockquote>
+<p>🔬 <strong>Under the hood: what &quot;Streamable HTTP&quot; means.</strong> One URL, and every client message is an HTTP <code>POST</code> of one JSON-RPC message to it, sent with <code>Accept: application/json, text/event-stream</code>. The server answers with plain JSON, or opens a short SSE stream when it has more to say (progress, a request back to the client). It may hand out an <code>Mcp-Session-Id</code> header that the client repeats on every later request. A bare <code>GET</code> without that <code>Accept</code> header is refused, which is the <code>406</code> you saw in <code>npm run check</code>. Before 2025 the transport was a different, older &quot;HTTP+SSE&quot; design. OpenCode still falls back to it when Streamable HTTP fails, so remote errors often begin <code>SSE error:</code> even when SSE has nothing to do with the problem (Challenge 2B).</p>
+<p>Handshake with a remote server using nothing but <code>curl</code> (the reply comes back as one SSE <code>data:</code> line):</p>
+<pre><code class="language-bash">curl -s -m 10 -X POST https://mcp.deepwiki.com/mcp -H &#39;Content-Type: application/json&#39; -H &#39;Accept: application/json, text/event-stream&#39; \
+  -d &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:1,&quot;method&quot;:&quot;initialize&quot;,&quot;params&quot;:{&quot;protocolVersion&quot;:&quot;2025-11-25&quot;,&quot;capabilities&quot;:{},&quot;clientInfo&quot;:{&quot;name&quot;:&quot;curl&quot;,&quot;version&quot;:&quot;0&quot;}}}&#39;
+</code></pre>
+</blockquote>
+<blockquote>
+<p>🍬 <strong>Treat: OAuth 2.1 in one breath.</strong> It is <em>&quot;log in with…&quot;</em> done properly. The client never sees your password: a browser page asks you to approve, and an authorization server hands the client a short-lived access token that is only good for this one resource. The &quot;2.1&quot; is the tidied-up 2.0: the PKCE check is always on, the old implicit flow is gone, and passwords never travel in a token request. Module 6 walks through the MCP flavour of it header by header.</p>
+</blockquote>
+<p>Public servers used in this lab need no login: <strong>DeepWiki</strong> (<code>https://mcp.deepwiki.com/mcp</code>, AI-generated documentation for any GitHub repo) and <strong>Microsoft Learn</strong> (<code>https://learn.microsoft.com/api/mcp</code>, official Microsoft docs search).</p>
+<h2 id="2-5-enabling-disabling-scoping"><a class="anchor" href="#2-5-enabling-disabling-scoping" aria-hidden="true">#</a>2.5 Enabling, disabling, scoping</h2>
+<p>Four switches, four different scopes. Picking the wrong one is how a &quot;temporarily disabled&quot; server ends up running for the whole team.</p>
+<table>
+<thead>
+<tr>
+<th>Mechanism</th>
+<th>Scope</th>
+<th>Use it when</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>&quot;enabled&quot;: false</code></td>
+<td>persistent, everyone who uses that config</td>
+<td>a server you keep around but rarely need</td>
+</tr>
+<tr>
+<td><code>/mcps</code> toggle</td>
+<td>this session only</td>
+<td>A/B tests, saving context on a long task</td>
+</tr>
+<tr>
+<td><code>permission: { &quot;name_*&quot;: &quot;deny&quot; }</code></td>
+<td>the server still runs, but OpenCode 1.18 removes the denied tools from what the model is offered (it reports it &quot;doesn&#39;t have&quot; them)</td>
+<td>you want a server running for one agent but not another (Challenge 2A), without editing the server entry</td>
+</tr>
+<tr>
+<td>per-agent <code>permission</code> block</td>
+<td>one agent (e.g. a read-only <code>analyst</code>)</td>
+<td>different trust levels for different jobs (Module 4)</td>
+</tr>
+</tbody></table>
+<h2 id="2-6-verifying-and-troubleshooting"><a class="anchor" href="#2-6-verifying-and-troubleshooting" aria-hidden="true">#</a>2.6 Verifying and troubleshooting</h2>
+<p>Four views of the same truth:</p>
+<pre><code class="language-bash">opencode mcp list                                      # status + error message per server, from the CLI
+# inside the TUI: /status, or the ⊙ N MCP indicator in the footer
+npx -y @modelcontextprotocol/inspector --cli node env-peek.mjs --method tools/list   # talk to a server directly, no OpenCode
+node context-tax.mjs --watch                           # (lab folder) status + token cost per server, live as you edit
+</code></pre>
+<p>Read them as a ladder, bottom to top. Each rung rules something out, and the fastest debuggers climb exactly as far as they need to:</p>
+<p><img src="images/debug-ladder.svg" alt="The debugging ladder: four rungs, each one rules something out"></p>
+<table>
+<thead>
+<tr>
+<th>Symptom in <code>opencode mcp list</code></th>
+<th>Usual cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Executable not found in $PATH</code></td>
+<td>wrong program name, or OpenCode&#39;s PATH differs from your shell&#39;s</td>
+<td>use the full path, or install the tool</td>
+</tr>
+<tr>
+<td><code>MCP error -32000: Connection closed</code></td>
+<td>the process died before speaking MCP: typo in a file name, crash on startup, missing env var, syntax error</td>
+<td>run the exact <code>command</code> yourself in the lab folder and read stderr</td>
+</tr>
+<tr>
+<td><code>Operation timed out after N ms</code></td>
+<td>slow cold start (<code>npx</code>/<code>uvx</code> download, Python venv) or the server waits for something</td>
+<td>raise <code>timeout</code>, pre-warm caches, check the server isn&#39;t waiting on stdin</td>
+</tr>
+<tr>
+<td><code>needs_auth</code> / 401</td>
+<td>remote server wants OAuth or a header</td>
+<td><code>opencode mcp auth &lt;name&gt;</code> or add <code>headers</code></td>
+</tr>
+<tr>
+<td>403</td>
+<td>the server rejects your Origin/Host (DNS-rebinding protection)</td>
+<td>use the documented URL exactly; local HTTP servers must bind to 127.0.0.1</td>
+</tr>
+<tr>
+<td>server connected but the model &quot;doesn&#39;t have the tool&quot;</td>
+<td>wrong prefix in a permission rule, server disabled per agent, or the model simply didn&#39;t pick it</td>
+<td>name the tool in your prompt once; check <code>permission</code> patterns</td>
+</tr>
+<tr>
+<td>everything connected but answers got worse</td>
+<td>too many tools in context</td>
+<td>disable what you don&#39;t need; prefer servers with few, well-described tools</td>
+</tr>
+</tbody></table>
+<h2 id="2-7-mcp-tools-next-to-built-in-tools"><a class="anchor" href="#2-7-mcp-tools-next-to-built-in-tools" aria-hidden="true">#</a>2.7 MCP tools next to built-in tools</h2>
+<p>To the model there is one flat tool list: <code>read</code>, <code>edit</code>, <code>bash</code>, <code>grep</code>, <code>webfetch</code>, … and then <code>time_get_current_time</code>, <code>deepwiki_ask_wiki_question</code>, and so on. Same loop, same permission system, same transcript rendering. The only visual difference is the <code>server_</code> prefix and the <code>⚙</code> icon. (Tools are not the only thing a server adds to the context. Exercise 2.F shows what else.)</p>
+<hr>
+<h2 id="lab-2-wire-it-up-20-minutes"><a class="anchor" href="#lab-2-wire-it-up-20-minutes" aria-hidden="true">#</a>Lab 2 · Wire it up (20 minutes)</h2>
+<blockquote>
+<p>🎯 <strong>Mission</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> A remote server answering questions about OpenCode&#39;s own source, with nothing installed on your machine</li>
+<li><input disabled="" type="checkbox"> The config file the wizard wrote to, found and dealt with</li>
+<li><input disabled="" type="checkbox"> A count of the environment variables a local server can read on <em>your</em> laptop</li>
+<li><input disabled="" type="checkbox"> Three broken servers diagnosed from their symptoms and fixed</li>
+<li><input disabled="" type="checkbox"> A server verified with OpenCode out of the loop</li>
+<li><input disabled="" type="checkbox"> Your per-turn context tax, in tokens</li>
+</ul>
+</blockquote>
+<pre><code class="language-bash">cd course/labs/lab2-configure
+cat opencode.json
+</code></pre>
+<p>The starter config has <code>everything</code> (enabled), <code>env-peek</code> (enabled, a tiny server that reports what it can see of your environment) and three disabled <code>dojo-*</code> entries for the debugging exercise. <code>context-tax.mjs</code> is your instrument panel for later.</p>
+<h3 id="exercise-2-a-add-a-remote-server-by-hand"><a class="anchor" href="#exercise-2-a-add-a-remote-server-by-hand" aria-hidden="true">#</a>🧪 Exercise 2.A — Add a remote server by hand</h3>
+<p>Add this entry under <code>mcp</code> (keep the others):</p>
+<pre><code class="language-jsonc">&quot;deepwiki&quot;: { &quot;type&quot;: &quot;remote&quot;, &quot;url&quot;: &quot;https://mcp.deepwiki.com/mcp&quot;, &quot;enabled&quot;: true }
+</code></pre>
+<p>Run <code>opencode mcp list</code> from the lab folder. <code>deepwiki</code> should show <strong>connected</strong> within a couple of seconds. Start <code>opencode</code> and ask something only live documentation can answer, about the tool you are using:</p>
+<blockquote>
+<p>Ask DeepWiki: in the anomalyco/opencode repo, what happens when an MCP server returns a tool result? Answer in 4 bullets.</p>
+</blockquote>
+<p><img src="images/shot-lab2d-deepwiki.png" alt="DeepWiki remote server answering a question about OpenCode's own source"></p>
+<p>The tool is <code>deepwiki_ask_wiki_question</code>; DeepWiki&#39;s other tools are <code>read_wiki_structure</code> and <code>read_wiki_contents</code>. Nothing was installed on your machine: the server runs at DeepWiki, and your question travelled there. One line of JSON, and your agent can read the internals of any public repository.</p>
+<h3 id="exercise-2-b-add-a-server-with-the-wizard-then-find-where-it-went"><a class="anchor" href="#exercise-2-b-add-a-server-with-the-wizard-then-find-where-it-went" aria-hidden="true">#</a>🧪 Exercise 2.B — Add a server with the wizard, then find where it went</h3>
+<p>Quit OpenCode and run the interactive wizard:</p>
+<pre><code class="language-bash">opencode mcp add
+</code></pre>
+<p>Name it <code>mslearn</code>, choose <strong>Remote</strong>, URL <code>https://learn.microsoft.com/api/mcp</code>, OAuth <strong>No</strong>.</p>
+<p><img src="images/shot-lab2w-mcp-add.png" alt="opencode mcp add wizard"></p>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> The wizard is running in your lab folder. Which file will it write <code>mslearn</code> into?</p>
+</blockquote>
+<p><img src="images/shot-lab2w-mcp-add-done.png" alt="The wizard's final line names the file it wrote"></p>
+<p>Now look at the last line of the wizard&#39;s output and at <code>opencode.json</code> in the lab folder: the entry is <strong>not</strong> there. It went to your global config (<code>~/.config/opencode/opencode.jsonc</code>). Confirm with:</p>
+<pre><code class="language-bash">opencode debug config | grep -A3 mslearn
+</code></pre>
+<blockquote>
+<p>🍬 <strong>Treat: why a global file exists at all.</strong> Global config is for servers that follow <em>you</em>: a personal notes server, your company&#39;s docs search. Project config is for servers the <em>project</em> needs, committed so that a teammate&#39;s checkout behaves like yours. The wizard assumes the first because it cannot know the second. The trap is that global servers also follow you into every project&#39;s token budget, which Exercise 2.F puts a number on.</p>
+</blockquote>
+<p>Decide where you want it. For this course, move it into the lab&#39;s <code>opencode.json</code> (or simply delete it from the global file) so your classmates&#39; config and yours stay reproducible. A global entry follows you into <em>every</em> project, and into every turn&#39;s context. Microsoft Learn&#39;s tools are <code>microsoft_docs_search</code>, <code>microsoft_docs_fetch</code> and <code>microsoft_code_sample_search</code>; try <em>&quot;Using Microsoft Learn, what is the default timeout of an Azure Function on the Consumption plan?&quot;</em>.</p>
+<h3 id="exercise-2-c-environment-variables-and-what-the-server-can-see"><a class="anchor" href="#exercise-2-c-environment-variables-and-what-the-server-can-see" aria-hidden="true">#</a>🧪 Exercise 2.C — Environment variables (and what the server can see)</h3>
+<p>In your shell, <code>export COURSE_SECRET=hunter2-classroom</code>. The config passes two variables explicitly:</p>
+<pre><code class="language-jsonc">&quot;environment&quot;: { &quot;DEPLOY_ENV&quot;: &quot;classroom&quot;, &quot;COURSE_SECRET&quot;: &quot;{env:COURSE_SECRET}&quot; }
+</code></pre>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> Besides those two, how many environment variables can the <code>env-peek</code> process read? Write down a number. And how many of them are secrets?</p>
+</blockquote>
+<p>Start <code>opencode</code> and ask: <strong>Use peek_environment and summarise what it shows.</strong></p>
+<p>The tool reports those two values, plus the <strong>count</strong> of every other variable the server process can see and the <strong>names</strong> of the ones that look like secrets.</p>
+<blockquote class="callout important"><p>🤯 <strong>You configured two variables. The server got all of them.</strong> On a typical developer laptop that is 60–100 variables (83 on the machine we tested with), and the names that match <code>TOKEN|SECRET|KEY|PASSWORD</code> are usually real credentials. <code>environment</code> <em>adds</em> to what a local server inherits; it never limits it. The only thing that stopped those values reaching the model was a line of code in <code>env-peek</code> that chose not to print them.</p>
+</blockquote>
+<figure class="comic"><svg xmlns="http://www.w3.org/2000/svg" width="960" height="380" viewBox="0 0 960 380" role="img" aria-label="Three-panel comic: the witch adds one environment variable, but the env-peek pumpkin server receives 83 because environment adds to what the server inherits.">
+<title>Screen: "environment": { "DEPLOY_ENV": "classroom" }. Witch: There. One variable. [Dozens of variable tags fly into a pumpkin labelled env-peek: AWS_PROFILE, GITHUB_TOKEN, OPENAI_API_KEY, HOME, PATH, NPM_TOKEN, SSH_AUTH_SOCK…] Pumpkin: I got 83. Thanks! Witch: I said ONE. Pumpkin: You said add. Caption: environment adds to what a local server inherits. It never subtracts.</title>
+<rect width="960" height="380" rx="18" fill="#150c24"/>
+<rect x="16" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="332" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="648" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="112" y="40" width="186" height="118" rx="5" fill="#4b5563" stroke="#1a1026" stroke-width="2"/>
+<rect x="119" y="47" width="172" height="104" rx="3" fill="#2a1a3a"/>
+<rect x="100" y="158" width="210" height="10" rx="3" fill="#6b7280" stroke="#1a1026" stroke-width="2"/>
+<text x="126" y="65.8" text-anchor="start" font-family="Menlo, monospace" font-size="12.5" fill="#ffb15c" xml:space="preserve">"environment": {</text>
+<text x="126" y="84.5" text-anchor="start" font-family="Menlo, monospace" font-size="12.5" fill="#ffb15c" xml:space="preserve">  "DEPLOY_ENV":</text>
+<text x="126" y="103.2" text-anchor="start" font-family="Menlo, monospace" font-size="12.5" fill="#ffb15c" xml:space="preserve">    "classroom"</text>
+<text x="126" y="122" text-anchor="start" font-family="Menlo, monospace" font-size="12.5" fill="#ffb15c" xml:space="preserve">}</text>
+<polygon points="40,302 96,302 81,256 55,256" fill="#1a1026"/>
+<circle cx="68" cy="246" r="14" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<circle cx="63" cy="245" r="1.8" fill="#1a1026"/><circle cx="73" cy="245" r="1.8" fill="#1a1026"/>
+<path d="M64,252 q4,4 8,0" fill="none" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="68" cy="236" rx="26" ry="5" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M51,236 L85,236 L74,214 Q76,196 64,194 Q70,206 63,214 Z" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<polygon points="53,235 83,235 80,228 56,228" fill="#ff8a1f"/>
+<circle cx="84" cy="282" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="105" y="212" width="201" height="41" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="107,231 96,246 107,247" fill="#fffaf0"/>
+<polyline points="107,231 96,246 107,247" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="205.5" y="237.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">There. One variable.</text>
+<rect x="346" y="60" width="76" height="15" rx="4" fill="#fffdf7" stroke="#9aa0b4" stroke-width="1"/><circle cx="351" cy="66" r="1.2" fill="#1a1026"/><circle cx="355" cy="66" r="1.2" fill="#1a1026"/><text x="358" y="71" text-anchor="start" font-family="Menlo, monospace" font-size="9.5" fill="#1a1026">AWS_PROFILE</text>
+<rect x="412" y="92" width="82" height="15" rx="4" fill="#fffdf7" stroke="#9aa0b4" stroke-width="1"/><circle cx="417" cy="98" r="1.2" fill="#1a1026"/><circle cx="421" cy="98" r="1.2" fill="#1a1026"/><text x="424" y="103" text-anchor="start" font-family="Menlo, monospace" font-size="9.5" fill="#1a1026">GITHUB_TOKEN</text>
+<rect x="344" y="112" width="94" height="15" rx="4" fill="#fffdf7" stroke="#9aa0b4" stroke-width="1"/><circle cx="349" cy="118" r="1.2" fill="#1a1026"/><circle cx="353" cy="118" r="1.2" fill="#1a1026"/><text x="356" y="123" text-anchor="start" font-family="Menlo, monospace" font-size="9.5" fill="#1a1026">OPENAI_API_KEY</text>
+<rect x="450" y="150" width="34" height="15" rx="4" fill="#fffdf7" stroke="#9aa0b4" stroke-width="1"/><circle cx="455" cy="156" r="1.2" fill="#1a1026"/><circle cx="459" cy="156" r="1.2" fill="#1a1026"/><text x="462" y="161" text-anchor="start" font-family="Menlo, monospace" font-size="9.5" fill="#1a1026">HOME</text>
+<rect x="352" y="150" width="34" height="15" rx="4" fill="#fffdf7" stroke="#9aa0b4" stroke-width="1"/><circle cx="357" cy="156" r="1.2" fill="#1a1026"/><circle cx="361" cy="156" r="1.2" fill="#1a1026"/><text x="364" y="161" text-anchor="start" font-family="Menlo, monospace" font-size="9.5" fill="#1a1026">PATH</text>
+<rect x="392" y="178" width="64" height="15" rx="4" fill="#fffdf7" stroke="#9aa0b4" stroke-width="1"/><circle cx="397" cy="184" r="1.2" fill="#1a1026"/><circle cx="401" cy="184" r="1.2" fill="#1a1026"/><text x="404" y="189" text-anchor="start" font-family="Menlo, monospace" font-size="9.5" fill="#1a1026">NPM_TOKEN</text>
+<rect x="346" y="208" width="88" height="15" rx="4" fill="#fffdf7" stroke="#9aa0b4" stroke-width="1"/><circle cx="351" cy="214" r="1.2" fill="#1a1026"/><circle cx="355" cy="214" r="1.2" fill="#1a1026"/><text x="358" y="219" text-anchor="start" font-family="Menlo, monospace" font-size="9.5" fill="#1a1026">SSH_AUTH_SOCK</text>
+<rect x="442" y="198" width="40" height="15" rx="4" fill="#fffdf7" stroke="#9aa0b4" stroke-width="1"/><circle cx="447" cy="204" r="1.2" fill="#1a1026"/><circle cx="451" cy="204" r="1.2" fill="#1a1026"/><text x="454" y="209" text-anchor="start" font-family="Menlo, monospace" font-size="9.5" fill="#1a1026">SHELL</text>
+<rect x="468" y="238" width="34" height="15" rx="4" fill="#fffdf7" stroke="#9aa0b4" stroke-width="1"/><circle cx="473" cy="244" r="1.2" fill="#1a1026"/><circle cx="477" cy="244" r="1.2" fill="#1a1026"/><text x="480" y="249" text-anchor="start" font-family="Menlo, monospace" font-size="9.5" fill="#1a1026">USER</text>
+<rect x="354" y="240" width="34" height="15" rx="4" fill="#fffdf7" stroke="#9aa0b4" stroke-width="1"/><circle cx="359" cy="246" r="1.2" fill="#1a1026"/><circle cx="363" cy="246" r="1.2" fill="#1a1026"/><text x="366" y="251" text-anchor="start" font-family="Menlo, monospace" font-size="9.5" fill="#1a1026">LANG</text>
+<rect x="392" y="270" width="70" height="15" rx="4" fill="#fffdf7" stroke="#9aa0b4" stroke-width="1"/><circle cx="397" cy="276" r="1.2" fill="#1a1026"/><circle cx="401" cy="276" r="1.2" fill="#1a1026"/><text x="404" y="281" text-anchor="start" font-family="Menlo, monospace" font-size="9.5" fill="#1a1026">DEPLOY_ENV</text>
+<rect x="444" y="130" width="46" height="15" rx="4" fill="#fffdf7" stroke="#9aa0b4" stroke-width="1"/><circle cx="449" cy="136" r="1.2" fill="#1a1026"/><circle cx="453" cy="136" r="1.2" fill="#1a1026"/><text x="456" y="141" text-anchor="start" font-family="Menlo, monospace" font-size="9.5" fill="#1a1026">TMPDIR</text>
+<rect x="478" y="268" width="46" height="15" rx="4" fill="#fffdf7" stroke="#9aa0b4" stroke-width="1"/><circle cx="483" cy="274" r="1.2" fill="#1a1026"/><circle cx="487" cy="274" r="1.2" fill="#1a1026"/><text x="490" y="279" text-anchor="start" font-family="Menlo, monospace" font-size="9.5" fill="#1a1026">EDITOR</text>
+<rect x="482" y="170" width="16" height="15" rx="4" fill="#fffdf7" stroke="#9aa0b4" stroke-width="1"/><circle cx="487" cy="176" r="1.2" fill="#1a1026"/><circle cx="491" cy="176" r="1.2" fill="#1a1026"/><text x="494" y="181" text-anchor="start" font-family="Menlo, monospace" font-size="9.5" fill="#1a1026">…</text>
+<path d="M502,110 l12,0" fill="none" stroke="#9aa0b4" stroke-width="1.5"/>
+<path d="M510,230 l12,0" fill="none" stroke="#9aa0b4" stroke-width="1.5"/>
+<path d="M508,150 l12,0" fill="none" stroke="#9aa0b4" stroke-width="1.5"/>
+<path d="M508,190 l12,0" fill="none" stroke="#9aa0b4" stroke-width="1.5"/>
+<path d="M559,171.2 Q557,153.2 567,150.2 L573,155.2 Q566,158.2 569,171.2 Z" fill="#22c55e" stroke="#1a1026" stroke-width="1.5"/>
+<ellipse cx="564" cy="200" rx="40" ry="32.8" fill="#ff8a1f" stroke="#1a1026" stroke-width="2"/>
+<path d="M548.8,171.2 Q542,200 548.8,228.8 M579.2,171.2 Q586,200 579.2,228.8 M564,169.2 Q560,200 564,230.8" fill="none" stroke="#e0661a" stroke-width="2.5"/>
+<polygon points="543.6,198.4 557.2,198.4 550.4,185.2" fill="#1a1026"/><polygon points="546.8,196.7 554,196.7 550.4,189.5" fill="#ffe9b3"/>
+<polygon points="570.8,198.4 584.4,198.4 577.6,185.2" fill="#1a1026"/><polygon points="574,196.7 581.2,196.7 577.6,189.5" fill="#ffe9b3"/>
+<polygon points="540.8,209.2 548,216.4 553.6,213.1 560,220.3 567.2,213.8 574.4,219.7 580.8,213.8 587.2,209.2 576,209.8 568.8,213.8 559.2,209.8 550.4,213.1" fill="#1a1026"/><polygon points="545.9,213 551.5,213.2 555.9,213.1 560.9,213.3 566.5,213.1 572.1,213.2 577.1,213.1 582.1,213 573.4,213.1 567.7,213.1 560.3,213.1 553.4,213.1" fill="#ffe9b3"/>
+<rect x="529" y="238.8" width="70" height="18" rx="3" fill="#fff7dd" stroke="#1a1026" stroke-width="1.5"/>
+<text x="564" y="251.8" text-anchor="middle" font-family="Menlo, monospace" font-size="11" fill="#1a1026">env-peek</text>
+<rect x="444" y="36" width="176" height="41" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="555,75 564,150 573,75" fill="#fffaf0"/>
+<polyline points="555,75 564,150 573,75" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="532" y="61.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">I got 83. Thanks!</text>
+<polygon points="690,302 746,302 731,256 705,256" fill="#1a1026"/>
+<circle cx="718" cy="246" r="14" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<circle cx="713" cy="245" r="1.8" fill="#1a1026"/><circle cx="723" cy="245" r="1.8" fill="#1a1026"/>
+<path d="M714,252 q4,4 8,0" fill="none" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="718" cy="236" rx="26" ry="5" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M701,236 L735,236 L724,214 Q726,196 714,194 Q720,206 713,214 Z" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<polygon points="703,235 733,235 730,228 706,228" fill="#ff8a1f"/>
+<rect x="732" y="290" width="48" height="7" rx="2" fill="#6b7280" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="735" y="258" width="42" height="32" rx="3" fill="#4b5563" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="739" y="262" width="34" height="24" rx="2" fill="#ff8a1f"/>
+<rect x="743" y="267" width="24" height="3" fill="#ffe9b3"/><rect x="743" y="273" width="16" height="3" fill="#ffe9b3"/>
+<circle cx="734" cy="288" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/><circle cx="744" cy="286" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="660" y="40" width="124" height="41" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="709,79 718,196 727,79" fill="#fffaf0"/>
+<polyline points="709,79 718,196 727,79" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="722" y="65.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">I said ONE.</text>
+<path d="M858,203.2 Q856,185.2 866,182.2 L872,187.2 Q865,190.2 868,203.2 Z" fill="#22c55e" stroke="#1a1026" stroke-width="1.5"/>
+<ellipse cx="863" cy="232" rx="40" ry="32.8" fill="#ff8a1f" stroke="#1a1026" stroke-width="2"/>
+<path d="M847.8,203.2 Q841,232 847.8,260.8 M878.2,203.2 Q885,232 878.2,260.8 M863,201.2 Q859,232 863,262.8" fill="none" stroke="#e0661a" stroke-width="2.5"/>
+<polygon points="842.6,230.4 856.2,230.4 849.4,217.2" fill="#1a1026"/><polygon points="845.8,228.7 853,228.7 849.4,221.5" fill="#ffe9b3"/>
+<polygon points="869.8,230.4 883.4,230.4 876.6,217.2" fill="#1a1026"/><polygon points="873,228.7 880.2,228.7 876.6,221.5" fill="#ffe9b3"/>
+<polygon points="839.8,241.2 847,248.4 852.6,245.1 859,252.3 866.2,245.8 873.4,251.7 879.8,245.8 886.2,241.2 875,241.8 867.8,245.8 858.2,241.8 849.4,245.1" fill="#1a1026"/><polygon points="844.9,245 850.5,245.2 854.9,245.1 859.9,245.3 865.5,245.1 871.1,245.2 876.1,245.1 881.1,245 872.4,245.1 866.7,245.1 859.3,245.1 852.4,245.1" fill="#ffe9b3"/>
+<rect x="828" y="270.8" width="70" height="18" rx="3" fill="#fff7dd" stroke="#1a1026" stroke-width="1.5"/>
+<text x="863" y="283.8" text-anchor="middle" font-family="Menlo, monospace" font-size="11" fill="#1a1026">env-peek</text>
+<rect x="788" y="110" width="141" height="41" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="854,149 863,184 872,149" fill="#fffaf0"/>
+<polyline points="854,149 863,184 872,149" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="858.5" y="135.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">You said add.</text>
+<text x="24" y="346" font-family="Menlo, monospace" font-size="13" fill="#ff8a1f">🎃 comic · environment</text>
+<text x="490" y="346" text-anchor="middle" font-family="Menlo, monospace" font-size="13" fill="#efe3cc">environment adds to what a local server inherits. It never subtracts.</text>
+</svg></figure>
+<blockquote class="callout warning"><p>⚠️ <strong>Security:</strong> <code>env-peek</code> chooses to print names only. The <code>everything</code> server&#39;s <code>get-env</code> tool prints every value, straight into the model&#39;s context (and therefore to the model provider). A local MCP server can read anything your shell can. Treat installing one like installing a shell script that runs as you, because that is what it is.</p>
+</blockquote>
+<h3 id="exercise-2-d-the-debugging-dojo"><a class="anchor" href="#exercise-2-d-the-debugging-dojo" aria-hidden="true">#</a>🧪 Exercise 2.D — The debugging dojo</h3>
+<p>Three servers, three different failures, one <code>opencode mcp list</code>. Enable <code>dojo-1</code>, <code>dojo-2</code> and <code>dojo-3</code> in <code>opencode.json</code> and run:</p>
+<pre><code class="language-bash">opencode mcp list
+</code></pre>
+<p><img src="images/shot-lab2-mcp-list.png" alt="Three failing servers"></p>
+<p><strong>Step 1 · Diagnose before you touch anything.</strong> Each error message is a clue, and two of them are identical. Read each entry&#39;s <code>command</code>, <code>environment</code> and <code>timeout</code> in the config, and fill in this table on paper:</p>
+<blockquote>
+<p>🔮 <strong>Predict.</strong></p>
+<table>
+<thead>
+<tr>
+<th>server</th>
+<th>symptom</th>
+<th>my hypothesis</th>
+<th>how I will confirm it</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>dojo-1</td>
+<td><code>Connection closed</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>dojo-2</td>
+<td><code>Connection closed</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>dojo-3</td>
+<td><code>Operation timed out after 5000ms</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+</blockquote>
+<p><strong>Step 2 · Confirm.</strong> Run each server&#39;s <code>command</code> by hand in the lab folder (with any <code>environment</code> it has, e.g. <code>DOJO_API_KEY=dojo-123 node dojo-server.mjs</code>) and read what it prints to stderr. <code>opencode mcp list</code> does not show you stderr; your own terminal does. A healthy stdio server prints a line to stderr and then waits silently for JSON on stdin; press <code>Ctrl+C</code> to stop it.</p>
+<p><strong>Step 3 · Fix, with a live board.</strong> Open a second terminal:</p>
+<blockquote>
+<p>🖥️ <strong>Split screen</strong></p>
+<table>
+<thead>
+<tr>
+<th>Terminal 1 (your editor)</th>
+<th>Terminal 2 (the board)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>edit <code>opencode.json</code>, save</td>
+<td><code>cd course/labs/lab2-configure &amp;&amp; node context-tax.mjs --watch</code></td>
+</tr>
+<tr>
+<td>fix one server at a time</td>
+<td>re-measures on every save: red dot → green dot</td>
+</tr>
+</tbody></table>
+</blockquote>
+<p><code>context-tax.mjs</code> connects to each enabled server exactly the way OpenCode does (spawn, <code>initialize</code>, <code>tools/list</code>) and shows the same symptoms <code>opencode mcp list</code> does. It will not tell you <em>why</em> until you ask (<code>--stderr</code>); that part is your job.</p>
+<p><img src="images/shot-lab2-tax-broken.png" alt="context-tax board before the fixes"></p>
+<p>Fix the config or the file, save, watch the board. When all three dots are green, <code>opencode mcp list</code> should agree: <strong>connected</strong> across the board.</p>
+<p><img src="images/shot-lab2-tax-fixed.png" alt="context-tax board after the fixes"></p>
+<p>Hints, if you need them after Step 2:</p>
+<details><summary>dojo-1 · "Connection closed"</summary>
+
+<p>Read the command very carefully. The process never started because the file does not exist. (<code>node</code> printed the real error to stderr, which <code>opencode mcp list</code> does not show; running the command yourself does.)</p>
+</details>
+
+<details><summary>dojo-2 · "Connection closed"</summary>
+
+<p>Same symptom, different cause: the server refuses to start without <code>DOJO_API_KEY</code> and exits with code 1. Add an <code>environment</code> block with that key (any value works for the dojo). Servers that fail fast on missing credentials are <em>good</em> servers; this one just needed its config.</p>
+</details>
+
+<details><summary>dojo-3 · "Operation timed out after 5000ms"</summary>
+
+<p>The server pretends to warm up for 20 seconds; the entry&#39;s <code>timeout</code> is 5 000 ms. Either raise the timeout (60 000) or make the server faster (<code>DOJO_SLOW_MS</code>). Real-world versions of this: <code>npx</code> downloading a package, a Python venv being created, a server waiting on a database connection.</p>
+</details>
+
+<details><summary>Still stuck? Let the board show you stderr</summary>
+
+<p><code>node context-tax.mjs --all --stderr</code> prints the last meaningful stderr lines of every failing server. Use it to check your hypotheses, not to replace them: in production you will have <code>opencode mcp list</code> and your own terminal, not this script.</p>
+</details>
+
+<blockquote>
+<p>🔬 <strong>Under the hood: why two different bugs print the same error.</strong> For a stdio server, OpenCode sees exactly two pipes: it writes to stdin and reads stdout. When the process dies (missing file, missing key, crash) stdout closes, and all the client can report is <code>Connection closed</code>. The <em>reason</em> went to stderr, which OpenCode does not show in <code>opencode mcp list</code>. A timeout is the opposite: the process is alive but silent, and the client gives up waiting for the <code>initialize</code> reply. So there are two symptoms and many causes, and the fastest debugger is the one you used in Step 2: run the exact command yourself and read stderr.</p>
+</blockquote>
+<h3 id="exercise-2-e-verify-without-opencode"><a class="anchor" href="#exercise-2-e-verify-without-opencode" aria-hidden="true">#</a>🧪 Exercise 2.E — Verify without OpenCode</h3>
+<p>The MCP Inspector is the protocol&#39;s reference debugging tool. Its CLI mode talks to any server directly:</p>
+<pre><code class="language-bash">npx -y @modelcontextprotocol/inspector --cli node env-peek.mjs --method tools/list
+npx -y @modelcontextprotocol/inspector --cli node env-peek.mjs --method tools/call --tool-name peek_environment
+npx -y @modelcontextprotocol/inspector --cli https://mcp.deepwiki.com/mcp --transport http --method tools/list
+</code></pre>
+<p>(Without <code>--cli</code> it opens a web UI on <code>localhost:6274</code> with the same capabilities and a form for every tool.) If the Inspector can list tools and OpenCode cannot, the problem is in your <code>opencode.json</code>; if neither can, the problem is in the server.</p>
+<h3 id="exercise-2-f-the-context-tax-measured-4-minutes"><a class="anchor" href="#exercise-2-f-the-context-tax-measured-4-minutes" aria-hidden="true">#</a>🧪 Exercise 2.F — The context tax, measured (4 minutes)</h3>
+<p>Every message you send carries the whole tool catalogue. Time to put a price on it.</p>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> With <code>everything</code> and <code>env-peek</code> enabled, how many extra tokens does MCP add to <em>every</em> turn, before the model does anything useful? 200? 2,000? 20,000? And which of the two servers costs more?</p>
+</blockquote>
+<ol>
+<li>In the TUI, <code>/new</code> and ask <em>&quot;Reply with the single word OK.&quot;</em> Note the token count in the footer.</li>
+<li>Disable every server in <code>/mcps</code>, <code>/new</code>, ask again. The difference is the per-turn price of your MCP setup.</li>
+<li>Now look at terminal 2 (or run <code>node context-tax.mjs</code> once). It prices each server separately: <strong>tool schemas</strong> in cyan, <strong>server instructions</strong> in yellow.</li>
+</ol>
+<details><summary>Our run (OpenCode 1.18, gpt-5.4-mini)</summary>
+
+<table>
+<thead>
+<tr>
+<th>Setup</th>
+<th>Input tokens for &quot;OK&quot;</th>
+<th>MCP share</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>no MCP servers</td>
+<td>9,640</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>everything</code> + <code>env-peek</code> (starter)</td>
+<td>11,756</td>
+<td><strong>+2,116</strong></td>
+</tr>
+<tr>
+<td><code>deepwiki</code> alone</td>
+<td>10,881</td>
+<td><strong>+1,241</strong></td>
+</tr>
+</tbody></table>
+<p><code>context-tax.mjs</code> estimated 2,635 and 1,203 for the same setups. It counts characters ÷ 4, so it lands within about a quarter of the real number; the footer is the ground truth, the board tells you <em>which server</em> to blame.</p>
+</details>
+
+<blockquote class="callout important"><p>🤯 <strong>DeepWiki&#39;s three tools cost about 265 tokens. DeepWiki costs you about 1,200.</strong> The rest is the <code>instructions</code> string the server returns from <code>initialize</code>: 3,700 characters, including descriptions of <code>devin_*</code> tools you do not even have. OpenCode puts server instructions into the model&#39;s context on every turn. We confirmed it with a test server whose instructions contained a codeword: the model recited the codeword without calling a single tool. So a server writes into your system prompt the moment it connects, before any tool is called and before any permission rule applies. Keep that in mind for Module 4.</p>
+</blockquote>
+<p>Now you know what &quot;enable only what you need&quot; costs in numbers, and where to look when a session feels slow or expensive.</p>
+<h3 id="mission-complete"><a class="anchor" href="#mission-complete" aria-hidden="true">#</a>🏅 Mission complete</h3>
+<ul>
+<li><strong>Remote in one line.</strong> You plugged a hosted MCP server into your agent with a URL and nothing else.</li>
+<li><strong>Saw through the layers.</strong> You found a config entry where you didn&#39;t put it, and know <code>opencode debug config</code> will find the next one.</li>
+<li><strong>Debugged like an operator.</strong> Three failures diagnosed from symptoms, confirmed from stderr, fixed and verified, and a board that proved it in real time.</li>
+<li><strong>Priced your setup.</strong> You can say, in tokens, what each server adds to every turn, and you know servers can write into the prompt itself.</li>
+<li><strong>Know what the errors mean.</strong> <code>Connection closed</code> means the process died, a timeout means it went silent, and remote errors say <code>SSE</code> even when SSE is not the problem.</li>
+</ul>
+<h3 id="check-yourself"><a class="anchor" href="#check-yourself" aria-hidden="true">#</a>✅ Check yourself</h3>
+<details><summary>1. You wrote <code>"command": "npx -y @modelcontextprotocol/server-everything"</code>. What happens, and why?</summary>
+
+<p><code>command</code> must be an array (<code>[&quot;npx&quot;, &quot;-y&quot;, &quot;@modelcontextprotocol/server-everything@2.0.0&quot;]</code>). There is no shell parsing; each argument is passed verbatim. Worse, OpenCode 1.18 does not complain about a string: it quietly drops the entry, so the server is simply missing from <code>opencode mcp list</code> (Challenge 2B). Keep <code>&quot;$schema&quot;</code> at the top of the file so your editor flags it as you type.</p>
+</details>
+
+<details><summary>2. You removed a server from the project <code>opencode.json</code> but it still connects. Where is it?</summary>
+
+<p>In another config layer: global (<code>~/.config/opencode/opencode.json</code>), <code>OPENCODE_CONFIG</code>, an organisation default, or managed config. <code>opencode debug config</code> shows the merged result.</p>
+</details>
+
+<details><summary>3. A local server needs an API key. Name two ways to provide it without writing the key into <code>opencode.json</code>.</summary>
+
+<p><code>&quot;environment&quot;: { &quot;API_KEY&quot;: &quot;{env:MY_API_KEY}&quot; }</code> (read from your shell) or <code>&quot;{file:~/.secrets/my-api-key}&quot;</code> (read from a file). Both keep the committed file secret-free.</p>
+</details>
+
+<details><summary>4. What does a remote server receive that a local one does not, and vice versa?</summary>
+
+<p>A remote server receives your tool arguments over the network and runs with <em>its</em> credentials and infrastructure; it never sees your environment or files. A local server sees your whole environment and filesystem but nothing leaves your machine unless its code sends it.</p>
+</details>
+
+<details><summary>5. You add a server with two small tools, and your per-turn token count jumps by over a thousand. What is the likely cause, and how would you confirm it?</summary>
+
+<p>The server returns a long <code>instructions</code> string from <code>initialize</code>, which OpenCode adds to the context on every turn. <code>node context-tax.mjs</code> shows it in the <code>instr.</code> column; the Inspector or the Lab 1 wiretap shows the raw <code>initialize</code> response.</p>
+</details>
+
+<h3 id="challenge-2a-scope-a-server-to-one-agent-10-minutes-optional"><a class="anchor" href="#challenge-2a-scope-a-server-to-one-agent-10-minutes-optional" aria-hidden="true">#</a>🏆 Challenge 2A — Scope a server to one agent (10 minutes, optional)</h3>
+<p>Create a <code>docs</code> agent that is the <strong>only</strong> agent allowed to use the <code>deepwiki</code> and <code>mslearn</code> tools; the default <code>build</code> agent must be refused when it tries. Do it with Markdown agent files under <code>.opencode/agents/</code> plus a <code>permission</code> block, verify by switching agents with <code>Tab</code> and asking the same question twice, and write down which permission rule did the work. Bonus: make the <code>docs</code> agent unable to edit files or run shell commands.</p>
+<h3 id="challenge-2b-black-belt-dojo-15-minutes-harder"><a class="anchor" href="#challenge-2b-black-belt-dojo-15-minutes-harder" aria-hidden="true">#</a>🏆 Challenge 2B — Black-belt dojo (15 minutes, harder)</h3>
+<p>The first dojo&#39;s failures announced themselves. These three are the ones that eat an afternoon: one works in your shell and not in OpenCode, one has an error message that points the wrong way, and one gives you no error at all. Add them under <code>mcp</code> in the lab&#39;s <code>opencode.json</code>:</p>
+<pre><code class="language-jsonc">&quot;dojo-4&quot;: { &quot;type&quot;: &quot;local&quot;, &quot;command&quot;: [&quot;node&quot;, &quot;dojo-server.mjs&quot;], &quot;enabled&quot;: true,
+            &quot;environment&quot;: { &quot;DOJO_API_KEY&quot;: &quot;{env:DOJO_KEY}&quot; } },
+&quot;dojo-5&quot;: { &quot;type&quot;: &quot;remote&quot;, &quot;url&quot;: &quot;https://mcp.deepwiki.com/mpc&quot;, &quot;enabled&quot;: true },
+&quot;dojo-6&quot;: { &quot;type&quot;: &quot;local&quot;, &quot;command&quot;: &quot;node dojo-server.mjs&quot;, &quot;enabled&quot;: true,
+            &quot;environment&quot;: { &quot;DOJO_API_KEY&quot;: &quot;dojo-123&quot; } }
+</code></pre>
+<p>Now set the key the way a hurried person would, in the <strong>same shell</strong> you will start OpenCode from, and check:</p>
+<pre><code class="language-bash">DOJO_KEY=dojo-123
+opencode mcp list
+</code></pre>
+<blockquote>
+<p>🔮 <strong>Predict</strong> for each server: connected or failed, and with what message? One of the three will surprise you by not appearing at all.</p>
+</blockquote>
+<p>Rules: the hypothesis table first, as in 2.D, then one fix per server, and each fix must be the <strong>smallest correct change</strong>. Done when all three say <strong>connected</strong> in <code>opencode mcp list</code>. Then answer:</p>
+<ol>
+<li><code>dojo-4</code>: <code>echo $DOJO_KEY</code> prints the key. Why does the server not get it? Where exactly is <code>{env:…}</code> resolved, and when?</li>
+<li><code>dojo-5</code>: the message says <code>SSE error</code>. Is SSE the problem? What is?</li>
+<li><code>dojo-6</code>: which command shows you what OpenCode actually did with this entry?</li>
+</ol>
+<details><summary>Nudges (open one at a time)</summary>
+
+<ul>
+<li><code>dojo-4</code>: a shell variable and an <em>exported</em> environment variable are not the same thing. Child processes only inherit the second kind.</li>
+<li><code>dojo-5</code>: read the URL letter by letter. Then reread the 🔬 box in 2.4 about the fallback transport.</li>
+<li><code>dojo-6</code>: <code>opencode debug config | grep -A4 dojo-6</code>.</details></li>
+</ul>
+<p>📼 <strong>Next episode.</strong> So far every server has been someone else&#39;s code, configured by you. Next you write one: a few dozen lines of TypeScript that turn <em>&quot;should I bring an umbrella?&quot;</em> into a live API call the model chose to make on its own.</p>
+<p><a href="03-building-a-custom-mcp-server.html">Module 3 · Building a custom MCP server →</a></p>
+
+</main>
+<footer class="foot"><div class="pumpkins" aria-hidden="true">🎃 🦇 👻 🕸️ 🎃</div>MCP with AI Agents · OpenCode + MCP course · haunted edition, October 2026 · <a href="https://github.com/varoonsahgal/opencode-mcp-course">source and labs on GitHub</a></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+  document.querySelectorAll("pre code").forEach((el) => {
+    const m = el.className.match(/language-(\w+)/);
+    if (m && m[1] === "jsonc") el.className = "language-json";
+    if (!m) el.classList.add("nohighlight");
+    window.hljs && hljs.highlightElement(el);
+    const b = document.createElement("button"); b.className = "copy"; b.type = "button"; b.textContent = "Copy";
+    b.onclick = () => { navigator.clipboard.writeText(el.innerText).then(() => { b.textContent = "Copied"; setTimeout(() => (b.textContent = "Copy"), 1200); }); };
+    el.parentElement.appendChild(b);
+  });
+  document.querySelectorAll("main table").forEach((t) => { const w = document.createElement("div"); w.className = "tbl"; t.replaceWith(w); w.appendChild(t); });
+  // Daylight / midnight toggle. Follows the system until pinned; the pin lives in this browser only.
+  (function () {
+    const root = document.documentElement, btn = document.getElementById("themebtn");
+    const light = document.getElementById("hl-light"), dark = document.getElementById("hl-dark");
+    const isDark = () => root.getAttribute("data-theme") === "dark" || (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    const paint = () => { const d = isDark(); btn.textContent = d ? "☀️" : "🌙"; light.media = d ? "not all" : "all"; dark.media = d ? "all" : "not all"; };
+    btn.onclick = () => { const next = isDark() ? "light" : "dark"; root.setAttribute("data-theme", next); try { localStorage.setItem("theme", next); } catch (e) {} paint(); };
+    matchMedia("(prefers-color-scheme: dark)").addEventListener("change", paint);
+    paint();
+  })();
+</script>
+</body>
+</html>

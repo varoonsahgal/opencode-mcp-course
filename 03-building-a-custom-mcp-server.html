@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 3 · Building a Custom MCP Server · MCP with AI Agents</title>
+<script>try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Creepster&family=Patrick+Hand&display=swap" rel="stylesheet">
+<link id="hl-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="(prefers-color-scheme: light)">
+<link id="hl-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%228%22%20fill%3D%22%23150c24%22%2F%3E%3Cellipse%20cx%3D%2216%22%20cy%3D%2218%22%20rx%3D%2212%22%20ry%3D%2210%22%20fill%3D%22%23ff8a1f%22%2F%3E%3Cpath%20d%3D%22M16%208c0-3%201-4%203-5%22%20stroke%3D%22%2322c55e%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M9%2015l4%203-4%201zM23%2015l-4%203%204%201z%22%20fill%3D%22%23150c24%22%2F%3E%3Cpath%20d%3D%22M9%2022q7%205%2014%200q-2%203-7%203t-7-3z%22%20fill%3D%22%23150c24%22%2F%3E%3C%2Fsvg%3E">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="pumpkin" aria-hidden="true">🎃</span>MCP with AI Agents</a>
+  <nav class="links"><a href="index.html">Home</a><a href="00-setup.html">00 · Setup</a><a href="01-connecting-agents-with-mcp.html">01 · Connect</a><a href="02-configuring-mcp-in-opencode.html">02 · Configure</a><a href="03-building-a-custom-mcp-server.html" aria-current="page">03 · Build</a><a href="04-securing-mcp-integrations.html">04 · Secure</a><a href="05-applied-challenge.html">05 · Apply</a><a href="06-advanced-mcp.html">06 · Go remote</a><span class="sep"></span><a href="handout.html">Handout</a><a href="slides/index.html">Slides</a><a href="https://github.com/varoonsahgal/opencode-mcp-course">GitHub</a></nav>
+  <button class="theme" type="button" id="themebtn" aria-label="Switch between daylight and midnight" title="Daylight / midnight">🌙</button>
+  <button class="menu" type="button" aria-label="Menu" onclick="document.body.classList.toggle('open')">☰</button>
+</header>
+<svg class="web" viewBox="0 0 170 170" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1">
+<path d="M0 0L170 170M0 0L170 70M0 0L70 170M0 0L170 20M0 0L20 170M0 0L170 120M0 0L120 170"/>
+<path d="M30 0Q28 22 0 30M60 0Q56 44 0 60M90 0Q84 66 0 90M120 0Q112 88 0 120M150 0Q140 110 0 150"/>
+<path d="M30 0Q30 15 20 24Q15 28 0 30" opacity=".5"/></svg>
+<main class="doc">
+<figure class="banner"><svg xmlns="http://www.w3.org/2000/svg" width="960" height="220" viewBox="0 0 960 220" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="Module 3, Build: a few lines of TypeScript become a tool the model can read, choose and call">
+ <title>Module 3 · Build</title>
+ <style>
+  .b3-tw { animation: b3-tw 3.2s ease-in-out infinite; }
+  .b3-fly { animation: b3-fly 6s ease-in-out infinite; }
+  .b3-flk { animation: b3-flk 3.1s steps(1) infinite; }
+  .b3-ln { animation: b3-type 7s ease-out infinite backwards; }
+  .b3-seg { animation: b3-seg 7s steps(1) infinite backwards; }
+  .b3-card { animation: b3-card 7s ease-out infinite backwards; animation-delay: 2.2s; }
+  .b3-arrow { stroke-dasharray: 4 6; animation: b3-flow 1.2s linear infinite; }
+  .b3-caret { animation: b3-blink 1s steps(1) infinite; }
+  @keyframes b3-tw { 0%,100% { opacity: .15; } 50% { opacity: 1; } }
+  @keyframes b3-fly { 0%,100% { transform: translate(0,0) rotate(0); } 50% { transform: translate(12px,-7px) rotate(-8deg); } }
+  @keyframes b3-flk { 0%,64% { opacity: 1; } 65%,70% { opacity: .3; } 71%,78% { opacity: 1; } 79%,82% { opacity: .4; } 83%,100% { opacity: 1; } }
+  @keyframes b3-type { 0% { opacity: 0; } 6% { opacity: 1; } 92% { opacity: 1; } 100% { opacity: 0; } }
+  @keyframes b3-seg { 0% { opacity: .15; } 4% { opacity: 1; } 92% { opacity: 1; } 100% { opacity: .15; } }
+  @keyframes b3-card { 0% { opacity: .25; } 8% { opacity: 1; } 92% { opacity: 1; } 100% { opacity: .25; } }
+  @keyframes b3-flow { to { stroke-dashoffset: -20; } }
+  @keyframes b3-blink { 0%,50% { opacity: 1; } 51%,100% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .b3-tw, .b3-fly, .b3-flk, .b3-ln, .b3-seg, .b3-card, .b3-arrow, .b3-caret { animation: none !important; } }
+ </style>
+ <defs>
+  <linearGradient id="b3-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0612"/><stop offset="1" stop-color="#1f1333"/></linearGradient>
+  <pattern id="b3-grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#2a1a44"/></pattern>
+  <radialGradient id="b3-glow" cx="0.74" cy="0.5" r="0.45"><stop offset="0" stop-color="#ff8a1f" stop-opacity=".3"/><stop offset="1" stop-color="#ff8a1f" stop-opacity="0"/></radialGradient>
+  <radialGradient id="b3-mg"><stop offset=".3" stop-color="#ffe9b3" stop-opacity=".3"/><stop offset="1" stop-color="#ffe9b3" stop-opacity="0"/></radialGradient>
+  <filter id="b3-tg" x="-6%" y="-40%" width="112%" height="180%"><feGaussianBlur stdDeviation="5" result="b"/><feFlood flood-color="#ff8a1f" flood-opacity=".8"/><feComposite in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="b3-fg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <path id="b3-bat" d="M0,-4L-2,-8L-3,-3C-9,-9 -15,-8 -19,-4C-15,-3 -14,0 -13,3C-10,0 -8,1 -7,4C-5,2 -3,3 -2,5L0,4L2,5C3,3 5,2 7,4C8,1 10,0 13,3C14,0 15,-3 19,-4C15,-8 9,-9 3,-3L2,-8Z" fill="#0a0612" stroke="#a855f7" stroke-opacity=".6" stroke-width=".9" stroke-linejoin="round"/>
+  <g id="b3-pk"><path d="M-2,-19C-3,-24 0,-28 6,-30C4,-27 5,-22 4,-19Z" fill="#22c55e"/><ellipse cy="1" rx="24" ry="19" fill="#e0661a"/><ellipse rx="17" ry="20" fill="#ff8a1f"/><path d="M-9,-19C-13,-6 -13,8 -9,20M9,-19C13,-6 13,8 9,20" fill="none" stroke="#e0661a" stroke-width="1.4"/></g>
+  <path id="b3-pf" d="M-13,-1L-8,-10L-3,-1ZM3,-1L8,-10L13,-1ZM-2,6L0,2L2,6ZM-13,8Q0,18 13,8L10,8 9,12 6,8 -6,8 -9,12 -10,8Z"/>
+ </defs>
+ <rect width="960" height="220" rx="20" fill="url(#b3-bg)"/>
+ <rect width="960" height="220" rx="20" fill="url(#b3-grid)" opacity=".5"/>
+ <rect width="960" height="220" rx="20" fill="url(#b3-glow)"/>
+ <g fill="#fff"><circle cx="41" cy="10" r="1.0" opacity="0.71"/><circle class="b3-tw" style="animation-delay:-0.4s" cx="155" cy="10" r="0.9"/><circle cx="163" cy="24" r="1.2" opacity="0.38"/><circle cx="512" cy="18" r="1.0" opacity="0.9"/><circle cx="114" cy="8" r="1.4" opacity="0.54"/><circle cx="209" cy="15" r="1.0" opacity="0.87"/><circle cx="219" cy="13" r="1.1" opacity="0.63"/><circle cx="888" cy="26" r="0.9" opacity="0.42"/><circle cx="783" cy="30" r="0.7" opacity="0.74"/><circle cx="812" cy="22" r="0.9" opacity="0.78"/><circle cx="687" cy="12" r="1.1" opacity="0.43"/><circle cx="67" cy="15" r="0.9" opacity="0.54"/><circle cx="780" cy="176" r="1.4" opacity="0.89"/><circle cx="947" cy="168" r="0.9" opacity="0.41"/><circle cx="769" cy="126" r="1.2" opacity="0.36"/><circle class="b3-tw" style="animation-delay:-1.5s" cx="563" cy="191" r="1.1"/><circle cx="516" cy="100" r="1.3" opacity="0.69"/><circle cx="946" cy="64" r="1.0" opacity="0.78"/><circle class="b3-tw" style="animation-delay:-0.6s" cx="683" cy="168" r="1.1"/><circle class="b3-tw" style="animation-delay:-1.2s" cx="517" cy="202" r="0.8"/><circle class="b3-tw" style="animation-delay:-1.5s" cx="631" cy="155" r="1.3"/><circle cx="709" cy="168" r="0.9" opacity="0.52"/></g>
+ <circle cx="494" cy="36" r="45" fill="url(#b3-mg)"/>
+ <path transform="translate(494 36) rotate(-20)" d="M0,-16A16,16 0 0,0 0,16A19.5,19.5 0 0,1 0,-16Z" fill="#ffe9b3"/>
+ <g transform="translate(452 22) scale(0.5)"><use href="#b3-bat" class="b3-fly" style="animation-duration:6s;animation-delay:-1s"/></g><g transform="translate(760 22) scale(0.45)"><use href="#b3-bat" class="b3-fly" style="animation-duration:7s;animation-delay:-3s"/></g><g transform="translate(936 30) scale(0.5)"><use href="#b3-bat" class="b3-fly" style="animation-duration:5.5s;animation-delay:-2s"/></g>
+ <path d="M960,220L900.1,200.5M960,220L909.0,183.0M960,220L923.0,169.0M960,220L940.5,160.1M945.0,220.0Q946.7,217.9 945.7,215.4Q948.0,213.9 947.9,211.2Q950.5,210.5 951.2,207.9Q953.9,208.0 955.4,205.7Q957.9,206.7 960.0,205.0M931.0,220.0Q934.2,215.9 932.4,211.0Q936.7,208.2 936.5,203.0Q941.5,201.5 943.0,196.5Q948.2,196.7 951.0,192.4Q955.9,194.2 960.0,191.0M917.0,220.0Q921.8,213.9 919.1,206.7Q925.5,202.4 925.2,194.7Q932.6,192.6 934.7,185.2Q942.4,185.5 946.7,179.1Q953.9,181.8 960.0,177.0M903.0,220.0Q909.3,212.0 905.8,202.4Q914.3,196.7 913.9,186.5Q923.7,183.7 926.5,173.9Q936.7,174.3 942.4,165.8Q952.0,169.3 960.0,163.0" fill="none" stroke="#efe3cc" stroke-opacity=".25" stroke-width=".8"/>
+
+ <!-- left: words -->
+ <text x="40" y="50" font-family="Menlo, 'JetBrains Mono', monospace" font-size="12" letter-spacing="1.8" fill="#ff8a1f">MODULE 03 · 55 MIN · LAB: lab3-weather-server</text>
+ <text x="38" y="102" font-family="Creepster, 'Chalkboard SE', Impact, fantasy" font-size="46" letter-spacing="1" fill="#efe3cc" filter="url(#b3-tg)">Build</text>
+ <text x="40" y="134" font-size="17" fill="#d8cfc0">The model never sees your code. It reads your words.</text>
+ <text x="40" y="156" font-size="17" fill="#d8cfc0">Write them well and it <tspan fill="#ffd1a3" font-weight="700">picks your tool by itself.</tspan></text>
+ <g font-weight="700">
+  <rect x="40" y="176" width="128" height="26" rx="13" fill="#ff8a1f" fill-opacity=".18" stroke="#ff8a1f"/><text x="104" y="193" text-anchor="middle" fill="#ffd1a3" font-size="12">a real API as a tool</text>
+  <rect x="176" y="176" width="112" height="26" rx="13" fill="#ff8a1f" fill-opacity=".18" stroke="#ff8a1f"/><text x="232" y="193" text-anchor="middle" fill="#ffd1a3" font-size="12">errors it recovers</text>
+  <rect x="296" y="176" width="92" height="26" rx="13" fill="#ff8a1f" fill-opacity=".18" stroke="#ff8a1f"/><text x="342" y="193" text-anchor="middle" fill="#ffd1a3" font-size="12">score 10/10</text>
+ </g>
+
+ <!-- right: code assembles -->
+ <rect x="520" y="36" width="200" height="168" rx="12" fill="#0c0714" stroke="#3b2a5a"/>
+ <circle cx="536" cy="50" r="4" fill="#e11d48"/><circle cx="550" cy="50" r="4" fill="#ff8a1f"/><circle cx="564" cy="50" r="4" fill="#22c55e"/>
+ <text x="704" y="53" text-anchor="end" font-family="Menlo, 'JetBrains Mono', monospace" font-size="9" fill="#8b7fa3">server.ts</text>
+ <g font-family="Menlo, 'JetBrains Mono', monospace" font-size="10">
+  <text class="b3-ln" style="animation-delay:0s"   x="534" y="78"><tspan fill="#c084fc">server</tspan><tspan fill="#a89bb8">.</tspan><tspan fill="#ff8a1f">registerTool</tspan><tspan fill="#a89bb8">(</tspan></text>
+  <text class="b3-ln" style="animation-delay:.3s"  x="546" y="94" fill="#7cf29a">"get_weather",</text>
+  <text class="b3-ln" style="animation-delay:.6s"  x="546" y="110"><tspan fill="#a5b4fc">description</tspan><tspan fill="#a89bb8">: </tspan><tspan fill="#7cf29a">"Use this</tspan></text>
+  <text class="b3-ln" style="animation-delay:.8s"  x="558" y="124" fill="#7cf29a">whenever… Not a forecast"</text>
+  <text class="b3-ln" style="animation-delay:1.1s" x="546" y="140"><tspan fill="#a5b4fc">inputSchema</tspan><tspan fill="#a89bb8">: z.object({</tspan></text>
+  <text class="b3-ln" style="animation-delay:1.4s" x="558" y="154"><tspan fill="#ffe9b3">city</tspan><tspan fill="#a89bb8">: z.string().</tspan><tspan fill="#ff8a1f">min</tspan><tspan fill="#a89bb8">(2)</tspan></text>
+  <text class="b3-ln" style="animation-delay:1.7s" x="546" y="170"><tspan fill="#a5b4fc">annotations</tspan><tspan fill="#a89bb8">: { readOnly… }</tspan></text>
+  <text class="b3-ln" style="animation-delay:2.0s" x="534" y="188" fill="#a89bb8">}, handler)<tspan class="b3-caret" fill="#ff8a1f">▍</tspan></text>
+ </g>
+
+ <!-- the server that runs it -->
+ <g transform="translate(745 118) scale(0.65)"><use href="#b3-pk"/><use href="#b3-pf" fill="#ffe9b3" filter="url(#b3-fg)"/></g>
+ <text x="745" y="148" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="9" fill="#ffd1a3">weather</text>
+ <path class="b3-arrow" d="M762 118 H770" stroke="#ff8a1f" stroke-width="2" fill="none"/>
+ <path d="M769 113 L775 118 L769 123 z" fill="#ff8a1f"/>
+
+ <!-- the tool card the model sees -->
+ <g class="b3-card">
+  <rect x="776" y="44" width="156" height="140" rx="12" fill="#120a1e" stroke="#ff8a1f" stroke-width="2"/>
+  <text x="788" y="66" font-family="Menlo, 'JetBrains Mono', monospace" font-size="9" letter-spacing="1.5" fill="#a89bb8">THE MODEL SEES</text>
+  <text x="788" y="88" font-family="Menlo, 'JetBrains Mono', monospace" font-size="12" font-weight="700" fill="#7cf29a">weather_get_weather</text>
+  <rect x="788" y="100" width="128" height="5" rx="2.5" fill="#3b2a5a"/>
+  <rect x="788" y="110" width="106" height="5" rx="2.5" fill="#3b2a5a"/>
+  <rect x="788" y="120" width="116" height="5" rx="2.5" fill="#3b2a5a"/>
+  <text x="788" y="144" font-family="Menlo, 'JetBrains Mono', monospace" font-size="10" fill="#ffe9b3">city<tspan fill="#a89bb8">: string 2..80</tspan></text>
+ </g>
+ <g fill="#ff8a1f">
+  <rect class="b3-seg" style="animation-delay:2.50s" x="788" y="158" width="10" height="12" rx="2"/>
+  <rect class="b3-seg" style="animation-delay:2.65s" x="801" y="158" width="10" height="12" rx="2"/>
+  <rect class="b3-seg" style="animation-delay:2.80s" x="814" y="158" width="10" height="12" rx="2"/>
+  <rect class="b3-seg" style="animation-delay:2.95s" x="827" y="158" width="10" height="12" rx="2"/>
+  <rect class="b3-seg" style="animation-delay:3.10s" x="840" y="158" width="10" height="12" rx="2"/>
+  <rect class="b3-seg" style="animation-delay:3.25s" x="853" y="158" width="10" height="12" rx="2"/>
+  <rect class="b3-seg" style="animation-delay:3.40s" x="866" y="158" width="10" height="12" rx="2"/>
+  <rect class="b3-seg" style="animation-delay:3.55s" x="879" y="158" width="10" height="12" rx="2" fill="#22c55e"/>
+  <rect class="b3-seg" style="animation-delay:3.70s" x="892" y="158" width="10" height="12" rx="2" fill="#22c55e"/>
+  <rect class="b3-seg" style="animation-delay:3.85s" x="905" y="158" width="10" height="12" rx="2" fill="#22c55e"/>
+ </g>
+</svg></figure>
+<h1>Module 3 · Building a Custom MCP Server</h1>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Time</strong></td>
+<td>55 minutes (15 concepts · 40 lab)</td>
+</tr>
+<tr>
+<td><strong>Lab folder</strong></td>
+<td><code>course/labs/lab3-weather-server</code></td>
+</tr>
+<tr>
+<td><strong>You will</strong></td>
+<td>build a TypeScript MCP server that wraps a real public API (Open-Meteo, no key needed), test it with the Inspector, register it in OpenCode, and invoke it in plain English</td>
+</tr>
+<tr>
+<td><strong>You&#39;ll pull off</strong></td>
+<td>a model you have never met finds your tool, from a question that never names it, and calls it with the right arguments. Then you change one sentence and watch it behave differently, 3 runs out of 3.</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>🎬 <strong>Cold open.</strong> In about forty minutes someone will type <em>&quot;Should I bring an umbrella in Paris today?&quot;</em> into OpenCode. The model will look through every tool it has, pick a function you wrote, invent the right argument, call it, and read your reply. It will never see your code. It sees a name, a paragraph of prose and a JSON Schema, and it makes its decision on those alone. Your TypeScript decides what the tool <em>does</em>. Your words decide <em>whether it ever gets called</em>. This module is about writing both.</p>
+</blockquote>
+<h2 id="3-1-anatomy-of-a-server"><a class="anchor" href="#3-1-anatomy-of-a-server" aria-hidden="true">#</a>3.1 Anatomy of a server</h2>
+<p><img src="images/server-anatomy.svg" alt="Server anatomy"></p>
+<p>With the TypeScript SDK v2 (<code>@modelcontextprotocol/server</code>), a server is four things:</p>
+<ol>
+<li><strong>A transport.</strong> <code>serveStdio(factory)</code> runs your factory once per connection and wires the result to stdin/stdout. (Remote servers use <code>createMcpHandler</code> behind an HTTP framework instead; same <code>McpServer</code> object.)</li>
+<li><strong>An identity.</strong> <code>new McpServer({ name, version })</code>, reported during <code>initialize</code>.</li>
+<li><strong>Capabilities.</strong> <code>registerTool</code>, <code>registerResource</code>, <code>registerPrompt</code>. Each has a name, metadata the <em>model</em> (or user) reads, and a schema.</li>
+<li><strong>Handlers.</strong> Async functions that receive validated arguments and return <code>{ content: [...] }</code>.</li>
+</ol>
+<p>Schemas are <strong>zod v4</strong> objects; the SDK converts them to JSON Schema for the wire and validates incoming arguments <em>before</em> your handler runs. Logging goes to <code>console.error</code>, never <code>console.log</code>.</p>
+<blockquote>
+<p>🍬 <strong>Treat: the cast, so the imports make sense.</strong> Three packages do the work. <code>@modelcontextprotocol/server</code> is the MCP TypeScript SDK, version 2 (version 1 lived in a single package called <code>@modelcontextprotocol/sdk</code>, which is what most blog posts still show). <code>zod</code> is a schema library: describe a shape once and you get both a TypeScript type and runtime validation. <code>tsx</code> runs TypeScript directly with no build step, which is why the command in <code>opencode.json</code> is <code>npx tsx src/server.ts</code>. One more thing that looks odd: <code>serveStdio</code> takes a <em>factory</em> even though a stdio server only ever has one client. That is on purpose. Module 6 hands the same factory to an HTTP server, which runs it once per connection.</p>
+</blockquote>
+<h2 id="3-2-designing-capabilities-worth-exposing"><a class="anchor" href="#3-2-designing-capabilities-worth-exposing" aria-hidden="true">#</a>3.2 Designing capabilities worth exposing</h2>
+<p><img src="images/tool-design-spectrum.svg" alt="Tool design spectrum"></p>
+<p>The model chooses tools by reading their names, descriptions and schemas. Design them the way you would brief a careful colleague. In the lab, <code>tool-card.mjs</code> scores your tool against exactly these rules, live, every time you save.</p>
+<ul>
+<li><strong>Expose intent, not plumbing.</strong> <code>get_weather(city)</code> rather than <code>http_get(url)</code>. Raw-access tools (<code>run_sql</code>, <code>run_shell</code>, <code>fetch_any_url</code>) push every decision onto the model and make permissions meaningless. Module 4 shows the blast radius.</li>
+<li><strong>Name for the verb.</strong> <code>snake_case</code>, a verb plus an object, under 64 characters: <code>list_open_tickets</code>, <code>acknowledge_incident</code>. The spec&#39;s naming guidance (SEP-986) recommends exactly this.</li>
+<li><strong>Write descriptions as instructions.</strong> Say what the tool does, <em>when to use it</em>, and <em>when not to</em>: &quot;Current weather for a city. Not a forecast: cannot answer questions about tomorrow.&quot; Describe each parameter with <code>.describe()</code>. Mention units and formats.</li>
+<li><strong>Constrain inputs.</strong> <code>z.enum([...])</code>, <code>.min()</code>, <code>.max()</code>, <code>.regex()</code>. Every constraint is one less way for a confused model (or a confused <em>deputy</em>, Module 4) to do harm.</li>
+<li><strong>Separate reads from writes.</strong> One tool per business action. A read-only tool can be auto-approved; a write tool can be gated. A tool that does both can only be gated as a whole.</li>
+<li><strong>Annotate.</strong> <code>annotations: { readOnlyHint, destructiveHint, idempotentHint, openWorldHint }</code> tell hosts how to present the tool. They are hints; hosts must treat them as untrusted. Set them honestly anyway.</li>
+</ul>
+<blockquote>
+<p>🍬 <strong>Treat: <code>name</code> is for machines, <code>title</code> is for people.</strong> The model calls the <code>name</code>, permission rules match it, and the host prefixes it with the server&#39;s name. The optional <code>title</code> is what a UI may show a human instead: <em>Current weather</em> where the transcript says <code>weather_get_weather</code>. Write both, and never let the title carry a fact the description does not, because the model may never see it.</p>
+</blockquote>
+<h2 id="3-3-inputs-and-outputs"><a class="anchor" href="#3-3-inputs-and-outputs" aria-hidden="true">#</a>3.3 Inputs and outputs</h2>
+<p>A tool result is <code>{ content: ContentPart[], structuredContent?, isError? }</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Part</th>
+<th>Shape</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>text</td>
+<td><code>{ type: &quot;text&quot;, text }</code></td>
+<td>what the model reads; keep it short and information-dense</td>
+</tr>
+<tr>
+<td>image / audio</td>
+<td><code>{ type: &quot;image&quot;, data: &lt;base64&gt;, mimeType }</code></td>
+<td>OpenCode can show images from tools</td>
+</tr>
+<tr>
+<td>resource_link</td>
+<td><code>{ type: &quot;resource_link&quot;, uri, name }</code></td>
+<td>point to a resource instead of inlining it</td>
+</tr>
+<tr>
+<td>embedded resource</td>
+<td><code>{ type: &quot;resource&quot;, resource: { uri, text|blob } }</code></td>
+<td>inline a resource&#39;s contents</td>
+</tr>
+</tbody></table>
+<p><code>outputSchema</code> + <code>structuredContent</code> give <em>programs</em> a typed result alongside the prose the model reads. The SDK validates <code>structuredContent</code> against the schema. OpenCode shows the text part in the transcript; if there is no output schema and the text looks like JSON, it parses it so it can render it nicely.</p>
+<blockquote class="callout tip"><p>💡 <strong>Insight: your tool&#39;s output is somebody&#39;s prompt.</strong> Everything you return is pasted into the model&#39;s context, where it costs tokens and can <em>steer</em> the model. Return the fields that answer the question, not the whole upstream JSON. A 40 KB API response is both a waste and an attack surface.</p>
+</blockquote>
+<blockquote>
+<p>🍬 <strong>Treat: why say the same thing twice?</strong> <code>content</code> and <code>structuredContent</code> carry the same facts because they have different readers. The model only ever reads <code>content</code>, and clients that predate <code>outputSchema</code> read nothing else. <code>structuredContent</code> is for code: the host, a test harness, or another tool that wants to chain on the result without parsing prose. The spec asks a server that declares an <code>outputSchema</code> to always send the structured copy, and the SDK checks that it matches.</p>
+</blockquote>
+<h2 id="3-4-errors-the-model-can-recover-from"><a class="anchor" href="#3-4-errors-the-model-can-recover-from" aria-hidden="true">#</a>3.4 Errors the model can recover from</h2>
+<p>Two error channels, chosen by audience:</p>
+<ul>
+<li><strong>Tool execution error</strong> → <code>return { isError: true, content: [{ type: &quot;text&quot;, text: &quot;No place called &#39;Atlantis&#39;. Try adding the country.&quot; }] }</code>. A successful JSON-RPC result that the <em>model</em> reads. It will retry, ask the user, or explain. Put the recovery hint in the text; it is the only thing the model has to work with. Thrown exceptions inside a tool handler are converted to this form automatically.</li>
+<li><strong>Protocol error</strong> → thrown <code>ProtocolError</code> from resource/prompt callbacks, or produced by the SDK for malformed requests. A JSON-RPC error the model never sees; it is addressed to the client&#39;s code.</li>
+</ul>
+<p>Invalid arguments never reach your handler: the SDK answers with an <code>isError</code> result describing the schema violation, which is exactly what lets the model self-correct.</p>
+<blockquote>
+<p>🔬 <strong>Under the hood: the two channels on the wire.</strong> You sent both kinds by hand in Exercise 1.E. Side by side:</p>
+<pre><code class="language-jsonc">// protocol error: a JSON-RPC &quot;error&quot;. The client&#39;s code handles it; the model may never see it.
+{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:6,&quot;error&quot;:{&quot;code&quot;:-32602,&quot;message&quot;:&quot;Tool get_weather not found&quot;}}
+// tool error: a successful &quot;result&quot; that says it failed. Goes into the model&#39;s context, word for word.
+{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:4,&quot;result&quot;:{&quot;isError&quot;:true,&quot;content&quot;:[{&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;Unknown timezone &#39;Mars/Olympus_Mons&#39;. Use an IANA name like &#39;Europe/Paris&#39;.&quot;}]}}
+</code></pre>
+<p>The rule of thumb: if a smarter <em>model</em> could fix it (wrong city, missing country, try again later), return <code>isError</code> with a hint. If only a <em>programmer</em> could fix it (no such method, malformed JSON), it is a protocol error, and the SDK produces those for you.</p>
+</blockquote>
+<h2 id="3-5-talking-to-the-outside-world"><a class="anchor" href="#3-5-talking-to-the-outside-world" aria-hidden="true">#</a>3.5 Talking to the outside world</h2>
+<p><code>fetch</code> with <code>AbortSignal.timeout(8000)</code>, check <code>res.ok</code>, map the response to a compact shape, and never put credentials into the result text. Rate limits and transient failures are part of normal life: fail with an <code>isError</code> message that says <em>what to do next</em> (&quot;try again in a minute&quot;), not a stack trace.</p>
+<blockquote>
+<p>🍬 <strong>Treat: the API behind the lab.</strong> Open-Meteo aggregates national weather services and needs no key for non-commercial use, which is why the lab can call it with no secrets at all. Its geocoding endpoint turns <em>Paris</em> into coordinates (the starter&#39;s <code>geocode()</code> helper wraps it), and its forecast endpoint takes those coordinates and a list of variables. Real APIs usually want a key: that is Module 2&#39;s <code>{env:…}</code> pattern, and Module 5 shows a server failing closed when the key is missing.</p>
+</blockquote>
+<h2 id="3-6-register-discover-test-iterate"><a class="anchor" href="#3-6-register-discover-test-iterate" aria-hidden="true">#</a>3.6 Register, discover, test, iterate</h2>
+<ol>
+<li>Add the server to <code>opencode.json</code> (<code>&quot;command&quot;: [&quot;npx&quot;, &quot;tsx&quot;, &quot;src/server.ts&quot;]</code>).</li>
+<li><code>opencode mcp list</code> → <strong>connected</strong>.</li>
+<li>Discovery: <code>npx -y @modelcontextprotocol/inspector --cli npx tsx src/server.ts --method tools/list</code> shows exactly what the model will see. (<code>node tool-card.mjs</code> shows the same thing as a scored card.)</li>
+<li>Execution through the protocol: Inspector <code>tools/call</code>.</li>
+<li>Execution through <em>language</em>: in OpenCode, ask the question a user would ask, without naming the tool. If the model does not pick the tool, your description is the bug.</li>
+<li>After every code change, restart OpenCode (it spawns the server at startup). Toggling the server off and on in <code>/mcps</code> also respawns it.</li>
+</ol>
+<blockquote class="callout warning"><p>⚠️ <strong>Six ways a first server goes wrong</strong>, in the order people usually hit them:</p>
+<ol>
+<li><strong><code>console.log</code> for logging</strong> (Module 1.4). Symptom: <code>Connection closed</code>, or <code>✗ not JSON on the protocol channel</code> in the wiretap.</li>
+<li><strong>Not restarting OpenCode</strong> after a change. Symptom: the model keeps seeing yesterday&#39;s description, and you blame the model.</li>
+<li><strong>A vague description.</strong> Symptom: the model answers from memory, or calls the tool for a question it cannot answer (Exercise 3.B).</li>
+<li><strong>Returning the whole upstream payload.</strong> Symptom: tokens, and a model steered by fields it should never have seen (3.3).</li>
+<li><strong>Swallowing errors</strong>: <code>catch { return { content: [{ type: &quot;text&quot;, text: &quot;&quot; }] } }</code>. Symptom: the model reads an empty result as <em>no data</em> and carries on confidently. Fail closed with <code>isError</code> (Module 5 makes this a rule).</li>
+<li><strong>No timeout on <code>fetch</code>.</strong> Symptom: one slow upstream call pins the whole turn until OpenCode&#39;s <code>timeout</code> gives up.</li>
+</ol>
+</blockquote>
+<hr>
+<h2 id="lab-3-the-weather-server-40-minutes"><a class="anchor" href="#lab-3-the-weather-server-40-minutes" aria-hidden="true">#</a>Lab 3 · The weather server (40 minutes)</h2>
+<h3 id="mission"><a class="anchor" href="#mission" aria-hidden="true">#</a>🎯 Mission</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Ship <code>get_weather</code>, a tool that wraps a real API, and see it in the Inspector</li>
+<li><input disabled="" type="checkbox"> Get it called from a question that never mentions it</li>
+<li><input disabled="" type="checkbox"> Watch the model recover from your error message instead of inventing a forecast</li>
+<li><input disabled="" type="checkbox"> Break your description on purpose and measure what changes</li>
+<li><input disabled="" type="checkbox"> Take your tool card from 0 tools to <strong>10/10</strong></li>
+<li><input disabled="" type="checkbox"> Add a resource and a prompt, so your server offers all three primitives</li>
+</ul>
+<h3 id="split-screen"><a class="anchor" href="#split-screen" aria-hidden="true">#</a>🖥️ Split screen</h3>
+<p>Open two terminals in the lab folder. Terminal 2 watches your server the way the model will see it, and redraws every time you save.</p>
+<table>
+<thead>
+<tr>
+<th>Terminal 1 · you</th>
+<th>Terminal 2 · the model&#39;s-eye view</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>your editor, <code>opencode</code>, the Inspector</td>
+<td><code>node tool-card.mjs --watch</code></td>
+</tr>
+</tbody></table>
+<pre><code class="language-bash">cd course/labs/lab3-weather-server
+cat src/server.ts             # helpers are done; the server has TODOs
+opencode mcp list             # &quot;weather&quot; connects already — with zero tools
+node tool-card.mjs --watch    # in terminal 2: leave it running
+</code></pre>
+<p>The starter compiles and connects, which is the point: a server with no capabilities is still a valid server. Terminal 2 agrees:</p>
+<pre><code>tool-card · what the model sees · npx tsx src/server.ts
+server weather 0.1.0 · protocol 2025-11-25  0 tools · 0 resources · 0 prompts
+
+0 tools. A valid server with nothing to offer: the model sees nothing here.
+Register a tool (TODO 1) and save; this card fills in.
+</code></pre>
+<p><code>tool-card.mjs</code> is about 150 lines with no dependencies: it starts your server, sends <code>initialize</code> and <code>tools/list</code> as raw JSON-RPC, and scores each tool against the rules in 3.2. Read it if you are curious; it is the client half of what you are about to build. The Inspector gives you the same discovery view without the score:</p>
+<pre><code class="language-bash">npx -y @modelcontextprotocol/inspector --cli npx tsx src/server.ts --method tools/list
+</code></pre>
+<h3 id="exercise-3-a-todo-1-your-first-tool-12-minutes"><a class="anchor" href="#exercise-3-a-todo-1-your-first-tool-12-minutes" aria-hidden="true">#</a>🧪 Exercise 3.A — TODO 1: your first tool (12 minutes)</h3>
+<p>Inside <code>serveStdio(() =&gt; { … })</code>, after <code>const server = …</code>, register <code>get_weather</code>:</p>
+<pre><code class="language-ts">server.registerTool(
+  &quot;get_weather&quot;,
+  {
+    title: &quot;Current weather&quot;,
+    description:
+      &quot;Get the CURRENT weather for a city (temperature, feels-like, humidity, wind, sky). &quot; +
+      &quot;Use this whenever the user asks what the weather is like somewhere right now. &quot; +
+      &quot;Not a forecast: it cannot answer questions about tomorrow or next week.&quot;,
+    inputSchema: z.object({
+      city: z.string().min(2).max(80).describe(&quot;City name, optionally with country, e.g. &#39;Paris&#39; or &#39;Paris, France&#39;&quot;),
+    }),
+  },
+  async ({ city }) =&gt; {
+    const place = await geocode(city);
+    if (!place) {
+      return {
+        isError: true,
+        content: [{ type: &quot;text&quot;, text: `No place called &#39;${city}&#39; was found. Try adding the country, e.g. &#39;Springfield, US&#39;.` }],
+      };
+    }
+    const w = await currentWeather(place.latitude, place.longitude);
+    const sky = WMO[w.weather_code] ?? `weather code ${w.weather_code}`;
+    const text =
+      `${place.name}, ${place.country}: ${w.temperature_2m}°C (feels like ${w.apparent_temperature}°C), ${sky}, ` +
+      `humidity ${w.relative_humidity_2m}%, wind ${w.wind_speed_10m} km/h. Observed ${w.time} (${place.timezone}).`;
+    return { content: [{ type: &quot;text&quot;, text }] };
+  },
+);
+</code></pre>
+<blockquote>
+<p>🔬 <strong>Under the hood: the model never sees zod.</strong> The SDK turns your schema into JSON Schema (draft 2020-12), and that is what <code>tools/list</code> sends. Your <code>city</code> line becomes:</p>
+<pre><code class="language-json">&quot;city&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;minLength&quot;: 2, &quot;maxLength&quot;: 80,
+          &quot;description&quot;: &quot;City name, optionally with country, e.g. &#39;Paris&#39; or &#39;Paris, France&#39;&quot; }
+</code></pre>
+<p>plus <code>&quot;required&quot;: [&quot;city&quot;]</code> on the object. <code>.describe()</code> becomes <code>description</code> (prose the model reads); <code>.min()</code>/<code>.max()</code> become <code>minLength</code>/<code>maxLength</code>, constraints the model <em>usually</em> honours and the SDK <em>always</em> enforces. Add <code>.default(3)</code> to a field and it drops out of <code>required</code> and carries <code>&quot;default&quot;: 3</code>. The Inspector&#39;s <code>tools/list</code> shows you the real thing; check it whenever a model &quot;ignores&quot; a constraint.</p>
+</blockquote>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> Before you save: out of 10, what will terminal 2 score this tool? Which checks will fail? Write your guess down, then save.</p>
+</blockquote>
+<details><summary>Our run</summary>
+
+<p><strong>8/10.</strong> Everything about the <em>words</em> passes. What fails is the metadata you have not written yet: annotations and an output schema, which are exactly TODO 2. Note the cost too: about 133 tokens, paid on every turn of every conversation that has this server enabled.</p>
+<p><img src="images/shot-lab3-toolcard-8.png" alt="tool-card scoring get_weather 8/10 after TODO 1"></p>
+</details>
+
+<p>Test it through the protocol first, no model involved:</p>
+<pre><code class="language-bash">npx -y @modelcontextprotocol/inspector --cli npx tsx src/server.ts --method tools/list
+npx -y @modelcontextprotocol/inspector --cli npx tsx src/server.ts --method tools/call --tool-name get_weather --tool-arg city=Paris
+npx -y @modelcontextprotocol/inspector --cli npx tsx src/server.ts --method tools/call --tool-name get_weather --tool-arg city=Atlantisxyzq   # look for &quot;isError&quot;: true
+</code></pre>
+<p><img src="images/shot-lab3i-inspector.png" alt="Inspector CLI calling get_weather"></p>
+<p>Now the real test. Start <code>opencode</code> and ask, without naming the tool: <strong>Should I bring an umbrella in Paris today?</strong></p>
+<p><img src="images/shot-lab3-umbrella.png" alt="get_weather called from a natural question"></p>
+<blockquote class="callout important"><p>🤯 <strong>Nobody told it to.</strong> You never said &quot;weather&quot;, &quot;tool&quot; or <code>get_weather</code>. The model read about 133 tokens of your name, prose and schema, matched &quot;umbrella&quot; to &quot;what the weather is like somewhere right now&quot;, picked <code>city=Paris</code> out of the sentence, and called a function on your laptop that called a live API. Every MCP integration you will ever use works like this, and the description you just wrote is what made it happen.</p>
+</blockquote>
+<p>Then: <strong>What&#39;s the weather like in Atlantisxyzq right now?</strong> Watch the model read your <code>isError</code> text and respond sensibly instead of hallucinating a forecast.</p>
+<p><img src="images/shot-lab3-error.png" alt="Error path: the model recovers from an isError result"></p>
+<h3 id="exercise-3-b-sabotage-your-description-5-minutes"><a class="anchor" href="#exercise-3-b-sabotage-your-description-5-minutes" aria-hidden="true">#</a>🧪 Exercise 3.B — Sabotage your description (5 minutes)</h3>
+<p>Your description is a routing rule written in English. Time to prove it. In OpenCode, <code>/new</code>, then ask: <strong>What will the weather be in Paris tomorrow afternoon?</strong></p>
+<p>Now quit OpenCode and sabotage the tool. Replace the whole <code>description:</code> value with <code>&quot;Gets weather for a city.&quot;</code> and delete the <code>.describe(…)</code> on <code>city</code>. Save, glance at terminal 2, restart <code>opencode</code> and ask the same question.</p>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> For each version: does the model call <code>weather_get_weather</code>? And what score does terminal 2 give the sabotaged tool?</p>
+</blockquote>
+<details><summary>Our runs (gpt-5.4-mini, 3 runs per version, repeated on two different days with the same result)</summary>
+
+<table>
+<thead>
+<tr>
+<th>Version</th>
+<th>tool-card</th>
+<th>Tokens per turn</th>
+<th>Called <code>get_weather</code>?</th>
+<th>What the user got</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Your description from 3.A</td>
+<td>8/10</td>
+<td>~133</td>
+<td><strong>0 of 3</strong></td>
+<td>&quot;I can&#39;t forecast tomorrow&#39;s weather. I can only get the current weather right now for Paris.&quot;</td>
+</tr>
+<tr>
+<td><code>&quot;Gets weather for a city.&quot;</code></td>
+<td>4/10</td>
+<td>~60</td>
+<td><strong>3 of 3</strong></td>
+<td>a wasted call for <em>today&#39;s</em> weather, then a web search for the forecast</td>
+</tr>
+</tbody></table>
+</details>
+
+<blockquote class="callout important"><p>🤯 <strong>One sentence changed the model&#39;s behaviour, 3 times out of 3.</strong> No code changed, and the handler is identical. &quot;Not a forecast&quot; was enough to stop a pointless call, and deleting it made the model use the tool for a question it cannot answer. The cheaper description saved 73 tokens a turn and bought a wrong call every time. The flip side is just as telling: with the good description, the model told the user it could not forecast instead of looking elsewhere. Descriptions steer hard, in both directions. Test them like code.</p>
+</blockquote>
+<figure class="comic"><svg xmlns="http://www.w3.org/2000/svg" width="960" height="380" viewBox="0 0 960 380" role="img" aria-label="Three-panel comic: a tool described only as 'Gets weather for a city' makes the ghost answer today's weather when asked about tomorrow.">
+<title>Tool card: get_weather "Gets weather for a city." Witch: Will it rain in Paris tomorrow? Ghost: Calling get_weather! Pumpkin labelled weather, on a note: Paris: 14°C, cloudy. Right now. Ghost: Here is today's weather! Witch: ...I asked about tomorrow. Ghost: Nobody told me it wasn't a forecast. Caption: One sentence in a description. Three runs out of three.</title>
+<rect width="960" height="380" rx="18" fill="#150c24"/>
+<rect x="16" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="332" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="648" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="30" y="30" width="210" height="54" rx="5" fill="#fff7dd" stroke="#1a1026" stroke-width="1.5"/>
+<text x="40" y="50" text-anchor="start" font-family="Menlo, monospace" font-size="12.5" fill="#1a1026" font-weight="bold">get_weather</text>
+<text x="40" y="72" text-anchor="start" font-family="Menlo, monospace" font-size="11.5" fill="#4b3f5c">"Gets weather for a city."</text>
+<path d="M216,54 l5,5 8,-10" fill="none" stroke="#22c55e" stroke-width="2.5"/>
+<polygon points="58,302 114,302 99,256 73,256" fill="#1a1026"/>
+<circle cx="86" cy="246" r="14" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<circle cx="81" cy="245" r="1.8" fill="#1a1026"/><circle cx="91" cy="245" r="1.8" fill="#1a1026"/>
+<path d="M82,252 q4,4 8,0" fill="none" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="86" cy="236" rx="26" ry="5" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M69,236 L103,236 L92,214 Q94,196 82,194 Q88,206 81,214 Z" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<polygon points="71,235 101,235 98,228 74,228" fill="#ff8a1f"/>
+<rect x="100" y="290" width="48" height="7" rx="2" fill="#6b7280" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="103" y="258" width="42" height="32" rx="3" fill="#4b5563" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="107" y="262" width="34" height="24" rx="2" fill="#ff8a1f"/>
+<rect x="111" y="267" width="24" height="3" fill="#ffe9b3"/><rect x="111" y="273" width="16" height="3" fill="#ffe9b3"/>
+<circle cx="102" cy="288" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/><circle cx="112" cy="286" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="134" y="130" width="158" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="143,188 108,236 161,188" fill="#fffaf0"/>
+<polyline points="143,188 108,236 161,188" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="213" y="155.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Will it rain in</text>
+<text x="213" y="174.3" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Paris tomorrow?</text>
+<path d="M354,218 L354,180 A30,30 0 0 1 414,180 L414,218 Q408,204 400.8,224 Q392.4,238 384,222 Q375.6,238 367.2,224 Q360,204 354,218 Z" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="375" cy="182" rx="3.9" ry="6" fill="#1a1026"/><ellipse cx="393" cy="182" rx="3.9" ry="6" fill="#1a1026"/>
+<path d="M378,197 Q384,204 390,197" fill="none" stroke="#1a1026" stroke-width="2"/>
+<path d="M370,171 l10,-4 M398,171 l-10,-4" fill="none" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="351" cy="213.6" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="417" cy="213.6" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<rect x="340" y="26" width="201" height="41" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="375,65 384,152 393,65" fill="#fffaf0"/>
+<polyline points="375,65 384,152 393,65" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="440.5" y="51.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Calling get_weather!</text>
+<rect x="340" y="74" width="158" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="375,132 384,152 393,132" fill="#fffaf0"/>
+<polyline points="375,132 384,152 393,132" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="419" y="99.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Here is today's</text>
+<text x="419" y="118.3" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">weather!</text>
+<path d="M555,229.8 Q553,211.8 563,208.8 L569,213.8 Q562,216.8 565,229.8 Z" fill="#22c55e" stroke="#1a1026" stroke-width="1.5"/>
+<ellipse cx="560" cy="252" rx="32" ry="26.2" fill="#ff8a1f" stroke="#1a1026" stroke-width="2"/>
+<path d="M547.8,229.8 Q542.4,252 547.8,274.2 M572.2,229.8 Q577.6,252 572.2,274.2 M560,227.8 Q556.8,252 560,276.2" fill="none" stroke="#e0661a" stroke-width="2.5"/>
+<polygon points="543.7,250.7 554.6,250.7 549.1,240.2" fill="#1a1026"/><polygon points="546.2,249.4 552,249.4 549.1,243.6" fill="#ffe9b3"/>
+<polygon points="565.4,250.7 576.3,250.7 570.9,240.2" fill="#1a1026"/><polygon points="568,249.4 573.8,249.4 570.9,243.6" fill="#ffe9b3"/>
+<polygon points="541.4,259.3 547.2,265.1 551.7,262.5 556.8,268.3 562.6,263 568.3,267.7 573.4,263 578.6,259.3 569.6,259.9 563.8,263 556.2,259.9 549.1,262.5" fill="#1a1026"/><polygon points="545.5,262.4 550,262.6 553.5,262.5 557.5,262.6 562,262.5 566.5,262.6 570.5,262.5 574.5,262.4 567.5,262.4 563,262.5 557,262.4 551.5,262.5" fill="#ffe9b3"/>
+<rect x="528.5" y="284.2" width="63" height="18" rx="3" fill="#fff7dd" stroke="#1a1026" stroke-width="1.5"/>
+<text x="560" y="297.2" text-anchor="middle" font-family="Menlo, monospace" font-size="11" fill="#1a1026">weather</text>
+<path d="M476,150 h146 v48 q-8,-6 -16,0 q-8,6 -16,0 q-8,-6 -16,0 L476,198 Z" fill="#fff7dd" stroke="#1a1026" stroke-width="1.5"/>
+<text x="484" y="168" text-anchor="start" font-family="Menlo, monospace" font-size="10.5" fill="#1a1026">Paris: 14°C, cloudy.</text>
+<text x="484" y="184" text-anchor="start" font-family="Menlo, monospace" font-size="10.5" fill="#1a1026">Right now.</text>
+<path d="M546,198 q-4,10 2,22" fill="none" stroke="#1a1026" stroke-width="1.5" stroke-dasharray="3,3"/>
+<polygon points="690,302 746,302 731,256 705,256" fill="#1a1026"/>
+<circle cx="718" cy="246" r="14" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M710,245 h6 M720,245 h6" fill="none" stroke="#1a1026" stroke-width="2"/>
+<path d="M714,253 h8" fill="none" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="718" cy="236" rx="26" ry="5" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M701,236 L735,236 L724,214 Q726,196 714,194 Q720,206 713,214 Z" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<polygon points="703,235 733,235 730,228 706,228" fill="#ff8a1f"/>
+<rect x="732" y="290" width="48" height="7" rx="2" fill="#6b7280" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="735" y="258" width="42" height="32" rx="3" fill="#4b5563" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="739" y="262" width="34" height="24" rx="2" fill="#ff8a1f"/>
+<rect x="743" y="267" width="24" height="3" fill="#ffe9b3"/><rect x="743" y="273" width="16" height="3" fill="#ffe9b3"/>
+<circle cx="734" cy="288" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/><circle cx="744" cy="286" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="660" y="30" width="167" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="709,88 718,196 727,88" fill="#fffaf0"/>
+<polyline points="709,88 718,196 727,88" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="743.5" y="55.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">...I asked about</text>
+<text x="743.5" y="74.3" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">tomorrow.</text>
+<path d="M854,258 L854,220 A30,30 0 0 1 914,220 L914,258 Q908,244 900.8,264 Q892.4,278 884,262 Q875.6,278 867.2,264 Q860,244 854,258 Z" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="875" cy="222" rx="3.9" ry="6" fill="#1a1026"/><ellipse cx="893" cy="222" rx="3.9" ry="6" fill="#1a1026"/>
+<path d="M879,240 Q884,236 889,240" fill="none" stroke="#1a1026" stroke-width="2"/>
+<circle cx="869" cy="233" r="4" fill="#f6a5a5"/><circle cx="899" cy="233" r="4" fill="#f6a5a5"/>
+<path d="M870,208 l10,4 M898,208 l-10,4" fill="none" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="851" cy="253.6" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="917" cy="253.6" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<rect x="754" y="100" width="184" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="871,158 880,192 889,158" fill="#fffaf0"/>
+<polyline points="871,158 880,192 889,158" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="846" y="125.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Nobody told me it</text>
+<text x="846" y="144.3" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">wasn't a forecast.</text>
+<text x="24" y="346" font-family="Menlo, monospace" font-size="13" fill="#ff8a1f">🎃 comic · description</text>
+<text x="490" y="346" text-anchor="middle" font-family="Menlo, monospace" font-size="13" fill="#efe3cc">One sentence in a description. Three runs out of three.</text>
+</svg></figure>
+<p>Put the original description and <code>.describe()</code> back (undo in your editor) and confirm terminal 2 shows <strong>8/10</strong> again.</p>
+<h3 id="exercise-3-c-todo-2-annotations-and-structured-output-8-minutes"><a class="anchor" href="#exercise-3-c-todo-2-annotations-and-structured-output-8-minutes" aria-hidden="true">#</a>🧪 Exercise 3.C — TODO 2: annotations and structured output (8 minutes)</h3>
+<p>Add to the tool&#39;s config object:</p>
+<pre><code class="language-ts">outputSchema: z.object({
+  place: z.string(), country: z.string(), temperature_c: z.number(), feels_like_c: z.number(),
+  humidity_pct: z.number(), wind_kmh: z.number(), sky: z.string(), observed_at: z.string(),
+}),
+annotations: { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: true },
+</code></pre>
+<p>and return <code>structuredContent</code> next to <code>content</code>:</p>
+<pre><code class="language-ts">const structured = { place: place.name, country: place.country, temperature_c: w.temperature_2m, feels_like_c: w.apparent_temperature,
+  humidity_pct: w.relative_humidity_2m, wind_kmh: w.wind_speed_10m, sky, observed_at: `${w.time} (${place.timezone})` };
+return { content: [{ type: &quot;text&quot;, text }], structuredContent: structured };
+</code></pre>
+<p>Save and watch terminal 2 fill the bar:</p>
+<p><img src="images/shot-lab3-toolcard-10.png" alt="tool-card at 10/10 after annotations and outputSchema"></p>
+<p>The token count did <strong>not</strong> go up. Annotations and the output schema are for the host and for programs; only the name, description and input schema are pasted into the model&#39;s context.</p>
+<p>Re-run the Inspector <code>tools/call</code>: the result now carries both the prose and the typed object. Deliberately break the schema (return <code>temperature_c: &quot;warm&quot; as any</code>) and call it again. The SDK refuses to send your own output: the result becomes <code>isError: true</code> with <em>&quot;Output validation error: Invalid structured content for tool get_weather: temperature_c: Invalid input: expected number, received string&quot;</em>. Validation protects consumers from you, too. Fix it back.</p>
+<h3 id="exercise-3-d-todo-3-a-resource-and-a-prompt-10-minutes"><a class="anchor" href="#exercise-3-d-todo-3-a-resource-and-a-prompt-10-minutes" aria-hidden="true">#</a>🧪 Exercise 3.D — TODO 3: a resource and a prompt (10 minutes)</h3>
+<p>A resource for the lookup table (user attaches it with <code>@</code>), and a prompt that encodes a workflow (user runs it with <code>/</code>):</p>
+<pre><code class="language-ts">server.registerResource(
+  &quot;wmo-codes&quot;, &quot;weather://wmo-codes&quot;,
+  { title: &quot;WMO weather codes&quot;, description: &quot;Lookup table of WMO weather interpretation codes used by Open-Meteo.&quot;, mimeType: &quot;text/markdown&quot; },
+  async (uri) =&gt; ({
+    contents: [{ uri: uri.href, mimeType: &quot;text/markdown&quot;,
+      text: &quot;| code | meaning |\n|---|---|\n&quot; + Object.entries(WMO).map(([c, m]) =&gt; `| ${c} | ${m} |`).join(&quot;\n&quot;) }],
+  }),
+);
+
+server.registerPrompt(
+  &quot;trip-briefing&quot;,
+  { title: &quot;Trip briefing&quot;, description: &quot;Compare current weather across the cities of a trip and give packing advice.&quot;,
+    argsSchema: z.object({ cities: z.string().describe(&quot;Comma-separated list of cities, e.g. &#39;Oslo, Cairo, Sydney&#39;&quot;) }) },
+  ({ cities }) =&gt; ({
+    messages: [{ role: &quot;user&quot; as const, content: { type: &quot;text&quot; as const,
+      text: `I am travelling to: ${cities}. For each city call get_weather, then produce a one-line summary per city, ` +
+            `rank them warmest to coldest, and finish with three concrete packing tips.` } }],
+  }),
+);
+</code></pre>
+<p>Terminal 2 now lists <code>@ weather://wmo-codes</code> and <code>/weather:trip-briefing:mcp</code> under your tool card: one server, all three primitives. (The <code>:mcp</code> suffix is how the TUI labels a server prompt. If you script it with <code>opencode run --command</code>, the name is <code>weather:trip-briefing</code>.) Check with the Inspector too (<code>--method resources/list</code>, <code>--method resources/read --uri weather://wmo-codes</code>, <code>--method prompts/list</code>), restart OpenCode, then type <code>@wmo</code> to attach the table and <code>/weather:trip-briefing:mcp</code> to run the prompt with <code>Oslo, Cairo, Sydney, Reykjavik</code>. Watch the model make four tool calls, in parallel.</p>
+<h3 id="fun-weather-roulette-5-minutes"><a class="anchor" href="#fun-weather-roulette-5-minutes" aria-hidden="true">#</a>🎲 Fun — Weather roulette (5 minutes)</h3>
+<ul>
+<li>Ask: <em>&quot;Which is warmer right now, the hottest city in Scandinavia you can think of or the coldest city in Africa?&quot;</em> Count the tool calls and judge the model&#39;s planning.</li>
+<li>Ask for the weather in a city that exists twice (<em>&quot;Springfield&quot;</em>, <em>&quot;Paris, Texas&quot;</em>). Does your description help the model disambiguate, or do you need a <code>country</code> parameter? Add one if you like, and keep terminal 2 at 10/10 while you do.</li>
+<li><strong>Description golf.</strong> What is the shortest description that still scores 10/10 <em>and</em> still makes the model decline the forecast question in 3.B? Compare token counts with your neighbours.</li>
+</ul>
+<h3 id="mission-complete"><a class="anchor" href="#mission-complete" aria-hidden="true">#</a>🏅 Mission complete</h3>
+<ul>
+<li><strong>You built a tool a model picks on its own</strong>, from a question that never named it.</li>
+<li><strong>You measured what one sentence of prose is worth</strong>: the difference between a correct refusal and a wrong call, three runs out of three.</li>
+<li><strong>You went from 0 tools to a 10/10 tool card</strong> and a server that offers all three primitives.</li>
+<li><strong>You know which error goes to whom</strong>: <code>isError</code> for the model, protocol errors for the client&#39;s code, and output validation that catches your own bugs.</li>
+</ul>
+<h3 id="check-yourself"><a class="anchor" href="#check-yourself" aria-hidden="true">#</a>✅ Check yourself</h3>
+<details><summary>1. The model keeps answering weather questions from memory instead of calling your tool. Where is the bug?</summary>
+
+<p>Almost always in the description: make it say <em>when</em> to use the tool (&quot;whenever the user asks what the weather is like somewhere right now&quot;). Also confirm the server is connected (<code>/status</code>) and that no permission rule denies <code>weather_*</code>.</p>
+</details>
+
+<details><summary>2. Why return <code>isError: true</code> instead of throwing for an unknown city?</summary>
+
+<p>Both end up as a tool error the model can read, but the explicit form lets you write the recovery hint (&quot;add the country&quot;). A thrown error gives the model only the exception message.</p>
+</details>
+
+<details><summary>3. Your tool returns the full 30 KB Open-Meteo JSON "so the model has everything". What are the two costs?</summary>
+
+<p>Tokens on every turn that carries the result (money and context budget), and attack surface: everything in that JSON becomes part of the prompt and can steer the model. Return what answers the question.</p>
+</details>
+
+<details><summary>4. What does <code>readOnlyHint: true</code> enforce?</summary>
+
+<p>Nothing. It is a hint for hosts (icons, default approval policies). Enforcement is your code: no write path exists in a read-only tool, and the host&#39;s permission rules decide what is auto-approved.</p>
+</details>
+
+<details><summary>5. In 3.B the shorter description saved 73 tokens a turn. Why was it still the more expensive choice?</summary>
+
+<p>It bought a tool call that could not answer the question (a round trip to Open-Meteo plus the result in context), and then a web search on top. Per-turn tokens are only part of the cost; wrong calls cost more. The words that tell the model when <em>not</em> to use a tool are the cheapest tokens you will ever spend.</p>
+</details>
+
+<h3 id="challenges-optional"><a class="anchor" href="#challenges-optional" aria-hidden="true">#</a>🏆 Challenges (optional)</h3>
+<p>Score your challenge servers with <code>node tool-card.mjs -- npx tsx &lt;path-to-server.ts&gt;</code> before you show them to anyone.</p>
+<p><strong>3A · Dad jokes as a service (easy, 10 min).</strong> Build a second server, <code>jokes</code>, with one tool <code>get_dad_joke(topic?)</code> backed by <code>https://icanhazdadjoke.com/</code> (send <code>Accept: application/json</code>; the search endpoint is <code>/search?term=…</code>). Add an <code>outputSchema</code>, honest annotations, and an <code>isError</code> for &quot;no jokes about that&quot;. Register it next to <code>weather</code> and ask OpenCode for a joke about computers.</p>
+<p><strong>3B · A system utility with a fence (medium, 15 min).</strong> Build <code>sysinfo</code> with <code>get_system_info()</code> (OS, CPUs, memory, uptime; no environment variables) and <code>largest_files(dir, limit)</code> that lists the biggest files under a directory. The catch: <code>dir</code> must be relative to the project and the tool must refuse anything that escapes it (<code>../../</code>), with an <code>isError</code> that says so. Prove it with the Inspector before you prove it with OpenCode.</p>
+<p><strong>3C · Two tools, one topic (harder, 20 min).</strong> Exercise 3.B proved one sentence can keep a model <em>away</em> from a tool. Now make it choose <em>between</em> two. Add <code>get_forecast(city, days)</code> to your weather server: Open-Meteo&#39;s <code>/v1/forecast</code> with <code>daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max</code> and <code>forecast_days</code>; <code>days</code> an integer 1–7 with <code>.default(3)</code>; an <code>outputSchema</code> with one row per day. Then edit the one line of <code>get_weather</code> that says &quot;Not a forecast&quot; so it points to the new tool instead of refusing. Both tools must stay at 10/10 on terminal 2. They share an API, an argument name and a topic; only your words separate them. Route these correctly, in a fresh session each:</p>
+<table>
+<thead>
+<tr>
+<th>Prompt</th>
+<th>Should call</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><em>Should I bring an umbrella in Paris today?</em></td>
+<td><code>get_weather</code></td>
+</tr>
+<tr>
+<td><em>What will the weather be in Paris tomorrow afternoon?</em></td>
+<td><code>get_forecast</code></td>
+</tr>
+<tr>
+<td><em>Is it colder in Oslo or Helsinki right now?</em></td>
+<td><code>get_weather</code> (twice)</td>
+</tr>
+<tr>
+<td><em>I&#39;m hiking near Zermatt this weekend. Pack shorts or a down jacket?</em></td>
+<td><code>get_forecast</code></td>
+</tr>
+</tbody></table>
+<p>Then try to break it: find a prompt that sits on the line between the two tools (<em>&quot;this evening&quot;</em>? <em>&quot;tonight&quot;</em>?) and decide which tool <em>should</em> win. Then make your descriptions say so.</p>
+<p><strong>3D · Unit tests for words (hard, 25 min).</strong> Checking 3C by hand does not scale, and descriptions regress like code. Write <code>route-eval.mjs</code>: it reads <code>cases.json</code> (<code>[{ &quot;prompt&quot;: &quot;…&quot;, &quot;expect&quot;: &quot;get_forecast&quot; }, { &quot;prompt&quot;: &quot;…&quot;, &quot;expect&quot;: &quot;none&quot; }]</code>), runs each prompt N times with <code>opencode run &quot;&lt;prompt&gt;&quot;</code> in the lab folder (stdin closed, or it hangs), pulls the tool names out of the <code>⚙ server_tool …</code> lines, scores the <strong>first MCP tool</strong> of each run against <code>expect</code>, prints a table and an accuracy figure, and <strong>exits non-zero</strong> if anything misses. Run 2–3 prompts in parallel; each run is a real model call (about a cent).</p>
+<pre><code>prompt                                                     expect         result
+Should I bring an umbrella in Paris today?                 get_weather    3/3 ✓
+What will the weather be in Paris tomorrow afternoon?      none           0/3 ✗ got get_weather
+
+routing accuracy: 3/6 (50%)
+</code></pre>
+<p>That table is the 3.B sabotage, caught automatically. Prove your harness the same way: it must <strong>fail</strong> against the <code>&quot;Gets weather for a city.&quot;</code> version and <strong>pass</strong> against yours. Add two <code>expect: &quot;none&quot;</code> cases (a question no weather tool should touch) so you also catch descriptions that are too eager. Wire the exit code into <code>npm test</code> and you have CI for prose.</p>
+<p>📼 <strong>Next episode.</strong> You just watched a model decide, on its own, to call a function you wrote. In Module 4 a support ticket makes that decision for it, and the function is <code>DELETE</code>. <a href="04-securing-mcp-integrations.html">Module 4 · Securing MCP integrations →</a></p>
+
+</main>
+<footer class="foot"><div class="pumpkins" aria-hidden="true">🎃 🦇 👻 🕸️ 🎃</div>MCP with AI Agents · OpenCode + MCP course · haunted edition, October 2026 · <a href="https://github.com/varoonsahgal/opencode-mcp-course">source and labs on GitHub</a></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+  document.querySelectorAll("pre code").forEach((el) => {
+    const m = el.className.match(/language-(\w+)/);
+    if (m && m[1] === "jsonc") el.className = "language-json";
+    if (!m) el.classList.add("nohighlight");
+    window.hljs && hljs.highlightElement(el);
+    const b = document.createElement("button"); b.className = "copy"; b.type = "button"; b.textContent = "Copy";
+    b.onclick = () => { navigator.clipboard.writeText(el.innerText).then(() => { b.textContent = "Copied"; setTimeout(() => (b.textContent = "Copy"), 1200); }); };
+    el.parentElement.appendChild(b);
+  });
+  document.querySelectorAll("main table").forEach((t) => { const w = document.createElement("div"); w.className = "tbl"; t.replaceWith(w); w.appendChild(t); });
+  // Daylight / midnight toggle. Follows the system until pinned; the pin lives in this browser only.
+  (function () {
+    const root = document.documentElement, btn = document.getElementById("themebtn");
+    const light = document.getElementById("hl-light"), dark = document.getElementById("hl-dark");
+    const isDark = () => root.getAttribute("data-theme") === "dark" || (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    const paint = () => { const d = isDark(); btn.textContent = d ? "☀️" : "🌙"; light.media = d ? "not all" : "all"; dark.media = d ? "all" : "not all"; };
+    btn.onclick = () => { const next = isDark() ? "light" : "dark"; root.setAttribute("data-theme", next); try { localStorage.setItem("theme", next); } catch (e) {} paint(); };
+    matchMedia("(prefers-color-scheme: dark)").addEventListener("change", paint);
+    paint();
+  })();
+</script>
+</body>
+</html>

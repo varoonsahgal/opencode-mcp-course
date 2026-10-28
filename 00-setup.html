@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>00 · Setup (10 minutes, ideally before class) · MCP with AI Agents</title>
+<script>try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Creepster&family=Patrick+Hand&display=swap" rel="stylesheet">
+<link id="hl-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="(prefers-color-scheme: light)">
+<link id="hl-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%228%22%20fill%3D%22%23150c24%22%2F%3E%3Cellipse%20cx%3D%2216%22%20cy%3D%2218%22%20rx%3D%2212%22%20ry%3D%2210%22%20fill%3D%22%23ff8a1f%22%2F%3E%3Cpath%20d%3D%22M16%208c0-3%201-4%203-5%22%20stroke%3D%22%2322c55e%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M9%2015l4%203-4%201zM23%2015l-4%203%204%201z%22%20fill%3D%22%23150c24%22%2F%3E%3Cpath%20d%3D%22M9%2022q7%205%2014%200q-2%203-7%203t-7-3z%22%20fill%3D%22%23150c24%22%2F%3E%3C%2Fsvg%3E">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="pumpkin" aria-hidden="true">🎃</span>MCP with AI Agents</a>
+  <nav class="links"><a href="index.html">Home</a><a href="00-setup.html" aria-current="page">00 · Setup</a><a href="01-connecting-agents-with-mcp.html">01 · Connect</a><a href="02-configuring-mcp-in-opencode.html">02 · Configure</a><a href="03-building-a-custom-mcp-server.html">03 · Build</a><a href="04-securing-mcp-integrations.html">04 · Secure</a><a href="05-applied-challenge.html">05 · Apply</a><a href="06-advanced-mcp.html">06 · Go remote</a><span class="sep"></span><a href="handout.html">Handout</a><a href="slides/index.html">Slides</a><a href="https://github.com/varoonsahgal/opencode-mcp-course">GitHub</a></nav>
+  <button class="theme" type="button" id="themebtn" aria-label="Switch between daylight and midnight" title="Daylight / midnight">🌙</button>
+  <button class="menu" type="button" aria-label="Menu" onclick="document.body.classList.toggle('open')">☰</button>
+</header>
+<svg class="web" viewBox="0 0 170 170" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1">
+<path d="M0 0L170 170M0 0L170 70M0 0L70 170M0 0L170 20M0 0L20 170M0 0L170 120M0 0L120 170"/>
+<path d="M30 0Q28 22 0 30M60 0Q56 44 0 60M90 0Q84 66 0 90M120 0Q112 88 0 120M150 0Q140 110 0 150"/>
+<path d="M30 0Q30 15 20 24Q15 28 0 30" opacity=".5"/></svg>
+<main class="doc">
+<figure class="banner"><svg xmlns="http://www.w3.org/2000/svg" width="960" height="300" viewBox="0 0 960 300" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="MCP with AI Agents: one host, many servers, every connection a decision">
+ <title>MCP with AI Agents</title>
+ <style>
+  .bc-tw { animation: bc-tw 3.2s ease-in-out infinite; }
+  .bc-fly { animation: bc-fly 6s ease-in-out infinite; }
+  .bc-flk { animation: bc-flk 3.1s steps(1) infinite; }
+  .bc-flow { stroke-dasharray: 4 10; animation: bc-flow 1.6s linear infinite; }
+  .bc-slow { animation-duration: 2.4s; }
+  .bc-pulse { animation: bc-pulse 2.4s ease-in-out infinite; }
+  .bc-blink { animation: bc-blink 2.4s steps(1) infinite; }
+  .bc-halo { animation: bc-halo 3.2s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes bc-tw { 0%,100% { opacity: .15; } 50% { opacity: 1; } }
+  @keyframes bc-fly { 0%,100% { transform: translate(0,0) rotate(0); } 50% { transform: translate(12px,-7px) rotate(-8deg); } }
+  @keyframes bc-flk { 0%,64% { opacity: 1; } 65%,70% { opacity: .3; } 71%,78% { opacity: 1; } 79%,82% { opacity: .4; } 83%,100% { opacity: 1; } }
+  @keyframes bc-flow { to { stroke-dashoffset: -28; } }
+  @keyframes bc-pulse { 0%,100% { opacity: .55; } 50% { opacity: 1; } }
+  @keyframes bc-blink { 0%,60% { opacity: 1; } 61%,100% { opacity: .25; } }
+  @keyframes bc-halo { 0% { opacity: .5; transform: scale(.9); } 100% { opacity: 0; transform: scale(1.6); } }
+  @media (prefers-reduced-motion: reduce) { .bc-tw, .bc-fly, .bc-flk, .bc-flow, .bc-pulse, .bc-blink, .bc-halo { animation: none !important; } }
+ </style>
+ <defs>
+  <linearGradient id="bc-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0612"/><stop offset="1" stop-color="#1f1333"/></linearGradient>
+  <pattern id="bc-grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#2a1a44"/></pattern>
+  <radialGradient id="bc-glow" cx="0.73" cy="0.5" r="0.45"><stop offset="0" stop-color="#ff8a1f" stop-opacity=".3"/><stop offset="1" stop-color="#ff8a1f" stop-opacity="0"/></radialGradient>
+  <radialGradient id="bc-mg"><stop offset=".3" stop-color="#ffe9b3" stop-opacity=".3"/><stop offset="1" stop-color="#ffe9b3" stop-opacity="0"/></radialGradient>
+  <filter id="bc-tg" x="-6%" y="-40%" width="112%" height="180%"><feGaussianBlur stdDeviation="5" result="b"/><feFlood flood-color="#ff8a1f" flood-opacity=".8"/><feComposite in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="bc-fg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <path id="bc-bat" d="M0,-4L-2,-8L-3,-3C-9,-9 -15,-8 -19,-4C-15,-3 -14,0 -13,3C-10,0 -8,1 -7,4C-5,2 -3,3 -2,5L0,4L2,5C3,3 5,2 7,4C8,1 10,0 13,3C14,0 15,-3 19,-4C15,-8 9,-9 3,-3L2,-8Z" fill="#0a0612" stroke="#a855f7" stroke-opacity=".6" stroke-width=".9" stroke-linejoin="round"/>
+  <g id="bc-pk"><path d="M-2,-19C-3,-24 0,-28 6,-30C4,-27 5,-22 4,-19Z" fill="#22c55e"/><ellipse cy="1" rx="24" ry="19" fill="#e0661a"/><ellipse rx="17" ry="20" fill="#ff8a1f"/><path d="M-9,-19C-13,-6 -13,8 -9,20M9,-19C13,-6 13,8 9,20" fill="none" stroke="#e0661a" stroke-width="1.4"/></g>
+  <path id="bc-pf" d="M-13,-1L-8,-10L-3,-1ZM3,-1L8,-10L13,-1ZM-2,6L0,2L2,6ZM-13,8Q0,18 13,8L10,8 9,12 6,8 -6,8 -9,12 -10,8Z"/>
+ </defs>
+ <rect width="960" height="300" rx="20" fill="url(#bc-bg)"/>
+ <rect width="960" height="300" rx="20" fill="url(#bc-grid)" opacity=".5"/>
+ <rect width="960" height="300" rx="20" fill="url(#bc-glow)"/>
+ <g fill="#fff"><circle cx="321" cy="12" r="1.2" opacity="0.34"/><circle cx="512" cy="18" r="0.7" opacity="0.6"/><circle class="bc-tw" style="animation-delay:-2.5s" cx="64" cy="20" r="0.7"/><circle cx="412" cy="31" r="0.8" opacity="0.43"/><circle class="bc-tw" style="animation-delay:-2.3s" cx="595" cy="35" r="1.1"/><circle cx="909" cy="9" r="1.3" opacity="0.47"/><circle cx="160" cy="11" r="0.9" opacity="0.79"/><circle class="bc-tw" style="animation-delay:-2.3s" cx="193" cy="24" r="1.1"/><circle cx="523" cy="10" r="0.7" opacity="0.42"/><circle cx="642" cy="20" r="0.9" opacity="0.65"/><circle cx="438" cy="16" r="1.3" opacity="0.72"/><circle class="bc-tw" style="animation-delay:-1.5s" cx="250" cy="24" r="1.1"/><circle class="bc-tw" style="animation-delay:-1.2s" cx="820" cy="112" r="1.4"/><circle cx="671" cy="229" r="0.8" opacity="0.59"/><circle cx="489" cy="207" r="1.2" opacity="0.64"/><circle cx="890" cy="118" r="1.2" opacity="0.66"/><circle cx="748" cy="154" r="1.3" opacity="0.87"/><circle cx="698" cy="206" r="0.7" opacity="0.72"/><circle cx="781" cy="288" r="1.3" opacity="0.47"/><circle cx="655" cy="207" r="0.7" opacity="0.58"/><circle cx="551" cy="69" r="0.7" opacity="0.76"/><circle class="bc-tw" style="animation-delay:-2.2s" cx="532" cy="102" r="1.0"/><circle cx="509" cy="152" r="1.1" opacity="0.83"/><circle cx="863" cy="256" r="0.9" opacity="0.55"/></g>
+ <circle cx="700" cy="44" r="50" fill="url(#bc-mg)"/>
+ <path transform="translate(700 44) rotate(-20)" d="M0,-18A18,18 0 0,0 0,18A22.0,22.0 0 0,1 0,-18Z" fill="#ffe9b3"/>
+ <g transform="translate(646 30) scale(0.6)"><use href="#bc-bat" class="bc-fly" style="animation-duration:6s;animation-delay:-1s"/></g><g transform="translate(752 60) scale(0.5)"><use href="#bc-bat" class="bc-fly" style="animation-duration:7s;animation-delay:-3s"/></g><g transform="translate(930 24) scale(0.45)"><use href="#bc-bat" class="bc-fly" style="animation-duration:5.5s;animation-delay:-2s"/></g><g transform="translate(482 44) scale(0.5)"><use href="#bc-bat" class="bc-fly" style="animation-duration:6.5s;animation-delay:-4s"/></g>
+ <path d="M960,300L892.5,278.1M960,300L902.6,258.3M960,300L918.3,242.6M960,300L938.1,232.5M943.0,300.0Q944.9,297.6 943.8,294.7Q946.4,293.1 946.2,290.0Q949.2,289.2 950.0,286.2Q953.1,286.4 954.7,283.8Q957.6,284.9 960.0,283.0M927.0,300.0Q930.7,295.4 928.6,289.8Q933.5,286.5 933.3,280.6Q939.0,279.0 940.6,273.3Q946.5,273.5 949.8,268.6Q955.4,270.7 960.0,267.0M911.0,300.0Q916.4,293.1 913.4,284.9Q920.7,280.0 920.4,271.2Q928.8,268.8 931.2,260.4Q940.0,260.7 944.9,253.4Q953.1,256.4 960.0,251.0M895.0,300.0Q902.2,290.8 898.2,279.9Q907.9,273.4 907.4,261.8Q918.6,258.6 921.8,247.4Q933.4,247.9 939.9,238.2Q950.8,242.2 960.0,235.0" fill="none" stroke="#efe3cc" stroke-opacity=".25" stroke-width=".8"/>
+
+ <!-- left: words -->
+ <text x="40" y="62" font-family="Menlo, 'JetBrains Mono', monospace" font-size="12" letter-spacing="2.5" fill="#ff8a1f">STUDENT COURSE PACK · 4 HOURS · 5 LABS</text>
+ <text x="38" y="118" font-family="Creepster, 'Chalkboard SE', Impact, fantasy" font-size="50" letter-spacing="1" fill="#efe3cc" filter="url(#bc-tg)">MCP with AI Agents</text>
+ <text x="40" y="152" font-size="18" fill="#d8cfc0">Connect it. Configure it. Build it.</text>
+ <text x="40" y="176" font-size="18" fill="#d8cfc0">Break it on purpose. <tspan fill="#fb7185" font-weight="700">Then lock it down.</tspan></text>
+ <g font-weight="700">
+  <rect x="40" y="214" width="88" height="28" rx="14" fill="#a855f7" fill-opacity=".18" stroke="#a855f7"/><text x="84" y="232" text-anchor="middle" fill="#d8b4fe" font-size="12">01 Connect</text>
+  <rect x="136" y="214" width="98" height="28" rx="14" fill="#7cf29a" fill-opacity=".18" stroke="#7cf29a"/><text x="185" y="232" text-anchor="middle" fill="#bbf7d0" font-size="12">02 Configure</text>
+  <rect x="242" y="214" width="72" height="28" rx="14" fill="#ff8a1f" fill-opacity=".18" stroke="#ff8a1f"/><text x="278" y="232" text-anchor="middle" fill="#ffd1a3" font-size="12">03 Build</text>
+  <rect x="322" y="214" width="80" height="28" rx="14" fill="#e11d48" fill-opacity=".18" stroke="#e11d48"/><text x="362" y="232" text-anchor="middle" fill="#fecdd3" font-size="12">04 Secure</text>
+  <rect x="410" y="214" width="74" height="28" rx="14" fill="#22c55e" fill-opacity=".18" stroke="#22c55e"/><text x="447" y="232" text-anchor="middle" fill="#bbf7d0" font-size="12">05 Apply</text>
+ </g>
+ <text x="40" y="272" font-family="Menlo, 'JetBrains Mono', monospace" font-size="11" fill="#8b7fa3">agent: OpenCode · model: opencode/gpt-5.4-mini · whole course &lt; $2</text>
+
+ <!-- right: one haunted house, five jack-o'-lanterns, live wires -->
+ <g fill="none" stroke-width="2">
+  <path class="bc-flow" d="M700 160 L560 72" stroke="#a855f7"/>
+  <path class="bc-flow bc-slow" d="M700 160 L588 232" stroke="#7cf29a"/>
+  <path class="bc-flow" d="M700 160 L846 66" stroke="#ff8a1f"/>
+  <path class="bc-flow bc-slow" d="M700 160 L884 160" stroke="#22c55e"/>
+  <path d="M700 160 L812 244" stroke="#e11d48" stroke-dasharray="4 6" opacity=".6"/>
+ </g>
+ <g font-family="Menlo, 'JetBrains Mono', monospace" font-size="11" text-anchor="middle" fill="#efe3cc">
+  <g transform="translate(560 72) scale(1)"><use href="#bc-pk"/><use href="#bc-pf" fill="#ffe9b3" filter="url(#bc-fg)"/></g><text x="560" y="106">time</text>
+  <g transform="translate(588 232) scale(1)"><use href="#bc-pk"/><use href="#bc-pf" fill="#ffe9b3" filter="url(#bc-fg)"/></g><text x="588" y="266" font-size="10">deepwiki</text>
+  <g transform="translate(846 66) scale(1)"><use href="#bc-pk"/><use href="#bc-pf" fill="#ffe9b3" filter="url(#bc-fg)"/></g><text x="846" y="100">weather</text>
+  <g transform="translate(884 160) scale(1)"><use href="#bc-pk"/><use href="#bc-pf" fill="#ffe9b3" filter="url(#bc-fg)"/></g><text x="884" y="194">oncall</text>
+  <circle class="bc-halo" cx="812" cy="245" r="27" fill="none" stroke="#e11d48" stroke-width="2"/>
+  <g transform="translate(812 244) scale(1)"><use href="#bc-pk"/><use href="#bc-pf" fill="#e11d48" filter="url(#bc-fg)"/></g><text x="812" y="278" fill="#fb7185">teamdb</text>
+  <g class="bc-blink" transform="translate(776 217)"><rect x="-30" y="-11" width="60" height="22" rx="11" fill="#e11d48"/><text x="0" y="4" fill="#fff" font-weight="700" font-size="10">ASK</text></g>
+ </g>
+ <circle class="bc-halo" cx="700" cy="150" r="46" fill="none" stroke="#a855f7" stroke-width="2"/>
+ <g transform="translate(700 186) scale(1.25)">
+  <path d="M-36,0V-18L-26,-30L-16,-18V-34L0,-52L16,-34V-18L26,-30L36,-18V0Z" fill="#0a0612" stroke="#a855f7" stroke-width="1.4" stroke-linejoin="round"/>
+  <path d="M0,-52V-61M30,-25.2V-32h4v11.6" fill="none" stroke="#a855f7" stroke-width="1.4"/>
+  <g fill="#ffe9b3" filter="url(#bc-fg)"><path d="M-4,-24v-5a4,4 0 0 1 8,0v5z"/><rect x="-29" y="-14" width="6" height="8"/><rect class="bc-flk" x="23" y="-14" width="6" height="8"/><path d="M-5,0v-8a5,5 0 0 1 10,0v8z" opacity=".85"/></g>
+ </g>
+ <text x="700" y="206" text-anchor="middle" font-size="14" font-weight="800" fill="#efe3cc">OpenCode</text>
+ <text x="700" y="222" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="10" fill="#d8b4fe" class="bc-pulse">host · 5 clients</text>
+</svg></figure>
+<h1>00 · Setup (10 minutes, ideally before class)</h1>
+<blockquote>
+<p>🎬 <strong>Cold open.</strong> In four hours you will give an AI agent hands, watch it use them on things you care about, and then take some of them away again. None of that works if the first ten minutes of class go to <code>npm install</code>. Do this page the day before.</p>
+</blockquote>
+<p>🎯 <strong>Mission</strong></p>
+<ul>
+<li><input disabled="" type="checkbox"> <code>npm run check</code> ends with <strong>All set.</strong></li>
+<li><input disabled="" type="checkbox"> OpenCode starts in <code>lab1-first-contact</code> and the footer reads <code>⊙ 2 MCP</code></li>
+<li><input disabled="" type="checkbox"> You can get around the TUI without a mouse (section 5)</li>
+</ul>
+<h2 id="1-install-the-tools"><a class="anchor" href="#1-install-the-tools" aria-hidden="true">#</a>1. Install the tools</h2>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Why</th>
+<th>Check</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Node.js 20+</strong> and npm</td>
+<td>runs every MCP server in this course</td>
+<td><code>node --version</code></td>
+</tr>
+<tr>
+<td><strong>OpenCode 1.18+</strong></td>
+<td>the AI agent / MCP host</td>
+<td><code>opencode --version</code></td>
+</tr>
+<tr>
+<td><strong>uv</strong> (optional)</td>
+<td>runs the official Python <code>time</code> server via <code>uvx</code></td>
+<td><code>uvx --version</code></td>
+</tr>
+<tr>
+<td><strong>git</strong> (optional)</td>
+<td>lets OpenCode&#39;s <code>/undo</code> work; not required</td>
+<td><code>git --version</code></td>
+</tr>
+</tbody></table>
+<p>Install OpenCode from <a href="https://opencode.ai">https://opencode.ai</a>: <code>curl -fsSL https://opencode.ai/install | bash</code>, or <code>npm install -g opencode-ai</code>, or <code>brew install anomalyco/tap/opencode</code> (macOS/Linux), or <code>scoop install opencode</code> / <code>choco install opencode</code> (Windows; WSL is recommended). Install uv from <a href="https://docs.astral.sh/uv/">https://docs.astral.sh/uv/</a>. If you cannot install uv, Lab 1 has a drop-in fallback server.</p>
+<h2 id="2-log-in-to-opencode-zen"><a class="anchor" href="#2-log-in-to-opencode-zen" aria-hidden="true">#</a>2. Log in to OpenCode Zen</h2>
+<p>Zen is OpenCode&#39;s own pay-as-you-go model gateway; the course uses it so nobody needs their own provider keys.</p>
+<pre><code class="language-bash">opencode auth login        # pick &quot;OpenCode (recommended)&quot; from the provider list, paste the API key from your OpenCode console
+opencode auth list         # should show:  ● OpenCode api
+</code></pre>
+<p>Inside the TUI the same thing is <code>/connect</code>. The lab configs already select <code>opencode/gpt-5.4-mini</code>; you never have to type a model id.</p>
+<blockquote>
+<p>🍬 <strong>Treat: what a model gateway is, and why the course uses one.</strong> Every model provider has its own API, its own key and its own bill. Zen sits in front of several of them behind one login and one invoice, and OpenCode talks to it as a provider called <code>opencode</code>. That is why a model id in this course looks like <code>opencode/gpt-5.4-mini</code>: <em>provider</em>, slash, <em>model</em>. Each lab&#39;s <code>opencode.json</code> sets <code>&quot;model&quot;</code> for the agent and <code>&quot;small_model&quot;</code> for OpenCode&#39;s cheap background work such as naming sessions. The first line of every one of those files, <code>&quot;$schema&quot;: &quot;https://opencode.ai/config.json&quot;</code>, is for your editor: with it, VS Code and friends autocomplete field names and underline mistakes as you type. Module 2 is where you will be glad of that.</p>
+</blockquote>
+<h2 id="3-install-the-lab-dependencies-once"><a class="anchor" href="#3-install-the-lab-dependencies-once" aria-hidden="true">#</a>3. Install the lab dependencies (once)</h2>
+<pre><code class="language-bash">cd course/labs
+npm install
+npm run check
+</code></pre>
+<p><code>npm run check</code> runs nine checks and prints each one the moment it finishes:</p>
+<p><img src="images/shot-setup-check.png" alt="npm run check: nine green ticks"></p>
+<p>The last line matters: it pre-downloads the MCP Inspector and the demo server so the first <code>opencode</code> start in class takes seconds, not minutes. (A 406 from DeepWiki is expected: MCP endpoints only accept POST.)</p>
+<p>What each check is for, so you know which ones you can live without:</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Needed by</th>
+<th>If it fails</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Node.js 20+</td>
+<td>every lab</td>
+<td>nothing works; install Node 20 or newer</td>
+</tr>
+<tr>
+<td>Lab dependencies</td>
+<td>every lab</td>
+<td>run <code>npm install</code> in <code>course/labs</code></td>
+</tr>
+<tr>
+<td>OpenCode</td>
+<td>every lab</td>
+<td>install it and open a new shell</td>
+</tr>
+<tr>
+<td>OpenCode Zen login</td>
+<td>every lab</td>
+<td><code>opencode auth login</code>; without it the model never answers</td>
+</tr>
+<tr>
+<td>uv / uvx</td>
+<td>Lab 1&#39;s official time server</td>
+<td>optional; the lab has a Node fallback</td>
+</tr>
+<tr>
+<td>Open-Meteo reachable</td>
+<td>Lab 3 (your weather server calls it)</td>
+<td>a corporate proxy or firewall; see section 6</td>
+</tr>
+<tr>
+<td>DeepWiki reachable</td>
+<td>Lab 2&#39;s remote server</td>
+<td>same; Lab 2 still works with local servers only</td>
+</tr>
+<tr>
+<td>npm registry reachable</td>
+<td><code>npx</code> downloads (the Inspector, the demo server)</td>
+<td>same; the warm-up will not run</td>
+</tr>
+<tr>
+<td>npx caches warmed</td>
+<td>the first start in class</td>
+<td>cosmetic; the first <code>opencode</code> start will just be slow</td>
+</tr>
+</tbody></table>
+<blockquote class="callout note"><p>One <code>node_modules</code> for all labs. Each lab folder deliberately has <strong>no</strong> <code>package.json</code>; Node resolves imports by walking up to <code>course/labs/</code>, which is also where <code>&quot;type&quot;: &quot;module&quot;</code> lives. If you copy a lab somewhere else, copy <code>package.json</code> and run <code>npm install</code> there too.</p>
+</blockquote>
+<h2 id="4-first-launch"><a class="anchor" href="#4-first-launch" aria-hidden="true">#</a>4. First launch</h2>
+<pre><code class="language-bash">cd course/labs/lab1-first-contact
+opencode
+</code></pre>
+<p>You should see the OpenCode home screen with <strong><code>⊙ 2 MCP /status</code></strong> in the footer. The two servers take a few seconds to start the first time.</p>
+<p><img src="images/shot-lab1-home.png" alt="OpenCode home screen with two MCP servers connected"></p>
+<p>Type <code>/exit</code> (or press <code>ctrl+x</code> then <code>q</code>) to leave.</p>
+<h2 id="5-ninety-second-tui-refresher"><a class="anchor" href="#5-ninety-second-tui-refresher" aria-hidden="true">#</a>5. Ninety-second TUI refresher</h2>
+<table>
+<thead>
+<tr>
+<th>Want to…</th>
+<th>Do</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>See MCP server status</td>
+<td><code>/status</code> (or look at the footer)</td>
+</tr>
+<tr>
+<td>Turn an MCP server on/off for this session</td>
+<td><code>/mcps</code>, then <code>space</code> on an entry</td>
+</tr>
+<tr>
+<td>Start a fresh conversation</td>
+<td><code>/new</code></td>
+</tr>
+<tr>
+<td>Switch agent (Build ↔ Plan ↔ your own)</td>
+<td><code>Tab</code></td>
+</tr>
+<tr>
+<td>Attach a file or an MCP resource</td>
+<td>type <code>@</code> and pick</td>
+</tr>
+<tr>
+<td>Run an MCP prompt</td>
+<td>type <code>/</code> and look for <code>server:prompt:mcp</code> entries</td>
+</tr>
+<tr>
+<td>Run a shell command inline</td>
+<td>start the message with <code>!</code></td>
+</tr>
+<tr>
+<td>See every command</td>
+<td><code>ctrl+p</code></td>
+</tr>
+<tr>
+<td>Approve or reject a tool call</td>
+<td><code>⇆</code> to pick <em>Allow once / Allow always / Reject</em>, <code>enter</code></td>
+</tr>
+<tr>
+<td>Toggle tool-call details</td>
+<td><code>/details</code></td>
+</tr>
+<tr>
+<td>Quit</td>
+<td><code>/exit</code></td>
+</tr>
+<tr>
+<td>Ask one question without the TUI</td>
+<td><code>opencode run &quot;your question&quot; &lt; /dev/null</code> (the <code>&lt; /dev/null</code> matters: without it <code>run</code> waits for stdin)</td>
+</tr>
+</tbody></table>
+<p>You will use the TUI for almost everything. <code>opencode run</code> shows up in two late challenges, where you script the agent instead of talking to it. One difference to know now: <code>run</code> cannot show approval dialogs, so any tool that would <em>ask</em> is automatically rejected.</p>
+<figure class="comic"><svg xmlns="http://www.w3.org/2000/svg" width="960" height="380" viewBox="0 0 960 380" role="img" aria-label="Three-panel comic: opencode run waits at a closed door labelled stdin for 40 minutes until the witch types &lt; /dev/null.">
+<title>Screen: $ opencode run "hi". Witch: Any second now. Ghost at a closed door labelled stdin: Waiting for input. (40 minutes later) Screen: &lt; /dev/null. Ghost: Oh! Nobody's coming. OK: hi. Caption: opencode run reads stdin until it closes. Close the door with &lt; /dev/null.</title>
+<rect width="960" height="380" rx="18" fill="#150c24"/>
+<rect x="16" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="332" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="648" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="116" y="56" width="184" height="110" rx="5" fill="#4b5563" stroke="#1a1026" stroke-width="2"/>
+<rect x="123" y="63" width="170" height="96" rx="3" fill="#2a1a3a"/>
+<rect x="104" y="166" width="208" height="10" rx="3" fill="#6b7280" stroke="#1a1026" stroke-width="2"/>
+<text x="130" y="82.5" text-anchor="start" font-family="Menlo, monospace" font-size="13" fill="#ffb15c" xml:space="preserve">$ opencode run "hi"</text>
+<text x="130" y="102" text-anchor="start" font-family="Menlo, monospace" font-size="13" fill="#ffb15c" xml:space="preserve">█</text>
+<polygon points="44,302 100,302 85,256 59,256" fill="#1a1026"/>
+<circle cx="72" cy="246" r="14" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<circle cx="67" cy="245" r="1.8" fill="#1a1026"/><circle cx="77" cy="245" r="1.8" fill="#1a1026"/>
+<path d="M68,252 q4,4 8,0" fill="none" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="72" cy="236" rx="26" ry="5" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M55,236 L89,236 L78,214 Q80,196 68,194 Q74,206 67,214 Z" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<polygon points="57,235 87,235 84,228 60,228" fill="#ff8a1f"/>
+<circle cx="88" cy="282" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="128" y="206" width="158" height="41" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="130,225 100,244 130,241" fill="#fffaf0"/>
+<polyline points="130,225 100,244 130,241" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="207" y="231.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Any second now.</text>
+<rect x="508" y="86" width="96" height="206" rx="4" fill="#6b4a2a" stroke="#1a1026" stroke-width="2"/>
+<rect x="522" y="100" width="68" height="70" rx="3" fill="none" stroke="#3d2a16" stroke-width="2.5"/><rect x="522" y="186" width="68" height="90" rx="3" fill="none" stroke="#3d2a16" stroke-width="2.5"/>
+<circle cx="590" cy="196" r="5" fill="#d4a017" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="524" y="60" width="64" height="20" rx="3" fill="#fff7dd" stroke="#1a1026" stroke-width="1.5"/>
+<text x="556" y="74" text-anchor="middle" font-family="Menlo, monospace" font-size="12" fill="#1a1026" font-weight="bold">stdin</text>
+<path d="M510,88 l34,0 M510,88 l24,24 M510,88 l0,34" fill="none" stroke="#cbd5e1" stroke-width="1.2"/>
+<path d="M524,88 q2,6 0,14 M536,88 q4,12 0,26" fill="none" stroke="#cbd5e1" stroke-width="1.2"/>
+<path d="M602,88 l-34,0 M602,88 l-24,24 M602,88 l0,34" fill="none" stroke="#cbd5e1" stroke-width="1.2"/>
+<path d="M588,88 q-2,6 0,14 M576,88 q-4,12 0,26" fill="none" stroke="#cbd5e1" stroke-width="1.2"/>
+<circle cx="388" cy="66" r="22" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<path d="M388,66 L388,52 M388,66 L402,74" fill="none" stroke="#1a1026" stroke-width="2" stroke-linecap="round"/><circle cx="388" cy="66" r="2" fill="#1a1026"/>
+<path d="M412,36 q10,-6 16,2" fill="none" stroke="#4b3f5c" stroke-width="1.5"/><path d="M429,37 l-5,1 3,-5" fill="none" stroke="#4b3f5c" stroke-width="1.5"/>
+<path d="M404,258 L404,220 A30,30 0 0 1 464,220 L464,258 Q458,244 450.8,264 Q442.4,278 434,262 Q425.6,278 417.2,264 Q410,244 404,258 Z" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="425" cy="222" rx="3.9" ry="6" fill="#1a1026"/><ellipse cx="443" cy="222" rx="3.9" ry="6" fill="#1a1026"/>
+<path d="M428,237 Q434,244 440,237" fill="none" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="401" cy="253.6" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="467" cy="253.6" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<rect x="342" y="110" width="184" height="41" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="423,149 432,192 441,149" fill="#fffaf0"/>
+<polyline points="423,149 432,192 441,149" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="434" y="135.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Waiting for input.</text>
+<text x="346" y="298" text-anchor="start" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="12" fill="#4b3f5c" font-style="italic">40 minutes later</text>
+<rect x="744" y="32" width="184" height="92" rx="5" fill="#4b5563" stroke="#1a1026" stroke-width="2"/>
+<rect x="751" y="39" width="170" height="78" rx="3" fill="#2a1a3a"/>
+<rect x="732" y="124" width="208" height="10" rx="3" fill="#6b7280" stroke="#1a1026" stroke-width="2"/>
+<text x="758" y="57.8" text-anchor="start" font-family="Menlo, monospace" font-size="12.5" fill="#ffb15c" xml:space="preserve">$ opencode run "hi" \</text>
+<text x="758" y="76.5" text-anchor="start" font-family="Menlo, monospace" font-size="12.5" fill="#ffb15c" xml:space="preserve">    &lt; /dev/null</text>
+<polygon points="670,302 726,302 711,256 685,256" fill="#1a1026"/>
+<circle cx="698" cy="246" r="14" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<circle cx="693" cy="245" r="1.8" fill="#1a1026"/><circle cx="703" cy="245" r="1.8" fill="#1a1026"/>
+<path d="M694,252 q4,4 8,0" fill="none" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="698" cy="236" rx="26" ry="5" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M681,236 L715,236 L704,214 Q706,196 694,194 Q700,206 693,214 Z" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<polygon points="683,235 713,235 710,228 686,228" fill="#ff8a1f"/>
+<circle cx="714" cy="282" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M856,278 L856,240 A30,30 0 0 1 916,240 L916,278 Q910,264 902.8,284 Q894.4,298 886,282 Q877.6,298 869.2,284 Q862,264 856,278 Z" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="877" cy="242" rx="3.9" ry="6" fill="#1a1026"/><ellipse cx="895" cy="242" rx="3.9" ry="6" fill="#1a1026"/>
+<ellipse cx="886" cy="261" rx="5" ry="7" fill="#1a1026"/>
+<path d="M872,229 l10,-2 M900,229 l-10,-2" fill="none" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="850" cy="259.6" rx="8" ry="5" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="922" cy="259.6" rx="8" ry="5" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<rect x="737" y="144" width="201" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="877,202 886,212 895,202" fill="#fffaf0"/>
+<polyline points="877,202 886,212 895,202" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="837.5" y="169.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Oh! Nobody's coming.</text>
+<text x="837.5" y="188.3" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">OK: hi.</text>
+<text x="24" y="346" font-family="Menlo, monospace" font-size="13" fill="#ff8a1f">🎃 comic · stdin</text>
+<text x="490" y="346" text-anchor="middle" font-family="Menlo, monospace" font-size="13" fill="#efe3cc">opencode run reads stdin until it closes. Close the door with &lt; /dev/null.</text>
+</svg></figure>
+<blockquote>
+<p>🍬 <strong>Treat: two terminals, side by side.</strong> Most labs put the agent in one terminal and a live viewer in another, so set up a split now and keep it for the day. VS Code: the <em>Terminal: Split Terminal</em> command (<code>⌘\</code> on macOS, <code>Ctrl+Shift+5</code> elsewhere). iTerm2: <code>⌘D</code>. Windows Terminal: <code>Alt+Shift+D</code>. tmux: <code>Ctrl+b</code> then <code>%</code>. Anything that gives you two shells in one window, both <code>cd</code>&#39;d into the lab folder, is right.</p>
+</blockquote>
+<h2 id="6-if-something-is-off"><a class="anchor" href="#6-if-something-is-off" aria-hidden="true">#</a>6. If something is off</h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>npm install</code> fails</td>
+<td>use Node 20 or newer (<code>nvm use 20</code>), delete <code>node_modules</code> and retry</td>
+</tr>
+<tr>
+<td><code>opencode: command not found</code></td>
+<td>re-run the installer, open a new shell</td>
+</tr>
+<tr>
+<td>Footer shows <code>⊙ 1 MCP</code> instead of 2</td>
+<td>you probably lack <code>uvx</code>; in <code>lab1-first-contact/opencode.json</code> set <code>time</code> to <code>&quot;enabled&quot;: false</code> and <code>time-js</code> to <code>true</code></td>
+</tr>
+<tr>
+<td>The model name in the footer is not GPT-5.4 Mini</td>
+<td>you started OpenCode outside a lab folder; <code>cd</code> into one</td>
+</tr>
+<tr>
+<td>&quot;Permission required&quot; pops up for a file read</td>
+<td>that is OpenCode protecting you (default rules for <code>.env</code> files and directories outside the project); it is covered in Module 4</td>
+</tr>
+<tr>
+<td><code>opencode run &quot;…&quot;</code> prints nothing and never returns</td>
+<td>it is waiting on stdin; add <code>&lt; /dev/null</code></td>
+</tr>
+<tr>
+<td>A lab works in its folder but not in a copy elsewhere</td>
+<td>lab servers import the MCP SDK from <code>course/labs/node_modules</code>; keep copies inside <code>course/labs/</code></td>
+</tr>
+<tr>
+<td>The three network checks fail behind a corporate proxy</td>
+<td>set <code>HTTPS_PROXY</code> in the shell you start OpenCode from (child processes inherit it, as Module 2 explains), and ask whoever runs the proxy to allow <code>open-meteo.com</code>, <code>mcp.deepwiki.com</code> and <code>registry.npmjs.org</code></td>
+</tr>
+<tr>
+<td>Windows: servers start in a shell but not in OpenCode</td>
+<td>run the course under WSL; OpenCode on Windows resolves <code>npx</code>/<code>uvx</code> through a different <code>PATH</code> than your shell, and the labs assume a Unix shell for <code>&lt; /dev/null</code> and <code>export</code></td>
+</tr>
+</tbody></table>
+<p>📼 <strong>Next episode.</strong> You ask a model what time it is in Tokyo, and find out what it takes for it to actually know. <a href="01-connecting-agents-with-mcp.html">Module 1 · Connecting AI agents to external systems with MCP →</a></p>
+
+</main>
+<footer class="foot"><div class="pumpkins" aria-hidden="true">🎃 🦇 👻 🕸️ 🎃</div>MCP with AI Agents · OpenCode + MCP course · haunted edition, October 2026 · <a href="https://github.com/varoonsahgal/opencode-mcp-course">source and labs on GitHub</a></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+  document.querySelectorAll("pre code").forEach((el) => {
+    const m = el.className.match(/language-(\w+)/);
+    if (m && m[1] === "jsonc") el.className = "language-json";
+    if (!m) el.classList.add("nohighlight");
+    window.hljs && hljs.highlightElement(el);
+    const b = document.createElement("button"); b.className = "copy"; b.type = "button"; b.textContent = "Copy";
+    b.onclick = () => { navigator.clipboard.writeText(el.innerText).then(() => { b.textContent = "Copied"; setTimeout(() => (b.textContent = "Copy"), 1200); }); };
+    el.parentElement.appendChild(b);
+  });
+  document.querySelectorAll("main table").forEach((t) => { const w = document.createElement("div"); w.className = "tbl"; t.replaceWith(w); w.appendChild(t); });
+  // Daylight / midnight toggle. Follows the system until pinned; the pin lives in this browser only.
+  (function () {
+    const root = document.documentElement, btn = document.getElementById("themebtn");
+    const light = document.getElementById("hl-light"), dark = document.getElementById("hl-dark");
+    const isDark = () => root.getAttribute("data-theme") === "dark" || (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    const paint = () => { const d = isDark(); btn.textContent = d ? "☀️" : "🌙"; light.media = d ? "not all" : "all"; dark.media = d ? "all" : "not all"; };
+    btn.onclick = () => { const next = isDark() ? "light" : "dark"; root.setAttribute("data-theme", next); try { localStorage.setItem("theme", next); } catch (e) {} paint(); };
+    matchMedia("(prefers-color-scheme: dark)").addEventListener("change", paint);
+    paint();
+  })();
+</script>
+</body>
+</html>

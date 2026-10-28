@@ -1,0 +1,712 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 1 · Connecting AI Agents to External Systems with MCP · MCP with AI Agents</title>
+<script>try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Creepster&family=Patrick+Hand&display=swap" rel="stylesheet">
+<link id="hl-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="(prefers-color-scheme: light)">
+<link id="hl-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%228%22%20fill%3D%22%23150c24%22%2F%3E%3Cellipse%20cx%3D%2216%22%20cy%3D%2218%22%20rx%3D%2212%22%20ry%3D%2210%22%20fill%3D%22%23ff8a1f%22%2F%3E%3Cpath%20d%3D%22M16%208c0-3%201-4%203-5%22%20stroke%3D%22%2322c55e%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M9%2015l4%203-4%201zM23%2015l-4%203%204%201z%22%20fill%3D%22%23150c24%22%2F%3E%3Cpath%20d%3D%22M9%2022q7%205%2014%200q-2%203-7%203t-7-3z%22%20fill%3D%22%23150c24%22%2F%3E%3C%2Fsvg%3E">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="pumpkin" aria-hidden="true">🎃</span>MCP with AI Agents</a>
+  <nav class="links"><a href="index.html">Home</a><a href="00-setup.html">00 · Setup</a><a href="01-connecting-agents-with-mcp.html" aria-current="page">01 · Connect</a><a href="02-configuring-mcp-in-opencode.html">02 · Configure</a><a href="03-building-a-custom-mcp-server.html">03 · Build</a><a href="04-securing-mcp-integrations.html">04 · Secure</a><a href="05-applied-challenge.html">05 · Apply</a><a href="06-advanced-mcp.html">06 · Go remote</a><span class="sep"></span><a href="handout.html">Handout</a><a href="slides/index.html">Slides</a><a href="https://github.com/varoonsahgal/opencode-mcp-course">GitHub</a></nav>
+  <button class="theme" type="button" id="themebtn" aria-label="Switch between daylight and midnight" title="Daylight / midnight">🌙</button>
+  <button class="menu" type="button" aria-label="Menu" onclick="document.body.classList.toggle('open')">☰</button>
+</header>
+<svg class="web" viewBox="0 0 170 170" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1">
+<path d="M0 0L170 170M0 0L170 70M0 0L70 170M0 0L170 20M0 0L20 170M0 0L170 120M0 0L120 170"/>
+<path d="M30 0Q28 22 0 30M60 0Q56 44 0 60M90 0Q84 66 0 90M120 0Q112 88 0 120M150 0Q140 110 0 150"/>
+<path d="M30 0Q30 15 20 24Q15 28 0 30" opacity=".5"/></svg>
+<main class="doc">
+<figure class="banner"><svg xmlns="http://www.w3.org/2000/svg" width="960" height="220" viewBox="0 0 960 220" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="Module 1, Connect: JSON-RPC messages crossing the wire between OpenCode and an MCP server">
+ <title>Module 1 · Connect</title>
+ <style>
+  .b1-tw { animation: b1-tw 3.2s ease-in-out infinite; }
+  .b1-fly { animation: b1-fly 6s ease-in-out infinite; }
+  .b1-flk { animation: b1-flk 3.1s steps(1) infinite; }
+  .b1-out { animation: b1-out 4.5s linear infinite; opacity: 0; }
+  .b1-back { animation: b1-back 4.5s linear infinite; opacity: 0; }
+  .b1-d1 { animation-delay: -1.5s; } .b1-d2 { animation-delay: -3s; }
+  .b1-out.b1-d2 { opacity: 1; transform: translateX(103px); }
+  .b1-back.b1-d2 { opacity: 1; transform: translateX(-103px); }
+  .b1-wire { stroke-dasharray: 3 7; animation: b1-flow 1.2s linear infinite; }
+  .b1-rev { animation-direction: reverse; }
+  .b1-halo { animation: b1-halo 3s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes b1-tw { 0%,100% { opacity: .15; } 50% { opacity: 1; } }
+  @keyframes b1-fly { 0%,100% { transform: translate(0,0) rotate(0); } 50% { transform: translate(12px,-7px) rotate(-8deg); } }
+  @keyframes b1-flk { 0%,64% { opacity: 1; } 65%,70% { opacity: .3; } 71%,78% { opacity: 1; } 79%,82% { opacity: .4; } 83%,100% { opacity: 1; } }
+  @keyframes b1-out  { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 42% { transform: translateX(206px); opacity: 1; } 48%,100% { transform: translateX(206px); opacity: 0; } }
+  @keyframes b1-back { 0%,40% { transform: translateX(0); opacity: 0; } 48% { opacity: 1; } 84% { transform: translateX(-206px); opacity: 1; } 90%,100% { transform: translateX(-206px); opacity: 0; } }
+  @keyframes b1-flow { to { stroke-dashoffset: -20; } }
+  @keyframes b1-halo { 0% { opacity: .5; transform: scale(.95); } 100% { opacity: 0; transform: scale(1.35); } }
+  @media (prefers-reduced-motion: reduce) { .b1-tw, .b1-fly, .b1-flk, .b1-out, .b1-back, .b1-wire, .b1-halo { animation: none !important; } }
+ </style>
+ <defs>
+  <linearGradient id="b1-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0612"/><stop offset="1" stop-color="#1f1333"/></linearGradient>
+  <pattern id="b1-grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#2a1a44"/></pattern>
+  <radialGradient id="b1-glow" cx="0.74" cy="0.5" r="0.42"><stop offset="0" stop-color="#a855f7" stop-opacity=".3"/><stop offset="1" stop-color="#a855f7" stop-opacity="0"/></radialGradient>
+  <radialGradient id="b1-mg"><stop offset=".3" stop-color="#ffe9b3" stop-opacity=".3"/><stop offset="1" stop-color="#ffe9b3" stop-opacity="0"/></radialGradient>
+  <filter id="b1-tg" x="-6%" y="-40%" width="112%" height="180%"><feGaussianBlur stdDeviation="5" result="b"/><feFlood flood-color="#ff8a1f" flood-opacity=".8"/><feComposite in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="b1-fg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <path id="b1-bat" d="M0,-4L-2,-8L-3,-3C-9,-9 -15,-8 -19,-4C-15,-3 -14,0 -13,3C-10,0 -8,1 -7,4C-5,2 -3,3 -2,5L0,4L2,5C3,3 5,2 7,4C8,1 10,0 13,3C14,0 15,-3 19,-4C15,-8 9,-9 3,-3L2,-8Z" fill="#0a0612" stroke="#a855f7" stroke-opacity=".6" stroke-width=".9" stroke-linejoin="round"/>
+  <g id="b1-pk"><path d="M-2,-19C-3,-24 0,-28 6,-30C4,-27 5,-22 4,-19Z" fill="#22c55e"/><ellipse cy="1" rx="24" ry="19" fill="#e0661a"/><ellipse rx="17" ry="20" fill="#ff8a1f"/><path d="M-9,-19C-13,-6 -13,8 -9,20M9,-19C13,-6 13,8 9,20" fill="none" stroke="#e0661a" stroke-width="1.4"/></g>
+  <path id="b1-pf" d="M-13,-1L-8,-10L-3,-1ZM3,-1L8,-10L13,-1ZM-2,6L0,2L2,6ZM-13,8Q0,18 13,8L10,8 9,12 6,8 -6,8 -9,12 -10,8Z"/>
+ </defs>
+ <rect width="960" height="220" rx="20" fill="url(#b1-bg)"/>
+ <rect width="960" height="220" rx="20" fill="url(#b1-grid)" opacity=".5"/>
+ <rect width="960" height="220" rx="20" fill="url(#b1-glow)"/>
+ <g fill="#fff"><circle cx="437" cy="20" r="1.3" opacity="0.58"/><circle class="b1-tw" style="animation-delay:-2.2s" cx="487" cy="21" r="0.8"/><circle cx="597" cy="25" r="0.8" opacity="0.48"/><circle class="b1-tw" style="animation-delay:-0.7s" cx="112" cy="26" r="1.2"/><circle class="b1-tw" style="animation-delay:-2.0s" cx="914" cy="29" r="1.2"/><circle cx="172" cy="8" r="1.1" opacity="0.34"/><circle class="b1-tw" style="animation-delay:-2.1s" cx="201" cy="13" r="0.7"/><circle cx="426" cy="27" r="1.1" opacity="0.68"/><circle cx="480" cy="23" r="1.0" opacity="0.47"/><circle cx="928" cy="30" r="1.3" opacity="0.72"/><circle cx="314" cy="13" r="0.9" opacity="0.34"/><circle cx="720" cy="17" r="1.3" opacity="0.53"/><circle cx="930" cy="178" r="0.7" opacity="0.43"/><circle cx="908" cy="112" r="1.4" opacity="0.54"/><circle class="b1-tw" style="animation-delay:-2.8s" cx="514" cy="140" r="1.2"/><circle cx="521" cy="88" r="1.4" opacity="0.75"/><circle cx="535" cy="73" r="0.8" opacity="0.34"/><circle cx="855" cy="61" r="1.1" opacity="0.57"/><circle cx="570" cy="158" r="0.8" opacity="0.69"/><circle cx="535" cy="104" r="0.8" opacity="0.46"/><circle cx="936" cy="171" r="0.9" opacity="0.83"/><circle cx="579" cy="99" r="1.3" opacity="0.69"/></g>
+ <circle cx="512" cy="42" r="50" fill="url(#b1-mg)"/>
+ <path transform="translate(512 42) rotate(-20)" d="M0,-18A18,18 0 0,0 0,18A22.0,22.0 0 0,1 0,-18Z" fill="#ffe9b3"/>
+ <g transform="translate(468 26) scale(0.55)"><use href="#b1-bat" class="b1-fly" style="animation-duration:6s;animation-delay:-1s"/></g><g transform="translate(552 22) scale(0.45)"><use href="#b1-bat" class="b1-fly" style="animation-duration:7s;animation-delay:-3s"/></g><g transform="translate(935 34) scale(0.5)"><use href="#b1-bat" class="b1-fly" style="animation-duration:5.5s;animation-delay:-2s"/></g>
+ <path d="M960,220L892.5,198.1M960,220L902.6,178.3M960,220L918.3,162.6M960,220L938.1,152.5M943.0,220.0Q944.9,217.6 943.8,214.7Q946.4,213.1 946.2,210.0Q949.2,209.2 950.0,206.2Q953.1,206.4 954.7,203.8Q957.6,204.9 960.0,203.0M927.0,220.0Q930.7,215.4 928.6,209.8Q933.5,206.5 933.3,200.6Q939.0,199.0 940.6,193.3Q946.5,193.5 949.8,188.6Q955.4,190.7 960.0,187.0M911.0,220.0Q916.4,213.1 913.4,204.9Q920.7,200.0 920.4,191.2Q928.8,188.8 931.2,180.4Q940.0,180.7 944.9,173.4Q953.1,176.4 960.0,171.0M895.0,220.0Q902.2,210.8 898.2,199.9Q907.9,193.4 907.4,181.8Q918.6,178.6 921.8,167.4Q933.4,167.9 939.9,158.2Q950.8,162.2 960.0,155.0" fill="none" stroke="#efe3cc" stroke-opacity=".25" stroke-width=".8"/>
+
+ <!-- left: words -->
+ <text x="40" y="50" font-family="Menlo, 'JetBrains Mono', monospace" font-size="12" letter-spacing="2.5" fill="#a855f7">MODULE 01 · 40 MIN · LAB: lab1-first-contact</text>
+ <text x="38" y="102" font-family="Creepster, 'Chalkboard SE', Impact, fantasy" font-size="46" letter-spacing="1" fill="#efe3cc" filter="url(#b1-tg)">Connect</text>
+ <text x="40" y="134" font-size="17" fill="#d8cfc0">Give an agent hands. Then read every word</text>
+ <text x="40" y="156" font-size="17" fill="#d8cfc0">it says to them, <tspan fill="#d8b4fe" font-weight="700">byte for byte.</tspan></text>
+ <g font-weight="700">
+  <rect x="40" y="176" width="136" height="26" rx="13" fill="#a855f7" fill-opacity=".18" stroke="#a855f7"/><text x="108" y="193" text-anchor="middle" fill="#d8b4fe" font-size="11.5">2 servers connected</text>
+  <rect x="184" y="176" width="150" height="26" rx="13" fill="#a855f7" fill-opacity=".18" stroke="#a855f7"/><text x="259" y="193" text-anchor="middle" fill="#d8b4fe" font-size="11.5">3 primitives touched</text>
+  <rect x="342" y="176" width="134" height="26" rx="13" fill="#a855f7" fill-opacity=".18" stroke="#a855f7"/><text x="409" y="193" text-anchor="middle" fill="#d8b4fe" font-size="11.5">1 protocol, wiretapped</text>
+ </g>
+
+ <!-- right: the wire -->
+ <g fill="none" stroke-width="2">
+  <path class="b1-wire" d="M640 92 H846" stroke="#a855f7"/>
+  <path class="b1-wire b1-rev" d="M640 136 H846" stroke="#7cf29a" opacity=".8"/>
+ </g>
+ <g font-family="Menlo, 'JetBrains Mono', monospace" font-size="10" fill="#8b7fa3" text-anchor="middle">
+  <text x="743" y="80">client → server</text>
+  <text x="743" y="158">server → client</text>
+ </g>
+ <g font-family="Menlo, 'JetBrains Mono', monospace" font-size="10" font-weight="700" text-anchor="middle" fill="#fff">
+  <g class="b1-out">    <rect x="602" y="82" width="76" height="20" rx="10" fill="#7e22ce"/><text x="640" y="96">initialize</text></g>
+  <g class="b1-out b1-d1"> <rect x="602" y="82" width="76" height="20" rx="10" fill="#7e22ce"/><text x="640" y="96">tools/list</text></g>
+  <g class="b1-out b1-d2"> <rect x="602" y="82" width="76" height="20" rx="10" fill="#a855f7"/><text x="640" y="96">tools/call</text></g>
+  <g class="b1-back">    <rect x="808" y="126" width="76" height="20" rx="10" fill="#15803d"/><text x="846" y="140">✓ result</text></g>
+  <g class="b1-back b1-d1"> <rect x="808" y="126" width="76" height="20" rx="10" fill="#15803d"/><text x="846" y="140">✓ 2 tools</text></g>
+  <g class="b1-back b1-d2"> <rect x="808" y="126" width="76" height="20" rx="10" fill="#15803d"/><text x="846" y="140">✓ 14:31</text></g>
+ </g>
+
+ <!-- host: the lantern -->
+ <circle class="b1-halo" cx="594" cy="112" r="50" fill="none" stroke="#a855f7" stroke-width="2"/>
+ <g transform="translate(594 114)">
+  <circle cy="-50" r="5" fill="none" stroke="#a855f7" stroke-width="1.4"/>
+  <path d="M-20,-44H20L14,-34H-14Z" fill="#0a0612" stroke="#a855f7" stroke-width="1.4" stroke-linejoin="round"/>
+  <rect x="-16" y="-34" width="32" height="56" rx="3" fill="#0a0612" stroke="#a855f7" stroke-width="1.5"/>
+  <rect x="-14" y="-32" width="28" height="52" fill="#ff8a1f" opacity=".14"/>
+  <path d="M-5,-34V22M5,-34V22" stroke="#a855f7" stroke-width="1" opacity=".5"/>
+  <rect x="-20" y="22" width="40" height="8" rx="2" fill="#0a0612" stroke="#a855f7" stroke-width="1.4"/>
+  <g filter="url(#b1-fg)"><path class="b1-flk" d="M0,12C-7,4 -4,-8 0,-16C4,-8 7,4 0,12Z" fill="#ffe9b3"/><ellipse cy="4" rx="2.4" ry="5" fill="#ff8a1f"/></g>
+ </g>
+ <text x="594" y="168" text-anchor="middle" font-size="14" font-weight="800" fill="#efe3cc">OpenCode</text>
+ <text x="594" y="182" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="10" fill="#d8b4fe">host + client</text>
+
+ <!-- server: the jack-o'-lantern -->
+ <g transform="translate(888 104) scale(1.3)"><use href="#b1-pk"/><use href="#b1-pf" fill="#ffe9b3" filter="url(#b1-fg)"/></g>
+ <g font-family="Menlo, 'JetBrains Mono', monospace" text-anchor="middle"><text x="888" y="154" font-size="14" font-weight="700" fill="#efe3cc">time</text><text x="888" y="168" font-size="10" fill="#d8b4fe">MCP server</text><text x="888" y="182" font-size="10" fill="#8b7fa3">stdio</text></g>
+</svg></figure>
+<h1>Module 1 · Connecting AI Agents to External Systems with MCP</h1>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Time</strong></td>
+<td>40 minutes (15 concepts · 25 lab)</td>
+</tr>
+<tr>
+<td><strong>Lab folder</strong></td>
+<td><code>course/labs/lab1-first-contact</code></td>
+</tr>
+<tr>
+<td><strong>You will</strong></td>
+<td>connect OpenCode to two pre-built MCP servers, inspect what they expose, make the agent call a tool, and watch the raw protocol go by</td>
+</tr>
+<tr>
+<td><strong>You&#39;ll pull off</strong></td>
+<td>a second terminal lights up with every JSON-RPC message your agent exchanges with a server, timed to the millisecond, while you watch it answer</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>🎬 <strong>Cold open.</strong> It is 02:00 and checkout is down. Your coding agent can read the repo, run the tests and grep the logs, and it knows nothing else: not the incident tracker, not the customer database, not even what time it is in the region that is on fire. Every one of those systems has an API, and nobody wants to write the glue for each one, for each agent, again. By the end of this module you will have watched an agent find tools it has never seen, pick one, and call it, and you will have read every byte it sent while it did.</p>
+</blockquote>
+<h2 id="1-0-start-with-a-question-the-model-cannot-answer"><a class="anchor" href="#1-0-start-with-a-question-the-model-cannot-answer" aria-hidden="true">#</a>1.0 Start with a question the model cannot answer</h2>
+<p>Ask a plain chat model, one with no tools, <em>&quot;What time is it right now in Tokyo?&quot;</em> It guesses, refuses, or tells you to check a clock. It has no clock. It also has no database, no ticket system, no deploy pipeline, and no idea what happened after its training cut-off.</p>
+<p>An AI <em>agent</em> is a model plus the ability to act: call functions, read data, change things. OpenCode already gives its model a few hands (read, edit, grep, bash), which is why it can answer the Tokyo question by shelling out to <code>date</code>. But your ticket system is not a shell command, your company&#39;s databases are not files in the project, and a SaaS API needs credentials. The question this module answers is: <strong>how does an agent get hands for everything else, and who decides what those hands may touch?</strong></p>
+<h2 id="1-1-the-problem-mcp-solves"><a class="anchor" href="#1-1-the-problem-mcp-solves" aria-hidden="true">#</a>1.1 The problem MCP solves</h2>
+<p><img src="images/nxm-problem.svg" alt="N agents times M systems"></p>
+<p>Before MCP, every AI application wrote its own GitHub integration, its own Postgres integration, its own Slack integration. Every tool vendor did the same for every AI app. N apps × M systems, each pair a bespoke, differently-secured piece of glue.</p>
+<p>The Model Context Protocol (MCP) is an open standard that defines <strong>one way for an AI application to discover and use capabilities offered by an external program</strong>. Write one server for your system and every MCP-capable agent can use it. Write one client in your agent and it can use every server.</p>
+<blockquote>
+<p>🍬 <strong>Treat: a short history.</strong> Anthropic published MCP in November 2024 as an open specification with SDKs and a handful of reference servers (the <code>time</code> and <code>everything</code> servers you are about to use are two of them). Editors and agents adopted it over the winter, and by spring 2025 OpenAI, Google and Microsoft had announced support, which is the moment it stopped being one vendor&#39;s idea. In December 2025 the project moved to the Agentic AI Foundation under the Linux Foundation, so no single company owns the spec. The revision dates you will see in the handshake (<code>2025-03-26</code>, <code>2025-06-18</code>, <code>2025-11-25</code>, …) are the spec&#39;s version numbers: it is a living standard, revised a few times a year.</p>
+</blockquote>
+<blockquote class="callout tip"><p>💡 <strong>Insight: MCP is to agents what LSP is to editors.</strong> The Language Server Protocol let any editor talk to any language&#39;s tooling through one protocol. MCP was explicitly modelled on it, down to JSON-RPC and the &quot;server&quot; naming. If you have ever configured a language server, you already know the shape of this.</p>
+</blockquote>
+<h2 id="1-2-the-architecture"><a class="anchor" href="#1-2-the-architecture" aria-hidden="true">#</a>1.2 The architecture</h2>
+<p><img src="images/mcp-architecture.svg" alt="MCP architecture"></p>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>What it is</th>
+<th>In this course</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Host</strong></td>
+<td>The AI application. Owns the model, the conversation, the UI, and the permission decisions.</td>
+<td>OpenCode</td>
+</tr>
+<tr>
+<td><strong>Client</strong></td>
+<td>A connection object inside the host; exactly one per server. Speaks the protocol.</td>
+<td>created by OpenCode for each entry under <code>mcp</code> in <code>opencode.json</code></td>
+</tr>
+<tr>
+<td><strong>Server</strong></td>
+<td>A program that exposes capabilities. Runs locally (a child process) or remotely (over HTTPS).</td>
+<td><code>uvx mcp-server-time</code>, <code>npx @modelcontextprotocol/server-everything</code>, your own code in Module 3</td>
+</tr>
+<tr>
+<td><strong>External system</strong></td>
+<td>Whatever the server actually touches: a clock, a database, an API, your filesystem.</td>
+<td>SQLite, Open-Meteo, a fake incident API</td>
+</tr>
+</tbody></table>
+<p>The host is the only thing that talks to the model. Servers never see the conversation; they only see the specific requests the client sends them. That boundary is the whole point, and in Module 4 we will see exactly where it leaks.</p>
+<blockquote class="callout note"><p>&quot;Server&quot; means <em>the program that serves capabilities</em>, even when it runs on your laptop as a child process of OpenCode. Resist the instinct to read &quot;server&quot; as &quot;remote&quot;.</p>
+</blockquote>
+<figure class="comic"><svg xmlns="http://www.w3.org/2000/svg" width="960" height="380" viewBox="0 0 960 380" role="img" aria-label="Three-panel comic: a witch asks where an MCP server runs; the pumpkin server says on your laptop, because it serves tools.">
+<title>Witch: So the MCP server runs where? Pumpkin: On your laptop. Witch: Then why is it called a server? Pumpkin: It serves. Tools. Witch: ...from my laptop. Pumpkin: Look, LSP started it. Caption: 'Server' means the program that serves capabilities. It is not a location.</title>
+<rect width="960" height="380" rx="18" fill="#150c24"/>
+<rect x="16" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="332" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="648" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<polygon points="58,302 114,302 99,256 73,256" fill="#1a1026"/>
+<circle cx="86" cy="246" r="14" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<circle cx="81" cy="245" r="1.8" fill="#1a1026"/><circle cx="91" cy="245" r="1.8" fill="#1a1026"/>
+<path d="M82,252 q4,4 8,0" fill="none" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="86" cy="236" rx="26" ry="5" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M69,236 L103,236 L92,214 Q94,196 82,194 Q88,206 81,214 Z" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<polygon points="71,235 101,235 98,228 74,228" fill="#ff8a1f"/>
+<rect x="100" y="290" width="48" height="7" rx="2" fill="#6b7280" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="103" y="258" width="42" height="32" rx="3" fill="#4b5563" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="107" y="262" width="34" height="24" rx="2" fill="#ff8a1f"/>
+<rect x="111" y="267" width="24" height="3" fill="#ffe9b3"/><rect x="111" y="273" width="16" height="3" fill="#ffe9b3"/>
+<circle cx="102" cy="288" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/><circle cx="112" cy="286" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="28" y="30" width="176" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="77,88 86,196 95,88" fill="#fffaf0"/>
+<polyline points="77,88 86,196 95,88" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="116" y="55.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">So the MCP server</text>
+<text x="116" y="74.3" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">runs where?</text>
+<path d="M226,209.2 Q224,191.2 234,188.2 L240,193.2 Q233,196.2 236,209.2 Z" fill="#22c55e" stroke="#1a1026" stroke-width="1.5"/>
+<ellipse cx="231" cy="238" rx="40" ry="32.8" fill="#ff8a1f" stroke="#1a1026" stroke-width="2"/>
+<path d="M215.8,209.2 Q209,238 215.8,266.8 M246.2,209.2 Q253,238 246.2,266.8 M231,207.2 Q227,238 231,268.8" fill="none" stroke="#e0661a" stroke-width="2.5"/>
+<polygon points="210.6,236.4 224.2,236.4 217.4,223.2" fill="#1a1026"/><polygon points="213.8,234.7 221,234.7 217.4,227.5" fill="#ffe9b3"/>
+<polygon points="237.8,236.4 251.4,236.4 244.6,223.2" fill="#1a1026"/><polygon points="241,234.7 248.2,234.7 244.6,227.5" fill="#ffe9b3"/>
+<polygon points="207.8,247.2 215,254.4 220.6,251.1 227,258.3 234.2,251.8 241.4,257.7 247.8,251.8 254.2,247.2 243,247.8 235.8,251.8 226.2,247.8 217.4,251.1" fill="#1a1026"/><polygon points="212.9,251 218.5,251.2 222.9,251.1 227.9,251.3 233.5,251.1 239.1,251.2 244.1,251.1 249.1,251 240.4,251.1 234.7,251.1 227.3,251.1 220.4,251.1" fill="#ffe9b3"/>
+<rect x="148" y="110" width="158" height="41" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="222,149 231,190 240,149" fill="#fffaf0"/>
+<polyline points="222,149 231,190 240,149" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="227" y="135.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">On your laptop.</text>
+<polygon points="374,302 430,302 415,256 389,256" fill="#1a1026"/>
+<circle cx="402" cy="246" r="14" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<circle cx="397" cy="245" r="1.8" fill="#1a1026"/><circle cx="407" cy="245" r="1.8" fill="#1a1026"/>
+<path d="M398,252 q4,4 8,0" fill="none" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="402" cy="236" rx="26" ry="5" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M385,236 L419,236 L408,214 Q410,196 398,194 Q404,206 397,214 Z" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<polygon points="387,235 417,235 414,228 390,228" fill="#ff8a1f"/>
+<rect x="416" y="290" width="48" height="7" rx="2" fill="#6b7280" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="419" y="258" width="42" height="32" rx="3" fill="#4b5563" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="423" y="262" width="34" height="24" rx="2" fill="#ff8a1f"/>
+<rect x="427" y="267" width="24" height="3" fill="#ffe9b3"/><rect x="427" y="273" width="16" height="3" fill="#ffe9b3"/>
+<circle cx="418" cy="288" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/><circle cx="428" cy="286" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="344" y="30" width="167" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="393,88 402,196 411,88" fill="#fffaf0"/>
+<polyline points="393,88 402,196 411,88" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="427.5" y="55.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Then why is it</text>
+<text x="427.5" y="74.3" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">called a server?</text>
+<path d="M542,209.2 Q540,191.2 550,188.2 L556,193.2 Q549,196.2 552,209.2 Z" fill="#22c55e" stroke="#1a1026" stroke-width="1.5"/>
+<ellipse cx="547" cy="238" rx="40" ry="32.8" fill="#ff8a1f" stroke="#1a1026" stroke-width="2"/>
+<path d="M531.8,209.2 Q525,238 531.8,266.8 M562.2,209.2 Q569,238 562.2,266.8 M547,207.2 Q543,238 547,268.8" fill="none" stroke="#e0661a" stroke-width="2.5"/>
+<polygon points="526.6,236.4 540.2,236.4 533.4,223.2" fill="#1a1026"/><polygon points="529.8,234.7 537,234.7 533.4,227.5" fill="#ffe9b3"/>
+<polygon points="553.8,236.4 567.4,236.4 560.6,223.2" fill="#1a1026"/><polygon points="557,234.7 564.2,234.7 560.6,227.5" fill="#ffe9b3"/>
+<polygon points="523.8,247.2 531,254.4 536.6,251.1 543,258.3 550.2,251.8 557.4,257.7 563.8,251.8 570.2,247.2 559,247.8 551.8,251.8 542.2,247.8 533.4,251.1" fill="#1a1026"/><polygon points="528.9,251 534.5,251.2 538.9,251.1 543.9,251.3 549.5,251.1 555.1,251.2 560.1,251.1 565.1,251 556.4,251.1 550.7,251.1 543.3,251.1 536.4,251.1" fill="#ffe9b3"/>
+<rect x="446" y="110" width="176" height="41" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="538,149 547,190 556,149" fill="#fffaf0"/>
+<polyline points="538,149 547,190 556,149" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="534" y="135.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">It serves. Tools.</text>
+<polygon points="690,302 746,302 731,256 705,256" fill="#1a1026"/>
+<circle cx="718" cy="246" r="14" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M710,245 h6 M720,245 h6" fill="none" stroke="#1a1026" stroke-width="2"/>
+<path d="M714,253 h8" fill="none" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="718" cy="236" rx="26" ry="5" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M701,236 L735,236 L724,214 Q726,196 714,194 Q720,206 713,214 Z" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<polygon points="703,235 733,235 730,228 706,228" fill="#ff8a1f"/>
+<rect x="732" y="290" width="48" height="7" rx="2" fill="#6b7280" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="735" y="258" width="42" height="32" rx="3" fill="#4b5563" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="739" y="262" width="34" height="24" rx="2" fill="#ff8a1f"/>
+<rect x="743" y="267" width="24" height="3" fill="#ffe9b3"/><rect x="743" y="273" width="16" height="3" fill="#ffe9b3"/>
+<circle cx="734" cy="288" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/><circle cx="744" cy="286" r="4" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="660" y="40" width="184" height="41" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="709,79 718,196 727,79" fill="#fffaf0"/>
+<polyline points="709,79 718,196 727,79" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="752" y="65.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">...from my laptop.</text>
+<path d="M858,209.2 Q856,191.2 866,188.2 L872,193.2 Q865,196.2 868,209.2 Z" fill="#22c55e" stroke="#1a1026" stroke-width="1.5"/>
+<ellipse cx="863" cy="238" rx="40" ry="32.8" fill="#ff8a1f" stroke="#1a1026" stroke-width="2"/>
+<path d="M847.8,209.2 Q841,238 847.8,266.8 M878.2,209.2 Q885,238 878.2,266.8 M863,207.2 Q859,238 863,268.8" fill="none" stroke="#e0661a" stroke-width="2.5"/>
+<path d="M825,238 q-10,-6 -16,-20" fill="none" stroke="#1a1026" stroke-width="2.5"/><circle cx="808" cy="217" r="4" fill="#ff8a1f" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M901,238 q10,-6 16,-20" fill="none" stroke="#1a1026" stroke-width="2.5"/><circle cx="918" cy="217" r="4" fill="#ff8a1f" stroke="#1a1026" stroke-width="1.5"/>
+<polygon points="842.6,236.4 856.2,236.4 849.4,223.2" fill="#1a1026"/><polygon points="845.8,234.7 853,234.7 849.4,227.5" fill="#ffe9b3"/>
+<polygon points="869.8,236.4 883.4,236.4 876.6,223.2" fill="#1a1026"/><polygon points="873,234.7 880.2,234.7 876.6,227.5" fill="#ffe9b3"/>
+<polygon points="839.8,247.2 847,254.4 852.6,251.1 859,258.3 866.2,251.8 873.4,257.7 879.8,251.8 886.2,247.2 875,247.8 867.8,251.8 858.2,247.8 849.4,251.1" fill="#1a1026"/><polygon points="844.9,251 850.5,251.2 854.9,251.1 859.9,251.3 865.5,251.1 871.1,251.2 876.1,251.1 881.1,251 872.4,251.1 866.7,251.1 859.3,251.1 852.4,251.1" fill="#ffe9b3"/>
+<rect x="814" y="100" width="124" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="854,158 863,190 872,158" fill="#fffaf0"/>
+<polyline points="854,158 863,190 872,158" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="876" y="125.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Look, LSP</text>
+<text x="876" y="144.3" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">started it.</text>
+<text x="24" y="346" font-family="Menlo, monospace" font-size="13" fill="#ff8a1f">🎃 comic · server</text>
+<text x="490" y="346" text-anchor="middle" font-family="Menlo, monospace" font-size="13" fill="#efe3cc">'Server' means the program that serves capabilities. It is not a location.</text>
+</svg></figure>
+<blockquote>
+<p>🍬 <strong>Treat: a house with phone lines.</strong> If the vocabulary slips, picture the host as a house. Each <em>client</em> is one phone line out of the house, wired to exactly one <em>server</em> on the other end. The model lives inside the house and never picks up a phone itself: it asks the house to make the call, and the house decides whether to dial. Everything the server ever learns arrives down its one line. Module 4 is about what gets said on those lines.</p>
+</blockquote>
+<h2 id="1-3-three-kinds-of-capability-and-who-pulls-the-trigger"><a class="anchor" href="#1-3-three-kinds-of-capability-and-who-pulls-the-trigger" aria-hidden="true">#</a>1.3 Three kinds of capability, and who pulls the trigger</h2>
+<p><img src="images/mcp-primitives.svg" alt="Tools, resources, prompts"></p>
+<p>The single most useful way to tell the three primitives apart is <strong>who decides when they are used</strong>:</p>
+<ul>
+<li><strong>Tools are model-controlled.</strong> The LLM reads the tool&#39;s name, description and input schema, and decides on its own to call it. <code>get_current_time</code>, <code>run_sql</code>, <code>send_email</code>.</li>
+<li><strong>Resources are application-controlled.</strong> Read-only context behind a URI (<code>runbook://checkout</code>, <code>file:///…</code>, <code>demo://resource/…</code>). The app or the user attaches them; they are <em>data</em>, not actions.</li>
+<li><strong>Prompts are user-controlled.</strong> Reusable message templates a human invokes on purpose. They expand into messages for the model.</li>
+</ul>
+<p>How OpenCode surfaces each one:</p>
+<table>
+<thead>
+<tr>
+<th>Primitive</th>
+<th>Where you see it in OpenCode</th>
+<th>Example from the lab</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Tool</td>
+<td>the model&#39;s tool list, prefixed <code>server_tool</code>; shown as <code>⚙ time_get_current_time […]</code> in the transcript</td>
+<td><code>time_get_current_time</code>, <code>everything_get-sum</code></td>
+</tr>
+<tr>
+<td>Resource</td>
+<td>the <code>@</code> picker, next to project files; also two built-in tools, <code>list_mcp_resources</code> and <code>read_mcp_resource</code></td>
+<td><code>@arch</code> → <code>architecture.md</code> from the everything server</td>
+</tr>
+<tr>
+<td>Prompt</td>
+<td>a slash command named <code>/server:prompt:mcp</code></td>
+<td><code>/everything:simple-prompt:mcp</code></td>
+</tr>
+</tbody></table>
+<blockquote class="callout tip"><p>💡 <strong>Insight:</strong> the spec says resources are <em>application-controlled</em>, but OpenCode also hands the model <code>list_mcp_resources</code> / <code>read_mcp_resource</code> tools. In OpenCode, then, the model <em>can</em> go and read a resource by itself if it decides to. Hosts differ; always check how yours maps the primitives before you rely on &quot;the model can&#39;t see that&quot;.</p>
+</blockquote>
+<h2 id="1-4-local-or-remote-the-same-messages-a-different-pipe"><a class="anchor" href="#1-4-local-or-remote-the-same-messages-a-different-pipe" aria-hidden="true">#</a>1.4 Local or remote: the same messages, a different pipe</h2>
+<p><img src="images/transports.svg" alt="Transports"></p>
+<p>MCP has two layers. The <strong>data layer</strong> is JSON-RPC 2.0: requests, responses and notifications with methods like <code>tools/list</code> and <code>tools/call</code>. The <strong>transport layer</strong> moves those messages:</p>
+<ul>
+<li><strong>stdio</strong> for local servers. OpenCode spawns the server as a child process and writes JSON to its stdin, one message per line; the server answers on stdout. It inherits <em>your</em> user, <em>your</em> environment variables, <em>your</em> network.</li>
+<li><strong>Streamable HTTP</strong> for remote servers. OpenCode POSTs JSON to a URL; the server answers with JSON or an SSE stream. Authentication is headers or OAuth 2.1.</li>
+</ul>
+<p>Rule number one of stdio servers: <strong>stdout is the protocol channel</strong>. A stray <code>console.log(&quot;starting…&quot;)</code> is a corrupted message. Log to stderr.</p>
+<figure class="comic"><svg xmlns="http://www.w3.org/2000/svg" width="960" height="380" viewBox="0 0 960 380" role="img" aria-label="Three-panel comic: a pumpkin server shouts console.log into the stdout pipe, the ghost client reads non-JSON and panics, so the pumpkin whispers to stderr instead.">
+<title>Pumpkin (into a pipe labelled stdout): console.log("Starting up! 🎃"). Ghost, reading the tape: {"jsonrpc":"2.0",… Starting up! 🎃 — THAT'S NOT JSON. Pumpkin, whispering into a pipe labelled stderr: starting up… Ghost: Better. Caption: stdout is the protocol channel. Whisper to stderr.</title>
+<rect width="960" height="380" rx="18" fill="#150c24"/>
+<rect x="16" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="332" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="648" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="144" y="212" width="164" height="44" rx="11" fill="#7c8296" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="144" cy="234" rx="8" ry="22" fill="#3b3f52" stroke="#1a1026" stroke-width="2"/>
+<rect x="155" y="216" width="142" height="7" fill="#b4b9c9" opacity="0.6"/>
+<text x="234" y="239.3" text-anchor="middle" font-family="Menlo, monospace" font-size="14" fill="#efe3cc" font-weight="bold">stdout</text>
+<path d="M124,224 l12,-6 M124,234 l14,0 M124,244 l12,6" fill="none" stroke="#1a1026" stroke-width="2"/>
+<path d="M77,208.8 Q75,190.8 85,187.8 L91,192.8 Q84,195.8 87,208.8 Z" fill="#22c55e" stroke="#1a1026" stroke-width="1.5"/>
+<ellipse cx="82" cy="236" rx="38" ry="31.2" fill="#ff8a1f" stroke="#1a1026" stroke-width="2"/>
+<path d="M67.6,208.8 Q61.1,236 67.6,263.2 M96.4,208.8 Q102.9,236 96.4,263.2 M82,206.8 Q78.2,236 82,265.2" fill="none" stroke="#e0661a" stroke-width="2.5"/>
+<polygon points="62.6,234.4 75.5,234.4 69.1,222" fill="#1a1026"/><polygon points="65.7,232.9 72.5,232.9 69.1,226" fill="#ffe9b3"/>
+<polygon points="88.5,234.4 101.4,234.4 94.9,222" fill="#1a1026"/><polygon points="91.5,232.9 98.3,232.9 94.9,226" fill="#ffe9b3"/>
+<polygon points="60,244.7 66.8,251.6 72.1,248.5 78.2,255.3 85,249.1 91.9,254.7 98,249.1 104,244.7 93.4,245.3 86.6,249.1 77.4,245.3 69.1,248.5" fill="#1a1026"/><polygon points="64.8,248.4 70.1,248.5 74.3,248.5 79,248.6 84.4,248.5 89.7,248.6 94.4,248.5 99.2,248.4 90.9,248.4 85.6,248.5 78.4,248.4 71.9,248.5" fill="#ffe9b3"/>
+<path d="M52,176 l8,-10 M72,170 l0,-12 M92,176 l-8,-10" fill="none" stroke="#e0661a" stroke-width="2"/>
+<rect x="60" y="60" width="183" height="53" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="95,111 104,196 113,111" fill="#fffaf0"/>
+<polyline points="95,111 104,196 113,111" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="151.5" y="82.7" text-anchor="middle" font-family="Menlo, monospace" font-size="13" fill="#1a1026">console.log(</text>
+<text x="151.5" y="98.3" text-anchor="middle" font-family="Menlo, monospace" font-size="13" fill="#1a1026">  "Starting up! 🎃")</text>
+<rect x="336" y="212" width="84" height="44" rx="11" fill="#7c8296" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="336" cy="234" rx="8" ry="22" fill="#3b3f52" stroke="#1a1026" stroke-width="2"/>
+<rect x="347" y="216" width="62" height="7" fill="#b4b9c9" opacity="0.6"/>
+<text x="386" y="234.4" text-anchor="middle" font-family="Menlo, monospace" font-size="1" fill="#efe3cc" font-weight="bold"></text>
+<rect x="418" y="220" width="190" height="24" fill="#fffdf7" stroke="#1a1026" stroke-width="1.5"/>
+<text x="426" y="237" text-anchor="start" font-family="Menlo, monospace" font-size="11.5" fill="#1a1026">{"jsonrpc":"2.0",…</text>
+<path d="M608,244 L608,262" fill="none" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="448" y="250" width="160" height="24" fill="#fffdf7" stroke="#1a1026" stroke-width="1.5"/>
+<text x="456" y="267" text-anchor="start" font-family="Menlo, monospace" font-size="11.5" fill="#c0392b" font-weight="bold">Starting up! 🎃</text>
+<path d="M546,194 L546,158.5 A28.5,28.5 0 0 1 603,158.5 L603,194 Q597.3,180 590.5,200 Q582.5,214 574.5,198 Q566.5,214 558.5,200 Q551.7,180 546,194 Z" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="566" cy="160.5" rx="3.7" ry="5.7" fill="#1a1026"/><ellipse cx="583" cy="160.5" rx="3.7" ry="5.7" fill="#1a1026"/>
+<ellipse cx="574.5" cy="179.5" rx="7" ry="6" fill="#1a1026"/>
+<path d="M561,147.5 l10,-2 M588,147.5 l-10,-2" fill="none" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="543" cy="191.1" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="606" cy="191.1" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<rect x="392" y="40" width="176" height="42" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="541,80 568,132 559,80" fill="#fffaf0"/>
+<polyline points="541,80 568,132 559,80" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="480" y="65.9" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="17" fill="#1a1026">THAT'S NOT JSON.</text>
+<rect x="768" y="150" width="170" height="40" rx="10" fill="#7c8296" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="768" cy="170" rx="8" ry="20" fill="#3b3f52" stroke="#1a1026" stroke-width="2"/>
+<rect x="778" y="154" width="150" height="6" fill="#b4b9c9" opacity="0.6"/>
+<text x="861" y="174.9" text-anchor="middle" font-family="Menlo, monospace" font-size="13" fill="#efe3cc" font-weight="bold">stdout</text>
+<rect x="768" y="240" width="170" height="20" rx="5" fill="#7c8296" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="768" cy="250" rx="4" ry="10" fill="#3b3f52" stroke="#1a1026" stroke-width="2"/>
+<rect x="773" y="244" width="160" height="3" fill="#b4b9c9" opacity="0.6"/>
+<text x="861" y="254.2" text-anchor="middle" font-family="Menlo, monospace" font-size="11" fill="#efe3cc" font-weight="bold">stderr</text>
+<path d="M709,208.8 Q707,190.8 717,187.8 L723,192.8 Q716,195.8 719,208.8 Z" fill="#22c55e" stroke="#1a1026" stroke-width="1.5"/>
+<ellipse cx="714" cy="236" rx="38" ry="31.2" fill="#ff8a1f" stroke="#1a1026" stroke-width="2"/>
+<path d="M699.6,208.8 Q693.1,236 699.6,263.2 M728.4,208.8 Q734.9,236 728.4,263.2 M714,206.8 Q710.2,236 714,265.2" fill="none" stroke="#e0661a" stroke-width="2.5"/>
+<polygon points="694.6,234.4 707.5,234.4 701.1,222" fill="#1a1026"/><polygon points="697.7,232.9 704.5,232.9 701.1,226" fill="#ffe9b3"/>
+<polygon points="720.5,234.4 733.4,234.4 726.9,222" fill="#1a1026"/><polygon points="723.5,232.9 730.3,232.9 726.9,226" fill="#ffe9b3"/>
+<polygon points="702.6,248.5 710.2,252.2 714,249.1 717.8,252.2 725.4,248.5" fill="#1a1026"/>
+<path d="M756,236 q6,8 0,16" fill="none" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="670" y="66" width="120" height="39" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="725,103 734,196 743,103" fill="#fffaf0"/>
+<polyline points="725,103 734,196 743,103" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="730" y="89.5" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="14" fill="#1a1026" font-style="italic">starting up…</text>
+<path d="M864,128 L864,96.2 A26.2,26.2 0 0 1 916.5,96.2 L916.5,128 Q911.2,114 905,134 Q897.6,148 890.2,132 Q882.9,148 875.5,134 Q869.2,114 864,128 Z" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="882.4" cy="98.2" rx="3.4" ry="5.2" fill="#1a1026"/><ellipse cx="898.1" cy="98.2" rx="3.4" ry="5.2" fill="#1a1026"/>
+<path d="M885.4,113.2 Q890.2,120.2 895.1,113.2" fill="none" stroke="#1a1026" stroke-width="2"/>
+<rect x="820" y="24" width="90" height="41" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="877,63 886,72 895,63" fill="#fffaf0"/>
+<polyline points="877,63 886,72 895,63" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="865" y="49.1" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Better.</text>
+<text x="24" y="346" font-family="Menlo, monospace" font-size="13" fill="#ff8a1f">🎃 comic · stdout</text>
+<text x="490" y="346" text-anchor="middle" font-family="Menlo, monospace" font-size="13" fill="#efe3cc">stdout is the protocol channel. Whisper to stderr.</text>
+</svg></figure>
+<blockquote>
+<p>🍬 <strong>Treat: what &quot;SSE&quot; is.</strong> Server-Sent Events is an old browser feature from the HTML5 era: an HTTP response that simply never ends, and streams lines that start with <code>data:</code> as they become available. Browsers expose it as <code>EventSource</code>. MCP borrows it as the cheapest way for a server to say <em>several</em> things in reply to one POST (progress, a question back to the client, then the final result). You will see it in Module 2&#39;s <code>curl</code> and build on it in Module 6.</p>
+</blockquote>
+<h2 id="1-5-what-actually-goes-over-the-wire"><a class="anchor" href="#1-5-what-actually-goes-over-the-wire" aria-hidden="true">#</a>1.5 What actually goes over the wire</h2>
+<p><img src="images/mcp-handshake.svg" alt="Handshake and tool call sequence"></p>
+<p>When OpenCode starts, each client performs this exchange with its server:</p>
+<ol>
+<li><code>initialize</code> — the client proposes a protocol version and declares its capabilities; the server replies with its own version, capabilities (<code>tools</code>, <code>resources</code>, <code>prompts</code>, …) and identity.</li>
+<li><code>notifications/initialized</code> — a notification (no <code>id</code>, no reply) that says &quot;ready&quot;.</li>
+<li><code>tools/list</code> — the client asks for every tool: name, description, JSON Schema for inputs, optional annotations.</li>
+<li><code>resources/list</code> and <code>prompts/list</code> — OpenCode asks for those too, and then fetches every prompt body (<code>prompts/get</code>) so it can register the slash commands.</li>
+</ol>
+<p>From then on, every time the model decides to use a tool: <code>tools/call</code> with the tool name and arguments, and a result whose <code>content</code> is an array of parts (usually one text part) that the host hands back to the model.</p>
+<blockquote>
+<p>🔬 <strong>Under the hood: three shapes of message.</strong> Every line on the wire is one of these:</p>
+<pre><code class="language-jsonc">{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:3,&quot;method&quot;:&quot;tools/call&quot;,&quot;params&quot;:{…}}   // request: has id + method, MUST get exactly one reply
+{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:3,&quot;result&quot;:{…}}                          // response: same id, result OR error, never both
+{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;method&quot;:&quot;notifications/initialized&quot;}         // notification: no id, so nobody may reply
+</code></pre>
+<p>The <code>id</code> is how a reply finds its request. Replies may arrive in any order, so a client keeps a table of open ids. Each side numbers its <em>own</em> requests, which is why you will see two different <code>#0</code>s when a server asks the client something. On stdio the framing is as simple as it gets: <strong>one JSON object per line</strong>, with no length header. That is why a stray <code>console.log</code> matters: the client reads every stdout line as a message.</p>
+</blockquote>
+<blockquote>
+<p>🍬 <strong>Treat: coat-check tickets.</strong> The <code>id</code> works like a cloakroom. You hand over a request and get a numbered ticket; when a coat comes back with that number on it, you know whose it is, even if the attendant brings them out in a different order. That is the whole reason ids exist, and you will watch replies come back out of order in Exercise 1.E. JSON-RPC itself is older than MCP by a long way: version 2.0 dates from 2010 and the entire specification fits on a few pages, which is a large part of why MCP chose it. &quot;RPC&quot; is <em>remote procedure call</em>, an idea from the 1980s: make calling a function on another machine look like calling one on your own.</p>
+</blockquote>
+<blockquote class="callout tip"><p>💡 <strong>Insight: the model never sees the handshake.</strong> Steps 1–4 happen before the conversation starts. What the model <em>does</em> see is the output of step 3: every tool description and schema is pasted into its context on every turn. Tool descriptions are prompts. Write them like prompts (Module 3), and budget them like prompts (see the token counter in the footer).</p>
+</blockquote>
+<p><strong>Protocol versions.</strong> MCP revises its spec a few times a year (<code>2024-11-05</code>, <code>2025-03-26</code>, <code>2025-06-18</code>, <code>2025-11-25</code>, <code>2026-07-28</code>). Clients and servers negotiate during <code>initialize</code>: OpenCode 1.18 proposes <code>2025-11-25</code>; servers built with the current TypeScript SDK (v2) speak <code>2026-07-28</code> natively <em>and</em> answer the older handshake, so everything in this course interoperates. You will see the negotiated version in the wiretap.</p>
+<h2 id="1-6-how-an-agent-picks-and-runs-a-tool"><a class="anchor" href="#1-6-how-an-agent-picks-and-runs-a-tool" aria-hidden="true">#</a>1.6 How an agent picks and runs a tool</h2>
+<p><img src="images/agent-loop.svg" alt="The agent loop"></p>
+<ol>
+<li>Your prompt plus the whole tool catalogue go to the model.</li>
+<li>The model emits a <em>structured request</em>: tool name + JSON arguments. It does not execute anything.</li>
+<li>OpenCode checks its permission rules for that tool (<code>allow</code>, <code>ask</code>, <code>deny</code>).</li>
+<li>The MCP client sends <code>tools/call</code>; the server does the real work.</li>
+<li>The result text is appended to the conversation and the model reads it.</li>
+<li>The model either calls another tool (back to 2) or writes its answer.</li>
+</ol>
+<p>Two consequences you will rely on later: <strong>(a)</strong> the host, not the model, is where enforcement lives; <strong>(b)</strong> anything that lands in the context — including tool results — can steer the next decision.</p>
+<h2 id="1-7-mcp-is-not-function-calling-and-it-does-not-replace-it"><a class="anchor" href="#1-7-mcp-is-not-function-calling-and-it-does-not-replace-it" aria-hidden="true">#</a>1.7 MCP is not function calling, and it does not replace it</h2>
+<p>A common misreading, worth killing early: <em>&quot;MCP is how models call tools.&quot;</em> It is not. Models have been able to call tools since 2023, through each provider&#39;s own <strong>native tool-calling</strong> API: you send the model a list of tool definitions in the provider&#39;s format, it answers with a structured call (a name and JSON arguments), you run it and send back the result. That mechanism is unchanged by MCP, and the model never notices whether a tool came from MCP or from code the host wrote itself.</p>
+<p><img src="images/mcp-vs-function-calling.svg" alt="MCP and native function calling are two different layers"></p>
+<p>What MCP standardises is the <em>other</em> side of the host: where the catalogue of tools comes from (<code>tools/list</code>) and how a call is carried out (<code>tools/call</code>). OpenCode translates between the two worlds on every turn: it turns <code>tools/list</code> results into the provider&#39;s tool-definition format, with the <code>server_tool</code> prefix you saw, and it turns the model&#39;s native tool call back into a <code>tools/call</code> to the right server, after checking its permission rules. Keep the two layers apart in your head and several later puzzles dissolve: why the same server behaves differently with different models (the model side differs), why tool descriptions cost tokens on every turn (they are pasted into the provider request), and why a host can hide, rename or veto a tool without the server knowing (the translation is the host&#39;s to make).</p>
+<h2 id="1-8-what-mcp-leaves-to-you"><a class="anchor" href="#1-8-what-mcp-leaves-to-you" aria-hidden="true">#</a>1.8 What MCP leaves to you</h2>
+<p>The spec is deliberately small. It says how to <em>describe</em> and <em>call</em> a capability. It says nothing about:</p>
+<ul>
+<li><strong>Whether a call should happen.</strong> There is no policy layer in MCP. The host&#39;s permission rules (OpenCode&#39;s <code>allow</code> / <code>ask</code> / <code>deny</code>) are the host&#39;s own invention, and every host does it differently.</li>
+<li><strong>What a tool is allowed to touch.</strong> A tool can do anything the server process can do. <code>readOnlyHint</code> is a hint, not a fence.</li>
+<li><strong>Who the user is.</strong> On stdio the server runs as you and simply inherits your identity. Over HTTP it is the server&#39;s job to check a credential; MCP only says where the header goes.</li>
+<li><strong>Isolation.</strong> Nothing sandboxes a local server; it is a program running on your machine with your environment variables.</li>
+</ul>
+<p>Keep this list in mind. Modules 2, 4 and 6 are, in effect, the story of what people had to build on top of the plumbing. The protocol is the easy part.</p>
+<hr>
+<h2 id="lab-1-first-contact-25-minutes"><a class="anchor" href="#lab-1-first-contact-25-minutes" aria-hidden="true">#</a>Lab 1 · First contact (25 minutes)</h2>
+<h3 id="mission"><a class="anchor" href="#mission" aria-hidden="true">#</a>🎯 Mission</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Connect OpenCode to two MCP servers and see both say <strong>Connected</strong></li>
+<li><input disabled="" type="checkbox"> Get the agent to call a tool you never named</li>
+<li><input disabled="" type="checkbox"> Take that tool away and catch the agent finding another way in</li>
+<li><input disabled="" type="checkbox"> Use all three primitives: a tool, a resource and a prompt</li>
+<li><input disabled="" type="checkbox"> Read the raw protocol live, in a second terminal, while the agent works</li>
+<li><input disabled="" type="checkbox"> Speak MCP to a server yourself, with no agent and no SDK</li>
+</ul>
+<p>Open <code>course/labs/lab1-first-contact/opencode.json</code>. It defines four servers; two are enabled:</p>
+<pre><code class="language-jsonc">&quot;time&quot;:       { &quot;type&quot;: &quot;local&quot;, &quot;command&quot;: [&quot;uvx&quot;, &quot;mcp-server-time&quot;], &quot;enabled&quot;: true, &quot;timeout&quot;: 60000 },
+&quot;time-js&quot;:    { &quot;type&quot;: &quot;local&quot;, &quot;command&quot;: [&quot;node&quot;, &quot;time-server.mjs&quot;], &quot;enabled&quot;: false },   // fallback if you have no uvx
+&quot;everything&quot;: { &quot;type&quot;: &quot;local&quot;, &quot;command&quot;: [&quot;npx&quot;, &quot;-y&quot;, &quot;@modelcontextprotocol/server-everything@2.0.0&quot;], &quot;enabled&quot;: true, &quot;timeout&quot;: 60000 },
+&quot;time-tap&quot;:   { &quot;type&quot;: &quot;local&quot;, &quot;command&quot;: [&quot;node&quot;, &quot;mcp-tap.mjs&quot;, &quot;mcp-traffic.log&quot;, &quot;--&quot;, &quot;uvx&quot;, &quot;mcp-server-time&quot;], &quot;enabled&quot;: false }
+</code></pre>
+<p><code>time</code> is the official reference server for timezones. <code>everything</code> is the MCP project&#39;s demo server: it exists purely to exercise every feature of the protocol (tools, resources, prompts, images, long-running operations), which makes it perfect for a tour.</p>
+<h3 id="exercise-1-a-connect-and-inspect"><a class="anchor" href="#exercise-1-a-connect-and-inspect" aria-hidden="true">#</a>🧪 Exercise 1.A — Connect and inspect</h3>
+<pre><code class="language-bash">cd course/labs/lab1-first-contact
+opencode
+</code></pre>
+<ol>
+<li><p>Wait for the footer to show <code>⊙ 2 MCP /status</code>. Type <code>/status</code> and press enter: both servers should read <strong>Connected</strong>.</p>
+<p><img src="images/shot-lab1-status.png" alt="/status dialog"></p>
+</li>
+<li><p>Type <code>/mcps</code>. This dialog toggles servers for the current session (space to toggle, esc to close). Leave both enabled for now.</p>
+<p><img src="images/shot-lab1-mcps.png" alt="/mcps dialog"></p>
+</li>
+<li><p>Press <code>esc</code> until you are back at the prompt.</p>
+</li>
+</ol>
+<h3 id="exercise-1-b-make-the-agent-use-a-tool"><a class="anchor" href="#exercise-1-b-make-the-agent-use-a-tool" aria-hidden="true">#</a>🧪 Exercise 1.B — Make the agent use a tool</h3>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> You are about to ask a one-line question. The footer will show how many input tokens it cost. Write down a number before you press enter: 500? 2,000? 10,000?</p>
+</blockquote>
+<p>Ask: <strong>What time is it right now in Tokyo?</strong></p>
+<p><img src="images/shot-lab1b-tokyo.png" alt="Tokyo time via the MCP time server"></p>
+<p>Read the transcript carefully:</p>
+<ul>
+<li><p><code>⚙ time_get_current_time [timezone=Asia/Tokyo]</code> is the tool call. The prefix <code>time_</code> is the server name from your config; <code>get_current_time</code> is the tool&#39;s own name. The model chose the IANA timezone itself from the tool&#39;s schema description. You never named the tool.</p>
+<blockquote>
+<p>🍬 <strong>Treat: why <code>Asia/Tokyo</code> and not <code>JST</code>.</strong> The tz database (kept by volunteers under IANA since the 1980s) names zones <em>continent/city</em> rather than by country or abbreviation, because borders and daylight-saving rules change and cities do not. <code>JST</code> is ambiguous and <code>GMT+9</code> says nothing about summer time. The time server&#39;s schema asks for an IANA name, and the model has seen enough of them to pick one. Module 3 shows how to describe a parameter so that it does.</p>
+</blockquote>
+</li>
+<li><p>The footer now shows something like <code>12.3K (3%) · $0.01</code>: twelve thousand input tokens for a one-line question. Roughly ten thousand of them are the system prompt and the descriptions of the 19 MCP tools your two servers expose (17 from <code>everything</code>, 2 from <code>time</code>). That is the <strong>context tax</strong> of MCP, and it is paid on every turn. How close was your guess?</p>
+</li>
+</ul>
+<p>Now the A/B test. Type <code>/mcps</code>, move to <code>time</code>, press <code>space</code> to disable it, <code>esc</code>. Start a fresh conversation with <code>/new</code>.</p>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> The time tool is gone. Will the agent (a) say it cannot know, (b) guess from its training data, or (c) get the answer some other way? Pick one, then ask the same question.</p>
+</blockquote>
+<blockquote class="callout important"><p>🤯 <strong>Removing a tool did not remove the capability.</strong> In our run the agent reached for the built-in <code>bash</code> tool and ran <code>TZ=Asia/Tokyo date</code>. Capable agents route around a missing tool using whatever else they can reach. Keep this in mind for Module 4: there you remove tools on purpose, and you need to know everything else the agent can still reach.</p>
+</blockquote>
+<p>Re-enable <code>time</code> the same way.</p>
+<h3 id="exercise-1-c-tour-the-three-primitives"><a class="anchor" href="#exercise-1-c-tour-the-three-primitives" aria-hidden="true">#</a>🧪 Exercise 1.C — Tour the three primitives</h3>
+<p>With the <code>everything</code> server you can see all three capability types in one place.</p>
+<ol>
+<li><p><strong>Tools.</strong> Ask: <strong>Use the get-sum tool to add 40 and 2, then echo the result with the echo tool.</strong> Two tool calls, chained, from one server.</p>
+<p><img src="images/shot-lab1b-everything.png" alt="Chained everything-server tool calls"></p>
+</li>
+<li><p><strong>Resources.</strong> Type <code>@arch</code> and watch the picker offer <code>architecture.md</code>, a resource served by <code>everything</code> (not a file on your disk). Select it, add <em>&quot;summarise this in one line&quot;</em>, send.</p>
+<p><img src="images/shot-lab1-resource-picker.png" alt="Resource picker"></p>
+</li>
+<li><p><strong>Prompts.</strong> Type <code>/every</code> and look at the entries named <code>/everything:…:mcp</code>. Run <code>/everything:simple-prompt:mcp</code>. The server-provided template is expanded into your message; you chose it, the model did not.</p>
+<p><img src="images/shot-lab1-prompts.png" alt="MCP prompts as slash commands"></p>
+</li>
+</ol>
+<h3 id="exercise-1-d-wiretap-the-protocol"><a class="anchor" href="#exercise-1-d-wiretap-the-protocol" aria-hidden="true">#</a>🧪 Exercise 1.D — Wiretap the protocol</h3>
+<p>Everything so far happened behind the transcript. Now you listen in.</p>
+<p><code>mcp-tap.mjs</code> is a 60-line transparent proxy: it starts the real server, forwards every byte in both directions unchanged, and writes a copy of each JSON-RPC message to a log file. <code>wiretap-view.mjs</code> follows that log and draws it as a live sequence diagram: who spoke, which method, how long the answer took, and the part of the payload that matters. The protocol does not change; you are just listening.</p>
+<p>🖥️ <strong>Split screen.</strong> Put two terminals side by side, both in the lab folder:</p>
+<pre><code>┌─ Terminal 1 · the agent ───────────────┐  ┌─ Terminal 2 · the wire ─────────────────────┐
+│ $ opencode                             │  │ $ node wiretap-view.mjs mcp-traffic.log     │
+│ &gt; What time is it in Berlin right now? │  │   (a row appears for every message)         │
+└────────────────────────────────────────┘  └─────────────────────────────────────────────┘
+</code></pre>
+<ol>
+<li>Quit OpenCode (<code>/exit</code>). In <code>opencode.json</code>, set <code>time</code> to <code>&quot;enabled&quot;: false</code> and <code>time-tap</code> to <code>&quot;enabled&quot;: true</code>.</li>
+<li><strong>Terminal 2:</strong> <code>cd course/labs/lab1-first-contact &amp;&amp; node wiretap-view.mjs mcp-traffic.log</code>. It says it is waiting; the log appears when OpenCode starts the server.</li>
+<li><strong>Terminal 1:</strong> start <code>opencode</code>. Do not type anything yet.</li>
+</ol>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> (1) How many messages cross the wire before you type a single character? (2) Your question is one sentence. How many <em>requests</em> will the whole exchange contain, startup included? (3) OpenCode will propose protocol version <code>2025-11-25</code>. Will the server accept it?</p>
+</blockquote>
+<p>Watch Terminal 2 fill in as OpenCode starts. Then ask <strong>What time is it in Berlin right now?</strong> in Terminal 1, and keep your eyes on Terminal 2.</p>
+<p><img src="images/shot-lab1d-wiretap-view.png" alt="wiretap-view following a live session"></p>
+<p>Read it top to bottom. That is the whole life of a connection:</p>
+<ul>
+<li><strong>Startup, before you typed:</strong> <code>initialize</code> → <code>notifications/initialized</code> → <code>tools/list</code> → <code>resources/list</code> and <code>prompts/list</code>, sent back to back. This server has no resources or prompts, but it advertised both capabilities in its <code>initialize</code> reply, so OpenCode asks. The dim tally line marks the pause while the server waited for you.</li>
+<li><strong>Your question:</strong> one <code>tools/call</code> with <code>{&quot;timezone&quot;:&quot;Europe/Berlin&quot;}</code>, answered in about 25 ms. The model&#39;s thinking time does not show up on the wire. All the server sees is the request.</li>
+<li><strong>The tidy-up:</strong> a <code>notifications/cancelled</code> for a request that has already completed. Servers ignore it; it is the client tidying up.</li>
+<li><strong>Version negotiation:</strong> the <code>initialize</code> row shows what OpenCode proposed, and the reply shows what the server will speak. On 24 October our server answered <code>2025-06-18</code>; on 27 October <code>uvx</code> fetched a newer <code>mcp-server-time</code> release that answered <code>2025-11-25</code>. Either way, both sides carried on. That is negotiation working, and also a live demonstration of why Module 2 tells you to pin versions.</li>
+</ul>
+<blockquote class="callout important"><p>🤯 <strong>The server never learned who was asking.</strong> In Terminal 1 the tool is <code>time-tap_get_current_time</code>. On the wire it is <code>get_current_time</code>. The prefix, the model, your prompt and the rest of the conversation never left OpenCode. The server received one JSON object and returned one. This is the boundary from 1.2, now visible on screen. In Module 4 you will see what crosses it anyway: the arguments.</p>
+</blockquote>
+<p>The raw log is still there if you prefer it unrendered (<code>tail -f mcp-traffic.log</code>). Here is a copy from a non-interactive <code>opencode run</code> on 24 October, with the long payloads trimmed. <code>opencode run</code> skips <code>resources/list</code> and <code>prompts/list</code>, which is why its <code>tools/call</code> is <code>#2</code> and yours is <code>#4</code>:</p>
+<pre><code>22:31:42.504 client → server REQUEST   #0 initialize        {&quot;method&quot;:&quot;initialize&quot;,&quot;params&quot;:{&quot;protocolVersion&quot;:&quot;2025-11-25&quot;,&quot;capabilities&quot;:{…},&quot;clientInfo&quot;:{&quot;name&quot;:&quot;opencode&quot;,…}}}
+22:31:42.765 server → client RESPONSE  #0                   {&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:0,&quot;result&quot;:{&quot;protocolVersion&quot;:&quot;2025-06-18&quot;,&quot;capabilities&quot;:{&quot;prompts&quot;:{…},&quot;resources&quot;:{…},&quot;tools&quot;:{…}},&quot;serverInfo&quot;:{&quot;name&quot;:&quot;mcp-time&quot;,…}}}
+22:31:42.768 client → server NOTIFY    notifications/initialized
+22:31:42.768 client → server REQUEST   #1 tools/list
+22:31:42.768 server → client RESPONSE  #1                   {&quot;result&quot;:{&quot;tools&quot;:[{&quot;name&quot;:&quot;get_current_time&quot;,&quot;description&quot;:&quot;Get current time in a specific timezones&quot;,&quot;inputSchema&quot;:{…}},{&quot;name&quot;:&quot;convert_time&quot;,…}]}}
+22:31:45.825 client → server REQUEST   #2 tools/call        {&quot;method&quot;:&quot;tools/call&quot;,&quot;params&quot;:{&quot;name&quot;:&quot;get_current_time&quot;,&quot;arguments&quot;:{&quot;timezone&quot;:&quot;Europe/Berlin&quot;}}}
+22:31:45.834 server → client RESPONSE  #2                   {&quot;result&quot;:{&quot;content&quot;:[{&quot;type&quot;:&quot;text&quot;,&quot;text&quot;:&quot;{\n  \&quot;timezone\&quot;: \&quot;Europe/Berlin\&quot;,\n  \&quot;datetime\&quot;: \&quot;2026-10-24T23:31:45+02:00\&quot;, …}&quot;}]}}
+22:31:45.847 client → server NOTIFY    notifications/cancelled
+</code></pre>
+<details><summary>Check your predictions</summary>
+
+<ol>
+<li>Nine: four requests (<code>initialize</code>, <code>tools/list</code>, <code>resources/list</code>, <code>prompts/list</code>), their four responses, and one notification. A server with prompts costs more: OpenCode then fetches every prompt body with <code>prompts/get</code> (see Challenge 1A).</li>
+<li>Five requests: four at startup, one for your question. Only the <code>tools/call</code> belongs to the question; everything else is startup.</li>
+<li>It depends on the server release. The negotiation is designed so that both answers work.</details></li>
+</ol>
+<p>Put the config back when you are done (<code>time</code> on, <code>time-tap</code> off), or keep the tap on for Challenge 1A. Stop the viewer with <code>ctrl+c</code>; it prints a final tally.</p>
+<blockquote class="callout tip"><p>💡 <strong>Insight:</strong> a wiretap you fully understand is also an <strong>audit log</strong>. Module 4&#39;s challenge turns this exact script into one that flags dangerous tool calls.</p>
+</blockquote>
+<h3 id="exercise-1-e-speak-mcp-by-hand-4-minutes"><a class="anchor" href="#exercise-1-e-speak-mcp-by-hand-4-minutes" aria-hidden="true">#</a>🧪 Exercise 1.E — Speak MCP by hand (4 minutes)</h3>
+<p>You have watched OpenCode talk to a server. Now you do the talking: no agent, no SDK, just a file of JSON lines. <code>hello-mcp.jsonl</code> in the lab folder holds seven messages: the handshake, a <code>tools/list</code>, and four <code>tools/call</code>s. One is fine, one asks for a timezone on Mars, one has no arguments at all, and one names a tool this server does not have.</p>
+<pre><code class="language-bash">cat hello-mcp.jsonl                          # read the seven lines first
+node time-server.mjs &lt; hello-mcp.jsonl       # the fallback time server; replies go to stdout
+</code></pre>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> (1) The requests have ids 1 to 6. In what order will the replies come back? (2) The Mars call, the empty call and the missing tool are all mistakes. Will they come back as the same kind of failure?</p>
+</blockquote>
+<details><summary>Our run (three times in a row, same answer)</summary>
+
+<p>Replies arrived as <strong>1, 2, 6, 5, 3, 4</strong>. The two calls the SDK rejected before running any code (#6, unknown tool; #5, missing argument) came back first. The two that reached the handler (#3, Tokyo; #4, Mars) came back after it finished.</p>
+<p>And no, the mistakes are not the same kind:</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>Mistake</th>
+<th>What came back</th>
+<th>Who reads it</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>6</td>
+<td>tool does not exist</td>
+<td><code>&quot;error&quot;: {&quot;code&quot;: -32602, &quot;message&quot;: &quot;Tool get_weather not found&quot;}</code></td>
+<td>the <strong>client&#39;s code</strong>. It is a JSON-RPC <em>protocol error</em></td>
+</tr>
+<tr>
+<td>5</td>
+<td>no <code>timezone</code></td>
+<td><code>&quot;result&quot;: {&quot;isError&quot;: true, &quot;content&quot;: [… &quot;Input validation error …&quot;]}</code></td>
+<td>the <strong>model</strong>. It is a <em>tool error</em></td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>Mars/Olympus_Mons</code></td>
+<td><code>&quot;result&quot;: {&quot;isError&quot;: true, &quot;content&quot;: [… &quot;Unknown timezone … Use an IANA name like &#39;Europe/Paris&#39;&quot;]}</code></td>
+<td>the <strong>model</strong>, with a hint written by the server author</td>
+</tr>
+</tbody></table>
+</details>
+
+<blockquote class="callout important"><p>🤯 <strong>That is the entire protocol.</strong> OpenCode, the Inspector and every other MCP host do what you just did with <code>&lt;</code>: write lines, read lines, match ids. Out-of-order replies are why ids exist. The split between a <em>protocol error</em> (addressed to code) and a <em>tool error</em> (addressed to the model) is the most useful idea in Module 3, and you have just seen both on the wire. Edit the file (add a <code>convert_time</code>-style mistake of your own, or a garbage line that is not JSON) and run it again.</p>
+</blockquote>
+<h3 id="fun-tool-scavenger-hunt-fast-finishers-5-minutes"><a class="anchor" href="#fun-tool-scavenger-hunt-fast-finishers-5-minutes" aria-hidden="true">#</a>🎲 Fun — Tool scavenger hunt (fast finishers, 5 minutes)</h3>
+<p>Using only the OpenCode TUI, answer:</p>
+<ol>
+<li>One <code>everything</code> tool would put every environment variable on your machine into the model&#39;s context. Which one? Ask the agent to <em>describe</em> it, not call it. (Module 2 explains why this matters.)</li>
+<li>Which <code>everything</code> tool returns an image, and what does OpenCode do with it?</li>
+<li>Make the agent call tools from <strong>both</strong> servers in a single reply. What prompt did it take?</li>
+<li>Run <code>npx -y @modelcontextprotocol/inspector --cli npx -y @modelcontextprotocol/server-everything@2.0.0 --method tools/list</code> and count the tools. The Inspector sees 16; OpenCode&#39;s model sees 17. Which tool is missing from the Inspector&#39;s list, and why does the server offer it to OpenCode only?</li>
+</ol>
+<details><summary>Answer to 4</summary>
+
+<p><code>get-roots-list</code>. OpenCode&#39;s <code>initialize</code> declares the client capability <code>roots</code> (it can tell a server which folders it works in); the Inspector&#39;s does not. The everything server reads the client&#39;s capabilities and registers that tool only when the client can answer <code>roots/list</code>. This is <strong>capability negotiation</strong>: the handshake is not a formality, and the same server can look different to different hosts.</p>
+</details>
+
+<h3 id="mission-complete"><a class="anchor" href="#mission-complete" aria-hidden="true">#</a>🏅 Mission complete</h3>
+<ul>
+<li><strong>Connected</strong> an agent to two MCP servers it had never seen and watched it choose a tool from 19 on its own.</li>
+<li><strong>Caught</strong> the agent routing around a tool you removed. You now know a missing tool does not mean a missing capability.</li>
+<li><strong>Read the protocol live</strong>: every message, every millisecond, and the prefix that never left OpenCode.</li>
+<li><strong>Spoke it yourself</strong>: seven lines of JSON, replies out of order, and two different kinds of error.</li>
+</ul>
+<h3 id="check-yourself"><a class="anchor" href="#check-yourself" aria-hidden="true">#</a>✅ Check yourself</h3>
+<details><summary>1. Which component decides whether a tool call is allowed to run: the model, the MCP client, the MCP server, or the host?</summary>
+
+<p>The <strong>host</strong> (OpenCode). The model only emits a request; the server only executes what it is sent. Permission rules live in the host, and they are the first security control you own.</p>
+</details>
+
+<details><summary>2. A server exposes a tool called <code>search</code>. You named the server <code>docs</code> in <code>opencode.json</code>. What does the model see?</summary>
+
+<p><code>docs_search</code>. The server name becomes the prefix, so two servers can both have a <code>search</code> tool without colliding. The server itself never sees the prefix.</p>
+</details>
+
+<details><summary>3. Why is the token counter higher after adding an MCP server, even before you call any tool?</summary>
+
+<p>Every tool&#39;s name, description and input schema is sent to the model on every turn. More servers → more tools → more context per turn (and more cost). Enable only the servers you need.</p>
+</details>
+
+<details><summary>4. You attached <code>@arch</code> and the model summarised the document. Which primitive did you use, and who decided to use it?</summary>
+
+<p>A <strong>resource</strong>. You decided (application/user-controlled). If you had instead asked &quot;read the architecture doc&quot;, OpenCode&#39;s <code>read_mcp_resource</code> tool would have let the <em>model</em> decide — the same data, a different trigger.</p>
+</details>
+
+<details><summary>5. What breaks if a stdio server prints a progress message to stdout?</summary>
+
+<p>The client parses every stdout line as a JSON-RPC message. Non-JSON lines are garbage on the protocol channel; strict clients fail the connection, lenient ones (OpenCode included) skip the line. Either way it is a bug: log to stderr. (Put a tap in front of such a server and <code>wiretap-view.mjs</code> flags the line as <code>✗ not JSON on the protocol channel</code>.)</p>
+</details>
+
+<h3 id="challenge-1a-wiretap-detective-10-minutes-optional"><a class="anchor" href="#challenge-1a-wiretap-detective-10-minutes-optional" aria-hidden="true">#</a>🏆 Challenge 1A — Wiretap detective (10 minutes, optional)</h3>
+<p>Switch the tap to the <code>everything</code> server: add a <code>everything-tap</code> entry that runs <code>node mcp-tap.mjs everything-traffic.log -- npx -y @modelcontextprotocol/server-everything@2.0.0</code>, disable <code>everything</code>, restart OpenCode, attach <code>@arch</code>, run <code>/everything-tap:simple-prompt:mcp</code>, then read the log and answer:</p>
+<ol>
+<li>List every JSON-RPC <strong>method</strong> OpenCode called before you typed anything, in order. Why does it fetch <code>prompts/get</code> for every prompt at startup?</li>
+<li>The server sent at least one message that was <strong>not</strong> a response. What was it, and what did OpenCode do with it?</li>
+<li>Find a request where the roles are reversed: the <em>server</em> asks and the <em>client</em> answers. What did it ask for, and why might that matter for privacy?</li>
+<li>When exactly was <code>resources/read</code> sent, relative to your keystrokes?</li>
+</ol>
+<p><code>wiretap-view.mjs</code> renders this log too: <code>node wiretap-view.mjs everything-traffic.log</code>. Your instructor has the answer key.</p>
+<h3 id="challenge-1b-be-the-client-20-minutes-harder"><a class="anchor" href="#challenge-1b-be-the-client-20-minutes-harder" aria-hidden="true">#</a>🏆 Challenge 1B — Be the client (20 minutes, harder)</h3>
+<p>Exercise 1.E was a client with no brain: it wrote its lines and never waited for an answer. Write a real one. <code>mini-client.mjs</code>, in the lab folder, with <strong>no dependencies</strong> (only <code>node:child_process</code> and <code>node:readline</code>), that:</p>
+<pre><code class="language-bash">node mini-client.mjs -- node time-server.mjs
+#   connected to time 1.0.0 · protocol 2025-11-25 · offers tools
+#     get_current_time(timezone)  Get the current date and time in an IANA timezone …
+node mini-client.mjs get_current_time &#39;{&quot;timezone&quot;:&quot;Asia/Tokyo&quot;}&#39; -- uvx mcp-server-time
+#   result: { &quot;timezone&quot;: &quot;Asia/Tokyo&quot;, &quot;datetime&quot;: &quot;…+09:00&quot;, … }
+node mini-client.mjs nope &#39;{}&#39; -- node time-server.mjs
+#   protocol error -32602: Tool nope not found
+</code></pre>
+<p>It must spawn the server, do the handshake (<code>initialize</code>, wait for the reply, then <code>notifications/initialized</code>), list the tools with their argument names, and optionally call one. The three rules that make it correct, each of which you have now seen on the wire:</p>
+<ol>
+<li><strong>Match replies by <code>id</code></strong>, never by arrival order (Exercise 1.E).</li>
+<li><strong>Skip lines that are not JSON</strong> instead of crashing (1.5&#39;s stray <code>console.log</code>).</li>
+<li><strong>Answer the server&#39;s own requests.</strong> Point your client at the <code>everything</code> server: it sends a <code>roots/list</code> request while you wait. A request must get a reply, so return a JSON-RPC error <code>-32601</code> (&quot;Method not found&quot;) rather than ignoring it.</li>
+</ol>
+<p>Done when all three commands above work <strong>and</strong> <code>node mini-client.mjs get-sum &#39;{&quot;a&quot;:40,&quot;b&quot;:2}&#39; -- npx -y @modelcontextprotocol/server-everything@2.0.0</code> prints <code>The sum of 40 and 2 is 42.</code> The reference solution is under 40 lines of code. Keep yours: Module 3&#39;s <code>tool-card.mjs</code> is the same idea, grown up.</p>
+<p>📼 <strong>Next episode.</strong> Today both servers came pre-wired. Next you wire them yourself: a server running on someone else&#39;s machine, a secret that has to reach a child process without landing in a file, and three servers that refuse to start until you work out why.</p>
+<p><a href="02-configuring-mcp-in-opencode.html">Module 2 · Configuring MCP servers with OpenCode →</a></p>
+
+</main>
+<footer class="foot"><div class="pumpkins" aria-hidden="true">🎃 🦇 👻 🕸️ 🎃</div>MCP with AI Agents · OpenCode + MCP course · haunted edition, October 2026 · <a href="https://github.com/varoonsahgal/opencode-mcp-course">source and labs on GitHub</a></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+  document.querySelectorAll("pre code").forEach((el) => {
+    const m = el.className.match(/language-(\w+)/);
+    if (m && m[1] === "jsonc") el.className = "language-json";
+    if (!m) el.classList.add("nohighlight");
+    window.hljs && hljs.highlightElement(el);
+    const b = document.createElement("button"); b.className = "copy"; b.type = "button"; b.textContent = "Copy";
+    b.onclick = () => { navigator.clipboard.writeText(el.innerText).then(() => { b.textContent = "Copied"; setTimeout(() => (b.textContent = "Copy"), 1200); }); };
+    el.parentElement.appendChild(b);
+  });
+  document.querySelectorAll("main table").forEach((t) => { const w = document.createElement("div"); w.className = "tbl"; t.replaceWith(w); w.appendChild(t); });
+  // Daylight / midnight toggle. Follows the system until pinned; the pin lives in this browser only.
+  (function () {
+    const root = document.documentElement, btn = document.getElementById("themebtn");
+    const light = document.getElementById("hl-light"), dark = document.getElementById("hl-dark");
+    const isDark = () => root.getAttribute("data-theme") === "dark" || (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    const paint = () => { const d = isDark(); btn.textContent = d ? "☀️" : "🌙"; light.media = d ? "not all" : "all"; dark.media = d ? "all" : "not all"; };
+    btn.onclick = () => { const next = isDark() ? "light" : "dark"; root.setAttribute("data-theme", next); try { localStorage.setItem("theme", next); } catch (e) {} paint(); };
+    matchMedia("(prefers-color-scheme: dark)").addEventListener("change", paint);
+    paint();
+  })();
+</script>
+</body>
+</html>

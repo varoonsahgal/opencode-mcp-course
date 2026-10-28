@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="380" viewBox="0 0 960 380" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <rect width="960" height="380" rx="18" fill="#fbfbfd"/>
+  <text x="32" y="40" font-size="22" font-weight="700" fill="#0f172a">The problem MCP solves: N agents × M systems</text>
+  <text x="32" y="64" font-size="14" fill="#475569">The same trick that LSP played for editors and languages. Build one adapter per side, not one per pair.</text>
+
+  <!-- Before -->
+  <text x="60" y="104" font-size="14" font-weight="700" fill="#9f1239">BEFORE: every pair is a bespoke integration</text>
+  <g font-size="12" font-weight="600">
+    <rect x="60" y="130" width="110" height="34" rx="8" fill="#eef2ff" stroke="#4f46e5"/><text x="115" y="152" text-anchor="middle" fill="#3730a3">OpenCode</text>
+    <rect x="60" y="190" width="110" height="34" rx="8" fill="#eef2ff" stroke="#4f46e5"/><text x="115" y="212" text-anchor="middle" fill="#3730a3">IDE agent</text>
+    <rect x="60" y="250" width="110" height="34" rx="8" fill="#eef2ff" stroke="#4f46e5"/><text x="115" y="272" text-anchor="middle" fill="#3730a3">Chat app</text>
+    <rect x="300" y="130" width="110" height="34" rx="8" fill="#fff7ed" stroke="#d97706"/><text x="355" y="152" text-anchor="middle" fill="#9a3412">GitHub</text>
+    <rect x="300" y="190" width="110" height="34" rx="8" fill="#fff7ed" stroke="#d97706"/><text x="355" y="212" text-anchor="middle" fill="#9a3412">Postgres</text>
+    <rect x="300" y="250" width="110" height="34" rx="8" fill="#fff7ed" stroke="#d97706"/><text x="355" y="272" text-anchor="middle" fill="#9a3412">Slack</text>
+  </g>
+  <g stroke="#e11d48" stroke-width="1.5" opacity="0.7">
+    <line x1="170" y1="147" x2="300" y2="147"/><line x1="170" y1="147" x2="300" y2="207"/><line x1="170" y1="147" x2="300" y2="267"/>
+    <line x1="170" y1="207" x2="300" y2="147"/><line x1="170" y1="207" x2="300" y2="207"/><line x1="170" y1="207" x2="300" y2="267"/>
+    <line x1="170" y1="267" x2="300" y2="147"/><line x1="170" y1="267" x2="300" y2="207"/><line x1="170" y1="267" x2="300" y2="267"/>
+  </g>
+  <text x="235" y="318" text-anchor="middle" font-size="12.5" fill="#9f1239" font-weight="700">3 × 3 = 9 integrations (and 9 security reviews)</text>
+
+  <!-- Divider -->
+  <line x1="480" y1="100" x2="480" y2="330" stroke="#e2e8f0" stroke-width="2"/>
+
+  <!-- After -->
+  <text x="520" y="104" font-size="14" font-weight="700" fill="#0f766e">AFTER: one protocol in the middle</text>
+  <g font-size="12" font-weight="600">
+    <rect x="520" y="130" width="110" height="34" rx="8" fill="#eef2ff" stroke="#4f46e5"/><text x="575" y="152" text-anchor="middle" fill="#3730a3">OpenCode</text>
+    <rect x="520" y="190" width="110" height="34" rx="8" fill="#eef2ff" stroke="#4f46e5"/><text x="575" y="212" text-anchor="middle" fill="#3730a3">IDE agent</text>
+    <rect x="520" y="250" width="110" height="34" rx="8" fill="#eef2ff" stroke="#4f46e5"/><text x="575" y="272" text-anchor="middle" fill="#3730a3">Chat app</text>
+    <rect x="790" y="130" width="110" height="34" rx="8" fill="#fff7ed" stroke="#d97706"/><text x="845" y="152" text-anchor="middle" fill="#9a3412">GitHub</text>
+    <rect x="790" y="190" width="110" height="34" rx="8" fill="#fff7ed" stroke="#d97706"/><text x="845" y="212" text-anchor="middle" fill="#9a3412">Postgres</text>
+    <rect x="790" y="250" width="110" height="34" rx="8" fill="#fff7ed" stroke="#d97706"/><text x="845" y="272" text-anchor="middle" fill="#9a3412">Slack</text>
+  </g>
+  <rect x="676" y="118" width="68" height="178" rx="12" fill="#ccfbf1" stroke="#0d9488" stroke-width="2"/>
+  <text x="710" y="212" text-anchor="middle" font-size="14" font-weight="800" fill="#134e4a" transform="rotate(-90 710 212)">M C P</text>
+  <g stroke="#0d9488" stroke-width="2">
+    <line x1="630" y1="147" x2="676" y2="147"/><line x1="630" y1="207" x2="676" y2="207"/><line x1="630" y1="267" x2="676" y2="267"/>
+    <line x1="744" y1="147" x2="790" y2="147"/><line x1="744" y1="207" x2="790" y2="207"/><line x1="744" y1="267" x2="790" y2="267"/>
+  </g>
+  <text x="575" y="318" text-anchor="middle" font-size="11.5" fill="#0f766e" font-weight="700">3 clients</text>
+  <text x="845" y="318" text-anchor="middle" font-size="11.5" fill="#0f766e" font-weight="700">3 servers</text>
+  <text x="710" y="318" text-anchor="middle" font-size="11.5" fill="#0f766e" font-weight="700">3 + 3 = 6</text>
+
+  <text x="32" y="362" font-size="12" fill="#64748b">Reality check: fewer integrations, but every server you connect now plugs straight into the agent's decision loop. Module 4 is about that trade.</text>
+</svg>

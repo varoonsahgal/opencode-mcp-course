@@ -1,0 +1,140 @@
+/* MCP with AI Agents · haunted edition stylesheet.
+   Light mode is "daylight at the pumpkin patch" (parchment + pumpkin), dark mode is "midnight" (plum + bone + ember).
+   The theme follows the system unless the 🌙/☀️ button in the header pins one (stored in localStorage). */
+:root {
+  --bg: #f6ecdc; --surface: #fff8ec; --ink: #231433; --muted: #6b5b7b; --line: #e4d4bf;
+  --accent: #d9661a; --accent-ink: #fff8ec; --accent-2: #7c3aed; --code-bg: #f3e6d3; --glow: rgba(217, 102, 26, .18);
+  --note: #7c3aed; --tip: #15803d; --important: #d9661a; --warning: #b45309; --caution: #be123c;
+  --instr: #b45309; --moon: #ffe9b3; --web-opacity: .22; --star-opacity: 0;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b0712; --surface: #150c24; --ink: #efe3cc; --muted: #a898bd; --line: #2a1a44;
+    --accent: #ff8a1f; --accent-ink: #1a0b05; --accent-2: #c4b5fd; --code-bg: #120a1f; --glow: rgba(255, 138, 31, .22);
+    --note: #c4b5fd; --tip: #7cf29a; --important: #ff8a1f; --warning: #fbbf24; --caution: #fb7185;
+    --instr: #fbbf24; --web-opacity: .14; --star-opacity: 1;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b0712; --surface: #150c24; --ink: #efe3cc; --muted: #a898bd; --line: #2a1a44;
+  --accent: #ff8a1f; --accent-ink: #1a0b05; --accent-2: #c4b5fd; --code-bg: #120a1f; --glow: rgba(255, 138, 31, .22);
+  --note: #c4b5fd; --tip: #7cf29a; --important: #ff8a1f; --warning: #fbbf24; --caution: #fb7185;
+  --instr: #fbbf24; --web-opacity: .14; --star-opacity: 1;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 76px; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16.5px/1.65 Inter, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; position: relative; min-height: 100vh; }
+a { color: var(--accent); text-underline-offset: 2px; }
+a:hover { color: var(--accent-2); }
+
+/* ---------- the night sky (dark mode only) and the moon glow ---------- */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(1.2px 1.2px at 12% 18%, rgba(255,255,255,.9) 50%, transparent 51%),
+    radial-gradient(1px 1px at 28% 64%, rgba(255,255,255,.7) 50%, transparent 51%),
+    radial-gradient(1.4px 1.4px at 41% 9%, rgba(255,255,255,.85) 50%, transparent 51%),
+    radial-gradient(1px 1px at 57% 31%, rgba(255,255,255,.6) 50%, transparent 51%),
+    radial-gradient(1.6px 1.6px at 66% 78%, rgba(255,255,255,.8) 50%, transparent 51%),
+    radial-gradient(1px 1px at 74% 14%, rgba(255,255,255,.7) 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 83% 47%, rgba(255,255,255,.9) 50%, transparent 51%),
+    radial-gradient(1px 1px at 91% 83%, rgba(255,255,255,.6) 50%, transparent 51%),
+    radial-gradient(1.3px 1.3px at 7% 88%, rgba(255,255,255,.8) 50%, transparent 51%),
+    radial-gradient(1px 1px at 49% 52%, rgba(255,255,255,.55) 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 95% 6%, rgba(255,255,255,.9) 50%, transparent 51%),
+    radial-gradient(1px 1px at 20% 40%, rgba(255,255,255,.65) 50%, transparent 51%),
+    radial-gradient(1.2px 1.2px at 35% 93%, rgba(255,255,255,.75) 50%, transparent 51%),
+    radial-gradient(1px 1px at 62% 60%, rgba(255,255,255,.5) 50%, transparent 51%),
+    radial-gradient(1.4px 1.4px at 88% 27%, rgba(255,255,255,.85) 50%, transparent 51%);
+  opacity: var(--star-opacity);
+}
+body::after {
+  content: ""; position: fixed; top: -140px; right: -140px; width: 520px; height: 520px; z-index: -1; pointer-events: none; border-radius: 50%;
+  background: radial-gradient(circle, var(--glow) 0%, transparent 62%);
+}
+
+/* ---------- header ---------- */
+.top { position: sticky; top: 0; z-index: 10; display: flex; align-items: center; gap: 20px; padding: 12px 24px; background: color-mix(in srgb, var(--bg) 86%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.brand { display: flex; align-items: center; gap: 10px; font: 400 21px/1 Creepster, "Chalkboard SE", Impact, fantasy; letter-spacing: .03em; color: var(--ink); text-decoration: none; white-space: nowrap; }
+.brand:hover { color: var(--accent); }
+.brand .pumpkin { font-size: 20px; line-height: 1; display: inline-block; transform-origin: 50% 90%; animation: wobble 6s ease-in-out infinite; }
+.links { display: flex; flex-wrap: wrap; gap: 4px 0; font-size: 13.5px; }
+.links a { color: var(--muted); text-decoration: none; padding: 5px 8px; border-radius: 8px; white-space: nowrap; }
+.links a:hover { color: var(--ink); background: var(--code-bg); }
+.links a[aria-current="page"] { color: var(--accent-ink); background: var(--accent); font-weight: 600; }
+.links .sep { width: 1px; background: var(--line); margin: 4px 6px; }
+.theme, .menu { margin-left: auto; font-size: 17px; line-height: 1; background: none; border: 1px solid var(--line); color: var(--ink); border-radius: 8px; padding: 5px 9px; cursor: pointer; }
+.theme + .menu { margin-left: 0; }
+.theme:hover, .menu:hover { background: var(--code-bg); }
+.menu { display: none; font-size: 20px; padding: 2px 10px; }
+
+/* ---------- decoration: cobweb (the banners carry their own bats) ---------- */
+.web { position: fixed; top: 54px; left: 0; width: 170px; height: 170px; z-index: 0; pointer-events: none; opacity: var(--web-opacity); color: var(--ink); }
+@keyframes wobble { 0%, 100% { transform: rotate(-6deg); } 50% { transform: rotate(6deg); } }
+@media (prefers-reduced-motion: reduce) { .brand .pumpkin { animation: none; } }
+
+/* ---------- document ---------- */
+.doc { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 32px 24px 64px; }
+.banner { margin: 0 0 8px; }
+.banner svg { width: 100%; height: auto; display: block; border-radius: 18px; box-shadow: 0 24px 60px -30px rgba(0, 0, 0, .55); }
+.comic { margin: 28px 0 30px; padding: 0; transform: rotate(-.35deg); }
+.comic svg { width: 100%; height: auto; display: block; border-radius: 18px; box-shadow: 0 18px 44px -24px rgba(0, 0, 0, .6); }
+.comic + p, .banner + h1 { margin-top: 18px; }
+.doc img { max-width: 100%; height: auto; border-radius: 10px; border: 1px solid var(--line); box-shadow: 0 14px 34px -24px rgba(0, 0, 0, .5); }
+.doc img[src$=".svg"] { border: none; box-shadow: none; background: #fbfbfd; border-radius: 14px; }
+.doc img[src*="haunted-castle"] { background: none; }
+h1 { font: 400 2.7rem/1.1 Creepster, "Chalkboard SE", Impact, fantasy; letter-spacing: .02em; margin: 28px 0 18px; color: var(--ink); text-shadow: 0 0 22px var(--glow); text-wrap: balance; }
+h2 { font-size: 1.55rem; letter-spacing: -.01em; margin: 48px 0 12px; padding-top: 8px; border-top: 1px solid var(--line); }
+h3 { font-size: 1.2rem; margin: 34px 0 10px; }
+h2 .anchor, h3 .anchor { opacity: 0; margin-left: -1.1em; padding-right: .3em; text-decoration: none; color: var(--muted); }
+h2:hover .anchor, h3:hover .anchor { opacity: 1; }
+code { font: .88em/1.5 "JetBrains Mono", Menlo, monospace; background: var(--code-bg); padding: .12em .38em; border-radius: 6px; }
+pre { position: relative; background: var(--code-bg); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; overflow-x: auto; }
+pre code { background: none; padding: 0; font-size: 13.5px; }
+pre code.hljs { background: none; padding: 0; }
+pre .copy { position: absolute; top: 8px; right: 8px; font: 600 11px Inter, sans-serif; color: var(--muted); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 3px 8px; cursor: pointer; opacity: 0; transition: opacity .15s; }
+pre:hover .copy, pre .copy:focus { opacity: 1; }
+.tbl { overflow-x: auto; margin: 16px 0; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { background: color-mix(in srgb, var(--accent) 10%, var(--code-bg)); font-weight: 600; }
+tr:last-child td { border-bottom: none; }
+blockquote { margin: 18px 0; padding: 12px 18px; border-left: 4px solid var(--line); background: var(--surface); border-radius: 0 12px 12px 0; color: var(--ink); }
+blockquote > :first-child { margin-top: 0; } blockquote > :last-child { margin-bottom: 0; }
+.callout { border-left-color: var(--c); background: color-mix(in srgb, var(--c) 9%, var(--surface)); }
+.callout.note { --c: var(--note); } .callout.tip { --c: var(--tip); } .callout.important { --c: var(--important); }
+.callout.warning { --c: var(--warning); } .callout.caution { --c: var(--caution); }
+details { margin: 12px 0; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); padding: 0 16px; }
+details[open] { padding-bottom: 8px; }
+summary { cursor: pointer; padding: 11px 0; font-weight: 600; list-style: none; }
+summary::-webkit-details-marker { display: none; }
+summary::before { content: "🕯️"; margin-right: .5em; display: inline-block; transition: transform .2s; }
+details[open] > summary::before { content: "🔥"; }
+summary:hover { color: var(--accent); }
+hr { border: none; border-top: 1px dashed var(--line); margin: 40px 0; text-align: center; height: 0; overflow: visible; }
+hr::after { content: "🦇"; position: relative; top: -14px; background: var(--bg); padding: 0 10px; font-size: 14px; }
+ul, ol { padding-left: 1.4em; }
+li { margin: 4px 0; }
+li input[type="checkbox"] { accent-color: var(--accent); margin-right: .4em; transform: translateY(1px); }
+.foot { position: relative; z-index: 1; text-align: center; color: var(--muted); font-size: 13px; padding: 28px 16px 40px; border-top: 1px solid var(--line); }
+.foot .pumpkins { font-size: 18px; letter-spacing: .25em; margin-bottom: 8px; }
+.instr-banner { margin: 0 0 8px; padding: 10px 14px; border-radius: 10px; font-weight: 600; font-size: 14px; color: var(--instr); background: color-mix(in srgb, var(--instr) 12%, var(--surface)); border: 1px solid color-mix(in srgb, var(--instr) 35%, transparent); }
+
+@media (max-width: 860px) {
+  .top { flex-wrap: wrap; padding: 10px 16px; }
+  .menu { display: block; }
+  .theme { margin-left: auto; }
+  .links { display: none; width: 100%; }
+  body.open .links { display: flex; }
+  .doc { padding: 20px 16px 48px; }
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.35rem; }
+  .web { display: none; }
+  .comic { transform: none; }
+}
+@media print { .top, .foot, pre .copy, .web, body::before, body::after { display: none; } .comic { transform: none; } }
+/* Guides open with a two-column fact table whose header row is empty; hide that bar. */
+thead tr:not(:has(th:not(:empty))) { display: none; }

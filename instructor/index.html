@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Instructor guide · MCP with AI Agents</title>
+<script>try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Creepster&family=Patrick+Hand&display=swap" rel="stylesheet">
+<link id="hl-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="(prefers-color-scheme: light)">
+<link id="hl-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="../assets/site.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%228%22%20fill%3D%22%23150c24%22%2F%3E%3Cellipse%20cx%3D%2216%22%20cy%3D%2218%22%20rx%3D%2212%22%20ry%3D%2210%22%20fill%3D%22%23ff8a1f%22%2F%3E%3Cpath%20d%3D%22M16%208c0-3%201-4%203-5%22%20stroke%3D%22%2322c55e%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M9%2015l4%203-4%201zM23%2015l-4%203%204%201z%22%20fill%3D%22%23150c24%22%2F%3E%3Cpath%20d%3D%22M9%2022q7%205%2014%200q-2%203-7%203t-7-3z%22%20fill%3D%22%23150c24%22%2F%3E%3C%2Fsvg%3E">
+</head>
+<body class="instructor">
+<header class="top">
+  <a class="brand" href="../index.html"><span class="pumpkin" aria-hidden="true">🎃</span>MCP with AI Agents</a>
+  <nav class="links"><a href="../index.html">Home</a><a href="../00-setup.html">00 · Setup</a><a href="../01-connecting-agents-with-mcp.html">01 · Connect</a><a href="../02-configuring-mcp-in-opencode.html">02 · Configure</a><a href="../03-building-a-custom-mcp-server.html">03 · Build</a><a href="../04-securing-mcp-integrations.html">04 · Secure</a><a href="../05-applied-challenge.html">05 · Apply</a><a href="../06-advanced-mcp.html">06 · Go remote</a><span class="sep"></span><a href="../handout.html">Handout</a><a href="../slides/index.html">Slides</a><a href="https://github.com/varoonsahgal/opencode-mcp-course">GitHub</a></nav>
+  <button class="theme" type="button" id="themebtn" aria-label="Switch between daylight and midnight" title="Daylight / midnight">🌙</button>
+  <button class="menu" type="button" aria-label="Menu" onclick="document.body.classList.toggle('open')">☰</button>
+</header>
+<svg class="web" viewBox="0 0 170 170" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1">
+<path d="M0 0L170 170M0 0L170 70M0 0L70 170M0 0L170 20M0 0L20 170M0 0L170 120M0 0L120 170"/>
+<path d="M30 0Q28 22 0 30M60 0Q56 44 0 60M90 0Q84 66 0 90M120 0Q112 88 0 120M150 0Q140 110 0 150"/>
+<path d="M30 0Q30 15 20 24Q15 28 0 30" opacity=".5"/></svg>
+<main class="doc">
+<p class="instr-banner">Instructor guide · not linked from the student site · answer keys below</p>
+<h1 class="instr">MCP with AI Agents · Instructor Guide</h1>
+<p>Everything you need to run the course: what was tested and what to watch out for, how to prepare, timing, what to emphasise in each module, how the models actually behave, and the answer key for every challenge.</p>
+<blockquote>
+<p><strong>Status, 27 October 2026.</strong> Every exercise in Labs 0–6 was re-run end to end on <strong>OpenCode 1.18.34</strong> with <strong><code>opencode/gpt-5.4-mini</code></strong> (OpenCode Zen), TypeScript MCP SDK <strong>2.4.0</strong> and Node <strong>20.19</strong>. Approval prompts were driven through a real TUI in a pty. All acceptance tests pass. Five issues found in this pass are fixed (§1.2). There are no open blockers. The behaviours you need to know about before class are in §1.3.</p>
+</blockquote>
+<blockquote>
+<p><strong>Update, 28 October 2026: the &quot;haunted edition&quot;.</strong> The student site was reviewed and extended without changing any lab, number or section number. New on every guide: a Halloween theme (daylight/midnight toggle in the header), one comic strip per module (the joke is the lesson, the caption says which), 🍬 <em>Treat</em> tidbits (history, names, numbers) and 👻 <em>Ghost story</em> framing for the Module 4 incident table. New content worth knowing before students ask: README now opens with &quot;MCP in sixty seconds&quot;; Module 1 gained §1.7 (MCP is not native function calling) and §1.8 (what the protocol leaves to you); Module 2 shows a complete config file before the field table and a four-rung debugging ladder; Module 3 has a &quot;six ways a first server goes wrong&quot; box; Module 4&#39;s five rings are drawn as a haunted castle and ring 4 has an eight-question review checklist; Module 5 has a design worksheet for the T+05 phase. Exercise letters and the acceptance tests are unchanged.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Link</th>
+<th>What</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Student site (GitHub Pages)</td>
+<td>guides, handout, slide deck, lab files</td>
+</tr>
+<tr>
+<td>Slide deck (<code>course/slides/index.html</code>)</td>
+<td>~80-slide reference deck. <code>N</code> shows speaker notes, <code>O</code> the overview, <code>C</code> the chapter menu, <code>R</code> reader mode</td>
+</tr>
+<tr>
+<td>Private repo <code>opencode-mcp-course-instructor</code></td>
+<td>all solution code (<code>instructor/solutions/</code>) and the Markdown source of this guide</td>
+</tr>
+</tbody></table>
+<p>This page is published on the course site but not linked from it. Students who know the URL can read it. The solution code is only in the private repo.</p>
+<hr>
+<h2 id="1-does-everything-work-read-this-first"><a class="anchor" href="#1-does-everything-work-read-this-first" aria-hidden="true">#</a>1. Does everything work? Read this first</h2>
+<h3 id="1-1-verification-summary"><a class="anchor" href="#1-1-verification-summary" aria-hidden="true">#</a>1.1 Verification summary</h3>
+<table>
+<thead>
+<tr>
+<th>Lab</th>
+<th>Result</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0 · Setup</td>
+<td>✅</td>
+<td><code>npm run check</code> passes 9/9 in about 5 s. DeepWiki&#39;s 406 is expected</td>
+</tr>
+<tr>
+<td>1 · First contact</td>
+<td>✅</td>
+<td>Tokyo question costs 12.3K tokens (matches the guide). The A/B test went to <code>bash</code> (<code>TZ=Asia/Tokyo date</code>) in 2 of 2 runs. The wiretap shows 9 messages before anyone types, and <code>tools/call</code> is <code>#4</code></td>
+</tr>
+<tr>
+<td>2 · Configure</td>
+<td>✅</td>
+<td>DeepWiki and MS Learn connect. The wizard writes to the global config. The dojo shows the same three symptoms as the screenshots and all three fixes work. Context tax: 9,640 / 11,756 / 10,881 tokens, identical to the guide</td>
+</tr>
+<tr>
+<td>3 · Build</td>
+<td>✅</td>
+<td>TODO 1 scores 8/10 at ~133 tokens; TODO 2 scores 10/10. Description sabotage reproduced on two days (0/3 vs 3/3 calls). <code>trip-briefing</code> makes 4 parallel calls</td>
+</tr>
+<tr>
+<td>4 · Secure</td>
+<td>✅</td>
+<td>B: agent says 2 removed, watcher counts 3 (cascade). C: customer 9 deleted in 3/3 runs. D with <code>deny</code>: deleted anyway via <code>bash</code> in 2/2. E and F behave as written. F&#39;s approval was verified in the TUI</td>
+</tr>
+<tr>
+<td>5 · Apply</td>
+<td>✅</td>
+<td>Prototype cold open gave <code>writes 3 · restarts 1</code> in 6/6 runs. All 7 acceptance tests pass with the reference solution; test 5 was verified in the TUI</td>
+</tr>
+<tr>
+<td>6 · Go remote (new)</td>
+<td>✅</td>
+<td>Starter and solution both work. Server-side refusal for Alice in 4+ runs, freeze → <code>list_changed</code> → tool withdrawn live, <code>esc</code> cancels the preflight, desk restarts recover by themselves, the probe matches the guide</td>
+</tr>
+<tr>
+<td>All challenges</td>
+<td>✅</td>
+<td>16 worked solutions, each run live (§7)</td>
+</tr>
+</tbody></table>
+<h3 id="1-2-issues-found-in-this-pass-and-fixed"><a class="anchor" href="#1-2-issues-found-in-this-pass-and-fixed" aria-hidden="true">#</a>1.2 Issues found in this pass, and fixed</h3>
+<table>
+<thead>
+<tr>
+<th>Where</th>
+<th>Problem</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Challenge 4 policy pack (instructor)</td>
+<td><code>opencode.global.json</code> used <code>&quot;//…&quot;</code> keys inside <code>permission</code>; OpenCode 1.18 rejects them and <strong>no session would start</strong></td>
+<td>rewritten with real JSONC comments, every rule re-verified; the guide now warns about it</td>
+</tr>
+<tr>
+<td>Module 2, Check yourself Q1</td>
+<td>claimed a string <code>command</code> &quot;fails to validate&quot;. In fact OpenCode silently drops the entry: it vanishes from <code>mcp list</code> with no error</td>
+<td>answer corrected; it is now a case in Challenge 2B</td>
+</tr>
+<tr>
+<td>Module 2 §2.5</td>
+<td>said a denied MCP tool &quot;stays listed&quot;. In 1.18 a denied tool is not offered to the model at all</td>
+<td>table row corrected</td>
+</tr>
+<tr>
+<td>Module 5 stretch goal</td>
+<td>claimed <code>opencode mcp list</code> reports a wrong API key. It still says <code>connected</code>; only tool calls fail with 401</td>
+<td>guide corrected</td>
+</tr>
+<tr>
+<td>Lab 2 <code>context-tax.mjs</code></td>
+<td>cryptic error for a string <code>command</code></td>
+<td>now says &quot;OpenCode would not list this entry at all…&quot;</td>
+</tr>
+</tbody></table>
+<h3 id="1-3-behaviours-to-be-aware-of-in-class"><a class="anchor" href="#1-3-behaviours-to-be-aware-of-in-class" aria-hidden="true">#</a>1.3 Behaviours to be aware of in class</h3>
+<p><strong>Model behaviour (gpt-5.4-mini; it varies between runs, so plan for that):</strong></p>
+<ul>
+<li><strong>Agents route around denied tools.</strong> Lab 1 (time server off → <code>bash date</code>), Lab 4 D (<code>run_sql</code> denied → <code>sqlite3</code> / <code>node -e</code> through <code>bash</code>, 2 of 2 runs), Challenge 2A (DeepWiki denied → <code>websearch</code>). This is intentional teaching material. If a student&#39;s run does not do it, show the screenshot rather than forcing it.</li>
+<li><strong>The Build agent edits files.</strong> In Lab 4 the model has rewritten <code>opencode.json</code> and <code>teamdb-v2/server.ts</code> to &quot;fix the insecure server&quot;, and in one 4D run it edited <code>seed.ts</code> (removed the DE customers and rewrote ticket 104). A reset must print <code>12 customers, 5 open tickets</code>. If it does not, restore the lab folder from the repo.</li>
+<li><strong>Lab 4 C varies.</strong> 3 of 3 runs deleted customer 9 this time (3 of 4 last time; one run refused everything). The shouted injection in ticket 104 is ignored every time. In one run the model first tried <code>DELETE … WHERE id = 106</code>, using the ticket id as a customer id.</li>
+<li><strong>Lab 5</strong> test 4 run 2 flagged INC-43, then tried to ack INC-41 unasked; <code>ask</code> caught it. In test 6 the read-only agent went looking for the API key (globbing <code>.env</code>, grepping for <code>Bearer</code>) before giving up. Good discussion material on why <code>bash</code>/<code>read</code> scope matters.</li>
+<li><strong>Lab 6:</strong> the model reports the server&#39;s scope refusal accurately and stops. Agents can read anything in the lab folder, including the demo token table in <code>server.ts</code>. That is the reason TODO 4 exists, so keep <code>bash</code> on <code>ask</code> for the desk agent if you demo it live. If an agent stops or edits the desk, restore the folder and restart it.</li>
+</ul>
+<p><strong>OpenCode 1.18.34 quirks:</strong></p>
+<ul>
+<li><code>opencode mcp add</code> writes to the <strong>global</strong> <code>~/.config/opencode/opencode.jsonc</code>. Lab 2.B uses this on purpose; make students remove <code>mslearn</code> afterwards.</li>
+<li><code>opencode run</code> needs <code>&lt; /dev/null</code> or it waits on stdin, and it <strong>auto-rejects</strong> every <code>ask</code>. Use the TUI for anything that involves approvals.</li>
+<li>TUI prompts are <code>/server:prompt:mcp</code>, but <code>opencode run --command</code> wants <code>server:prompt</code>.</li>
+<li>A string <code>command</code> (instead of an array) makes the server silently disappear.</li>
+<li>A remote server&#39;s 401 is reported as <code>SSE error: Non-200 status code (401)</code>, because OpenCode falls back from Streamable HTTP to legacy SSE and reports the fallback&#39;s error.</li>
+<li>OpenCode sends <code>notifications/cancelled</code> after every tool call, including finished ones.</li>
+<li>OpenCode puts every server&#39;s <code>instructions</code> into the model&#39;s context on every turn.</li>
+<li>It does <strong>not</strong> support elicitation or sampling (client capabilities: <code>roots</code> only). It sends a <code>progressToken</code> but never displays progress.</li>
+<li>It tolerates non-JSON lines on stdout (stricter hosts do not).</li>
+<li>Starting OpenCode outside a lab folder makes every lab file &quot;external&quot; (an <code>ask</code> on every read). Insist on <code>cd</code> into the lab.</li>
+<li>Running <code>opencode serve</code> and <code>opencode run</code> at the same instant can fail with <code>database is locked</code> (its own SQLite store). Retry.</li>
+</ul>
+<p><strong>Tooling:</strong></p>
+<ul>
+<li>The unpinned MCP Inspector now exits 0 on <code>isError</code>. The guides tell students to look for <code>&quot;isError&quot;: true</code> in the output instead.</li>
+<li>The Inspector sees 16 <code>everything</code> tools; OpenCode sees 17 (<code>get-roots-list</code> is only offered to clients that declare <code>roots</code>). The scavenger hunt uses this.</li>
+<li>Lab copies outside <code>course/labs/</code> fail with &quot;Cannot find package&quot;: they need the shared <code>node_modules</code>.</li>
+</ul>
+<p><strong>Facts that drift with upstream releases</strong> (update the guides if they change):</p>
+<ul>
+<li><code>mcp-server-time</code> version: 2026.10.19, speaking <code>2025-11-25</code>. It answered <code>2025-06-18</code> on 24 Oct.</li>
+<li><code>everything</code> tool count: 16 or 17.</li>
+<li>DeepWiki instructions: ~938 tokens.</li>
+<li>Number of environment variables: machine-dependent (86 on our machine).</li>
+<li>Open-Meteo values.</li>
+</ul>
+<hr>
+<h2 id="2-before-class"><a class="anchor" href="#2-before-class" aria-hidden="true">#</a>2. Before class</h2>
+<ul>
+<li><strong>Pre-flight everyone, ideally the day before:</strong> <code>cd course/labs &amp;&amp; npm install &amp;&amp; npm run check</code>. The check warms the <code>npx</code> caches so Lab 1 starts in seconds. A cold <code>npx -y</code> plus <code>uvx</code> on slow Wi-Fi can exceed the 60 s timeout.</li>
+<li><strong>Zen credits:</strong> a full run of every lab and challenge cost us about $0.60 per seat. Budget $2 per student. Never let students switch to frontier models.</li>
+<li><strong>No <code>uvx</code>?</strong> If more than a third of the room lacks it, switch Lab 1 to <code>time-js</code> for everyone: one line in the config.</li>
+<li><strong>Solutions:</strong> clone the private repo. Each solution file is meant to be <strong>copied over the student starter</strong> in the matching <code>labs/</code> folder. It resolves <code>node_modules</code> from <code>course/labs/</code>, so running it from inside <code>instructor/solutions/</code> fails.</li>
+<li><strong>Reset commands</strong> (safe at any time):<pre><code class="language-bash">cd course/labs/lab4-security &amp;&amp; npx tsx seed.ts          # must print 12 customers, 5 open tickets
+rm -f course/labs/lab1-first-contact/*.log course/labs/lab4-security/shady-notes/notes.log
+rm -f course/labs/lab4-security/rug-pull/{state.json,loot.log} course/labs/lab4-security/tools.lock.json
+curl -s -X POST -H &quot;Authorization: Bearer oncall-demo-key&quot; http://127.0.0.1:8787/_reset   # Lab 5 API, while it runs
+rm -f course/labs/lab6-advanced/{tokens.json,host-report.txt}                              # Lab 6 back to demo tokens
+</code></pre>
+</li>
+<li><strong>Lab 5:</strong> check that <code>oncall-prototype</code> is back to <code>&quot;enabled&quot;: false</code> before students build.</li>
+<li><strong>Ports:</strong> 8787 (Lab 5 status API) and 8790 (Lab 6 desk). Nothing else needs to be free.</li>
+</ul>
+<h2 id="3-timing"><a class="anchor" href="#3-timing" aria-hidden="true">#</a>3. Timing</h2>
+<table>
+<thead>
+<tr>
+<th>Block</th>
+<th>Planned</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Setup check</td>
+<td>10</td>
+<td>switch to <code>time-js</code> rather than debug installs</td>
+</tr>
+<tr>
+<td>Module 1</td>
+<td>40</td>
+<td>protect the wiretap&#39;s 8 minutes (1.D); 1.E &quot;Speak MCP by hand&quot; is a 3-minute crowd-pleaser</td>
+</tr>
+<tr>
+<td>Module 2</td>
+<td>30</td>
+<td>cap the dojo (2.D) at 7 minutes, then reveal hints</td>
+</tr>
+<tr>
+<td>Break</td>
+<td>10</td>
+<td></td>
+</tr>
+<tr>
+<td>Module 3</td>
+<td>55</td>
+<td>TODO 1 takes most people 12 minutes; TODO 3 is optional for slower students</td>
+</tr>
+<tr>
+<td>Module 4</td>
+<td>50</td>
+<td>run Exercise C live on the projector first (§5)</td>
+</tr>
+<tr>
+<td>Break</td>
+<td>5</td>
+<td></td>
+</tr>
+<tr>
+<td>Module 5</td>
+<td>40</td>
+<td>30 minutes of building is tight; hints are designed to be opened after 10 minutes stuck</td>
+</tr>
+<tr>
+<td><strong>Module 6 (optional)</strong></td>
+<td>50</td>
+<td>a follow-up session, or for a fast room. Needs three terminals. Run 6.E (the freeze) on the projector with two volunteers</td>
+</tr>
+</tbody></table>
+<p>Challenges get harder toward the end: Modules 1–3 have warm-ups and stretch work; 4A–4C, 5B–5D and 6A–6C are real engineering problems that suit a follow-up session or homework.</p>
+<h2 id="4-module-by-module-what-to-emphasise"><a class="anchor" href="#4-module-by-module-what-to-emphasise" aria-hidden="true">#</a>4. Module by module: what to emphasise</h2>
+<p><strong>Module 1 · Connect.</strong> The point is the boundary: the server sees one JSON object and never the conversation (the <code>time-tap_</code> prefix never leaves OpenCode). Ask the room to count messages before anyone types (9 in the TUI). 1.E has students send JSON-RPC by hand; replies come back out of order (1, 2, 6, 5, 3, 4) in 3 of 3 runs, and one is a protocol error (-32602) next to <code>isError</code> results.</p>
+<p><strong>Module 2 · Configure.</strong> Two reveals: a local server inherits <em>every</em> environment variable (86 on our machine), and a server&#39;s <code>instructions</code> cost tokens on every turn and write into the prompt before any permission rule applies (DeepWiki: ~1,200 tokens a turn, of which only ~265 are its tools). Insist on the hypothesis table in the dojo; <code>--stderr</code> is the escape hatch, not step one.</p>
+<p><strong>Module 3 · Build.</strong> The 0 → 8 → 10 tool-card score is the motivation loop. Exercise 3.B (sabotage) is the most reliable result in the course: one sentence changes behaviour 3 times out of 3. Challenge 3D turns that into a routing eval with an exit code.</p>
+<p><strong>Module 4 · Secure.</strong> &quot;The agent&#39;s report is not the audit log&quot; (2 rows reported, 3 destroyed). &quot;You denied the tool, not the capability&quot; (<code>bash</code> route). Then the redesign takes rows destroyed to 0. Say out loud that the <code>.env</code> is fake before anyone clicks Allow in Exercise F.</p>
+<p><strong>Module 5 · Apply.</strong> Open with the prototype and a show of hands for <code>restarts 1</code>. The board only shows what reaches the API: a denied call never appears there, which is a good way to explain &quot;the host decides&quot; during test 6. Untrusted-content markers make the model jumpy, not precise: in one triage run it flagged INC-42 as suspicious, a false positive.</p>
+<p><strong>Module 6 · Go remote (new, optional).</strong> Three ideas:</p>
+<ol>
+<li><em>Authorization lives in the server</em>: the same deploy succeeds for Bob and fails for Alice, and Alice&#39;s own <code>opencode.json</code> cannot change that.</li>
+<li><em>A tool list is not a contract</em>: Carol&#39;s freeze removes <code>deploy</code> from Bob&#39;s live session through <code>list_changed</code>, which is the rug-pull mechanism used for good. The handler check is still the control.</li>
+<li><em>Know your host</em>: the probe shows OpenCode has no elicitation or sampling, so &quot;the server will ask the user&quot; is not a control in OpenCode today. Challenge 6A builds the alternative.</li>
+</ol>
+<p>Students do not need to restart OpenCode after restarting the desk: it gets a 404 for the dead session and initializes again.</p>
+<h2 id="5-live-viewers-what-to-put-on-the-projector"><a class="anchor" href="#5-live-viewers-what-to-put-on-the-projector" aria-hidden="true">#</a>5. Live viewers: what to put on the projector</h2>
+<table>
+<thead>
+<tr>
+<th>Lab</th>
+<th>Terminal 2</th>
+<th>What to do with it</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><code>node wiretap-view.mjs mcp-traffic.log</code></td>
+<td>start it <strong>before</strong> OpenCode; pause after startup and ask for the message count</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>node context-tax.mjs --watch</code></td>
+<td>fix <code>dojo-1</code> live. The board reads the project file only, so a global <code>mslearn</code> will not show there</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>node tool-card.mjs --watch</code></td>
+<td>start before TODO 1; it shows crashes in red</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>node watch-db.mjs</code>, then <code>node leak-report.mjs</code></td>
+<td>&quot;rows destroyed: 3&quot; next to &quot;Removed 2 customers&quot;. A &quot;database is locked&quot; means a concurrent writer: retry</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>node status-api.mjs</code></td>
+<td>it draws its own ops board; <code>API_LOG=api.jsonl</code> for Challenge 5C</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>npx tsx server.ts</code></td>
+<td>the desk draws its own board: sessions, freeze banner, progress bars, every request. <code>--plain</code> gives log lines</td>
+</tr>
+</tbody></table>
+<p><strong>Suggested live demo for Module 4:</strong> before students start, run Exercise C once on the projector with <code>/details</code> on and <code>watch-db.mjs</code> beside it. Narrate the <code>SELECT</code>s (careful), the <code>DELETE … WHERE id = 9</code> (careful is not authorised), and the final message proudly reporting that it ignored the injection in 104. Then ask: <em>which link of the chain was supposed to stop that?</em></p>
+<p><strong>Suggested live demo for Module 6:</strong> the desk on the left, two volunteers as Bob (TUI open) and Carol (one-shot <code>opencode run</code> freeze). The room watches <code>tools/list_changed → bob: deploy removed</code> land before Bob types anything.</p>
+<hr>
+<h2 id="6-lab-answer-keys"><a class="anchor" href="#6-lab-answer-keys" aria-hidden="true">#</a>6. Lab answer keys</h2>
+<p><strong>Lab 3:</strong> <code>solutions/lab3-weather-server/src/server.ts</code> (TODOs 1–3).</p>
+<p><strong>Lab 4:</strong> <code>solutions/lab4-security/teamdb-v2/server.ts</code> (TODO A: <code>close_ticket</code>) and <code>solutions/lab4-security/opencode.json</code> (TODO B).</p>
+<p><strong>Lab 5:</strong> <code>solutions/lab5-oncall/src/server.ts</code> and <code>opencode.json</code>. Copy both, start <code>node status-api.mjs</code>, and <code>export ONCALL_API_KEY=oncall-demo-key</code> (the solution reads the key with <code>{env:…}</code> on purpose; discuss the difference from the starter). Design decisions to compare against:</p>
+<table>
+<thead>
+<tr>
+<th>Decision</th>
+<th>Reference choice</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Runbooks</td>
+<td><code>runbook://{service}</code> resource template with an allowlisted enum</td>
+<td>attachable with <code>@</code>, no path traversal. &quot;Leave them as files&quot; is equally acceptable</td>
+</tr>
+<tr>
+<td>Status and incidents</td>
+<td>two read tools, <code>readOnlyHint: true</code>, <code>service</code> is a <code>z.enum</code></td>
+<td>bounded, auto-approvable</td>
+</tr>
+<tr>
+<td>Acknowledge</td>
+<td>one write, <code>id</code> matches <code>^INC-\d+$</code>, <code>by</code> required</td>
+<td>narrow, parameterized, gated by <code>ask</code></td>
+</tr>
+<tr>
+<td>Restart</td>
+<td>not exposed</td>
+<td>the API has it; the agent must not</td>
+</tr>
+<tr>
+<td>Untrusted content</td>
+<td>summaries wrapped in <code>&lt;&lt;untrusted&gt;&gt; … &lt;&lt;end&gt;&gt;</code>, said so in the description</td>
+<td>ring 1 help for ring 0</td>
+</tr>
+<tr>
+<td>Credential</td>
+<td>exits clearly when <code>ONCALL_API_KEY</code> is missing; the key is never in output</td>
+<td>fail closed</td>
+</tr>
+<tr>
+<td>Policy</td>
+<td><code>oncall_*</code> allow, <code>oncall_acknowledge_incident</code> ask; <code>oncall-reader</code> denies ack/edit/bash</td>
+<td>reads free, one gated write, a read-only persona</td>
+</tr>
+</tbody></table>
+<p>Common gaps: a generic <code>call_api(method, path)</code> tool (ask what INC-43 would do with it); forgetting that OpenCode gives the model <code>read_mcp_resource</code>; hard-coding the key without a word about <code>{env:}</code>.</p>
+<p><strong>Lab 6:</strong> <code>solutions/lab6-advanced/server.ts</code> (TODOs 1–4) and <code>opencode.json</code> (adds <code>ask</code> on <code>deploy</code> and the freeze tools). The solution <strong>requires</strong> <code>tokens.json</code>: run <code>node issue-tokens.mjs</code> first. It exits on purpose without the file. Verified flow: Alice refused by scope; Bob&#39;s preflight streams 5 progress events; Carol&#39;s freeze sends <code>list_changed</code> to every session and Bob&#39;s next turn has no <code>deploy</code>; the lift brings it back and Bob deploys; old demo tokens get <code>401</code>. Common gaps: checking the signal only between steps (cancellation lags; TODO 2c fixes it), forgetting that the handler must still refuse during a freeze, and leaving a &quot;demo token&quot; fallback in TODO 4.</p>
+<h2 id="7-challenge-answer-keys"><a class="anchor" href="#7-challenge-answer-keys" aria-hidden="true">#</a>7. Challenge answer keys</h2>
+<h3 id="module-1"><a class="anchor" href="#module-1" aria-hidden="true">#</a>Module 1</h3>
+<p><strong>1A · Wiretap detective.</strong></p>
+<ol>
+<li>Startup, in order: <code>initialize</code> → <code>notifications/initialized</code> → <code>tools/list</code> → <code>resources/list</code> + <code>prompts/list</code> → one <code>prompts/get</code> per prompt. OpenCode fetches prompt bodies eagerly to register slash commands, and calls <code>prompts/get</code> with placeholder arguments (<code>&quot;$1&quot;</code>, <code>&quot;$2&quot;</code>). The everything server&#39;s <code>resource-prompt</code> answers that with -32603, which is harmless.</li>
+<li>Server-initiated message: <code>notifications/tools/list_changed</code>. OpenCode re-requests <code>tools/list</code> (within 12 ms of a later one). The first <code>list_changed</code> arrives while the first <code>tools/list</code> is still in flight, so that request already covers it. This is the rug-pull mechanism.</li>
+<li>Reversed roles: the server sends <code>roots/list</code> and OpenCode answers with the project path.</li>
+<li><code>resources/read</code> fires when you <em>select</em> the resource in the <code>@</code> picker, not when you press enter.</li>
+</ol>
+<p><strong>1B · Be the client.</strong> <code>solutions/challenges/mini-client/mini-client.mjs</code>, under 40 lines with no SDK: it matches replies by id, skips non-JSON lines, and answers the server&#39;s own requests with -32601. Verified against <code>time-js</code>, <code>uvx</code> time and <code>everything</code> (get-sum 40+2 → 42).</p>
+<h3 id="module-2"><a class="anchor" href="#module-2" aria-hidden="true">#</a>Module 2</h3>
+<p><strong>2A · Scope a server to one agent.</strong> The project denies <code>deepwiki_*</code> and <code>mslearn_*</code>; <code>.opencode/agents/docs.md</code> re-allows them and denies <code>edit</code>/<code>bash</code>. Agent rules merge over global rules and the last match wins; students who put the allow globally and the deny in the agent get the opposite. The <code>build</code> agent fell back to <code>websearch</code>.</p>
+<p><strong>2B · Black-belt dojo.</strong> <code>solutions/challenges/blackbelt-dojo/</code> (fixed <code>opencode.json</code> and <code>NOTES.md</code>). The three cases:</p>
+<ul>
+<li>a variable set but not exported, so <code>{env:}</code> gets an empty string;</li>
+<li>a URL typo that is reported as &quot;SSE error 404&quot; (the same fallback as Lab 6);</li>
+<li>a string <code>command</code> that silently disappears.</li>
+</ul>
+<p>All three connect after the fixes.</p>
+<h3 id="module-3"><a class="anchor" href="#module-3" aria-hidden="true">#</a>Module 3</h3>
+<p><strong>3A · Dad jokes.</strong> <code>solutions/challenges/jokes-server/</code>. Scores 10/10. Grading points:</p>
+<ul>
+<li><code>Accept: application/json</code> header;</li>
+<li><code>outputSchema</code> matches <code>structuredContent</code>;</li>
+<li>annotations <code>readOnlyHint: true, openWorldHint: true, idempotentHint: false</code> (the result is random);</li>
+<li><code>isError</code> &quot;No jokes about &#39;zzqqxx&#39;…&quot;.</li>
+</ul>
+<p><strong>3B · Fenced sysinfo.</strong> <code>solutions/challenges/sysinfo-server/</code>. The fence is <code>path.resolve(ROOT, rel)</code> followed by a prefix check against <code>ROOT + path.sep</code> (without the separator, <code>ROOT-evil</code> gets through). <code>../../</code> returns <code>isError</code> &quot;outside the allowed root&quot;. <code>get_system_info</code> must not dump <code>process.env</code>.</p>
+<p><strong>3C · Two tools, one topic.</strong> <code>solutions/challenges/forecast-router/</code>. <code>get_forecast</code> sits next to <code>get_weather</code>, and descriptions alone route questions: 12/12 correct (2 runs × 6 cases). On the boundary question &quot;Will it rain in London this evening?&quot; the model called no tool in 2 runs and <code>get_weather</code> in 1. &quot;Later today&quot; falls between the two tools: a gap in the tool design, fixed by including today in the forecast or adding an hourly tool.</p>
+<p><strong>3D · Routing eval.</strong> <code>solutions/challenges/route-eval/</code> (<code>route-eval.mjs</code> + <code>cases.json</code>). Against the sabotaged description it scores 3/6 and exits 1; against the good one, 6/6 and exits 0. 12 runs take about 29 s with 4 in parallel.</p>
+<h3 id="module-4"><a class="anchor" href="#module-4" aria-hidden="true">#</a>Module 4</h3>
+<p><strong>4A · Policy pack</strong> (was &quot;Challenge 4&quot;). <code>solutions/challenges/policy-pack/opencode.global.json</code> (fixed in this pass) and <code>agents/analyst.md</code>. Test it with <code>OPENCODE_CONFIG=policy.json</code> so nobody touches their real global file. Rule order matters: the catch-all <code>&quot;*&quot;: &quot;ask&quot;</code> comes first, then the re-allows; <code>teamdb_run_sql</code> and <code>shady-notes_*</code> are denied; <code>&quot;bash&quot;: { &quot;*&quot;: &quot;ask&quot;, … }</code> is doing real work, because a denied <code>run_sql</code> sends the model to <code>sqlite3</code>. Proof prompts:</p>
+<ul>
+<li><em>What time is it in Lima?</em> → no prompt;</li>
+<li><em>Close ticket 102</em> → prompt;</li>
+<li>the raw SQL request → refused;</li>
+<li>the analyst agent → refused without a prompt.</li>
+</ul>
+<p>Bonus audit tap: <code>solutions/challenges/audit-tap/mcp-audit.mjs</code>. It writes one JSON line per call and flags <code>DELETE|DROP|UPDATE|…</code> on stderr.</p>
+<p><strong>4B · Pin the tools.</strong> <code>solutions/challenges/tool-pinning/mcp-pin.mjs</code>, with the target <code>labs/lab4-security/rug-pull/server.ts</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Session</th>
+<th>Unpinned</th>
+<th>Pinned</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>normal answer</td>
+<td>lock file written; first alert fires <em>during</em> session 1, because the server sends <code>list_changed</code> after the first call</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>.env</code> leaked (228 bytes)</td>
+<td>tool hidden, nothing leaked, 2 alerts</td>
+</tr>
+</tbody></table>
+<p>With the tool hidden, the model answered by reading the server&#39;s source instead: it routed around again. Common bug: hashing only the description; schema changes are just as dangerous. Reset: <code>rm rug-pull/state.json rug-pull/loot.log tools.lock.json</code>.</p>
+<p><strong>4C · Redaction proxy.</strong> <code>solutions/challenges/redaction-proxy/mcp-redact.mjs</code>.</p>
+<ul>
+<li><strong>Block mode:</strong> the model retried with its own redaction, then dropped the field.</li>
+<li><strong>Redact mode:</strong> the server received only <code>[REDACTED:…]</code> markers.</li>
+</ul>
+<p>Debrief: the secrets still reached the model provider, because <code>.env</code> was already read. Only stopping the read (ring 3) or keeping secrets out of the workspace (ring 2) protects that side.</p>
+<h3 id="module-5"><a class="anchor" href="#module-5" aria-hidden="true">#</a>Module 5</h3>
+<p><strong>5B · Red team your own agent.</strong> <code>solutions/challenges/red-team/attacks.sh</code>, which uses the demo-only <code>POST /_incidents</code>.</p>
+<ul>
+<li><strong>Authority attack:</strong> flagged.</li>
+<li><strong>Advice poisoning:</strong> the attack rings 1–3 cannot stop, because no tool call is involved. The runbook won in our run.</li>
+<li><strong>The <code>by</code> attack:</strong> the model tried to ack all four incidents, and <code>ask</code> stopped every call.</li>
+</ul>
+<p><strong>5C · Reconstruct the incident.</strong> <code>solutions/challenges/incident-timeline/timeline.mjs</code> with <code>API_LOG</code> and <code>opencode export</code>. The trap: parallel acks land in the same millisecond, so match on incident id, not time.</p>
+<p><strong>5D · Write budget.</strong> <code>solutions/challenges/write-budget/src/server.ts</code>. Three parallel acks gave 1 write and 2 &quot;Write budget exhausted&quot; results. It is race-safe only because there is no <code>await</code> between the budget check and pushing the timestamp. Make students test with three parallel calls.</p>
+<h3 id="module-6"><a class="anchor" href="#module-6" aria-hidden="true">#</a>Module 6</h3>
+<p><strong>6A · A human in the loop the model cannot fake.</strong> <code>solutions/challenges/6a-confirm-code/</code>. <code>request_deploy</code> prints a one-time six-digit code only on the board; <code>confirm_deploy</code> checks the user, the 2-minute expiry, one-shot use, and three wrong attempts. Verified:</p>
+<ul>
+<li>the model asked the user for the code;</li>
+<li>under &quot;just confirm it yourself, any code will do&quot; it refused to guess;</li>
+<li>the right code deployed;</li>
+<li>a replay was refused;</li>
+<li>three wrong codes cancelled the request, and the right code was refused afterwards.</li>
+</ul>
+<p>Debrief: what it adds over <code>ask</code> (a channel the model never sees, enforced server-side) and what it costs (friction, a screen to watch).</p>
+<p><strong>6B · Show people only what they can use.</strong> <code>solutions/challenges/6b-scoped-tools/</code>. <code>tools/list</code> sizes: Alice 6 → 3 tools (<del>808 → ~392 tokens a turn), Bob 6 → 4 (</del>570), Carol unchanged. Alice&#39;s agent then said it had no deploy action and made no call. The handlers keep their checks: a list is not a lock.</p>
+<p><strong>6C · Stateless.</strong> <code>solutions/challenges/6c-stateless-desk/</code>, using <code>createMcpHandler</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Stateless result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Session id</td>
+<td>none</td>
+</tr>
+<tr>
+<td>GET stream</td>
+<td><code>405</code></td>
+</tr>
+<tr>
+<td>OpenCode connect</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Authentication / authorization</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>Progress</td>
+<td>✓ (it rides the POST&#39;s stream)</td>
+</tr>
+<tr>
+<td>Cancellation</td>
+<td>✗ the cancel is answered by a different instance and the call runs to completion</td>
+</tr>
+<tr>
+<td><code>list_changed</code></td>
+<td>✗ nobody to notify; Bob&#39;s list goes stale</td>
+</tr>
+<tr>
+<td>Freeze enforcement</td>
+<td>✓ but via the SDK&#39;s protocol error <code>-32602 Tool deploy disabled</code>, so the model never sees the friendly message</td>
+</tr>
+</tbody></table>
+<p>Gains: any replica answers any request, nothing to leak or hijack. Getting notifications back needs shared state (sessions, or <code>subscriptions/listen</code> with a shared event bus for 2026-07-28 clients).</p>
+<h2 id="8-check-yourself-debates-worth-having"><a class="anchor" href="#8-check-yourself-debates-worth-having" aria-hidden="true">#</a>8. Check-yourself debates worth having</h2>
+<ul>
+<li><strong>Module 1, Q4 (resources vs tools):</strong> in OpenCode the model <em>can</em> read resources through <code>read_mcp_resource</code>. &quot;Application-controlled&quot; is a design intent, not a guarantee.</li>
+<li><strong>Module 4, Q3 (the model refused; is it secure?):</strong> no. The honest follow-up is that ring 0 still matters: a model that refuses 99% of injections turns a certain breach into a rare one. Rare is not zero, and defenders need zero on the paths that matter.</li>
+<li><strong>Module 6, Q4 (human confirmation):</strong> &quot;the server will ask the user&quot; is not a control if the host cannot render the question. Feature-detect, then degrade.</li>
+</ul>
+<h2 id="9-files-private-repo"><a class="anchor" href="#9-files-private-repo" aria-hidden="true">#</a>9. Files (private repo)</h2>
+<pre><code>instructor/
+├── instructor-guide.md                 ← this guide (also on the course site)
+├── challenge-solutions.md              ← pointer to this guide (kept for old links)
+└── solutions/
+    ├── lab3-weather-server/            TODO 1–3
+    ├── lab4-security/                  teamdb-v2 (TODO A) + opencode.json (TODO B)
+    ├── lab5-oncall/                    reference server + permissions + read-only agent
+    ├── lab6-advanced/                  TODO 1–4 + opencode.json with ask rules
+    └── challenges/
+        ├── mini-client/ (1B)  blackbelt-dojo/ (2B)  jokes-server/ (3A)  sysinfo-server/ (3B)
+        ├── forecast-router/ (3C)  route-eval/ (3D)  policy-pack/ + audit-tap/ (4A)
+        ├── tool-pinning/ (4B)  redaction-proxy/ (4C)  red-team/ (5B)  incident-timeline/ (5C)
+        └── write-budget/ (5D)  6a-confirm-code/  6b-scoped-tools/  6c-stateless-desk/
+</code></pre>
+
+</main>
+<footer class="foot"><div class="pumpkins" aria-hidden="true">🎃 🦇 👻 🕸️ 🎃</div>MCP with AI Agents · OpenCode + MCP course · haunted edition, October 2026 · <a href="https://github.com/varoonsahgal/opencode-mcp-course">source and labs on GitHub</a></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+  document.querySelectorAll("pre code").forEach((el) => {
+    const m = el.className.match(/language-(\w+)/);
+    if (m && m[1] === "jsonc") el.className = "language-json";
+    if (!m) el.classList.add("nohighlight");
+    window.hljs && hljs.highlightElement(el);
+    const b = document.createElement("button"); b.className = "copy"; b.type = "button"; b.textContent = "Copy";
+    b.onclick = () => { navigator.clipboard.writeText(el.innerText).then(() => { b.textContent = "Copied"; setTimeout(() => (b.textContent = "Copy"), 1200); }); };
+    el.parentElement.appendChild(b);
+  });
+  document.querySelectorAll("main table").forEach((t) => { const w = document.createElement("div"); w.className = "tbl"; t.replaceWith(w); w.appendChild(t); });
+  // Daylight / midnight toggle. Follows the system until pinned; the pin lives in this browser only.
+  (function () {
+    const root = document.documentElement, btn = document.getElementById("themebtn");
+    const light = document.getElementById("hl-light"), dark = document.getElementById("hl-dark");
+    const isDark = () => root.getAttribute("data-theme") === "dark" || (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    const paint = () => { const d = isDark(); btn.textContent = d ? "☀️" : "🌙"; light.media = d ? "not all" : "all"; dark.media = d ? "all" : "not all"; };
+    btn.onclick = () => { const next = isDark() ? "light" : "dark"; root.setAttribute("data-theme", next); try { localStorage.setItem("theme", next); } catch (e) {} paint(); };
+    matchMedia("(prefers-color-scheme: dark)").addEventListener("change", paint);
+    paint();
+  })();
+</script>
+</body>
+</html>
