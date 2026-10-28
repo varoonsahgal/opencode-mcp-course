@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="220" viewBox="0 0 960 220" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="Module 1, Connect: JSON-RPC messages crossing the wire between OpenCode and an MCP server">
+  <title>Module 1 · Connect</title>
+  <style>
+    .out { animation: out 4.5s linear infinite; opacity: 0; }
+    .back { animation: back 4.5s linear infinite; opacity: 0; }
+    .d1 { animation-delay: -1.5s; } .d2 { animation-delay: -3s; }
+    .out.d2 { opacity: 1; transform: translateX(103px); }   /* still frame: one call out, one result back */
+    .back.d2 { opacity: 1; transform: translateX(-103px); }
+    .wire { stroke-dasharray: 3 7; animation: flow 1.2s linear infinite; }
+    .wire.rev { animation-direction: reverse; }
+    .halo { animation: halo 3s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+    @keyframes out  { 0% { transform: translateX(0); opacity: 0; } 8% { opacity: 1; } 42% { transform: translateX(206px); opacity: 1; } 48%,100% { transform: translateX(206px); opacity: 0; } }
+    @keyframes back { 0%,40% { transform: translateX(0); opacity: 0; } 48% { opacity: 1; } 84% { transform: translateX(-206px); opacity: 1; } 90%,100% { transform: translateX(-206px); opacity: 0; } }
+    @keyframes flow { to { stroke-dashoffset: -20; } }
+    @keyframes halo { 0% { opacity: .5; transform: scale(.95); } 100% { opacity: 0; transform: scale(1.35); } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+  </style>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#070b17"/><stop offset="1" stop-color="#111a33"/></linearGradient>
+    <radialGradient id="glow" cx="0.74" cy="0.5" r="0.42"><stop offset="0" stop-color="#6366f1" stop-opacity=".38"/><stop offset="1" stop-color="#6366f1" stop-opacity="0"/></radialGradient>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#1e293b" stroke-width="1"/></pattern>
+    <linearGradient id="title" x1="0" x2="1"><stop offset="0" stop-color="#f8fafc"/><stop offset="1" stop-color="#c7d2fe"/></linearGradient>
+  </defs>
+
+  <rect width="960" height="220" rx="20" fill="url(#bg)"/>
+  <rect width="960" height="220" rx="20" fill="url(#grid)" opacity=".55"/>
+  <rect width="960" height="220" rx="20" fill="url(#glow)"/>
+
+  <!-- left: words -->
+  <text x="40" y="50" font-family="Menlo, 'JetBrains Mono', monospace" font-size="12" letter-spacing="2.5" fill="#818cf8">MODULE 01 · 40 MIN · LAB: lab1-first-contact</text>
+  <text x="38" y="102" font-size="46" font-weight="800" fill="url(#title)" letter-spacing="-1">Connect</text>
+  <text x="40" y="134" font-size="17" fill="#cbd5e1">Give an agent hands. Then read every word</text>
+  <text x="40" y="156" font-size="17" fill="#cbd5e1">it says to them, <tspan fill="#c7d2fe" font-weight="700">byte for byte.</tspan></text>
+  <g font-size="11.5" font-weight="700" fill="#c7d2fe">
+    <rect x="40"  y="176" width="136" height="26" rx="13" fill="#4f46e5" fill-opacity=".18" stroke="#818cf8"/><text x="108" y="193" text-anchor="middle">2 servers connected</text>
+    <rect x="184" y="176" width="150" height="26" rx="13" fill="#4f46e5" fill-opacity=".18" stroke="#818cf8"/><text x="259" y="193" text-anchor="middle">3 primitives touched</text>
+    <rect x="342" y="176" width="134" height="26" rx="13" fill="#4f46e5" fill-opacity=".18" stroke="#818cf8"/><text x="409" y="193" text-anchor="middle">1 protocol, wiretapped</text>
+  </g>
+
+  <!-- right: the wire -->
+  <g fill="none" stroke-width="2">
+    <path class="wire"     d="M640 92 H846"  stroke="#818cf8"/>
+    <path class="wire rev" d="M640 136 H846" stroke="#4ade80" opacity=".8"/>
+  </g>
+  <g font-family="Menlo, 'JetBrains Mono', monospace" font-size="10" fill="#64748b">
+    <text x="743" y="80" text-anchor="middle">client → server</text>
+    <text x="743" y="158" text-anchor="middle">server → client</text>
+  </g>
+
+  <!-- requests travelling right -->
+  <g font-family="Menlo, 'JetBrains Mono', monospace" font-size="10" font-weight="700" text-anchor="middle">
+    <g class="out">    <rect x="602" y="82" width="76" height="20" rx="10" fill="#4f46e5"/><text x="640" y="96" fill="#fff">initialize</text></g>
+    <g class="out d1"> <rect x="602" y="82" width="76" height="20" rx="10" fill="#4f46e5"/><text x="640" y="96" fill="#fff">tools/list</text></g>
+    <g class="out d2"> <rect x="602" y="82" width="76" height="20" rx="10" fill="#6366f1"/><text x="640" y="96" fill="#fff">tools/call</text></g>
+    <!-- results travelling left -->
+    <g class="back">    <rect x="808" y="126" width="76" height="20" rx="10" fill="#15803d"/><text x="846" y="140" fill="#fff">✓ result</text></g>
+    <g class="back d1"> <rect x="808" y="126" width="76" height="20" rx="10" fill="#15803d"/><text x="846" y="140" fill="#fff">✓ 2 tools</text></g>
+    <g class="back d2"> <rect x="808" y="126" width="76" height="20" rx="10" fill="#15803d"/><text x="846" y="140" fill="#fff">✓ 14:31</text></g>
+  </g>
+
+  <!-- host -->
+  <rect class="halo" x="548" y="64" width="92" height="100" rx="14" fill="none" stroke="#a5b4fc" stroke-width="2"/>
+  <rect x="548" y="64" width="92" height="100" rx="14" fill="#111827" stroke="#a5b4fc" stroke-width="2.5"/>
+  <text x="594" y="104" text-anchor="middle" font-size="14" font-weight="800" fill="#f8fafc">OpenCode</text>
+  <text x="594" y="122" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="10" fill="#c7d2fe">host + client</text>
+
+  <!-- server -->
+  <rect x="846" y="64" width="84" height="100" rx="14" fill="#0b1020" stroke="#818cf8" stroke-width="2"/>
+  <text x="888" y="104" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="14" font-weight="700" fill="#e0e7ff">time</text>
+  <text x="888" y="122" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="10" fill="#a5b4fc">MCP server</text>
+  <text x="888" y="138" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="10" fill="#64748b">stdio</text>
+
+</svg>

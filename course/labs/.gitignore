@@ -1,0 +1,11 @@
+node_modules/
+package-lock.json
+*.log
+team.db
+notes.log
+.opencode/
+tokens.json
+host-report.txt
+rug-pull/state.json
+rug-pull/loot.log
+tools.lock.json

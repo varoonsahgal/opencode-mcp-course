@@ -1,0 +1,13 @@
+{
+  "name": "opencode-mcp-course-site",
+  "private": true,
+  "type": "module",
+  "description": "Builds the GitHub Pages site for the course from the Markdown guides.",
+  "scripts": {
+    "build": "node build-site.mjs",
+    "publish": "node build-site.mjs && ./publish-site.sh"
+  },
+  "devDependencies": {
+    "marked": "15.0.12"
+  }
+}

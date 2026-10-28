@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="220" viewBox="0 0 960 220" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="Module 2, Configure: one config file decides which servers start, what they can see, and what it costs you every turn">
+  <title>Module 2 · Configure</title>
+  <style>
+    .flow { stroke-dasharray: 4 9; animation: flow 1.4s linear infinite; }
+    .heal { animation: heal 6s ease-in-out infinite; }
+    .healtext { animation: healtext 6s steps(1) infinite; }
+    .broketext { animation: broketext 6s steps(1) infinite; }
+    .healstroke { animation: flow 1.4s linear infinite, healstroke 6s ease-in-out infinite; }
+    .bar1 { animation: grow 6s ease-out infinite; transform-box: fill-box; transform-origin: left; }
+    @keyframes flow { to { stroke-dashoffset: -26; } }
+    @keyframes heal { 0%,45% { stroke: #f43f5e; fill: #2a0d16; } 55%,100% { stroke: #4ade80; fill: #0b1f14; } }
+    @keyframes healtext { 0% { opacity: 0; } 50% { opacity: 1; } }
+    @keyframes broketext { 0% { opacity: 1; } 50% { opacity: 0; } }
+    @keyframes healstroke { 0%,45% { stroke: #f43f5e; } 55%,100% { stroke: #4ade80; } }
+    @keyframes grow { 0%,50% { transform: scaleX(.25); } 70%,100% { transform: scaleX(1); } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+  </style>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#061017"/><stop offset="1" stop-color="#0c1d2b"/></linearGradient>
+    <radialGradient id="glow" cx="0.74" cy="0.5" r="0.45"><stop offset="0" stop-color="#06b6d4" stop-opacity=".3"/><stop offset="1" stop-color="#06b6d4" stop-opacity="0"/></radialGradient>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#16303d" stroke-width="1"/></pattern>
+    <linearGradient id="title" x1="0" x2="1"><stop offset="0" stop-color="#f8fafc"/><stop offset="1" stop-color="#a5f3fc"/></linearGradient>
+  </defs>
+
+  <rect width="960" height="220" rx="20" fill="url(#bg)"/>
+  <rect width="960" height="220" rx="20" fill="url(#grid)" opacity=".55"/>
+  <rect width="960" height="220" rx="20" fill="url(#glow)"/>
+
+  <!-- left: words -->
+  <text x="40" y="50" font-family="Menlo, 'JetBrains Mono', monospace" font-size="12" letter-spacing="2.5" fill="#22d3ee">MODULE 02 · 30 MIN · LAB: lab2-configure</text>
+  <text x="38" y="100" font-size="44" font-weight="800" fill="url(#title)" letter-spacing="-1">Configure</text>
+  <text x="40" y="132" font-size="17" fill="#cbd5e1">One JSON file decides what starts, what it can see,</text>
+  <text x="40" y="154" font-size="17" fill="#cbd5e1">and <tspan fill="#67e8f9" font-weight="700">what every turn costs you.</tspan></text>
+  <g font-size="12" font-weight="700">
+    <rect x="40"  y="176" width="138" height="26" rx="13" fill="#0891b2" fill-opacity=".18" stroke="#22d3ee"/><text x="109" y="193" text-anchor="middle" fill="#a5f3fc">wire up a remote</text>
+    <rect x="186" y="176" width="150" height="26" rx="13" fill="#0891b2" fill-opacity=".18" stroke="#22d3ee"/><text x="261" y="193" text-anchor="middle" fill="#a5f3fc">fix 3 broken servers</text>
+    <rect x="344" y="176" width="148" height="26" rx="13" fill="#0891b2" fill-opacity=".18" stroke="#22d3ee"/><text x="418" y="193" text-anchor="middle" fill="#a5f3fc">price the context tax</text>
+  </g>
+
+  <!-- right: a config tree, one branch failing then healing -->
+  <g font-family="Menlo, 'JetBrains Mono', monospace" font-size="12">
+    <rect x="556" y="30" width="116" height="34" rx="9" fill="#0b1a24" stroke="#22d3ee" stroke-width="2"/>
+    <text x="614" y="52" text-anchor="middle" fill="#e0f2fe" font-weight="700">"mcp": {</text>
+
+    <g fill="none" stroke-width="2">
+      <path d="M614 64 V180" stroke="#22d3ee" opacity=".55"/>
+      <path class="flow" d="M614 100 H700" stroke="#4ade80"/>
+      <path class="flow" d="M614 140 H700" stroke="#4ade80"/>
+      <path class="flow healstroke" d="M614 180 H700"/>
+    </g>
+
+    <!-- branch: everything (healthy) -->
+    <rect x="700" y="86" width="140" height="28" rx="8" fill="#0b1f14" stroke="#4ade80" stroke-width="2"/>
+    <circle cx="716" cy="100" r="5" fill="#4ade80"/>
+    <text x="728" y="104" fill="#bbf7d0">everything</text>
+    <rect x="850" y="94" width="70" height="12" rx="3" fill="#0e7490" opacity=".9"/>
+
+    <!-- branch: deepwiki (remote, healthy) -->
+    <rect x="700" y="126" width="140" height="28" rx="8" fill="#0b1f14" stroke="#4ade80" stroke-width="2"/>
+    <circle cx="716" cy="140" r="5" fill="#4ade80"/>
+    <text x="728" y="144" fill="#bbf7d0">deepwiki ↗</text>
+    <rect x="850" y="134" width="18" height="12" rx="3" fill="#0e7490" opacity=".9"/>
+
+    <!-- branch: dojo (fails, then heals) -->
+    <rect class="heal" x="700" y="166" width="140" height="28" rx="8" stroke-width="2"/>
+    <text x="716" y="184" text-anchor="middle" font-weight="700" class="broketext" fill="#f43f5e">✗</text>
+    <text x="716" y="184" text-anchor="middle" font-weight="700" class="healtext" fill="#4ade80">✓</text>
+    <text x="728" y="184" fill="#e2e8f0">dojo-1</text>
+    <rect class="bar1" x="850" y="174" width="16" height="12" rx="3" fill="#0e7490" opacity=".9"/>
+    <text x="850" y="212" font-size="10" class="broketext" fill="#fda4af" text-anchor="end">Connection closed</text>
+    <text x="850" y="212" font-size="10" class="healtext" fill="#86efac" text-anchor="end">connected · 1 tool</text>
+
+    <text x="850" y="76" font-size="10" fill="#67e8f9" letter-spacing="1">~TOKENS</text>
+  </g>
+</svg>

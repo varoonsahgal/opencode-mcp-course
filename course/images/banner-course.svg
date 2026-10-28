@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="300" viewBox="0 0 960 300" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="MCP with AI Agents: one host, many servers, every connection a decision">
+  <title>MCP with AI Agents</title>
+  <style>
+    .flow { stroke-dasharray: 4 10; animation: flow 1.6s linear infinite; }
+    .flow.slow { animation-duration: 2.4s; }
+    .pulse { animation: pulse 2.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+    .blink { animation: blink 2.4s steps(1) infinite; }
+    .halo { animation: halo 3.2s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+    @keyframes flow { to { stroke-dashoffset: -28; } }
+    @keyframes pulse { 0%,100% { opacity: .55; } 50% { opacity: 1; } }
+    @keyframes blink { 0%,60% { opacity: 1; } 61%,100% { opacity: .25; } }
+    @keyframes halo { 0% { opacity: .55; transform: scale(.9); } 100% { opacity: 0; transform: scale(1.6); } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+  </style>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#070b17"/><stop offset="1" stop-color="#111a33"/></linearGradient>
+    <radialGradient id="glow" cx="0.73" cy="0.5" r="0.45"><stop offset="0" stop-color="#6366f1" stop-opacity=".35"/><stop offset="1" stop-color="#6366f1" stop-opacity="0"/></radialGradient>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#1e293b" stroke-width="1"/></pattern>
+    <linearGradient id="title" x1="0" x2="1"><stop offset="0" stop-color="#f8fafc"/><stop offset="1" stop-color="#c7d2fe"/></linearGradient>
+  </defs>
+
+  <rect width="960" height="300" rx="20" fill="url(#bg)"/>
+  <rect width="960" height="300" rx="20" fill="url(#grid)" opacity=".55"/>
+  <rect width="960" height="300" rx="20" fill="url(#glow)"/>
+
+  <!-- left: words -->
+  <text x="40" y="62" font-family="Menlo, 'JetBrains Mono', monospace" font-size="12" letter-spacing="2.5" fill="#818cf8">STUDENT COURSE PACK · 4 HOURS · 5 LABS</text>
+  <text x="38" y="118" font-size="50" font-weight="800" fill="url(#title)" letter-spacing="-1">MCP with AI Agents</text>
+  <text x="40" y="152" font-size="18" fill="#cbd5e1">Connect it. Configure it. Build it.</text>
+  <text x="40" y="176" font-size="18" fill="#cbd5e1">Break it on purpose. <tspan fill="#fda4af" font-weight="700">Then lock it down.</tspan></text>
+
+  <g font-size="12" font-weight="700">
+    <rect x="40"  y="214" width="88"  height="28" rx="14" fill="#4f46e5" fill-opacity=".18" stroke="#818cf8"/><text x="84"  y="232" text-anchor="middle" fill="#c7d2fe">01 Connect</text>
+    <rect x="136" y="214" width="98"  height="28" rx="14" fill="#0891b2" fill-opacity=".18" stroke="#22d3ee"/><text x="185" y="232" text-anchor="middle" fill="#a5f3fc">02 Configure</text>
+    <rect x="242" y="214" width="72"  height="28" rx="14" fill="#d97706" fill-opacity=".18" stroke="#fbbf24"/><text x="278" y="232" text-anchor="middle" fill="#fde68a">03 Build</text>
+    <rect x="322" y="214" width="80"  height="28" rx="14" fill="#e11d48" fill-opacity=".18" stroke="#fb7185"/><text x="362" y="232" text-anchor="middle" fill="#fecdd3">04 Secure</text>
+    <rect x="410" y="214" width="74"  height="28" rx="14" fill="#16a34a" fill-opacity=".18" stroke="#4ade80"/><text x="447" y="232" text-anchor="middle" fill="#bbf7d0">05 Apply</text>
+  </g>
+  <text x="40" y="272" font-family="Menlo, 'JetBrains Mono', monospace" font-size="11" fill="#64748b">agent: OpenCode · model: opencode/gpt-5.4-mini · whole course &lt; $2</text>
+
+  <!-- right: one host, five servers, live wires -->
+  <g fill="none" stroke-width="2">
+    <path class="flow"      d="M700 150 L560 70"  stroke="#818cf8"/>
+    <path class="flow slow" d="M700 150 L590 238" stroke="#22d3ee"/>
+    <path class="flow"      d="M700 150 L840 64"  stroke="#fbbf24"/>
+    <path class="flow slow" d="M700 150 L880 160" stroke="#4ade80"/>
+    <path d="M700 150 L812 248" stroke="#fb7185" stroke-dasharray="4 6" opacity=".45"/>
+  </g>
+
+  <g font-family="Menlo, 'JetBrains Mono', monospace" font-size="11" text-anchor="middle">
+    <g><circle cx="560" cy="70" r="24" fill="#0b1020" stroke="#818cf8" stroke-width="2"/><text x="560" y="74" fill="#c7d2fe">time</text></g>
+    <g><circle cx="590" cy="238" r="31" fill="#0b1020" stroke="#22d3ee" stroke-width="2"/><text x="590" y="242" fill="#a5f3fc" font-size="10">deepwiki</text></g>
+    <g><circle cx="840" cy="64" r="26" fill="#0b1020" stroke="#fbbf24" stroke-width="2"/><text x="840" y="68" fill="#fde68a">weather</text></g>
+    <g><circle cx="880" cy="160" r="25" fill="#0b1020" stroke="#4ade80" stroke-width="2"/><text x="880" y="164" fill="#bbf7d0">oncall</text></g>
+    <g>
+      <circle class="halo" cx="812" cy="248" r="26" fill="none" stroke="#fb7185" stroke-width="2"/>
+      <circle cx="812" cy="248" r="26" fill="#1a0b12" stroke="#fb7185" stroke-width="2"/><text x="812" y="252" fill="#fecdd3">teamdb</text>
+    </g>
+    <!-- the gate on the risky wire -->
+    <g class="blink" transform="translate(756 199)">
+      <rect x="-30" y="-11" width="60" height="22" rx="11" fill="#e11d48"/>
+      <text x="0" y="4" fill="#fff" font-weight="700" font-size="10">ASK</text>
+    </g>
+  </g>
+
+  <!-- the host -->
+  <circle class="halo" cx="700" cy="150" r="44" fill="none" stroke="#a5b4fc" stroke-width="2"/>
+  <circle cx="700" cy="150" r="44" fill="#111827" stroke="#a5b4fc" stroke-width="2.5"/>
+  <text x="700" y="146" text-anchor="middle" font-size="14" font-weight="800" fill="#f8fafc">OpenCode</text>
+  <text x="700" y="164" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="10" fill="#c7d2fe" class="pulse">host · 5 clients</text>
+</svg>

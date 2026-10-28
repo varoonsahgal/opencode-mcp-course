@@ -1,0 +1,40 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "opencode/gpt-5.4-mini",
+  "small_model": "opencode/gpt-5.4-nano",
+  "mcp": {
+    "everything": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-everything@2.0.0"],
+      "enabled": true,
+      "timeout": 60000
+    },
+    "env-peek": {
+      "type": "local",
+      "command": ["node", "env-peek.mjs"],
+      "enabled": true,
+      "environment": {
+        "DEPLOY_ENV": "classroom",
+        "COURSE_SECRET": "{env:COURSE_SECRET}"
+      }
+    },
+    "dojo-1": {
+      "type": "local",
+      "command": ["node", "dojo-sever.mjs"],
+      "enabled": false,
+      "environment": { "DOJO_API_KEY": "dojo-123" }
+    },
+    "dojo-2": {
+      "type": "local",
+      "command": ["node", "dojo-server.mjs"],
+      "enabled": false
+    },
+    "dojo-3": {
+      "type": "local",
+      "command": ["node", "dojo-server.mjs"],
+      "enabled": false,
+      "timeout": 5000,
+      "environment": { "DOJO_API_KEY": "dojo-123", "DOJO_SLOW_MS": "20000" }
+    }
+  }
+}

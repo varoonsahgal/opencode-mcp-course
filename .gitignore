@@ -1,0 +1,7 @@
+# instructor material lives in its own private repository (course/instructor is a separate git repo)
+course/instructor/
+# build output and dependencies
+_site/
+node_modules/
+tools/node_modules/
+.DS_Store

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "opencode/gpt-5.4-mini",
+  "small_model": "opencode/gpt-5.4-nano",
+  "mcp": {
+    "oncall": {
+      "type": "local",
+      "command": ["npx", "tsx", "src/server.ts"],
+      "enabled": true,
+      "environment": {
+        "ONCALL_API_URL": "http://127.0.0.1:8787",
+        "ONCALL_API_KEY": "oncall-demo-key"
+      }
+    },
+    "oncall-prototype": {
+      "type": "local",
+      "command": ["npx", "tsx", "src/prototype.ts"],
+      "enabled": false,
+      "environment": {
+        "ONCALL_API_URL": "http://127.0.0.1:8787",
+        "ONCALL_API_KEY": "oncall-demo-key"
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "opencode/gpt-5.4-mini",
+  "small_model": "opencode/gpt-5.4-nano",
+  "mcp": {
+    "teamdb": {
+      "type": "local",
+      "command": ["npx", "tsx", "teamdb-v1/server.ts"],
+      "enabled": true,
+      "environment": {
+        "TEAMDB_PATH": "team.db",
+        "TEAMDB_ADMIN_TOKEN": "tdb_admin_FAKE_8f3a9c_do_not_use"
+      }
+    },
+    "teamdb-v2": {
+      "type": "local",
+      "command": ["npx", "tsx", "teamdb-v2/server.ts"],
+      "enabled": false,
+      "environment": { "TEAMDB_PATH": "team.db" }
+    },
+    "shady-notes": {
+      "type": "local",
+      "command": ["npx", "tsx", "shady-notes/server.ts"],
+      "enabled": false
+    }
+  }
+}

@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="220" viewBox="0 0 960 220" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="Module 6: advanced MCP. Three people with three tokens connect over HTTP to one shared release-desk server; a freeze withdraws the deploy tool from every session.">
+  <title>Module 6 · Advanced MCP</title>
+  <style>
+    .flow { stroke-dasharray: 4 10; animation: flow 1.4s linear infinite; }
+    .flowback { stroke-dasharray: 3 9; animation: flowback 1.8s linear infinite; }
+    .pulse { animation: pulse 2.4s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+    .fade { animation: fade 4s ease-in-out infinite; }
+    @keyframes flow { to { stroke-dashoffset: -28; } }
+    @keyframes flowback { to { stroke-dashoffset: 24; } }
+    @keyframes pulse { 0% { opacity: .55; transform: scale(.96); } 100% { opacity: 0; transform: scale(1.45); } }
+    @keyframes fade { 0%,45% { opacity: 1; } 55%,90% { opacity: .18; } 100% { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+  </style>
+  <defs>
+    <linearGradient id="bg6" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0a1f"/><stop offset="1" stop-color="#16123a"/></linearGradient>
+    <radialGradient id="glow6" cx="0.74" cy="0.5" r="0.45"><stop offset="0" stop-color="#7c3aed" stop-opacity=".34"/><stop offset="1" stop-color="#7c3aed" stop-opacity="0"/></radialGradient>
+    <pattern id="grid6" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#211c4a" stroke-width="1"/></pattern>
+    <linearGradient id="title6" x1="0" x2="1"><stop offset="0" stop-color="#f5f3ff"/><stop offset="1" stop-color="#c4b5fd"/></linearGradient>
+  </defs>
+
+  <rect width="960" height="220" rx="20" fill="url(#bg6)"/>
+  <rect width="960" height="220" rx="20" fill="url(#grid6)" opacity=".6"/>
+  <rect width="960" height="220" rx="20" fill="url(#glow6)"/>
+
+  <text x="40" y="50" font-family="Menlo, 'JetBrains Mono', monospace" font-size="12" letter-spacing="2.5" fill="#a78bfa">MODULE 06 · 50 MIN · OPTIONAL · LAB: lab6-advanced</text>
+  <text x="38" y="100" font-size="44" font-weight="800" fill="url(#title6)" letter-spacing="-1">Advanced MCP: Going Remote</text>
+  <text x="40" y="132" font-size="17" fill="#ede9fe">One server, many people, one endpoint. Tokens that say who,</text>
+  <text x="40" y="154" font-size="17" fill="#ede9fe">tools that come and go, <tspan fill="#fda4af" font-weight="700">and a host you have to interrogate.</tspan></text>
+  <g font-size="12" font-weight="700">
+    <rect x="40" y="174" width="140" height="26" rx="13" fill="#7c3aed" fill-opacity=".2" stroke="#a78bfa"/><text x="110" y="191" text-anchor="middle" fill="#ddd6fe">Streamable HTTP</text>
+    <rect x="190" y="174" width="112" height="26" rx="13" fill="#7c3aed" fill-opacity=".2" stroke="#a78bfa"/><text x="246" y="191" text-anchor="middle" fill="#ddd6fe">identity</text>
+    <rect x="312" y="174" width="112" height="26" rx="13" fill="#7c3aed" fill-opacity=".2" stroke="#a78bfa"/><text x="368" y="191" text-anchor="middle" fill="#ddd6fe">progress</text>
+    <rect x="434" y="174" width="128" height="26" rx="13" fill="#7c3aed" fill-opacity=".2" stroke="#a78bfa"/><text x="498" y="191" text-anchor="middle" fill="#ddd6fe">list_changed</text>
+  </g>
+
+  <!-- three clients -->
+  <g font-family="Menlo, 'JetBrains Mono', monospace" font-size="11">
+    <rect x="610" y="40" width="96" height="34" rx="8" fill="#1e1b4b" stroke="#818cf8"/><text x="658" y="61" text-anchor="middle" fill="#c7d2fe">alice · read</text>
+    <rect x="610" y="94" width="96" height="34" rx="8" fill="#1e1b4b" stroke="#818cf8"/><text x="658" y="115" text-anchor="middle" fill="#c7d2fe">bob · deploy</text>
+    <rect x="610" y="148" width="96" height="34" rx="8" fill="#1e1b4b" stroke="#818cf8"/><text x="658" y="169" text-anchor="middle" fill="#c7d2fe">carol · freeze</text>
+  </g>
+  <!-- wires -->
+  <g fill="none" stroke-width="2">
+    <path class="flow" d="M706 57 C760 57 760 111 812 111" stroke="#a78bfa"/>
+    <path class="flow" d="M706 111 L812 111" stroke="#a78bfa"/>
+    <path class="flow" d="M706 165 C760 165 760 111 812 111" stroke="#a78bfa"/>
+    <path class="flowback" d="M812 121 C770 121 760 160 706 160" stroke="#f0abfc" opacity=".7"/>
+  </g>
+  <!-- server -->
+  <circle class="pulse" cx="864" cy="111" r="50" fill="none" stroke="#a78bfa" stroke-width="2"/>
+  <rect x="812" y="72" width="108" height="78" rx="12" fill="#2e1065" stroke="#c4b5fd" stroke-width="1.5"/>
+  <text x="866" y="98" text-anchor="middle" font-size="13" font-weight="800" fill="#f5f3ff">release desk</text>
+  <text x="866" y="116" text-anchor="middle" font-family="Menlo, monospace" font-size="10" fill="#c4b5fd">POST /mcp</text>
+  <g class="fade"><rect x="830" y="124" width="72" height="18" rx="9" fill="#be185d" fill-opacity=".35" stroke="#f9a8d4"/><text x="866" y="137" text-anchor="middle" font-size="10" font-weight="700" fill="#fce7f3">deploy</text></g>
+</svg>

@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="500" viewBox="0 0 960 500" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="sa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0d9488"/></marker>
+  </defs>
+  <rect width="960" height="500" rx="18" fill="#fbfbfd"/>
+  <text x="32" y="40" font-size="22" font-weight="700" fill="#0f172a">Anatomy of an MCP server (TypeScript SDK v2)</text>
+  <text x="32" y="64" font-size="14" fill="#475569">Four parts: a server object, capabilities you register on it, handlers that do the work, and a transport that connects it to a host.</text>
+
+  <rect x="32" y="86" width="556" height="396" rx="14" fill="#0f172a"/>
+  <g font-family="Menlo, Monaco, monospace" font-size="11.3" fill="#e2e8f0">
+    <text x="50" y="112"><tspan fill="#c084fc">import</tspan> { McpServer } <tspan fill="#c084fc">from</tspan> <tspan fill="#fbbf24">"@modelcontextprotocol/server"</tspan>;</text>
+    <text x="50" y="130"><tspan fill="#c084fc">import</tspan> { serveStdio } <tspan fill="#c084fc">from</tspan> <tspan fill="#fbbf24">"@modelcontextprotocol/server/stdio"</tspan>;</text>
+    <text x="50" y="148"><tspan fill="#c084fc">import</tspan> * <tspan fill="#c084fc">as</tspan> z <tspan fill="#c084fc">from</tspan> <tspan fill="#fbbf24">"zod/v4"</tspan>;</text>
+    <text x="50" y="184">serveStdio(() =&gt; {</text>
+    <text x="50" y="202">  <tspan fill="#c084fc">const</tspan> server = <tspan fill="#c084fc">new</tspan> <tspan fill="#7dd3fc">McpServer</tspan>({ name: <tspan fill="#fbbf24">"weather"</tspan>, version: <tspan fill="#fbbf24">"1.0.0"</tspan> });</text>
+    <text x="50" y="238">  server.<tspan fill="#7dd3fc">registerTool</tspan>(<tspan fill="#fbbf24">"get_weather"</tspan>, {</text>
+    <text x="50" y="256">    description: <tspan fill="#fbbf24">"Current weather for a city. Not a forecast."</tspan>,</text>
+    <text x="50" y="274">    inputSchema: z.object({ city: z.string().min(2).describe(<tspan fill="#fbbf24">"City name"</tspan>) }),</text>
+    <text x="50" y="292">    annotations: { readOnlyHint: <tspan fill="#a5f3fc">true</tspan>, openWorldHint: <tspan fill="#a5f3fc">true</tspan> },</text>
+    <text x="50" y="310">  }, <tspan fill="#c084fc">async</tspan> ({ city }) =&gt; {</text>
+    <text x="50" y="328">    <tspan fill="#c084fc">const</tspan> place = <tspan fill="#c084fc">await</tspan> geocode(city);</text>
+    <text x="50" y="346">    <tspan fill="#c084fc">if</tspan> (!place) <tspan fill="#c084fc">return</tspan> { isError: <tspan fill="#a5f3fc">true</tspan>, content: [{ type: <tspan fill="#fbbf24">"text"</tspan>, text: <tspan fill="#fbbf24">"No such city"</tspan> }] };</text>
+    <text x="50" y="364">    <tspan fill="#c084fc">const</tspan> w = <tspan fill="#c084fc">await</tspan> currentWeather(place.latitude, place.longitude);</text>
+    <text x="50" y="382">    <tspan fill="#c084fc">return</tspan> { content: [{ type: <tspan fill="#fbbf24">"text"</tspan>, text: <tspan fill="#fbbf24">`${w.temperature_2m}°C in ${place.name}`</tspan> }] };</text>
+    <text x="50" y="400">  });</text>
+    <text x="50" y="436">  <tspan fill="#c084fc">return</tspan> server;</text>
+    <text x="50" y="454">});</text>
+    <text x="50" y="472"><tspan fill="#64748b">console.error("running");   // stderr only — stdout is the protocol</tspan></text>
+  </g>
+
+  <g font-size="12" fill="#134e4a">
+    <rect x="600" y="100" width="328" height="56" rx="10" fill="#ccfbf1" stroke="#0d9488"/>
+    <text x="614" y="121" font-weight="700">① Transport</text>
+    <text x="614" y="139">serveStdio builds one server per connection</text>
+    <line x1="598" y1="140" x2="150" y2="180" stroke="#0d9488" stroke-width="1.5" marker-end="url(#sa)"/>
+
+    <rect x="600" y="172" width="328" height="56" rx="10" fill="#ccfbf1" stroke="#0d9488"/>
+    <text x="614" y="193" font-weight="700">② Identity</text>
+    <text x="614" y="211">name + version are what the host sees in initialize</text>
+    <line x1="598" y1="200" x2="330" y2="202" stroke="#0d9488" stroke-width="1.5" marker-end="url(#sa)"/>
+
+    <rect x="600" y="244" width="328" height="74" rx="10" fill="#ccfbf1" stroke="#0d9488"/>
+    <text x="614" y="265" font-weight="700">③ Capability contract (what the MODEL reads)</text>
+    <text x="614" y="283">name · description · inputSchema (zod → JSON Schema)</text>
+    <text x="614" y="301">annotations are hints for the host UI, not enforcement</text>
+    <line x1="598" y1="280" x2="470" y2="268" stroke="#0d9488" stroke-width="1.5" marker-end="url(#sa)"/>
+
+    <rect x="600" y="334" width="328" height="74" rx="10" fill="#ccfbf1" stroke="#0d9488"/>
+    <text x="614" y="355" font-weight="700">④ Handler (what the SERVER does)</text>
+    <text x="614" y="373">validated args in → content[] out</text>
+    <text x="614" y="391">isError:true = "model, read this and recover"</text>
+    <line x1="598" y1="372" x2="560" y2="346" stroke="#0d9488" stroke-width="1.5" marker-end="url(#sa)"/>
+
+    <rect x="600" y="424" width="328" height="56" rx="10" fill="#fff7ed" stroke="#d97706"/>
+    <text x="614" y="445" font-weight="700" fill="#9a3412">Also available</text>
+    <text x="614" y="463" fill="#9a3412">registerResource · registerPrompt · outputSchema</text>
+  </g>
+</svg>

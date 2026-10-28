@@ -1,0 +1,10 @@
+{
+  "team": "platform-oncall",
+  "escalation": { "sev1": "page the owner team lead immediately", "sev2": "page owner team within 15 minutes", "sev3": "next business day", "sev4": "backlog" },
+  "services": {
+    "checkout": { "owner": "payments", "oncall": "@payments-oncall", "runbook": "runbooks/checkout.md", "tier": 1 },
+    "search":   { "owner": "discovery", "oncall": "@discovery-oncall", "runbook": "runbooks/search.md", "tier": 2 },
+    "auth":     { "owner": "identity", "oncall": "@identity-oncall", "runbook": "runbooks/auth.md", "tier": 1 },
+    "email":    { "owner": "growth", "oncall": "@growth-oncall", "runbook": "runbooks/email.md", "tier": 2 }
+  }
+}

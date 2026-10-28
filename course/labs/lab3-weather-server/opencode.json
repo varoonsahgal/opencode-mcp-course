@@ -1,0 +1,12 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "opencode/gpt-5.4-mini",
+  "small_model": "opencode/gpt-5.4-nano",
+  "mcp": {
+    "weather": {
+      "type": "local",
+      "command": ["npx", "tsx", "src/server.ts"],
+      "enabled": true
+    }
+  }
+}

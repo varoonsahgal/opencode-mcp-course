@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="220" viewBox="0 0 960 220" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="Module 4, Securing MCP: a five-link trust chain from user to external system, with the server link cracking under a DELETE statement">
+  <title>Module 4 · Securing MCP integrations</title>
+  <style>
+    .flow { stroke-dasharray: 4 10; animation: flow 1.4s linear infinite; }
+    .blink { animation: blink 1.8s steps(1) infinite; }
+    .halo { animation: halo 2.4s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+    .crack { stroke-dasharray: 60; stroke-dashoffset: 60; animation: crack 3.6s ease-in infinite; }
+    @keyframes flow { to { stroke-dashoffset: -28; } }
+    @keyframes blink { 0%,55% { opacity: 1; } 56%,100% { opacity: .3; } }
+    @keyframes halo { 0% { opacity: .6; transform: scale(.95); } 100% { opacity: 0; transform: scale(1.35); } }
+    @keyframes crack { 0%,30% { stroke-dashoffset: 60; } 55%,100% { stroke-dashoffset: 0; } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } .crack { stroke-dashoffset: 0; } }
+  </style>
+  <defs>
+    <linearGradient id="bg4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#070b17"/><stop offset="1" stop-color="#1c0d18"/></linearGradient>
+    <radialGradient id="glow4" cx="0.8" cy="0.45" r="0.45"><stop offset="0" stop-color="#e11d48" stop-opacity=".32"/><stop offset="1" stop-color="#e11d48" stop-opacity="0"/></radialGradient>
+    <pattern id="grid4" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#1e293b" stroke-width="1"/></pattern>
+    <linearGradient id="title4" x1="0" x2="1"><stop offset="0" stop-color="#f8fafc"/><stop offset="1" stop-color="#fecdd3"/></linearGradient>
+  </defs>
+
+  <rect width="960" height="220" rx="20" fill="url(#bg4)"/>
+  <rect width="960" height="220" rx="20" fill="url(#grid4)" opacity=".55"/>
+  <rect width="960" height="220" rx="20" fill="url(#glow4)"/>
+
+  <!-- left: words -->
+  <text x="40" y="50" font-family="Menlo, 'JetBrains Mono', monospace" font-size="12" letter-spacing="2.5" fill="#fb7185">MODULE 04 · 50 MIN · LAB: lab4-security</text>
+  <text x="38" y="100" font-size="44" font-weight="800" fill="url(#title4)" letter-spacing="-1">Securing MCP</text>
+  <text x="40" y="132" font-size="17" fill="#cbd5e1">Watch an agent delete customers because a ticket asked.</text>
+  <text x="40" y="154" font-size="17" fill="#cbd5e1">Then make it <tspan fill="#fda4af" font-weight="700">impossible</tspan>, not just unlikely.</text>
+  <g font-size="12" font-weight="700">
+    <rect x="40"  y="174" width="116" height="26" rx="13" fill="#e11d48" fill-opacity=".18" stroke="#fb7185"/><text x="98"  y="191" text-anchor="middle" fill="#fecdd3">break the chain</text>
+    <rect x="164" y="174" width="108" height="26" rx="13" fill="#e11d48" fill-opacity=".18" stroke="#fb7185"/><text x="218" y="191" text-anchor="middle" fill="#fecdd3">poisoned tool</text>
+    <rect x="280" y="174" width="120" height="26" rx="13" fill="#e11d48" fill-opacity=".18" stroke="#fb7185"/><text x="340" y="191" text-anchor="middle" fill="#fecdd3">least privilege</text>
+  </g>
+
+  <!-- right: the request that travels down the chain -->
+  <text x="700" y="44" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="11" fill="#fda4af">tools/call run_sql · DELETE FROM customers WHERE country = 'DE'</text>
+  <path class="flow" d="M528 60 H872" stroke="#fb7185" stroke-width="2" fill="none"/>
+  <path d="M872 54 L884 60 L872 66 z" fill="#fb7185"/>
+
+  <!-- the five links -->
+  <g fill="none" stroke-width="5">
+    <rect x="522" y="88" width="84" height="40" rx="20" stroke="#64748b"/>
+    <rect x="592" y="88" width="84" height="40" rx="20" stroke="#94a3b8"/>
+    <rect x="662" y="88" width="84" height="40" rx="20" stroke="#64748b"/>
+    <rect class="halo" x="732" y="88" width="84" height="40" rx="20" stroke="#fb7185" stroke-width="3"/>
+    <rect class="blink" x="732" y="88" width="84" height="40" rx="20" stroke="#fb7185"/>
+    <rect x="802" y="88" width="84" height="40" rx="20" stroke="#64748b"/>
+  </g>
+  <path class="crack" d="M770 82 L780 98 L768 108 L782 120 L772 136" fill="none" stroke="#fff1f2" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <g font-family="Menlo, 'JetBrains Mono', monospace" font-size="11" text-anchor="middle">
+    <text x="564" y="152" fill="#94a3b8">user</text>
+    <text x="634" y="152" fill="#94a3b8">agent</text>
+    <text x="704" y="152" fill="#94a3b8">client</text>
+    <text x="774" y="152" fill="#fda4af" font-weight="700">server</text>
+    <text x="844" y="152" fill="#94a3b8">system</text>
+  </g>
+
+  <!-- the verdict -->
+  <g class="blink" transform="translate(774 186)">
+    <rect x="-128" y="-13" width="256" height="26" rx="13" fill="#e11d48"/>
+    <text x="0" y="4" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="11" font-weight="700" fill="#fff">4 links · 0 checks · 3 rows gone</text>
+  </g>
+</svg>

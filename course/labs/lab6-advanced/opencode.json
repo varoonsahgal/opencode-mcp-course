@@ -1,0 +1,25 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "opencode/gpt-5.4-mini",
+  "small_model": "opencode/gpt-5.4-nano",
+  "mcp": {
+    "desk": {
+      "type": "remote",
+      "url": "http://127.0.0.1:8790/mcp",
+      "headers": {
+        "Authorization": "Bearer {env:DESK_TOKEN}"
+      },
+      "oauth": false,
+      "enabled": true
+    },
+    "probe": {
+      "type": "local",
+      "command": [
+        "npx",
+        "tsx",
+        "probe.ts"
+      ],
+      "enabled": false
+    }
+  }
+}
