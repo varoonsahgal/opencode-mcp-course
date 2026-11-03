@@ -36,9 +36,11 @@ await check("Node.js", async () => {
 });
 
 await check("Lab dependencies", async () =>
-  existsSync(new URL("./node_modules/@modelcontextprotocol/server", import.meta.url))
-    ? ["ok", "node_modules present (MCP SDK, tsx, zod, sqlite)"]
-    : ["fail", "run `npm install` in course/labs"]);
+  !existsSync(new URL("./node_modules/@modelcontextprotocol/server", import.meta.url))
+    ? ["fail", "run `npm install` in course/labs"]
+    : !existsSync(new URL("./node_modules/@modelcontextprotocol/client", import.meta.url))
+      ? ["warn", "the MCP client SDK is missing (Modules 7-10 need it): run `npm install` again in course/labs"]
+      : ["ok", "node_modules present (MCP server + client SDK, tsx, zod, sqlite)"]);
 
 await check("OpenCode", async () => {
   try { return ["ok", `v${await sh("opencode --version")}`]; } catch { return ["fail", "not on PATH — install from https://opencode.ai"]; }

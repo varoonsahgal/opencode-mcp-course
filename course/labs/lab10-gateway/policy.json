@@ -1,0 +1,16 @@
+{
+  "//": "Who is who, and who may call what. Rules are read top to bottom and the LAST matching rule wins, like OpenCode's permissions. No matching rule means deny.",
+  "people": {
+    "alice-dev-token":    { "user": "alice", "groups": ["dev"] },
+    "bob-releaser-token": { "user": "bob",   "groups": ["dev", "release"] },
+    "carol-lead-token":   { "user": "carol", "groups": ["dev", "release", "lead"] }
+  },
+  "rules": [
+    { "tool": "*",                      "allow": ["dev"],  "note": "everyone in dev may use the catalogue by default" },
+    { "tool": "teamdb_run_sql",         "allow": ["dev"],  "args": { "sql": "^\\s*(select|with)\\b" }, "note": "reads only, for everyone" },
+    { "tool": "teamdb_get_config",      "allow": ["lead"], "note": "server configuration is for leads, and secrets are redacted even for them" },
+    { "tool": "itdesk_grant_access",    "allow": ["lead"], "note": "access requests are filed by leads" },
+    { "tool": "itdesk_simulate_update", "allow": ["lead"] },
+    { "tool": "gateway_review",         "allow": ["lead"], "note": "only leads may release a tool from quarantine" }
+  ]
+}

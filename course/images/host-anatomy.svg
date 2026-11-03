@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="400" viewBox="0 0 960 400" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="Anatomy of an MCP host: a config starts one client per server; the host negotiates capabilities, builds a namespaced catalogue with pinned definitions, applies a permission layer, renders results and progress, and answers servers' requests for roots, elicitation and sampling. The user and the model sit on the host's side and never talk to servers directly.">
+  <defs>
+    <marker id="ha-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0e7490"/></marker>
+    <marker id="ha-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7e22ce"/></marker>
+    <marker id="ha-c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker>
+  </defs>
+  <rect width="960" height="400" rx="18" fill="#fbfbfd"/>
+  <text x="32" y="40" font-size="22" font-weight="700" fill="#0f172a">Anatomy of a host</text>
+  <text x="32" y="64" font-size="14" fill="#475569">Everything inside the box is yours to write. OpenCode has every one of these parts; so will host.ts.</text>
+
+  <!-- the user and the model, on the host's side -->
+  <g font-size="13">
+    <rect x="24" y="110" width="150" height="64" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+    <text x="99" y="137" text-anchor="middle" font-weight="700" fill="#334155">the user</text>
+    <text x="99" y="157" text-anchor="middle" fill="#64748b" font-size="12">answers, approves</text>
+    <rect x="24" y="206" width="150" height="64" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+    <text x="99" y="233" text-anchor="middle" font-weight="700" fill="#334155">the model</text>
+    <text x="99" y="253" text-anchor="middle" fill="#64748b" font-size="12">picks tools (today: you)</text>
+    <rect x="24" y="302" width="150" height="64" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+    <text x="99" y="329" text-anchor="middle" font-weight="700" fill="#334155">servers.json</text>
+    <text x="99" y="349" text-anchor="middle" fill="#64748b" font-size="11.5">same shape as opencode.json</text>
+  </g>
+
+  <!-- the host -->
+  <rect x="206" y="92" width="454" height="290" rx="18" fill="#ecfeff" stroke="#0e7490" stroke-width="2.5"/>
+  <text x="226" y="120" font-size="15" font-weight="800" fill="#155e75">host.ts</text>
+  <text x="646" y="120" text-anchor="end" font-size="12" fill="#0e7490">one process · one Client per server</text>
+  <g font-size="12.5">
+    <rect x="226" y="136" width="206" height="56" rx="10" fill="#fff" stroke="#0e7490" stroke-width="1.5"/>
+    <text x="329" y="158" text-anchor="middle" font-weight="700" fill="#155e75">1 · negotiate</text>
+    <text x="329" y="178" text-anchor="middle" fill="#475569" font-size="12">declare capabilities at initialize</text>
+
+    <rect x="440" y="136" width="206" height="56" rx="10" fill="#fff" stroke="#0e7490" stroke-width="1.5"/>
+    <text x="543" y="158" text-anchor="middle" font-weight="700" fill="#155e75">2 · catalogue</text>
+    <text x="543" y="178" text-anchor="middle" fill="#475569" font-size="12">server_tool names · pinned #hash</text>
+
+    <rect x="226" y="206" width="206" height="56" rx="10" fill="#fff" stroke="#0e7490" stroke-width="1.5"/>
+    <text x="329" y="228" text-anchor="middle" font-weight="700" fill="#155e75">3 · permission layer</text>
+    <text x="329" y="248" text-anchor="middle" fill="#475569" font-size="12">ask before anything not read-only</text>
+
+    <rect x="440" y="206" width="206" height="56" rx="10" fill="#fff" stroke="#0e7490" stroke-width="1.5"/>
+    <text x="543" y="228" text-anchor="middle" font-weight="700" fill="#155e75">4 · render</text>
+    <text x="543" y="248" text-anchor="middle" fill="#475569" font-size="12">results · progress bar · log lines</text>
+
+    <rect x="226" y="276" width="420" height="64" rx="10" fill="#f5f3ff" stroke="#7e22ce" stroke-width="1.5"/>
+    <text x="436" y="296" text-anchor="middle" font-weight="700" fill="#6b21a8">5 · answer the server's requests, react to its notifications</text>
+    <text x="436" y="314" text-anchor="middle" fill="#475569" font-size="12">roots/list · elicitation/create (form, url) · sampling/createMessage</text>
+    <text x="436" y="331" text-anchor="middle" fill="#475569" font-size="12">tools/list_changed → refresh the catalogue, re-check the pins</text>
+  </g>
+  <text x="433" y="364" text-anchor="middle" font-size="11.5" fill="#0e7490">the user and the model never talk to a server directly: every byte passes through here</text>
+
+  <!-- servers on the right -->
+  <g font-size="13">
+    <rect x="772" y="110" width="164" height="56" rx="12" fill="#fff7ed" stroke="#d97706" stroke-width="2"/>
+    <text x="854" y="133" text-anchor="middle" font-weight="700" fill="#9a3412">itdesk</text>
+    <text x="854" y="152" text-anchor="middle" fill="#9a3412" font-size="12">stdio · asks questions</text>
+    <rect x="772" y="196" width="164" height="56" rx="12" fill="#fff7ed" stroke="#d97706" stroke-width="2"/>
+    <text x="854" y="219" text-anchor="middle" font-weight="700" fill="#9a3412">probe</text>
+    <text x="854" y="238" text-anchor="middle" fill="#9a3412" font-size="12">stdio · measures you</text>
+    <rect x="772" y="282" width="164" height="56" rx="12" fill="#fff7ed" stroke="#d97706" stroke-width="2" stroke-dasharray="6 4"/>
+    <text x="854" y="305" text-anchor="middle" font-weight="700" fill="#9a3412">desk</text>
+    <text x="854" y="324" text-anchor="middle" fill="#9a3412" font-size="12">HTTP · bearer token</text>
+  </g>
+
+  <!-- arrows -->
+  <g fill="none" stroke-width="2">
+    <line x1="174" y1="334" x2="204" y2="334" stroke="#94a3b8" marker-end="url(#ha-c)"/>
+    <line x1="174" y1="142" x2="204" y2="142" stroke="#94a3b8" marker-end="url(#ha-c)"/><line x1="204" y1="156" x2="174" y2="156" stroke="#94a3b8" marker-end="url(#ha-c)"/>
+    <line x1="174" y1="238" x2="204" y2="238" stroke="#94a3b8" marker-end="url(#ha-c)"/><line x1="204" y1="252" x2="174" y2="252" stroke="#94a3b8" marker-end="url(#ha-c)"/>
+    <line x1="662" y1="138" x2="770" y2="138" stroke="#0e7490" marker-end="url(#ha-a)"/>
+    <line x1="770" y1="156" x2="662" y2="156" stroke="#7e22ce" marker-end="url(#ha-b)"/>
+    <line x1="662" y1="224" x2="770" y2="224" stroke="#0e7490" marker-end="url(#ha-a)"/>
+    <line x1="770" y1="242" x2="662" y2="242" stroke="#7e22ce" marker-end="url(#ha-b)"/>
+    <line x1="662" y1="310" x2="770" y2="310" stroke="#0e7490" marker-end="url(#ha-a)"/>
+  </g>
+  <g font-size="10.5" fill="#475569">
+    <text x="716" y="131" text-anchor="middle">tools/call →</text>
+    <text x="716" y="170" text-anchor="middle" fill="#6b21a8">← elicitation/create</text>
+    <text x="716" y="217" text-anchor="middle">tools/call →</text>
+    <text x="716" y="256" text-anchor="middle" fill="#6b21a8">← roots/list, sampling</text>
+    <text x="716" y="303" text-anchor="middle">Bearer token →</text>
+  </g>
+</svg>

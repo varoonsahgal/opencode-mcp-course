@@ -33,7 +33,7 @@
   --hero-b: #1f1333;
   --hero-fg: #f4f7fc;
   --hero-muted: #b9aacd;
-  --m1: #6366f1; --m2: #0891b2; --m3: #d97706; --m4: #e11d48; --m5: #16a34a; --m6: #7c3aed;
+  --m1: #6366f1; --m2: #0891b2; --m3: #d97706; --m4: #e11d48; --m5: #16a34a; --m6: #7c3aed; --m7: #0e7490; --m8: #b45309; --m9: #be123c; --m10: #15803d;
   --shadow: 0 18px 50px -20px rgba(12, 32, 64, .28);
   --font-display: "Space Grotesk", "Avenir Next", "Segoe UI", system-ui, sans-serif;
   --font-body: "Space Grotesk", "Avenir Next", "Segoe UI", system-ui, sans-serif;
@@ -45,7 +45,7 @@
     --paper: #0b0712; --card: #150c24; --card-2: #1f133380; --ink: #efe3cc; --text: #d9cdb8; --muted: #a898bd; --line: #2a1a44;
     --signal: #ff6a2b; --signal-ink: #ff8a55; --signal-soft: #ff6a2b1f; --ok: #2dd4b5; --ok-soft: #2dd4b51c; --bad: #fb7185; --bad-soft: #fb71851c;
     --code-bg: #0a0612; --code-fg: #efe3cc; --code-dim: #8e7fa5;
-    --m1: #818cf8; --m2: #22d3ee; --m3: #fbbf24; --m4: #fb7185; --m5: #4ade80; --m6: #a78bfa;
+    --m1: #818cf8; --m2: #22d3ee; --m3: #fbbf24; --m4: #fb7185; --m5: #4ade80; --m6: #a78bfa; --m7: #22d3ee; --m8: #fbbf24; --m9: #fb7185; --m10: #4ade80;
     --shadow: 0 18px 50px -20px rgba(0, 0, 0, .7);
     color-scheme: dark;
   }
@@ -54,7 +54,7 @@
   --paper: #0b0712; --card: #150c24; --card-2: #1f133380; --ink: #efe3cc; --text: #d9cdb8; --muted: #a898bd; --line: #2a1a44;
   --signal: #ff6a2b; --signal-ink: #ff8a55; --signal-soft: #ff6a2b1f; --ok: #2dd4b5; --ok-soft: #2dd4b51c; --bad: #fb7185; --bad-soft: #fb71851c;
   --code-bg: #0a0612; --code-fg: #efe3cc; --code-dim: #8e7fa5;
-  --m1: #818cf8; --m2: #22d3ee; --m3: #fbbf24; --m4: #fb7185; --m5: #4ade80; --m6: #a78bfa;
+  --m1: #818cf8; --m2: #22d3ee; --m3: #fbbf24; --m4: #fb7185; --m5: #4ade80; --m6: #a78bfa; --m7: #22d3ee; --m8: #fbbf24; --m9: #fb7185; --m10: #4ade80;
   --shadow: 0 18px 50px -20px rgba(0, 0, 0, .7);
   color-scheme: dark;
 }
@@ -395,6 +395,7 @@ footer { border-top: 1px solid var(--line); padding-block: 28px 40px; font-size:
       <a href="#lab4" style="--c: var(--m4)"><i></i>Secure</a>
       <a href="#lab5" style="--c: var(--m5)"><i></i>Apply</a>
       <a href="#lab6" style="--c: var(--m6)"><i></i>Remote</a>
+      <a href="#lab7" style="--c: var(--m7)"><i></i>Advanced</a>
       <a href="#cheats">Cheat sheet</a>
     </nav>
     <div class="score" title="Your predictions, checked against what the labs actually did" aria-live="polite">
@@ -523,6 +524,10 @@ footer { border-top: 1px solid var(--line); padding-block: 28px 40px; font-size:
           <li style="--c: var(--m4)" data-lab="lab4"><a href="#lab4"><span class="n">4</span><span><b>Break it, then fix it</b><span>Which link should have stopped that delete?</span></span><span class="min">50 min</span></a></li>
           <li style="--c: var(--m5)" data-lab="lab5"><a href="#lab5"><span class="n">5</span><span><b>The on-call helper</b><span>Can your agent be talked into a restart?</span></span><span class="min">40 min</span></a></li>
           <li style="--c: var(--m6)" data-lab="lab6"><a href="#lab6"><span class="n">6</span><span><b>Going remote <small>(optional)</small></b><span>Who decides, when the server is shared?</span></span><span class="min">50 min</span></a></li>
+          <li style="--c: var(--m7)" data-lab="lab7"><a href="#lab7"><span class="n">7</span><span><b>Be the host <small>(advanced)</small></b><span>Who answers when a server asks?</span></span><span class="min">50 min</span></a></li>
+          <li style="--c: var(--m8)" data-lab="lab8"><a href="#lab8"><span class="n">8</span><span><b>The 2026 wire <small>(advanced)</small></b><span>Can a server ask without remembering?</span></span><span class="min">50 min</span></a></li>
+          <li style="--c: var(--m9)" data-lab="lab9"><a href="#lab9"><span class="n">9</span><span><b>Identity, for real <small>(advanced)</small></b><span>Who, for what, until when?</span></span><span class="min">60 min</span></a></li>
+          <li style="--c: var(--m10)" data-lab="lab10"><a href="#lab10"><span class="n">10</span><span><b>One door <small>(advanced)</small></b><span>What can a gateway not stop?</span></span><span class="min">60 min</span></a></li>
         </ol>
       </div>
     </div>
@@ -550,6 +555,13 @@ footer { border-top: 1px solid var(--line); padding-block: 28px 40px; font-size:
       <li><a href="#lab4" data-lab="lab4"><small>08</small>Lab 4 · Break it, fix it</a></li>
       <li><a href="#lab5" data-lab="lab5"><small>09</small>Lab 5 · On-call helper</a></li>
       <li><a href="#lab6" data-lab="lab6"><small>10</small>Lab 6 · Going remote</a></li>
+    </ol>
+    <h4>Advanced track</h4>
+    <ol>
+      <li><a href="#lab7" data-lab="lab7"><small>A1</small>Lab 7 · Be the host</a></li>
+      <li><a href="#lab8" data-lab="lab8"><small>A2</small>Lab 8 · The 2026 wire</a></li>
+      <li><a href="#lab9" data-lab="lab9"><small>A3</small>Lab 9 · Identity</a></li>
+      <li><a href="#lab10" data-lab="lab10"><small>A4</small>Lab 10 · One door</a></li>
     </ol>
     <h4>Wrap-up</h4>
     <ol>
@@ -932,6 +944,144 @@ opencode</code><p>The seed builds <code>team.db</code>: 12 customers, 6 tickets.
       <a class="guide" href="06-advanced-mcp.md">Full guide: Module 6 →</a>
     </section>
 
+    <section class="part" id="lab7" style="--mod: var(--m7)">
+      <header class="step">
+        <div class="step-n" aria-hidden="true">7</div>
+        <div class="step-t"><span class="eyebrow">Lab 7 · 50 min · advanced · lab7-host</span><h2>Be the <span>host</span></h2><p>Write the client side of MCP: capabilities, answers to a server's questions, progress, cancellation, and a lock file for tool definitions. Today you are the model.</p></div>
+        <div class="step-side"><span class="mins">⏱ 35 min hands-on</span><button type="button" class="donebtn" data-lab="lab7" aria-pressed="false"><span class="box">✓</span>Mark done</button></div>
+      </header>
+      <p>The IT desk cannot provision a laptop without asking the new hire three questions. OpenCode 1.19 declares only <code>roots</code>, so nobody answers. Your host will.</p>
+      <div class="split">
+        <div class="term"><span class="lbl">Terminal 1 · your host</span><code>npx tsx host.ts</code><p><code>caps</code> · <code>tools</code> · <code>call itdesk_provision_laptop {…}</code></p></div>
+        <div class="term two"><span class="lbl">Terminal 2 · for comparison</span><code>opencode</code><p>The same IT desk, a host that cannot answer it.</p></div>
+      </div>
+      <div class="predict" data-p="p9" data-answer="it tells the model to ask instead">
+        <span class="lbl">Predict first · a host that declares nothing</span>
+        <p class="q">Your host declares <code>{}</code>. <code>provision_laptop</code> needs three answers from a person. What happens?</p>
+        <div class="opts" role="group" aria-label="Your prediction"><button type="button">it hangs until a timeout</button><button type="button">it tells the model to ask instead</button><button type="button">it crashes</button></div>
+        <span class="locked">Pick one. Your answer locks, so commit.</span>
+      </div>
+      <details class="reveal" data-p="p9"><summary>What we saw<span class="yourguess"></span></summary><div class="reveal-b">
+        <p class="verdict"><span>It told the model to ask</span>, in 2 ms.</p>
+        <p>The desk read your empty declaration and returned <i>"Ask the user for: os, keyboard and ship_to_office, then call provision_laptop again with those in <code>answers</code>."</i> Design for the floor, seen from the floor. After TODO 2 the same call asks <b>you</b>, and the model never sees the answers.</p>
+        <figure><img src="images/shot-lab7-form.png" alt="the IT desk asks the host three questions and the host asks you" loading="lazy" width="1075" height="737"><figcaption>The desk asks; your host asks you.</figcaption></figure>
+      </div></details>
+      <ul>
+        <li><b>TODO 1 · declare, then deliver.</b> <code>roots</code>, <code>elicitation</code> (form + url), <code>sampling</code>, and a <code>roots/list</code> handler.</li>
+        <li><b>TODO 2 · answer the form.</b> Typed answers, defaults, required fields, <code>/decline</code>; for URL mode, open the approval page.</li>
+        <li><b>TODO 3 · progress and ctrl+c.</b> <code>onprogress</code>, an <code>AbortController</code>, <code>resetTimeoutOnProgress</code>.</li>
+        <li><b>TODO 4 · pin the tools.</b> <code>list_changed</code> → re-list; a changed hash is refused until <code>trust</code>.</li>
+        <li><b>Turn the probe green.</b> Module 6's <code>probe.ts</code>: seven YES against your host.</li>
+      </ul>
+      <aside class="lesson"><span class="lbl">Hold on to this</span>
+        <p>Every feature a server "has" is a feature a host chose to support. Ask <b>in which host?</b> before you design around it.</p>
+      </aside>
+      <a class="guide" href="07-be-the-host.md">Full guide: Module 7 →</a>
+    </section>
+
+    <section class="part" id="lab8" style="--mod: var(--m8)">
+      <header class="step">
+        <div class="step-n" aria-hidden="true">8</div>
+        <div class="step-t"><span class="eyebrow">Lab 8 · 50 min · advanced · lab8-wire-2026</span><h2>The 2026 <span>wire</span></h2><p>No handshake, no sessions, every request stands alone. A server that needs an answer asks by answering, and the state it hands the client must come back sealed.</p></div>
+        <div class="step-side"><span class="mins">⏱ 32 min hands-on</span><button type="button" class="donebtn" data-lab="lab8" aria-pressed="false"><span class="box">✓</span>Mark done</button></div>
+      </header>
+      <div class="split">
+        <div class="term"><span class="lbl">Terminal 1 · the desk</span><code>npx tsx desk2026.ts</code><p>Eras, mirrored headers, <code>resultType</code>, listeners.</p></div>
+        <div class="term two"><span class="lbl">Terminal 2 · the wire</span><code>npx tsx wire.ts --era auto handshake</code><p>Every HTTP exchange, printed as it happens.</p></div>
+      </div>
+      <div class="code"><div class="code-h"><span class="where">Terminal 2 · the tampered retry</span><span class="sp"></span><button class="copy" type="button">Copy</button></div><pre>npx tsx wire.ts --token bob-releaser-token --tamper --tamper-to 2.32.0 \
+  call deploy '{"service":"api","version":"2.31.0"}'</pre></div>
+      <div class="predict" data-p="p10" data-answer="2">
+        <span class="lbl">Predict first · one deploy</span>
+        <p class="q">After TODO 1, how many <code>tools/call</code> requests does one confirmed deploy take?</p>
+        <div class="opts" role="group" aria-label="Your prediction"><button type="button">1</button><button type="button">2</button><button type="button">3</button></div>
+        <span class="locked">Pick one. Your answer locks, so commit.</span>
+      </div>
+      <details class="reveal" data-p="p10"><summary>What we saw<span class="yourguess"></span></summary><div class="reveal-b">
+        <p class="verdict"><span>Two</span>, with different ids.</p>
+        <p>The first answers <code>resultType: input_required</code> with the question and a <code>requestState</code>. The client shows the form and retries the same call with <code>inputResponses</code> and the state echoed byte for byte. The server kept nothing in between: restart it between the rounds and the deploy still goes through.</p>
+        <figure><img src="images/shot-lab8-confirm.png" alt="wire.ts showing an input_required result, the question, and the retried call" loading="lazy" width="1165" height="717"><figcaption>One deploy, two requests.</figcaption></figure>
+      </div></details>
+      <ul>
+        <li><b>TODO 1 · ask by answering.</b> <code>inputRequired(…)</code> on round one; read <code>ctx.mcpReq.inputResponses</code> on round two.</li>
+        <li><b>TODO 2 · seal the state.</b> <code>createRequestStateCodec</code> mints and verifies; then compare the state with the retried arguments.</li>
+        <li><b>TODO 3 · the freeze, heard again.</b> <code>mcp.notify.toolsChanged()</code> reaches every <code>subscriptions/listen</code> stream.</li>
+        <li><b>TODO 4 · cache hints.</b> <code>ttlMs</code> on <code>tools/list</code>; the client stops re-fetching.</li>
+      </ul>
+      <aside class="lesson"><span class="lbl">Hold on to this</span>
+        <p>State that round-trips through a client is attacker-controlled. <b>Signed</b> proves you minted it; <b>bound</b> proves it is about this request. You need both.</p>
+      </aside>
+      <a class="guide" href="08-the-2026-wire.md">Full guide: Module 8 →</a>
+    </section>
+
+    <section class="part" id="lab9" style="--mod: var(--m9)">
+      <header class="step">
+        <div class="step-n" aria-hidden="true">9</div>
+        <div class="step-t"><span class="eyebrow">Lab 9 · 60 min · advanced · lab9-oauth</span><h2>Identity, <span>for real</span></h2><p>A login page, a JWT with an audience and a clock, scopes that step up when a tool needs them, and refresh tokens that rotate. OpenCode does the whole dance by itself.</p></div>
+        <div class="step-side"><span class="mins">⏱ 42 min hands-on</span><button type="button" class="donebtn" data-lab="lab9" aria-pressed="false"><span class="box">✓</span>Mark done</button></div>
+      </header>
+      <div class="split">
+        <div class="term"><span class="lbl">Terminal 1 · authorization server</span><code>npx tsx auth-server.ts</code><p>Clients, live tokens with a countdown, every code and refresh.</p></div>
+        <div class="term two"><span class="lbl">Terminal 3 · OpenCode signs in</span><code>opencode mcp auth desk</code><p>Then <code>opencode mcp list</code>: <code>connected (OAuth)</code>.</p></div>
+      </div>
+      <div class="predict" data-p="p11" data-answer="refused: not issued for this resource">
+        <span class="lbl">Predict first · a genuine token</span>
+        <p class="q">After TODO 1, the desk gets a token signed by the right key, issued by the right server, for a real person, but minted for <code>…/other</code>. What does it say?</p>
+        <div class="opts" role="group" aria-label="Your prediction"><button type="button">accepted: the signature is valid</button><button type="button">refused: not issued for this resource</button></div>
+        <span class="locked">Pick one. Your answer locks, so commit.</span>
+      </div>
+      <details class="reveal" data-p="p11"><summary>What we saw<span class="yourguess"></span></summary><div class="reveal-b">
+        <p class="verdict"><span>Refused</span>: <code>401 Token was not issued for this resource</code>.</p>
+        <p>The audience check is what stops a malicious MCP server replaying the tokens its users send it against every other server. OpenCode asked for the right audience on its own (<code>resource=…/mcp</code> in the authorize URL), and refreshed silently when its 90-second token expired.</p>
+        <figure><img src="images/shot-lab9-stepup.png" alt="login.ts stepping up from releases:read to releases:deploy and deploying" loading="lazy" width="1165" height="271"><figcaption>Step-up: one 403, one extra scope, one deploy.</figcaption></figure>
+      </div></details>
+      <ul>
+        <li><b>TODO 1 · issuer, audience, expiry</b> in the desk's verifier, plus <code>expectedResource</code>.</li>
+        <li><b>TODO 2 · step-up.</b> <code>scopeChallenge: requireScopes("releases:deploy")</code>: a 403 the client can act on.</li>
+        <li><b>TODO 3 · rotate refresh tokens</b>, and revoke the whole login when a burned one comes back.</li>
+        <li><b>TODO 4 · PKCE</b> and one-shot codes: a stolen code is worthless.</li>
+      </ul>
+      <aside class="lesson"><span class="lbl">Hold on to this</span>
+        <p>A token says <b>who</b>, <b>for what</b>, <b>until when</b>. Check all three. Entitlements live with the identity provider, where no client config can widen them.</p>
+      </aside>
+      <a class="guide" href="09-identity-for-real.md">Full guide: Module 9 →</a>
+    </section>
+
+    <section class="part" id="lab10" style="--mod: var(--m10)">
+      <header class="step">
+        <div class="step-n" aria-hidden="true">10</div>
+        <div class="step-t"><span class="eyebrow">Lab 10 · 60 min · advanced · lab10-gateway</span><h2>One <span>door</span></h2><p>A gateway in front of four servers from this course: one policy that reads arguments, a quarantine for poisoned and changed tools, redaction on the way out, an audit line per decision.</p></div>
+        <div class="step-side"><span class="mins">⏱ 45 min hands-on</span><button type="button" class="donebtn" data-lab="lab10" aria-pressed="false"><span class="box">✓</span>Mark done</button></div>
+      </header>
+      <div class="split">
+        <div class="term"><span class="lbl">Terminal 1 · the gateway</span><code>npx tsx gateway.ts</code><p>Upstreams, quarantine, every decision.</p></div>
+        <div class="term two"><span class="lbl">Terminal 2 · you, as three people</span><code>npx tsx gw.ts --token alice-dev-token tools</code><p>Then <code>node audit.mjs</code> in Terminal 3.</p></div>
+      </div>
+      <div class="code"><div class="code-h"><span class="where">Terminal 2 · beat your own policy</span><span class="sp"></span><button class="copy" type="button">Copy</button></div><pre>npx tsx gw.ts --token alice-dev-token call teamdb_run_sql \
+  '{"sql":"WITH doomed AS (SELECT 9) DELETE FROM customers WHERE id IN (SELECT * FROM doomed)"}'</pre></div>
+      <div class="predict" data-p="p12" data-answer="a customer is deleted">
+        <span class="lbl">Predict first · "reads only, for everyone"</span>
+        <p class="q">The policy allows SQL that starts with <code>SELECT</code> or <code>WITH</code>. Alice sends the statement above. What happens?</p>
+        <div class="opts" role="group" aria-label="Your prediction"><button type="button">the gateway refuses it</button><button type="button">a customer is deleted</button></div>
+        <span class="locked">Pick one. Your answer locks, so commit.</span>
+      </div>
+      <details class="reveal" data-p="p12"><summary>What we saw<span class="yourguess"></span></summary><div class="reveal-b">
+        <p class="verdict"><span>A customer is deleted</span>: 12 rows become 11.</p>
+        <p>The audit line says <code>ALLOW alice teamdb_run_sql · reads only, for everyone</code>. A regular expression over a language is a guess about the language. The gateway is a company-wide ring 3; the read-only connection behind it (Module 4.E) is ring 1.</p>
+        <figure><img src="images/shot-lab10-board.png" alt="gateway board: four upstreams, two quarantined tools, decisions" loading="lazy" width="1219" height="859"><figcaption>The gateway, two quarantines in.</figcaption></figure>
+      </div></details>
+      <ul>
+        <li><b>TODO 1 · policy.</b> Last matching rule wins, argument regexes, default deny, catalogues filtered per person.</li>
+        <li><b>TODO 2 · quarantine.</b> Screen descriptions; pin definitions; a changed hash hides the tool for everyone.</li>
+        <li><b>TODO 3 · redact.</b> Secrets for everyone, e-mail addresses unless lead; <code>structuredContent</code> dropped.</li>
+        <li><b>TODO 4 · audit.</b> One line per decision, with a trace id the upstream sees as <code>_meta.traceparent</code>.</li>
+      </ul>
+      <aside class="lesson"><span class="lbl">Hold on to this</span>
+        <p>A gateway is a very good bouncer. It is <b>not a lock on the vault</b>. Put least-privilege credentials behind it.</p>
+      </aside>
+      <a class="guide" href="10-the-gateway.md">Full guide: Module 10 →</a>
+    </section>
+
     <section id="takeaways">
       <span class="eyebrow">If you remember six things</span>
       <h2 class="sec-h">Key <span>takeaways</span></h2>
@@ -1000,6 +1150,10 @@ opencode</code><p>The seed builds <code>team.db</code>: 12 customers, 6 tickets.
             <span class="stamp" data-lab="lab4" style="--c: var(--m4)" title="Lab 4">4</span>
             <span class="stamp" data-lab="lab5" style="--c: var(--m5)" title="Lab 5">5</span>
             <span class="stamp" data-lab="lab6" style="--c: var(--m6)" title="Lab 6 (optional)">6</span>
+            <span class="stamp" data-lab="lab7" style="--c: var(--m7)" title="Lab 7 (advanced)">7</span>
+            <span class="stamp" data-lab="lab8" style="--c: var(--m8)" title="Lab 8 (advanced)">8</span>
+            <span class="stamp" data-lab="lab9" style="--c: var(--m9)" title="Lab 9 (advanced)">9</span>
+            <span class="stamp" data-lab="lab10" style="--c: var(--m10)" title="Lab 10 (advanced)">10</span>
           </div>
           <div class="oc-stats">
             <div><b id="oc-labs">0/5</b><small>labs</small></div>
@@ -1034,7 +1188,7 @@ opencode</code><p>The seed builds <code>team.db</code>: 12 customers, 6 tickets.
 </div>
 </div>
 
-<footer class="gut"><div class="wrap">MCP with AI Agents · student handout. Every screenshot and number here comes from real runs with OpenCode 1.18.34 and <code>opencode/gpt-5.4-mini</code> on 27 October 2026. The full guides live next to this page, starting at <a href="README.md">README.md</a>.</div></footer>
+<footer class="gut"><div class="wrap">MCP with AI Agents · student handout. Every screenshot and number here comes from real runs: Labs 1–6 with OpenCode 1.18.34 and <code>opencode/gpt-5.4-mini</code> on 27 October 2026, Labs 7–10 with OpenCode 1.19.5 and the labs' own clients on 2 November 2026. The full guides live next to this page, starting at <a href="README.md">README.md</a>.</div></footer>
 
 <script>
 (() => {
@@ -1059,8 +1213,8 @@ opencode</code><p>The seed builds <code>team.db</code>: 12 customers, 6 tickets.
   let guesses = store.get("guesses", {});
   let scored = store.get("scored", {});
   let tests = store.get("tests", {});
-  const LABS = ["lab1", "lab2", "lab3", "lab4", "lab5", "lab6"];
-  const CORE = LABS.slice(0, 5); // Lab 6 is optional: it earns a stamp, not progress
+  const LABS = ["lab1", "lab2", "lab3", "lab4", "lab5", "lab6", "lab7", "lab8", "lab9", "lab10"];
+  const CORE = LABS.slice(0, 5); // Labs 6-10 are optional and advanced: they earn stamps, not progress
   const PREDICTS = $$(".predict").length;
 
   function renderDone() {

@@ -4,6 +4,8 @@ Connect, configure, build and secure **Model Context Protocol** integrations for
 
 **Read the course online: <https://varoonsahgal.github.io/opencode-mcp-course/>**
 
+🧭 **Advanced track, part 2 (November 2026):** four new modules (07–10) take you to the other side of the wire and into the current spec revision, `2026-07-28`: build a host, speak the stateless protocol, run a real OAuth login, and put a gateway in front of everything. Each has its own lab, board, comic and challenges.
+
 🎃 **Haunted edition (October 2026):** the student site now carries a Halloween theme, a comic strip per module, 🍬 *Treat* tidbits and 👻 *Ghost story* incident callouts, plus new sections on MCP versus native function calling and on what the protocol leaves to you. The labs and numbers are unchanged.
 
 | | |
@@ -23,6 +25,10 @@ Connect, configure, build and secure **Model Context Protocol** integrations for
 | 04 | [Securing MCP integrations](course/04-securing-mcp-integrations.md) | an over-permissioned database server, broken and fixed |
 | 05 | [Applied MCP agent challenge](course/05-applied-challenge.md) | the on-call helper |
 | 06 | [Advanced MCP: going remote](course/06-advanced-mcp.md) *(optional)* | a shared Streamable HTTP server with identities, progress and dynamic tools |
+| 07 | [Be the host](course/07-be-the-host.md) *(advanced)* | write an MCP client: capabilities, elicitation, progress, pinning |
+| 08 | [The 2026 wire](course/08-the-2026-wire.md) *(advanced)* | `server/discover`, `input_required` with a signed state, `subscriptions/listen` |
+| 09 | [Identity, for real](course/09-identity-for-real.md) *(advanced)* | an OAuth 2.1 authorization server, audience checks, step-up, refresh rotation |
+| 10 | [The gateway](course/10-the-gateway.md) *(advanced)* | one door for every server: policy, quarantine, redaction, audit |
 
 ## Get started
 
@@ -32,7 +38,7 @@ cd opencode-mcp-course/course/labs
 npm install && npm run check
 ```
 
-You need Node.js 20+, OpenCode 1.18+ logged in to OpenCode Zen, and optionally `uv`. Details in [00 · Setup](course/00-setup.md).
+You need Node.js 20+, OpenCode 1.18+ (1.19.5 tested) logged in to OpenCode Zen, and optionally `uv`. Details in [00 · Setup](course/00-setup.md).
 
 ## Repository layout
 

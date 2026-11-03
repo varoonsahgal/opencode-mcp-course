@@ -36,6 +36,10 @@ What MCP is **not**, because the name invites confusion: it is not a model, not 
 | 4 · Secure | the agent say "removed 2 customers" while the database loses 3 rows, and then route around the tool you denied | `watch-db.mjs`, `leak-report.mjs` |
 | 5 · Apply | a sev4 typo report restart production, and then the same prompt bounce off the agent you built | the status API's own ops board |
 | 6 · Go remote *(optional)* | a freeze declared in one terminal make the `deploy` tool vanish from an agent in another, mid-session | the release desk's own board |
+| 7 · Be the host *(advanced)* | the probe that scored two ❌ against OpenCode turn seven ✅ against three hundred lines of your own client | `host.ts`, where you are the model |
+| 8 · The 2026 wire *(advanced)* | one `deploy` call answered with a question, then a tampered retry die before your handler runs | the 2026 desk's board |
+| 9 · Identity *(advanced)* | OpenCode register itself, log you in, and refresh its token while you watch | the authorization server's board |
+| 10 · The gateway *(advanced)* | a poisoned tool quarantined at first sight, a rug pull caught mid-session, and a `DELETE` dressed as a `WITH` walk straight through | the gateway's board and `audit.mjs` |
 
 Every one of these was captured from a real run with the course model. Your run may differ in the details; when it does, compare with your neighbour. The variance is part of the lesson.
 
@@ -51,6 +55,7 @@ Software developers, tech leads and security engineers who have completed *Orche
 - A security playbook you can apply on Monday: trust chain, prompt injection, least privilege, approval controls, logging, and organisational guardrails.
 - A completed end-to-end "on-call helper" agent that proves you can do all of the above under time pressure.
 - *(Module 6, optional)* A shared Streamable HTTP server with per-person tokens, server-side authorization, progress, cancellation and tools that change at runtime, plus a clear picture of what your host does and does not support.
+- *(Modules 7–10, advanced track)* An MCP host you wrote yourself; a server on the `2026-07-28` revision that asks for confirmation with a signed `input_required` result; a working OAuth 2.1 login with audience checks, step-up and refresh rotation that OpenCode drives on its own; and a gateway that applies one policy, quarantine, redaction and audit trail to every server behind it.
 
 ## Schedule (4 hours)
 
@@ -66,6 +71,12 @@ Software developers, tech leads and security engineers who have completed *Orche
 | 3:20 | Module 5 · Applied MCP agent challenge | [05 · Apply](05-applied-challenge.md) | 40 |
 | 4:00 | Done | | |
 | *extension* | Module 6 · Advanced MCP: going remote (optional, or a follow-up session) | [06 · Go remote](06-advanced-mcp.md) | 50 |
+| *advanced track* | Module 7 · Be the host: the client side of MCP | [07 · Be the host](07-be-the-host.md) | 50 |
+| | Module 8 · The 2026 wire: requests that stand alone | [08 · The 2026 wire](08-the-2026-wire.md) | 50 |
+| | Module 9 · Identity, for real: OAuth end to end | [09 · Identity](09-identity-for-real.md) | 60 |
+| | Module 10 · The gateway: one door for every server | [10 · Gateway](10-the-gateway.md) | 60 |
+
+**The advanced track (Modules 7–10)** is a half-day of its own, best run after Module 6. Each module builds on the one before: you write a client (7), move both ends to the current protocol revision (8), replace demo tokens with a real login (9), and put a gateway in front of everything (10). The difficulty rises with each one, and Module 10 ends by showing you its own blind spot.
 
 Every module has a hands-on lab, a short *Check yourself* quiz, and optional 🏆 challenges that get harder as the course goes on: the ones in Modules 4–6 are real engineering problems (pin tool definitions, red-team your own agent, build a human-in-the-loop the model cannot fake). Do them if you are ahead, or after class. Your instructor has worked solutions for every one.
 
@@ -74,7 +85,7 @@ Every module has a hands-on lab, a short *Check yourself* quiz, and optional �
 ```
 course/
 ├── README.md                     ← you are here
-├── 00-setup.md … 06-advanced-mcp.md   ← the student guides, in order (06 is optional)
+├── 00-setup.md … 10-the-gateway.md    ← the student guides, in order (06 optional, 07–10 the advanced track)
 ├── handout.html                  ← the one-page student handout
 ├── slides/index.html             ← the reference deck
 ├── images/                       ← diagrams and OpenCode screenshots used by the guides
@@ -84,7 +95,11 @@ course/
     ├── lab3-weather-server/      ← build your own server (starter code) + the tool-card scorer
     ├── lab4-security/            ← an over-permissioned DB server to break and fix, a live DB watcher
     ├── lab5-oncall/              ← the applied challenge, with a status API that doubles as an ops board
-    └── lab6-advanced/            ← a shared Streamable HTTP server with its own board, and a host capability probe
+    ├── lab6-advanced/            ← a shared Streamable HTTP server with its own board, and a host capability probe
+    ├── lab7-host/                ← write a host: host.ts (you are the model) and an IT desk that needs one
+    ├── lab8-wire-2026/           ← the desk on the 2026-07-28 wire, and wire.ts, a client that shows every byte
+    ├── lab9-oauth/               ← a toy authorization server, the desk as a resource server, login.ts
+    └── lab10-gateway/            ← one door in front of four servers from earlier labs, with policy and audit
 ```
 
 ## Quick start

@@ -50,6 +50,7 @@
 [data-ch="secure"] { --accent: var(--rose); }
 [data-ch="apply"]  { --accent: var(--green); }
 [data-ch="adv"]    { --accent: var(--violet); }
+[data-ch="adv2"]   { --accent: var(--cyan); }
 [data-ch="cheat"], [data-ch="gloss"], [data-ch="outro"] { --accent: var(--indigo); }
 
 /* ───────────── stage ───────────── */
@@ -2214,6 +2215,169 @@ ack.remove();</pre>
   </aside>
 </section>
 
+<!-- ═════════════════════════ ADVANCED TRACK, PART 2 ═════════════════════════ -->
+<section class="slide divider" data-ch="adv2" id="advanced-track">
+  <p class="num">Chapter 08 · Modules 7–10</p>
+  <h1>The advanced track</h1>
+  <p class="lead">The other end of the wire, the current protocol revision, a real login, and one door in front of everything. Four labs, each harder than the last, each ending on something you could not do before.</p>
+  <ul class="toc"><li>be the host</li><li>capabilities</li><li>elicitation</li><li>2026-07-28</li><li>input_required</li><li>sealed state</li><li>listen</li><li>OAuth 2.1</li><li>audience</li><li>step-up</li><li>gateway</li><li>quarantine</li></ul>
+  <aside class="notes">
+    <p>This chapter is the reference for Modules 7 to 10. Run them as a half-day after Module 6, in order: each lab reuses the one before (the host from 7 explains the client side of 8; the desk of 8 becomes the resource server of 9; the gateway of 10 fronts servers from Labs 4 and 7).</p>
+    <p>Everything was verified on 2 November 2026 with OpenCode 1.19.5, SDK 2.4.0 and Node 20.19. Model-dependent steps were not re-run that day (the Zen key had expired); every lab is designed so that the student plays the model with a terminal client, so nothing in the track depends on a model's mood.</p>
+  </aside>
+</section>
+
+<section class="slide" data-ch="adv2" id="host-anatomy">
+  <p class="kicker">Module 7 · Be the host</p>
+  <h2>A host owns three things no server can see</h2>
+  <figure class="shot-wrap"><img src="../images/host-anatomy.svg" alt="Anatomy of a host: config, one client per server, capability negotiation, a namespaced and pinned catalogue, a permission layer, rendering, and answers to roots, elicitation and sampling requests" loading="lazy"></figure>
+  <p class="small muted">The user, the model and the policy. Every server→client request borrows one of them for a moment.</p>
+  <aside class="notes">
+    <p>Students have written five servers and zero clients by now. <code>host.ts</code> is about 300 lines and has every part OpenCode has: config in the same shape, one <code>Client</code> per server, <code>server_tool</code> names, a permission prompt, a progress bar, and handlers for the three server-to-client requests. In the lab the student plays the model.</p>
+  </aside>
+</section>
+
+<section class="slide" data-ch="adv2" id="capabilities-client">
+  <p class="kicker">Module 7 · Capabilities from the client's chair</p>
+  <h2>A capability is a promise, not a feature flag</h2>
+  <div class="tbl"><table class="t tight">
+    <tr><th>Host</th><th><code>initialize</code> capabilities</th><th>Probe score</th></tr>
+    <tr><td>OpenCode 1.19.5 (npm latest)</td><td><code>{ roots: {} }</code></td><td>progress ✓ roots ✓ elicitation ✗ sampling ✗</td></tr>
+    <tr><td>MCP Inspector CLI</td><td><code>{}</code></td><td>logging only</td></tr>
+    <tr><td><code>host.ts</code> after TODO 1</td><td>roots, elicitation (form + url), sampling</td><td>7 of 7</td></tr>
+    <tr><td>OpenCode 2.x (2.1.4+, not npm latest)</td><td>adds elicitation form + url</td><td>not measured in the course</td></tr>
+  </table></div>
+  <div class="cols">
+    <div class="callout small"><b>Declare it, handle it.</b> The SDK refuses a handler for a capability you did not declare; a server waits forever for one you declared and never answer.</div>
+    <div class="callout small" style="--accent:var(--green)"><b>Servers adapt.</b> The IT desk reads the declaration and, without elicitation, tells the <i>model</i> to ask in chat and call again with <code>answers</code>.</div>
+  </div>
+  <aside class="notes"><p>The OpenCode 2.x row comes from its changelog and v2 docs (elicitation forms from 2.1.4, a per-server <code>protocol</code> setting for 2026-07-28). The course pins 1.x because that is what <code>npm install -g opencode-ai</code> installs as of November 2026. Wiretap any host with Lab 1's <code>mcp-tap.mjs</code> to see its declaration.</p></aside>
+</section>
+
+<section class="slide" data-ch="adv2" id="elicitation-modes">
+  <p class="kicker">Module 7 · Elicitation, form and URL</p>
+  <h2>The answer goes to the server. The model never sees it.</h2>
+  <div class="cols wl grow mid">
+    <figure class="shot-wrap"><img src="../images/shot-lab7-form.png" alt="host.ts collects four answers for the IT desk and the desk files ticket ITD-1042" loading="lazy"></figure>
+    <ul class="dots small">
+      <li><b>form</b>: a flat schema (strings, numbers, booleans, enums); the client returns <code>accept</code> + content, <code>decline</code>, or <code>cancel</code></li>
+      <li><b>url</b>: the server sends a link (approval, login, payment); <code>accept</code> only means "the user agreed to open it"</li>
+      <li>the host must say <b>which server</b> is asking, and never auto-fill from the conversation</li>
+      <li>servers must not ask for secrets this way</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>This is the protocol's version of Challenge 6A, a human in the loop the model cannot fake. It needs a host that implements it. Sampling is the third server-to-client request; students implement it once in 7.F and then read why SEP-2577 deprecates it.</p></aside>
+</section>
+
+<section class="slide" data-ch="adv2" id="mrtr">
+  <p class="kicker">Module 8 · The 2026 wire</p>
+  <h2>A server that needs an answer asks by answering</h2>
+  <figure class="shot-wrap"><img src="../images/mrtr-flow.svg" alt="Push-style elicitation in 2025 versus an input_required result and a retried call in 2026" loading="lazy"></figure>
+  <aside class="notes">
+    <p>The 2026-07-28 revision removed the server-to-client request channel. A tool returns <code>resultType: "input_required"</code> with <code>inputRequests</code> and an opaque <code>requestState</code>; the client fulfils them and retries the same call, new id, with <code>inputResponses</code> and the state echoed byte for byte. The SDK's legacy shim turns the same handler into push-style elicitation for 2025 clients on a connection that stays open; on a stateless server it cannot, and the Lab 8 desk says so politely.</p>
+  </aside>
+</section>
+
+<section class="slide" data-ch="adv2" id="wire-errors">
+  <p class="kicker">Module 8 · Refuse me four ways</p>
+  <h2>Headers mirror the body, so a proxy never has to parse JSON</h2>
+  <div class="tbl"><table class="t tight">
+    <tr><th>Request</th><th>Answer</th></tr>
+    <tr><td>modern request without <code>Mcp-Method</code></td><td><code>400 · -32020</code> headers and body disagree</td></tr>
+    <tr><td><code>MCP-Protocol-Version: 2027-03-30</code></td><td><code>400 · -32022</code> with <code>data.supported: ["2026-07-28"]</code></td></tr>
+    <tr><td>envelope without <code>clientCapabilities</code></td><td><code>400 · -32602</code> invalid <code>_meta</code> envelope</td></tr>
+    <tr><td>a 2025 client's <code>GET</code> stream</td><td><code>405</code>: no session to stream to</td></tr>
+    <tr><td>a bare 2025 <code>tools/list</code>, no <code>initialize</code></td><td><code>200</code>: stateless legacy needs no handshake</td></tr>
+  </table></div>
+  <div class="callout small"><b>Every request stands alone:</b> <code>server/discover</code> (optional), a <code>_meta</code> envelope with <code>protocolVersion</code>, <code>clientInfo</code>, <code>clientCapabilities</code>, and <code>Mcp-Method</code> / <code>Mcp-Name</code> / <code>Mcp-Param-*</code> headers.</div>
+  <aside class="notes"><p>All five lines are literal results from Exercise 8.B against the Lab 8 desk. The point of the header rule: a load balancer, gateway or WAF can route, authorise and meter by method and tool name without parsing a body, and a mismatch is refused before the server acts on either.</p></aside>
+</section>
+
+<section class="slide" data-ch="adv2" id="sealed-state">
+  <p class="kicker">Module 8 · Signed and bound</p>
+  <h2>State that round-trips through a client is attacker-controlled</h2>
+  <div class="cols c3 small">
+    <div class="card acc" style="--accent:var(--rose)"><h3>Plain JSON</h3><p>Bob confirms api 2.31.0. A tampered retry asks for 2.32.0.</p><p><b>Deployed api 2.30.1 → 2.32.0.</b></p></div>
+    <div class="card acc" style="--accent:var(--amber)"><h3>Signed, compared</h3><p><code>createRequestStateCodec</code> mints; the handler compares state with arguments.</p><p><b>Confirmation mismatch. Nothing deployed.</b></p></div>
+    <div class="card acc" style="--accent:var(--green)"><h3>Edited state</h3><p>Two characters of the echoed state flipped.</p><p><b>-32602 Invalid or expired requestState</b>, before the handler runs.</p></div>
+  </div>
+  <div class="callout small"><b>The signature</b> proves you minted it. <b>The comparison</b> proves it is about this request. You need both. Then <code>subscriptions/listen</code> brings the freeze notification back to a server with no sessions.</div>
+  <aside class="notes"><p>Results from Exercise 8.D. The spec: servers MUST integrity-protect requestState (HMAC or AEAD) and SHOULD bind it to the principal, a TTL and a digest of the original request. The SDK codec is HMAC-SHA256, signed not encrypted: never put secrets in it.</p></aside>
+</section>
+
+<section class="slide" data-ch="adv2" id="oauth-bootstrap">
+  <p class="kicker">Module 9 · Identity, for real</p>
+  <h2>From one 401 to a signed-in agent</h2>
+  <figure class="shot-wrap"><img src="../images/oauth-dance.svg" alt="The OAuth bootstrap: 401 with resource_metadata, protected resource metadata, authorization server metadata, registration, browser login, code, PKCE token exchange, bearer JWT" loading="lazy"></figure>
+  <aside class="notes">
+    <p>An MCP server is a resource server, never the authorization server. OpenCode 1.19.5 runs this whole chain on <code>opencode mcp auth desk</code>: dynamic registration, S256 PKCE, a 64-character state, <code>resource</code> from RFC 8707, the RFC 9207 <code>iss</code> on the callback, tokens in <code>~/.local/share/opencode/mcp-auth.json</code>, and a silent refresh after expiry. Verified against the lab's toy AS on 2 November 2026.</p>
+    <p>2026 spec changes worth naming: client ID metadata documents recommended, dynamic client registration deprecated, issuer validation on the callback, step-up via <code>insufficient_scope</code>.</p>
+  </aside>
+</section>
+
+<section class="slide" data-ch="adv2" id="resource-server-checks">
+  <p class="kicker">Module 9 · What the desk checks, every request</p>
+  <h2>A token says who, for what, until when</h2>
+  <div class="tbl"><table class="t tight">
+    <tr><th>Check</th><th>Claim</th><th>Without it</th></tr>
+    <tr><td>signature</td><td>—</td><td>anyone mints tokens</td></tr>
+    <tr><td>issuer</td><td><code>iss</code></td><td>a token from another (or a test) authorization server is accepted</td></tr>
+    <tr><td><b>audience</b></td><td><code>aud</code></td><td>a token for payroll works on the desk; a malicious server replays your tokens elsewhere</td></tr>
+    <tr><td>expiry</td><td><code>exp</code></td><td>last week's copy still works</td></tr>
+    <tr><td>scope</td><td><code>scope</code></td><td>everyone who can sign in can do everything</td></tr>
+  </table></div>
+  <div class="cols">
+    <div class="callout small"><b>Step-up:</b> <code>scopeChallenge: requireScopes("releases:deploy")</code> → <code>403 insufficient_scope</code> → the client asks for one more scope and retries. Bob gets it; Alice is told no by the identity provider.</div>
+    <div class="callout small" style="--accent:var(--rose)"><b>Refresh tokens rotate.</b> Used twice means copied: revoke the whole login. Revocation does not kill access tokens already issued, so keep them short.</div>
+  </div>
+  <aside class="notes"><p>"No token passthrough": the desk must never forward a token it received, and never accept one not issued for it. The lab uses HS256 to keep <code>jwt.ts</code> short; production uses asymmetric keys and a JWKS so a resource server can verify but never mint (Challenge 9A).</p></aside>
+</section>
+
+<section class="slide" data-ch="adv2" id="gateway">
+  <p class="kicker">Module 10 · The gateway</p>
+  <h2>One door: one policy, one audit trail, one place for the keys</h2>
+  <figure class="shot-wrap"><img src="../images/gateway-architecture.svg" alt="A gateway between agents and four upstream MCP servers: authenticate, policy, quarantine on the way in; redact and audit on the way out" loading="lazy"></figure>
+  <aside class="notes"><p>The gateway is a server to the agents and a client to the upstreams: Module 7's host and Module 6's remote server in one process. Upstream credentials live in <code>upstreams.json</code> on the gateway; people hold a gateway token. Policy can read arguments, which OpenCode's per-tool-name permissions cannot. Quarantine screens descriptions and pins definitions, so the Lab 4 poisoned tool is hidden at first sight and the rug pull within a second of its change.</p></aside>
+</section>
+
+<section class="slide" data-ch="adv2" id="gateway-limits">
+  <p class="kicker">Module 10 · Beat your own gateway</p>
+  <h2>A very good bouncer is not a lock on the vault</h2>
+  <div class="cols wl grow mid">
+    <pre class="code xs" data-lang="sh"># policy: sql must match ^\s*(select|with)\b
+npx tsx gw.ts --token alice-dev-token call teamdb_run_sql \
+ '{"sql":"WITH doomed AS (SELECT 9)
+   DELETE FROM customers
+   WHERE id IN (SELECT * FROM doomed)"}'
+result: []
+customers: 12 → 11
+audit: ALLOW alice teamdb_run_sql · reads only, for everyone</pre>
+    <ul class="dots small">
+      <li>a regex over a language is a guess about the language</li>
+      <li>the gateway is a company-wide <b>ring 3</b>; the read-only connection behind it is <b>ring 1</b></li>
+      <li>it also cannot answer an upstream's elicitation, push <code>list_changed</code> to a 2025 client through a stateless front, or see the agent's <code>bash</code></li>
+      <li>an audit line records the decision, not the outcome</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>This is the reveal of Lab 10, verified on 2 November 2026: SQLite allows a CTE to lead a DELETE, so the statement passes the "reads only" rule and teamdb-v1's read-write connection executes it. Do not let students "fix" it with a better regex. The fix is Challenge 10A: front teamdb-v2 (read-only connection, intent-level tools).</p></aside>
+</section>
+
+<section class="slide" data-ch="adv2" id="ring-map">
+  <p class="kicker">Where the advanced track leaves you</p>
+  <h2>Every ring, and where you built it</h2>
+  <div class="tbl"><table class="t tight">
+    <tr><th>Ring</th><th>Stops the bad thing by</th><th>Built in</th></tr>
+    <tr><td>0 · the model</td><td>maybe refusing</td><td>not yours to rely on (4.C)</td></tr>
+    <tr><td>1 · the credential</td><td>making it impossible</td><td>read-only connection (4.E), scoped tokens (6, 9)</td></tr>
+    <tr><td>2 · the tool</td><td>making it unaskable</td><td>intent-level tools (3, 5), server-side authorization (6), signed confirmations (8)</td></tr>
+    <tr><td>3 · host and gateway</td><td>refusing it</td><td>OpenCode permissions (4.D), your host (7), gateway policy (10)</td></tr>
+    <tr><td>4 · review and audit</td><td>noticing it</td><td>pinning (4B, 7, 10), audit trails (5C, 10)</td></tr>
+    <tr><td>identity</td><td>putting a name on it</td><td>tokens per person (6), OAuth with audience and step-up (9)</td></tr>
+  </table></div>
+  <aside class="notes"><p>End the track the way the security chapter began: pick one MCP server the team depends on, draw this table for it, and find the empty row.</p></aside>
+</section>
+
+
 <!-- ═════════════════════════ CHEAT SHEET ═════════════════════════ -->
 <section class="slide" data-ch="cheat" id="cheat-cli">
   <p class="kicker">Cheat sheet · commands</p>
@@ -2416,6 +2580,27 @@ console.error("logs go to stderr");</pre>
   <aside class="notes"><p>If a term comes up in class that isn't here, it's probably in the Architecture or Advanced chapters.</p></aside>
 </section>
 
+<section class="slide" data-ch="gloss" id="glossary-3">
+  <p class="kicker">Glossary · advanced track</p>
+  <h2>New words from Modules 7–10</h2>
+  <div class="cols small" style="gap:14px 40px">
+    <p><b>Audience (<code>aud</code>)</b>: the server a token was issued for. Checked by the resource server.</p>
+    <p><b>Authorization server</b>: issues tokens after a person signs in. Never the MCP server itself.</p>
+    <p><b>Cache hint</b>: <code>ttlMs</code> + <code>cacheScope</code> on list results (2026-07-28).</p>
+    <p><b>Envelope</b>: the reserved <code>_meta</code> keys every 2026 request carries.</p>
+    <p><b>Era</b>: SDK v2's name for legacy (≤ 2025-11-25) versus modern (2026-07-28) traffic.</p>
+    <p><b>Gateway</b>: an MCP server in front of other MCP servers, applying one policy to all of them.</p>
+    <p><b><code>input_required</code></b>: a result that asks the client for input; the client retries with <code>inputResponses</code>.</p>
+    <p><b>PKCE</b>: a verifier only the starting client knows, so a stolen code is worthless.</p>
+    <p><b>Quarantine</b>: a tool hidden and refused until a person reviews its definition.</p>
+    <p><b>Refresh rotation</b>: a new refresh token per use; reuse revokes the whole login.</p>
+    <p><b><code>requestState</code></b>: server state carried by the client between rounds. Sign it and bind it.</p>
+    <p><b>Step-up</b>: <code>403 insufficient_scope</code>, then one more scope from the authorization server.</p>
+    <p><b><code>subscriptions/listen</code></b>: a stream the client opens to receive change notifications.</p>
+  </div>
+  <aside class="notes"><p>All of these are defined in the Module 7–10 guides where they first appear.</p></aside>
+</section>
+
 <!-- ═════════════════════════ OUTRO ═════════════════════════ -->
 <section class="slide divider" data-ch="outro" id="monday">
   <p class="num">Next episode · Monday</p>
@@ -2464,7 +2649,7 @@ console.error("logs go to stderr");</pre>
   "use strict";
   const CHAPTERS = {
     intro: "Introduction", why: "Why MCP", arch: "Architecture", config: "Configuring OpenCode", build: "Building servers",
-    secure: "Security", apply: "Applied: on-call", adv: "Advanced MCP", cheat: "Cheat sheet", gloss: "Glossary", outro: "Wrap-up",
+    secure: "Security", apply: "Applied: on-call", adv: "Advanced MCP", adv2: "Advanced track", cheat: "Cheat sheet", gloss: "Glossary", outro: "Wrap-up",
   };
   const root = document.documentElement, body = document.body;
   const deck = document.getElementById("deck");

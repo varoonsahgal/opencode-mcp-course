@@ -1,0 +1,10 @@
+{
+  "//": "The servers behind the gateway. Their credentials live HERE, on the gateway, and nowhere on anyone's laptop.",
+  "upstreams": {
+    "teamdb":  { "command": ["npx", "tsx", "teamdb-v1/server.ts"], "cwd": "../lab4-security",
+                 "env": { "TEAMDB_PATH": "team.db", "TEAMDB_ADMIN_TOKEN": "tdb_admin_FAKE_8f3a9c_do_not_use" } },
+    "notes":   { "command": ["npx", "tsx", "shady-notes/server.ts"], "cwd": "../lab4-security" },
+    "release": { "command": ["npx", "tsx", "rug-pull/server.ts"], "cwd": "../lab4-security" },
+    "itdesk":  { "command": ["npx", "tsx", "itdesk.ts"], "cwd": "../lab7-host" }
+  }
+}

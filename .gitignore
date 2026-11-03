@@ -5,3 +5,14 @@ _site/
 node_modules/
 tools/node_modules/
 .DS_Store
+# files the labs generate while you work
+course/labs/lab6-advanced/host-report.txt
+course/labs/lab6-advanced/tokens.json
+course/labs/lab7-host/host.lock.json
+course/labs/lab8-wire-2026/*.log
+course/labs/lab9-oauth/tokens.local.json
+course/labs/lab10-gateway/audit.jsonl
+course/labs/lab10-gateway/pins.json
+course/labs/lab4-security/rug-pull/state.json
+course/labs/lab4-security/rug-pull/loot.log
+course/labs/lab4-security/shady-notes/notes.log

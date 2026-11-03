@@ -382,6 +382,8 @@ Defence in depth. `0.0.0.0` exposes it to your whole network; a missing `Origin`
 
 **6C · Stateless (20 min).** Re-serve the desk with `createMcpHandler(factory)`, the SDK's stateless entry point, so that every request gets a fresh server instance and no session id. Before you run it, predict which features from this lab keep working (authentication, authorization, progress, cancellation, the freeze, `list_changed`) and which do not. Then test each one with `curl` and OpenCode. What would you have to build to get the freeze notification back, and what do you get in exchange for losing sessions?
 
+📼 **Continue: the advanced track.** Modules 7–10 pick up exactly here: [07 · Be the host](07-be-the-host.md) builds the client that *can* answer a server's questions, [08](08-the-2026-wire.md) moves the desk to the `2026-07-28` revision, [09](09-identity-for-real.md) replaces the demo tokens with a real OAuth login, and [10](10-the-gateway.md) puts one gateway in front of everything.
+
 📼 **Next episode: your own servers.** Pick one MCP server your team runs or wants to run remotely. Write down where authentication happens, where authorization happens, which tools a freeze-like control should withdraw, and which host features you are relying on that your host may not have. Then probe the host.
 
 [← Back to the course home](README.md)

@@ -28,6 +28,10 @@ const PAGES = [
   ["04-securing-mcp-integrations.md", "04-securing-mcp-integrations.html", "04 · Secure"],
   ["05-applied-challenge.md", "05-applied-challenge.html", "05 · Apply"],
   ["06-advanced-mcp.md", "06-advanced-mcp.html", "06 · Go remote"],
+  ["07-be-the-host.md", "07-be-the-host.html", "07 · Be the host"],
+  ["08-the-2026-wire.md", "08-the-2026-wire.html", "08 · The 2026 wire"],
+  ["09-identity-for-real.md", "09-identity-for-real.html", "09 · Identity"],
+  ["10-the-gateway.md", "10-the-gateway.html", "10 · Gateway"],
 ];
 
 const CALLOUT = { NOTE: ["note", "Note"], TIP: ["tip", "Tip"], IMPORTANT: ["important", "Important"], WARNING: ["warning", "Warning"], CAUTION: ["caution", "Caution"] };
@@ -94,7 +98,7 @@ ${WEB}
 <main class="doc">
 ${instructor ? '<p class="instr-banner">Instructor guide · not linked from the student site · answer keys below</p>\n' : ""}${body}
 </main>
-<footer class="foot"><div class="pumpkins" aria-hidden="true">🎃 🦇 👻 🕸️ 🎃</div>MCP with AI Agents · OpenCode + MCP course · haunted edition, October 2026 · <a href="${REPO}">source and labs on GitHub</a></footer>
+<footer class="foot"><div class="pumpkins" aria-hidden="true">🎃 🦇 👻 🕸️ 🎃</div>MCP with AI Agents · OpenCode + MCP course · haunted edition, October 2026 · advanced track part 2, November 2026 · <a href="${REPO}">source and labs on GitHub</a></footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>
   document.querySelectorAll("pre code").forEach((el) => {

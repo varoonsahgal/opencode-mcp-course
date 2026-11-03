@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="380" viewBox="0 0 960 380" role="img" aria-label="Three-panel comic: a pumpkin bouncer at the gateway door turns away a DELETE; then catches a tool whose description hides an IMPORTANT note; then waves through a skeleton in a trench coat labelled WITH, under which a DELETE is hiding, and the database behind the door says ouch.">
+<title>Panel 1: a skeleton holds a sign DELETE FROM customers. Pumpkin bouncer with a clipboard: Reads only, pal. Panel 2: a ghost carries a tool card with a hidden IMPORTANT note. Bouncer: That one goes in the box, and a lead reads it. Panel 3: a skeleton in a trench coat labelled WITH, a DELETE poking out underneath. Bouncer: Starts with WITH. You're on the list. Behind the door the database barrel says: Ouch. Caption: A gateway is a very good bouncer. It is not a lock on the vault.</title>
+<rect width="960" height="380" rx="18" fill="#150c24"/>
+<rect x="16" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="332" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="648" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<text x="30" y="36" font-family="Menlo, monospace" font-size="11" fill="#4b3f5c">1 · policy</text>
+<text x="346" y="36" font-family="Menlo, monospace" font-size="11" fill="#4b3f5c">2 · quarantine</text>
+<text x="662" y="36" font-family="Menlo, monospace" font-size="11" fill="#4b3f5c">3 · the trench coat</text>
+
+<!-- panel 1 -->
+<line x1="72" y1="238" x2="60" y2="272" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="72" y1="238" x2="60" y2="272" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="108" y1="238" x2="120" y2="272" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="108" y1="238" x2="120" y2="272" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="82" y1="274" x2="80" y2="298" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="82" y1="274" x2="80" y2="298" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="98" y1="274" x2="100" y2="298" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="98" y1="274" x2="100" y2="298" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<rect x="72" y="232" width="36" height="42" rx="5" fill="#475569" stroke="#1a1026" stroke-width="1.5"/>
+<circle cx="90" cy="216" r="15" fill="#fffdf7" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="84" cy="214" rx="3.5" ry="4.5" fill="#1a1026"/><ellipse cx="96" cy="214" rx="3.5" ry="4.5" fill="#1a1026"/>
+<path d="M84,225 h12 M87,225 v4 M90,225 v4 M93,225 v4" fill="none" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="30" y="150" width="120" height="34" rx="4" fill="#fff7dd" stroke="#1a1026" stroke-width="1.5"/>
+<text x="90" y="166" text-anchor="middle" font-family="Menlo, monospace" font-size="9.5" fill="#b91c1c" font-weight="bold">DELETE FROM</text>
+<text x="90" y="178" text-anchor="middle" font-family="Menlo, monospace" font-size="9.5" fill="#b91c1c" font-weight="bold">customers</text>
+<line x1="90" y1="184" x2="90" y2="200" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="236" cy="252" rx="40" ry="32" fill="#e0661a" stroke="#1a1026" stroke-width="2"/><ellipse cx="236" cy="252" rx="28" ry="33" fill="#ff8a1f" stroke="#1a1026" stroke-width="1.2"/>
+<path d="M232,220 c-2,-6 2,-10 8,-12" fill="none" stroke="#22c55e" stroke-width="3"/>
+<path d="M216,244 l10,-4 l8,6 Z M246,246 l8,-6 l10,4 Z" fill="#1a1026"/><path d="M220,264 q16,8 32,0" fill="none" stroke="#1a1026" stroke-width="3"/>
+<rect x="268" y="240" width="26" height="34" rx="3" fill="#fffaf0" stroke="#1a1026" stroke-width="1.5"/><path d="M272,248 h18 M272,256 h18 M272,264 h12" stroke="#4b3f5c" stroke-width="1.2"/>
+<text x="236" y="298" text-anchor="middle" font-family="Menlo, monospace" font-size="9.5" fill="#1a1026">gateway</text>
+<rect x="166" y="100" width="134" height="42" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="226,140 236,214 244,140" fill="#fffaf0"/>
+<polyline points="226,140 236,214 244,140" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="233" y="126" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="16" fill="#1a1026">Reads only, pal.</text>
+
+<!-- panel 2 -->
+<path d="M368,240 L368,198 A30,30 0 0 1 428,198 L428,240 Q422,226 414.8,246 Q406.4,260 398,244 Q389.6,260 381.2,246 Q374,226 368,240 Z" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="389" cy="200" rx="3.9" ry="6" fill="#1a1026"/><ellipse cx="407" cy="200" rx="3.9" ry="6" fill="#1a1026"/>
+<path d="M390,217 q4,-4 8,0 q4,4 8,0" fill="none" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="365" cy="235" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="431" cy="230" rx="8" ry="5" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<rect x="436" y="206" width="70" height="50" rx="4" fill="#fff7dd" stroke="#1a1026" stroke-width="1.5"/>
+<text x="471" y="222" text-anchor="middle" font-family="Menlo, monospace" font-size="8.5" fill="#1a1026" font-weight="bold">add_note</text>
+<text x="471" y="234" text-anchor="middle" font-family="Menlo, monospace" font-size="7" fill="#4b3f5c">"Save a note."</text>
+<rect x="446" y="239" width="50" height="12" rx="2" fill="#fecaca" stroke="#b91c1c" stroke-width="1"/>
+<text x="471" y="248" text-anchor="middle" font-family="Menlo, monospace" font-size="6.5" fill="#b91c1c">&lt;IMPORTANT&gt;…</text>
+<ellipse cx="566" cy="252" rx="40" ry="32" fill="#e0661a" stroke="#1a1026" stroke-width="2"/><ellipse cx="566" cy="252" rx="28" ry="33" fill="#ff8a1f" stroke="#1a1026" stroke-width="1.2"/>
+<path d="M562,220 c-2,-6 2,-10 8,-12" fill="none" stroke="#22c55e" stroke-width="3"/>
+<path d="M546,244 l10,-4 l8,6 Z M576,246 l8,-6 l10,4 Z" fill="#1a1026"/><path d="M552,266 q14,-6 28,0" fill="none" stroke="#1a1026" stroke-width="3"/>
+<rect x="520" y="284" width="92" height="18" rx="3" fill="#3b0764" stroke="#1a1026" stroke-width="1.5"/>
+<text x="566" y="297" text-anchor="middle" font-family="Menlo, monospace" font-size="9" fill="#e9d5ff">QUARANTINE</text>
+<rect x="452" y="70" width="168" height="62" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="556,130 566,214 574,130" fill="#fffaf0"/>
+<polyline points="556,130 566,214 574,130" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="536" y="96" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">That one goes in the box,</text>
+<text x="536" y="116" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">and a lead reads it first.</text>
+
+<!-- panel 3 -->
+<polygon points="682,300 734,300 726,224 690,224" fill="#8b5a2b" stroke="#1a1026" stroke-width="1.8"/>
+<path d="M708,224 L708,300" stroke="#1a1026" stroke-width="1.2"/>
+<text x="708" y="262" text-anchor="middle" font-family="Menlo, monospace" font-size="11" fill="#fff7dd" font-weight="bold">WITH</text>
+<rect x="694" y="288" width="64" height="14" rx="2" fill="#fecaca" stroke="#b91c1c" stroke-width="1"/>
+<text x="726" y="298" text-anchor="middle" font-family="Menlo, monospace" font-size="8" fill="#b91c1c" font-weight="bold">DELETE…</text>
+<circle cx="708" cy="208" r="15" fill="#fffdf7" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="702" cy="206" rx="3.5" ry="4.5" fill="#1a1026"/><ellipse cx="714" cy="206" rx="3.5" ry="4.5" fill="#1a1026"/>
+<path d="M702,217 h12 M705,217 v4 M708,217 v4 M711,217 v4" fill="none" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M690,196 h36 v-8 h-30 z" fill="#1a1026"/>
+<ellipse cx="806" cy="252" rx="40" ry="32" fill="#e0661a" stroke="#1a1026" stroke-width="2"/><ellipse cx="806" cy="252" rx="28" ry="33" fill="#ff8a1f" stroke="#1a1026" stroke-width="1.2"/>
+<path d="M802,220 c-2,-6 2,-10 8,-12" fill="none" stroke="#22c55e" stroke-width="3"/>
+<path d="M786,244 l10,-6 l8,6 Z M816,244 l8,-6 l10,6 Z" fill="#1a1026"/><path d="M790,262 q16,10 32,0" fill="none" stroke="#1a1026" stroke-width="3"/>
+<rect x="866" y="230" width="58" height="66" rx="8" fill="#a16207" stroke="#1a1026" stroke-width="2"/>
+<path d="M866,250 h58 M866,276 h58" stroke="#1a1026" stroke-width="2"/>
+<text x="895" y="268" text-anchor="middle" font-family="Menlo, monospace" font-size="9" fill="#fff7dd" font-weight="bold">team.db</text>
+<rect x="866" y="190" width="66" height="30" rx="8" fill="#fffaf0" stroke="#1a1026" stroke-width="1.5"/>
+<text x="899" y="210" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#b91c1c">Ouch.</text>
+<rect x="736" y="56" width="148" height="62" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="796,116 806,214 814,116" fill="#fffaf0"/>
+<polyline points="796,116 806,214 814,116" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="810" y="82" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">Starts with WITH.</text>
+<text x="810" y="102" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">You're on the list.</text>
+
+<text x="24" y="346" font-family="Menlo, monospace" font-size="13" fill="#ff8a1f">🎃 comic · bouncer</text>
+<text x="575" y="346" text-anchor="middle" font-family="Menlo, monospace" font-size="13" fill="#efe3cc">A gateway is a very good bouncer. It is not a lock on the vault.</text>
+</svg>

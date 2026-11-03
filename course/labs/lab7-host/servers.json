@@ -1,0 +1,7 @@
+{
+  "servers": {
+    "itdesk": { "type": "local", "command": ["npx", "tsx", "itdesk.ts"], "enabled": true },
+    "probe":  { "type": "local", "command": ["npx", "tsx", "../lab6-advanced/probe.ts"], "enabled": true },
+    "desk":   { "type": "remote", "url": "http://127.0.0.1:8790/mcp", "headers": { "Authorization": "Bearer {env:DESK_TOKEN}" }, "enabled": false }
+  }
+}
