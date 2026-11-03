@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <rect width="960" height="420" rx="18" fill="#fbfbfd"/>
+  <text x="32" y="40" font-size="22" font-weight="700" fill="#0f172a">Three things a server can offer, and who pulls the trigger</text>
+  <text x="32" y="64" font-size="14" fill="#475569">The primitive tells you who decides when it is used. That single idea explains most of the UI you will see in OpenCode.</text>
+
+  <!-- Tools -->
+  <rect x="32" y="92" width="288" height="280" rx="16" fill="#fff7ed" stroke="#d97706" stroke-width="2"/>
+  <rect x="32" y="92" width="288" height="56" rx="16" fill="#d97706"/>
+  <rect x="32" y="128" width="288" height="20" fill="#d97706"/>
+  <text x="176" y="127" text-anchor="middle" font-size="19" font-weight="800" fill="#fff">TOOLS</text>
+  <text x="176" y="176" text-anchor="middle" font-size="13.5" font-weight="700" fill="#9a3412">model-controlled</text>
+  <text x="52" y="204" font-size="12.5" fill="#431407">The LLM decides to call them, based on</text>
+  <text x="52" y="222" font-size="12.5" fill="#431407">the name, description and input schema.</text>
+  <text x="52" y="250" font-size="12.5" fill="#431407">Examples: get_current_time, run_sql,</text>
+  <text x="52" y="268" font-size="12.5" fill="#431407">acknowledge_incident, send_email.</text>
+  <rect x="52" y="290" width="248" height="62" rx="10" fill="#ffffff" stroke="#fdba74"/>
+  <text x="66" y="311" font-size="12" font-weight="700" fill="#9a3412">In OpenCode</text>
+  <text x="66" y="329" font-size="12" fill="#7c2d12">appears as  time_get_current_time</text>
+  <text x="66" y="345" font-size="12" fill="#7c2d12">governed by  permission: { "time_*": … }</text>
+
+  <!-- Resources -->
+  <rect x="336" y="92" width="288" height="280" rx="16" fill="#ecfeff" stroke="#0891b2" stroke-width="2"/>
+  <rect x="336" y="92" width="288" height="56" rx="16" fill="#0891b2"/>
+  <rect x="336" y="128" width="288" height="20" fill="#0891b2"/>
+  <text x="480" y="127" text-anchor="middle" font-size="19" font-weight="800" fill="#fff">RESOURCES</text>
+  <text x="480" y="176" text-anchor="middle" font-size="13.5" font-weight="700" fill="#155e75">application / user-controlled</text>
+  <text x="356" y="204" font-size="12.5" fill="#083344">Read-only context identified by a URI.</text>
+  <text x="356" y="222" font-size="12.5" fill="#083344">The app or the user attaches it; the model</text>
+  <text x="356" y="240" font-size="12.5" fill="#083344">does not go fishing for it.</text>
+  <text x="356" y="268" font-size="12.5" fill="#083344">Examples: runbook://checkout, a DB schema.</text>
+  <rect x="356" y="290" width="248" height="62" rx="10" fill="#ffffff" stroke="#67e8f9"/>
+  <text x="370" y="311" font-size="12" font-weight="700" fill="#155e75">In OpenCode</text>
+  <text x="370" y="329" font-size="12" fill="#164e63">type  @  and pick it, like a file</text>
+  <text x="370" y="345" font-size="12" fill="#164e63">contents are pasted into the conversation</text>
+
+  <!-- Prompts -->
+  <rect x="640" y="92" width="288" height="280" rx="16" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+  <rect x="640" y="92" width="288" height="56" rx="16" fill="#7c3aed"/>
+  <rect x="640" y="128" width="288" height="20" fill="#7c3aed"/>
+  <text x="784" y="127" text-anchor="middle" font-size="19" font-weight="800" fill="#fff">PROMPTS</text>
+  <text x="784" y="176" text-anchor="middle" font-size="13.5" font-weight="700" fill="#5b21b6">user-controlled</text>
+  <text x="660" y="204" font-size="12.5" fill="#2e1065">Reusable message templates with arguments.</text>
+  <text x="660" y="222" font-size="12.5" fill="#2e1065">A human picks one on purpose; it expands</text>
+  <text x="660" y="240" font-size="12.5" fill="#2e1065">into the message(s) sent to the model.</text>
+  <text x="660" y="268" font-size="12.5" fill="#2e1065">Examples: triage, trip-briefing, review-code.</text>
+  <rect x="660" y="290" width="248" height="62" rx="10" fill="#ffffff" stroke="#c4b5fd"/>
+  <text x="674" y="311" font-size="12" font-weight="700" fill="#5b21b6">In OpenCode</text>
+  <text x="674" y="329" font-size="12" fill="#4c1d95">slash command  /weather:trip-briefing:mcp</text>
+  <text x="674" y="345" font-size="12" fill="#4c1d95">never chosen by the model</text>
+
+  <text x="32" y="402" font-size="12.5" fill="#64748b">Rule of thumb: if the model should decide, make a tool. If a human should decide, make a prompt. If it is just context, make a resource.</text>
+</svg>

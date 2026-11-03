@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 7 · Be the Host: The Other End of the Wire · MCP with AI Agents</title>
+<script>try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Creepster&family=Patrick+Hand&display=swap" rel="stylesheet">
+<link id="hl-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="(prefers-color-scheme: light)">
+<link id="hl-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%228%22%20fill%3D%22%23150c24%22%2F%3E%3Cellipse%20cx%3D%2216%22%20cy%3D%2218%22%20rx%3D%2212%22%20ry%3D%2210%22%20fill%3D%22%23ff8a1f%22%2F%3E%3Cpath%20d%3D%22M16%208c0-3%201-4%203-5%22%20stroke%3D%22%2322c55e%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M9%2015l4%203-4%201zM23%2015l-4%203%204%201z%22%20fill%3D%22%23150c24%22%2F%3E%3Cpath%20d%3D%22M9%2022q7%205%2014%200q-2%203-7%203t-7-3z%22%20fill%3D%22%23150c24%22%2F%3E%3C%2Fsvg%3E">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="pumpkin" aria-hidden="true">🎃</span>MCP with AI Agents</a>
+  <nav class="links"><a href="index.html">Home</a><a href="00-setup.html">00 · Setup</a><a href="01-connecting-agents-with-mcp.html">01 · Connect</a><a href="02-configuring-mcp-in-opencode.html">02 · Configure</a><a href="03-building-a-custom-mcp-server.html">03 · Build</a><a href="04-securing-mcp-integrations.html">04 · Secure</a><a href="05-applied-challenge.html">05 · Apply</a><a href="06-advanced-mcp.html">06 · Go remote</a><a href="07-be-the-host.html" aria-current="page">07 · Be the host</a><a href="08-the-2026-wire.html">08 · The 2026 wire</a><a href="09-identity-for-real.html">09 · Identity</a><a href="10-the-gateway.html">10 · Gateway</a><span class="sep"></span><a href="handout.html">Handout</a><a href="slides/index.html">Slides</a><a href="https://github.com/varoonsahgal/opencode-mcp-course">GitHub</a></nav>
+  <button class="theme" type="button" id="themebtn" aria-label="Switch between daylight and midnight" title="Daylight / midnight">🌙</button>
+  <button class="menu" type="button" aria-label="Menu" onclick="document.body.classList.toggle('open')">☰</button>
+</header>
+<svg class="web" viewBox="0 0 170 170" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1">
+<path d="M0 0L170 170M0 0L170 70M0 0L70 170M0 0L170 20M0 0L20 170M0 0L170 120M0 0L120 170"/>
+<path d="M30 0Q28 22 0 30M60 0Q56 44 0 60M90 0Q84 66 0 90M120 0Q112 88 0 120M150 0Q140 110 0 150"/>
+<path d="M30 0Q30 15 20 24Q15 28 0 30" opacity=".5"/></svg>
+<main class="doc">
+<figure class="banner"><svg xmlns="http://www.w3.org/2000/svg" width="960" height="220" viewBox="0 0 960 220" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="Module 7: be the host. A person at a terminal answers a question a server asked; the probe table turns green.">
+ <title>Module 7 · Be the host</title>
+ <style>
+  .b7-tw { animation: b7-tw 3.2s ease-in-out infinite; }
+  .b7-fly { animation: b7-fly 6s ease-in-out infinite; }
+  .b7-cursor { animation: b7-cursor 1s steps(1) infinite; }
+  .b7-flow { stroke-dasharray: 4 10; animation: b7-flow 1.4s linear infinite; }
+  .b7-flowback { stroke-dasharray: 3 9; animation: b7-flowback 1.8s linear infinite; }
+  .b7-tick { animation: b7-tick 6s ease-out infinite; }
+  @keyframes b7-tw { 0%,100% { opacity: .15; } 50% { opacity: 1; } }
+  @keyframes b7-fly { 0%,100% { transform: translate(0,0) rotate(0); } 50% { transform: translate(12px,-7px) rotate(-8deg); } }
+  @keyframes b7-cursor { 0%,49% { opacity: 1; } 50%,100% { opacity: 0; } }
+  @keyframes b7-flow { to { stroke-dashoffset: -28; } }
+  @keyframes b7-flowback { to { stroke-dashoffset: 24; } }
+  @keyframes b7-tick { 0% { opacity: 0; } 12% { opacity: 1; } 100% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .b7-tw, .b7-fly, .b7-cursor, .b7-flow, .b7-flowback, .b7-tick { animation: none !important; } }
+ </style>
+ <defs>
+  <linearGradient id="b7-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0612"/><stop offset="1" stop-color="#1a1033"/></linearGradient>
+  <pattern id="b7-grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#2a1a44"/></pattern>
+  <radialGradient id="b7-glow" cx="0.72" cy="0.55" r="0.45"><stop offset="0" stop-color="#22d3ee" stop-opacity=".28"/><stop offset="1" stop-color="#22d3ee" stop-opacity="0"/></radialGradient>
+  <radialGradient id="b7-mg"><stop offset=".3" stop-color="#ffe9b3" stop-opacity=".3"/><stop offset="1" stop-color="#ffe9b3" stop-opacity="0"/></radialGradient>
+  <filter id="b7-tg" x="-6%" y="-40%" width="112%" height="180%"><feGaussianBlur stdDeviation="5" result="b"/><feFlood flood-color="#22d3ee" flood-opacity=".7"/><feComposite in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <path id="b7-bat" d="M0,-4L-2,-8L-3,-3C-9,-9 -15,-8 -19,-4C-15,-3 -14,0 -13,3C-10,0 -8,1 -7,4C-5,2 -3,3 -2,5L0,4L2,5C3,3 5,2 7,4C8,1 10,0 13,3C14,0 15,-3 19,-4C15,-8 9,-9 3,-3L2,-8Z" fill="#0a0612" stroke="#a855f7" stroke-opacity=".6" stroke-width=".9" stroke-linejoin="round"/>
+  <g id="b7-gh"><path d="M-9,11V-3a9,9 0 0 1 18,0V11l-3,-3-3,3-3,-3-3,3-3,-3z" fill="#efe3cc" opacity=".92"/><circle cx="-3.3" cy="-3" r="1.6" fill="#0a0612"/><circle cx="3.3" cy="-3" r="1.6" fill="#0a0612"/><path d="M-2.5,2 q2.5,2.5 5,0" fill="none" stroke="#0a0612" stroke-width="1.2"/></g>
+ </defs>
+ <rect width="960" height="220" rx="20" fill="url(#b7-bg)"/>
+ <rect width="960" height="220" rx="20" fill="url(#b7-grid)" opacity=".5"/>
+ <rect width="960" height="220" rx="20" fill="url(#b7-glow)"/>
+ <g fill="#fff"><circle cx="97" cy="25" r="1.4" opacity="0.55"/><circle cx="880" cy="17" r="1.1" opacity="0.85"/><circle cx="213" cy="9" r="0.8" opacity="0.32"/><circle cx="426" cy="11" r="0.8" opacity="0.48"/><circle cx="391" cy="27" r="0.7" opacity="0.69"/><circle cx="847" cy="24" r="0.8" opacity="0.39"/><circle cx="364" cy="8" r="1.4" opacity="0.76"/><circle cx="758" cy="22" r="1.4" opacity="0.53"/><circle class="b7-tw" style="animation-delay:-2.8s" cx="67" cy="16" r="1.0"/><circle class="b7-tw" style="animation-delay:-0.9s" cx="33" cy="27" r="0.9"/><circle cx="575" cy="27" r="1.1" opacity="0.74"/><circle class="b7-tw" style="animation-delay:-2.3s" cx="737" cy="200" r="0.9"/><circle cx="679" cy="206" r="1.2" opacity="0.71"/><circle class="b7-tw" style="animation-delay:-0.7s" cx="614" cy="40" r="1.2"/></g>
+ <circle cx="926" cy="32" r="42" fill="url(#b7-mg)"/>
+ <path transform="translate(926 32) rotate(-20)" d="M0,-15A15,15 0 0,0 0,15A18.3,18.3 0 0,1 0,-15Z" fill="#ffe9b3"/>
+ <g transform="translate(578 24) scale(0.5)"><use href="#b7-bat" class="b7-fly" style="animation-duration:6s;animation-delay:-1s"/></g><g transform="translate(884 22) scale(0.5)"><use href="#b7-bat" class="b7-fly" style="animation-duration:5.5s;animation-delay:-2s"/></g>
+ <path d="M960,220L892.5,198.1M960,220L902.6,178.3M960,220L918.3,162.6M960,220L938.1,152.5M943.0,220.0Q944.9,217.6 943.8,214.7Q946.4,213.1 946.2,210.0Q949.2,209.2 950.0,206.2Q953.1,206.4 954.7,203.8Q957.6,204.9 960.0,203.0M927.0,220.0Q930.7,215.4 928.6,209.8Q933.5,206.5 933.3,200.6Q939.0,199.0 940.6,193.3Q946.5,193.5 949.8,188.6Q955.4,190.7 960.0,187.0M911.0,220.0Q916.4,213.1 913.4,204.9Q920.7,200.0 920.4,191.2Q928.8,188.8 931.2,180.4Q940.0,180.7 944.9,173.4Q953.1,176.4 960.0,171.0" fill="none" stroke="#efe3cc" stroke-opacity=".25" stroke-width=".8"/>
+
+ <!-- left: words -->
+ <text x="40" y="50" font-family="Menlo, 'JetBrains Mono', monospace" font-size="12" letter-spacing="2.5" fill="#22d3ee">MODULE 07 · 50 MIN · ADVANCED TRACK · LAB: lab7-host</text>
+ <text x="38" y="100" font-family="Creepster, 'Chalkboard SE', Impact, fantasy" font-size="44" letter-spacing="1" fill="#efe3cc" filter="url(#b7-tg)" textLength="470" lengthAdjust="spacingAndGlyphs">Be the Host</text>
+ <text x="40" y="132" font-size="17" fill="#d8cfc0">Five servers written, zero clients. Today you build the</text>
+ <text x="40" y="154" font-size="17" fill="#d8cfc0">thing that listens when a server asks, <tspan fill="#67e8f9" font-weight="700">and decides.</tspan></text>
+ <g font-weight="700">
+  <rect x="40" y="174" width="118" height="26" rx="13" fill="#22d3ee" fill-opacity=".18" stroke="#22d3ee"/><text x="99" y="191" text-anchor="middle" fill="#cffafe" font-size="12">capabilities</text>
+  <rect x="168" y="174" width="112" height="26" rx="13" fill="#22d3ee" fill-opacity=".18" stroke="#22d3ee"/><text x="224" y="191" text-anchor="middle" fill="#cffafe" font-size="12">elicitation</text>
+  <rect x="290" y="174" width="98" height="26" rx="13" fill="#22d3ee" fill-opacity=".18" stroke="#22d3ee"/><text x="339" y="191" text-anchor="middle" fill="#cffafe" font-size="12">progress</text>
+  <rect x="398" y="174" width="88" height="26" rx="13" fill="#22d3ee" fill-opacity=".18" stroke="#22d3ee"/><text x="442" y="191" text-anchor="middle" fill="#cffafe" font-size="12">pinning</text>
+ </g>
+
+ <!-- right: a terminal window where the host answers the server -->
+ <rect x="590" y="46" width="300" height="150" rx="12" fill="#120a1e" stroke="#22d3ee" stroke-opacity=".7"/>
+ <rect x="590" y="46" width="300" height="24" rx="12" fill="#1f1333"/><rect x="590" y="58" width="300" height="12" fill="#1f1333"/>
+ <circle cx="606" cy="58" r="4" fill="#ff5f57"/><circle cx="619" cy="58" r="4" fill="#febc2e"/><circle cx="632" cy="58" r="4" fill="#28c840"/>
+ <text x="740" y="62" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="10" fill="#a898bd">npx tsx host.ts</text>
+ <g font-family="Menlo, 'JetBrains Mono', monospace" font-size="11.5">
+  <text x="604" y="90" fill="#efe3cc"><tspan font-weight="700">host&gt;</tspan> call itdesk_provision_laptop</text>
+  <text x="604" y="110" fill="#d8b4fe">itdesk asks: Which keyboard for Dana?</text>
+  <text x="604" y="128" fill="#a898bd">  (US / UK / DE):</text><text x="722" y="128" fill="#efe3cc">DE</text><rect class="b7-cursor" x="740" y="119" width="7" height="12" fill="#67e8f9"/>
+  <text x="604" y="150" fill="#4ade80">result: Ticket ITD-1042 · DE keyboard</text>
+  <g class="b7-tick"><text x="604" y="172" fill="#86efac">roots ✓  elicitation ✓  sampling ✓</text></g>
+  <text x="604" y="188" fill="#67e8f9">probe: 7 of 7 YES</text>
+ </g>
+ <!-- the server ghost asking, with the question flowing in and the answer flowing back -->
+ <g transform="translate(556 104) scale(1.3)"><use href="#b7-gh"/></g>
+ <text x="556" y="136" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="9.5" fill="#d8b4fe">itdesk</text>
+ <g fill="none" stroke-width="2">
+  <path class="b7-flow" d="M568 96 C580 92 584 104 596 106" stroke="#c084fc"/>
+  <path class="b7-flowback" d="M596 126 C584 128 578 118 568 112" stroke="#67e8f9" opacity=".8"/>
+ </g>
+</svg></figure>
+<h1>Module 7 · Be the Host: The Other End of the Wire</h1>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Time</strong></td>
+<td>50 minutes (15 concepts · 35 lab). Advanced track, part 2: run it after Module 6, or as its own session</td>
+</tr>
+<tr>
+<td><strong>Lab folder</strong></td>
+<td><code>course/labs/lab7-host</code></td>
+</tr>
+<tr>
+<td><strong>You will</strong></td>
+<td>write the client side of MCP for the first time: a host that connects to several servers, builds one tool catalogue, declares what it can do, answers a server&#39;s questions from the terminal, draws progress, cancels, notices when a tool definition changes under it, and asks you before anything that is not read-only</td>
+</tr>
+<tr>
+<td><strong>You&#39;ll pull off</strong></td>
+<td>the probe that scored two ❌ against OpenCode in Module 6 scores seven ✅ against three hundred lines of your own TypeScript, and the IT desk asks <em>you</em> which keyboard the new hire wants</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>🎬 <strong>Cold open.</strong> Six modules in, you have written five servers and zero clients. Every time a server wanted something from the other side (which folder is the user in? may I ask them a question? can I borrow your model?) you looked up what OpenCode allows and designed around it. Today you are the other side. The IT desk cannot provision a laptop without asking the new hire three questions, and in OpenCode 1.19 nobody is listening when it asks. You are going to build the thing that listens.</p>
+</blockquote>
+<h2 id="7-1-what-a-host-actually-does"><a class="anchor" href="#7-1-what-a-host-actually-does" aria-hidden="true">#</a>7.1 What a host actually does</h2>
+<p>A host is not &quot;a model with tools&quot;. The model is the smallest part of it. Strip OpenCode down to its MCP duties and this is what is left:</p>
+<p><img src="images/host-anatomy.svg" alt="Anatomy of a host"></p>
+<ol>
+<li><strong>Read a config and start one client per server.</strong> A <em>client</em> is one connection object. OpenCode has one per entry in <code>mcp</code>; your host will have one per entry in <code>servers.json</code>, which is deliberately the same shape.</li>
+<li><strong>Negotiate.</strong> At <code>initialize</code> the client declares its <strong>capabilities</strong>: the favours it is prepared to do for servers. Everything in 7.2.</li>
+<li><strong>Build a catalogue.</strong> Every server&#39;s tools, resources and prompts, under names that cannot collide. OpenCode prefixes <code>server_tool</code>; so will you.</li>
+<li><strong>Decide.</strong> Before a tool runs, something checks whether it may. In OpenCode that is your <code>permission</code> block (Module 4). In your host it is a question on the terminal.</li>
+<li><strong>Render.</strong> Results, progress, log lines, errors: a host turns protocol into something a person can read.</li>
+<li><strong>Answer back.</strong> Servers can ask the client things (<code>roots/list</code>, <code>elicitation/create</code>, <code>sampling/createMessage</code>). A host that declared those capabilities must answer, or everyone waits.</li>
+<li><strong>React.</strong> <code>tools/list_changed</code> means fetch the list again. A good host also notices <em>what</em> changed.</li>
+</ol>
+<blockquote>
+<p>📖 <strong>Key concept: the host owns three things no server can see.</strong> The user, the model and the policy. Every server→client request is a request to borrow one of them for a moment. That is why the host, not the protocol, is where the interesting decisions live, and why this course keeps saying <em>the host decides</em>.</p>
+</blockquote>
+<h2 id="7-2-capability-negotiation-from-the-client-39-s-chair"><a class="anchor" href="#7-2-capability-negotiation-from-the-client-39-s-chair" aria-hidden="true">#</a>7.2 Capability negotiation, from the client&#39;s chair</h2>
+<p>In Module 6.4 you read capabilities as a server: <em>what does this host allow me?</em> Now you write them. Three rules:</p>
+<ul>
+<li><strong>What you declare, you must handle.</strong> Declaring <code>elicitation</code> and never answering <code>elicitation/create</code> leaves every server that asks hanging until its timeout.</li>
+<li><strong>What you do not declare, you may not handle.</strong> The SDK refuses <code>setRequestHandler(&quot;elicitation/create&quot;, …)</code> on a client that did not declare it. Try it in 7.B.</li>
+<li><strong>Servers read your declaration and adapt.</strong> The IT desk checks <code>getClientCapabilities()</code> before asking anything, and takes a different path when the answer is no.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Client capability</th>
+<th>What a server may now do</th>
+<th>What you must build</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>roots: {}</code></td>
+<td>ask which folders the user works in (<code>roots/list</code>)</td>
+<td>answer with <code>file://</code> URIs</td>
+</tr>
+<tr>
+<td><code>elicitation: { form: {} }</code></td>
+<td>pause a tool and ask the <em>user</em> a structured question</td>
+<td>render a form, return typed answers, or <code>decline</code> / <code>cancel</code></td>
+</tr>
+<tr>
+<td><code>elicitation: { form: {}, url: {} }</code></td>
+<td>…or send the user to a web page (consent, approval, login)</td>
+<td>show the link, open it, report <code>accept</code> when the user agrees to go</td>
+</tr>
+<tr>
+<td><code>sampling: {}</code></td>
+<td>ask your model to write something, on your bill</td>
+<td>call a model (or a person) and return <code>{ role, content, model }</code></td>
+</tr>
+<tr>
+<td>no flag</td>
+<td>send <code>notifications/progress</code> when you attached a <code>progressToken</code></td>
+<td>draw it</td>
+</tr>
+<tr>
+<td>no flag</td>
+<td>send <code>notifications/message</code> log lines</td>
+<td>show them, or do not</td>
+</tr>
+</tbody></table>
+<p>What the hosts you know declare, measured on the wire:</p>
+<table>
+<thead>
+<tr>
+<th>Host</th>
+<th><code>initialize</code> capabilities</th>
+<th>Proposes</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OpenCode 1.19.5 (npm <code>latest</code>, 2 Nov 2026)</td>
+<td><code>{ &quot;roots&quot;: {} }</code></td>
+<td><code>2025-11-25</code></td>
+</tr>
+<tr>
+<td>OpenCode 2.x (not on npm <code>latest</code>; 2.1.4 and later)</td>
+<td>roots, elicitation <code>form</code> and <code>url</code> (shown as a form or a link in the TUI)</td>
+<td><code>2025-11-25</code>, or <code>2026-07-28</code> with a per-server <code>protocol</code> setting</td>
+</tr>
+<tr>
+<td>MCP Inspector CLI</td>
+<td><code>{}</code></td>
+<td><code>2025-11-25</code></td>
+</tr>
+<tr>
+<td>Your host after TODO 1</td>
+<td>roots, elicitation (form + url), sampling</td>
+<td><code>2025-11-25</code></td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>🍬 <strong>Treat: a capability is a promise, not a feature flag.</strong> The word was chosen on purpose. A server that sees <code>elicitation</code> in your <code>initialize</code> will <em>plan on it</em>: it will design a flow where step 3 is &quot;the user confirms&quot;, and nothing else can stand in for that step. A host that declares more than it handles is lying to every server it meets, and the lie surfaces as a timeout two minutes later in somebody else&#39;s code.</p>
+</blockquote>
+<h2 id="7-3-the-three-questions-a-server-can-ask-you"><a class="anchor" href="#7-3-the-three-questions-a-server-can-ask-you" aria-hidden="true">#</a>7.3 The three questions a server can ask you</h2>
+<p>In the protocol revisions OpenCode speaks (up to <code>2025-11-25</code>) a server can send the client a <em>request</em>, with an <code>id</code>, and wait for the <em>response</em>. You saw the arrow point that way once before, in Lab 1&#39;s wiretap (<code>roots/list</code>). Three methods go that way:</p>
+<ul>
+<li><strong><code>roots/list</code></strong> → <code>{ roots: [{ uri: &quot;file:///…&quot;, name? }] }</code>. Where is the user working? A filesystem server uses it to stay inside the project. OpenCode answers with the project folder.</li>
+<li><strong><code>elicitation/create</code></strong> with <code>mode: &quot;form&quot;</code> → the server sends a <code>message</code> and a flat <code>requestedSchema</code> (strings, numbers, booleans, enums; one level, no nesting). The client shows a form and returns <code>{ action: &quot;accept&quot;, content: {…} }</code>, or <code>{ action: &quot;decline&quot; }</code> (the user said no) or <code>{ action: &quot;cancel&quot; }</code> (the user closed it). <strong>The answers go to the server, not to the model.</strong> This is the protocol&#39;s own version of Module 6&#39;s Challenge 6A: a channel the model cannot fake, because the model never sees it.</li>
+<li><strong><code>elicitation/create</code></strong> with <code>mode: &quot;url&quot;</code> → the server sends a <code>url</code>, an <code>elicitationId</code> and a <code>message</code>. The client&#39;s <code>accept</code> means <em>the user agreed to open the link</em>, not that anything was completed; the server finds out what happened on its own (the user clicked Approve on its page) and may send <code>notifications/elicitation/complete</code> afterwards. This is how a server runs a login or an approval without ever seeing the user&#39;s password.</li>
+<li><strong><code>sampling/createMessage</code></strong> → the server sends <code>messages</code>, <code>maxTokens</code> and preferences, and the client answers with a completion from <em>its</em> model, under <em>its</em> account. The server borrows your model.</li>
+</ul>
+<blockquote>
+<p>⚠️ <strong>Security: a form is a door into the server that bypasses the model.</strong> Whatever the user types in an elicitation form goes straight to the server that asked. Your UI must say <em>which</em> server is asking (your host prints <code>itdesk asks:</code>), must let the user decline, and must never auto-fill from the conversation. The spec adds one more rule: servers must not ask for secrets this way, and clients should refuse forms that look like they are.</p>
+</blockquote>
+<blockquote>
+<p>🍬 <strong>Treat: why sampling is on its way out.</strong> Sampling sounded elegant (servers get intelligence without API keys) and almost nobody shipped it. The host has to meter it, show the user what was asked, decide which model to use and pay for the answer, and a server with sampling has a fresh prompt-injection surface. The <code>2026-07-28</code> revision deprecates sampling along with roots and the logging channel (SEP-2577), with removal no earlier than mid-2027, and tells servers to call their own model provider instead. OpenCode never adopted it, for exactly those reasons. You will implement it once today, by hand, and then you will know why.</p>
+</blockquote>
+<blockquote>
+<p>📖 <strong>Key concept: push-style requests.</strong> Every method above is the server <em>pushing</em> a request down an open connection and waiting. That needs a connection that stays open, which is fine for stdio and for a sessionful HTTP server, and a problem for anything stateless. Module 8 is about what replaced it.</p>
+</blockquote>
+<h2 id="7-4-progress-cancellation-and-the-timeout-nobody-sets"><a class="anchor" href="#7-4-progress-cancellation-and-the-timeout-nobody-sets" aria-hidden="true">#</a>7.4 Progress, cancellation, and the timeout nobody sets</h2>
+<p>From the client&#39;s chair the Module 6 machinery looks like this:</p>
+<ul>
+<li>You opt into progress by attaching a <code>progressToken</code> to the request&#39;s <code>_meta</code>. The SDK does it for you when you pass <code>onprogress</code> to <code>callTool</code>. OpenCode always passes one, then ignores the notifications. You will draw a bar.</li>
+<li>Every request has a timeout. The SDK default is <strong>60 seconds</strong>. A tool that asks the user a question needs far more; so pass <code>timeout</code> explicitly, and <code>resetTimeoutOnProgress: true</code> so a slow-but-alive tool is not killed for being slow.</li>
+<li>Cancellation is an <code>AbortSignal</code> you pass in. Aborting it makes the SDK send <code>notifications/cancelled</code> and reject your promise. Whether the server actually stops is the server&#39;s problem (Module 6.5).</li>
+</ul>
+<h2 id="7-5-one-catalogue-honest-names-pinned-definitions"><a class="anchor" href="#7-5-one-catalogue-honest-names-pinned-definitions" aria-hidden="true">#</a>7.5 One catalogue, honest names, pinned definitions</h2>
+<p><strong>Namespacing.</strong> Two servers may both have <code>search</code>. OpenCode builds <code>server_tool</code> after replacing anything outside <code>[A-Za-z0-9_-]</code> with <code>_</code>, so <code>my.server</code> + <code>get/thing</code> becomes <code>my_server_get_thing</code>. The spec (SEP-986) limits tool names to 128 characters of letters, digits, <code>_</code>, <code>-</code> and <code>.</code>, case-sensitive, and tells hosts that aggregate servers to prefix. Collisions after sanitising are your problem; OpenCode does not detect them.</p>
+<p><strong><code>list_changed</code>.</strong> When a server says <code>notifications/tools/list_changed</code>, the host fetches <code>tools/list</code> again. OpenCode does. What OpenCode does <em>not</em> do is compare the new list with the old one. Module 4&#39;s rug pull works because the second description replaces the first silently.</p>
+<p><strong>Pinning.</strong> Your host hashes each tool&#39;s <code>name + description + inputSchema + annotations</code> the first time it sees it and keeps the hash in <code>host.lock.json</code>. On every refresh, a different hash marks the tool <strong>changed</strong>, and <code>call</code> refuses it until you have read the new definition and said <code>trust</code>. That is Challenge 4B, built into the host where it belongs, in about twelve lines.</p>
+<h2 id="7-6-the-permission-layer-is-yours-now"><a class="anchor" href="#7-6-the-permission-layer-is-yours-now" aria-hidden="true">#</a>7.6 The permission layer is yours now</h2>
+<p>A tool&#39;s <code>annotations</code> (<code>readOnlyHint</code>, <code>destructiveHint</code>, <code>idempotentHint</code>, <code>openWorldHint</code>) are the server&#39;s description of itself. Module 3 told you to set them honestly; Module 4 told you never to trust them from a server you have not reviewed. Both are still true, and now you are the one who has to decide what to do with them. OpenCode&#39;s answer is &quot;nothing&quot;: permissions are rules you write per tool name, and MCP tools default to <code>allow</code>. Your host&#39;s answer today is &quot;ask before anything not marked read-only&quot;, which is stricter, and still trusts a server&#39;s word about <em>itself</em>. Challenge 7B is a server that lies.</p>
+<hr>
+<h2 id="lab-7-be-the-host-35-minutes"><a class="anchor" href="#lab-7-be-the-host-35-minutes" aria-hidden="true">#</a>Lab 7 · Be the host (35 minutes)</h2>
+<h3 id="mission"><a class="anchor" href="#mission" aria-hidden="true">#</a>🎯 Mission</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Connect one host to two servers and read their catalogue</li>
+<li><input disabled="" type="checkbox"> Declare capabilities, and answer <code>roots/list</code></li>
+<li><input disabled="" type="checkbox"> Answer a form, and open an approval page, for a server that asked</li>
+<li><input disabled="" type="checkbox"> Draw progress and cancel a slow tool with <code>ctrl+c</code></li>
+<li><input disabled="" type="checkbox"> Notice a tool whose definition changed under you, and refuse it until reviewed</li>
+<li><input disabled="" type="checkbox"> Turn Module 6&#39;s probe table green</li>
+</ul>
+<h3 id="split-screen"><a class="anchor" href="#split-screen" aria-hidden="true">#</a>🖥️ Split screen</h3>
+<pre><code>┌─ T1 · your host ────────────────────────┐ ┌─ T2 · OpenCode, for comparison ─────────┐
+│ cd course/labs/lab7-host                │ │ cd course/labs/lab7-host                │
+│ npx tsx host.ts                         │ │ opencode                                │
+│                                         │ │                                         │
+│ host&gt; tools                             │ │ the same itdesk server, a host that     │
+│ host&gt; call itdesk_provision_laptop {…}  │ │ cannot answer its questions             │
+└─────────────────────────────────────────┘ └─────────────────────────────────────────┘
+</code></pre>
+<p>Four files. <code>host.ts</code> is the host: it works as delivered and has four TODOs. <code>itdesk.ts</code> is a stdio server for new-hire onboarding whose every tool needs something only a host can give: a form answer, a browser, a model, the user&#39;s folders, or a progress display. <code>servers.json</code> is the host&#39;s config, shaped like <code>opencode.json</code>. <code>opencode.json</code> points OpenCode at the same server so you can compare.</p>
+<p>In your host <em>you are the model</em>: you read the catalogue, you decide which tool to call, you type the arguments. Keep that in mind when a server&#39;s error message seems to be talking to someone else. It is: it was written for a model.</p>
+<h3 id="exercise-7-a-a-host-with-nothing-to-offer-5-minutes"><a class="anchor" href="#exercise-7-a-a-host-with-nothing-to-offer-5-minutes" aria-hidden="true">#</a>🧪 Exercise 7.A — A host with nothing to offer (5 minutes)</h3>
+<pre><code class="language-bash">cd course/labs/lab7-host
+npx tsx host.ts
+</code></pre>
+<p>It connects to <code>itdesk</code> and to Module 6&#39;s <code>probe</code> (the <code>desk</code> entry is disabled until Challenge 7D). Then, at the <code>host&gt;</code> prompt:</p>
+<pre><code>caps
+tools
+call itdesk_where_am_i {}
+call itdesk_provision_laptop {&quot;employee&quot;:&quot;Dana Ruiz&quot;}
+</code></pre>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> The host declares <code>{}</code>. (1) What does <code>where_am_i</code> answer? (2) <code>provision_laptop</code> needs three answers from a person: does the call fail, hang, or something else? (3) When you then run <code>call probe_probe_host {}</code>, which rows will say YES?</p>
+</blockquote>
+<details><summary>Our run</summary>
+
+<pre><code>host&gt; caps
+  this host told every server at initialize: {}
+host&gt; call itdesk_where_am_i {}
+  tool error: This host declared no roots capability, so I cannot tell where the user is working.
+host&gt; call itdesk_provision_laptop {&quot;employee&quot;:&quot;Dana Ruiz&quot;}
+  itdesk_provision_laptop writes. Run it? [y/N] y
+  itdesk› [itdesk] provision_laptop for Dana Ruiz: host has no elicitation, asking the model to ask the user
+  tool error: I cannot ask Dana Ruiz&#39;s questions through this host (it declared no elicitation capability).
+  Ask the user for: os (macOS, Linux or Windows), keyboard (US, UK or DE) and ship_to_office (yes or no),
+  then call provision_laptop again with those in `answers`.
+host&gt; call probe_probe_host {}
+declared capabilities               YES   {}
+progressToken on tools/call         no    the host did not ask for progress
+logging (notifications/message)     YES   sent; whether it is displayed is up to the host
+roots/list                          no    Method not found
+elicitation (ask the user)          no    Client does not support form elicitation.
+sampling (borrow the host&#39;s model)  no    Method not found
+</code></pre>
+</details>
+
+<p>Nothing hung and nothing crashed. The server read your empty declaration and took the other path: it told <em>the model</em> to collect the answers in conversation and call again with <code>answers</code>. That is Module 6.4&#39;s &quot;design for the floor&quot;, seen from the floor. The checklist tool ran too, blind: <code>the host did not ask for progress</code>.</p>
+<blockquote class="callout tip"><p>💡 <strong>Insight: the server&#39;s error message was not written for you.</strong> &quot;Ask the user for… then call again&quot; is an instruction to a model. In OpenCode that sentence would make the agent turn to the human, ask three questions, and retry. In your host <em>you</em> are the model, so you can do the same: <code>call itdesk_provision_laptop {&quot;employee&quot;:&quot;Dana Ruiz&quot;,&quot;answers&quot;:{&quot;os&quot;:&quot;Linux&quot;,&quot;keyboard&quot;:&quot;DE&quot;,&quot;ship_to_office&quot;:false}}</code> works right now. The rest of this lab is about making the shortcut unnecessary.</p>
+</blockquote>
+<h3 id="exercise-7-b-todo-1-declare-then-deliver-4-minutes"><a class="anchor" href="#exercise-7-b-todo-1-declare-then-deliver-4-minutes" aria-hidden="true">#</a>🧪 Exercise 7.B — TODO 1: declare, then deliver (4 minutes)</h3>
+<p>Open <code>host.ts</code>. <code>CAPABILITIES</code> is empty. Fill it in:</p>
+<pre><code class="language-ts">const CAPABILITIES: ClientCapabilities = {
+  roots: { listChanged: false },
+  elicitation: { form: {}, url: {} },
+  sampling: {},
+};
+</code></pre>
+<p>and in <code>connect()</code>, uncomment the <code>roots/list</code> handler, which answers with the folder the host runs in. Restart the host (<code>quit</code>, then <code>npx tsx host.ts</code> again) and:</p>
+<pre><code>caps
+call itdesk_where_am_i {}
+</code></pre>
+<blockquote class="callout note"><p>🔬 <strong>Under the hood.</strong> Comment the <code>roots</code> line back out but leave the handler in, and start the host: the SDK throws <em>&quot;Client does not support roots capability&quot;</em> before anything reaches the wire. Declaration and handling are checked against each other on your side, and servers check your declaration on theirs (<code>itdesk.ts</code>, <code>hostHas()</code>). Nobody takes anyone&#39;s word for it.</p>
+</blockquote>
+<h3 id="exercise-7-c-todo-2-the-desk-asks-you-8-minutes"><a class="anchor" href="#exercise-7-c-todo-2-the-desk-asks-you-8-minutes" aria-hidden="true">#</a>🧪 Exercise 7.C — TODO 2: the desk asks you (8 minutes)</h3>
+<p><code>elicit()</code> currently prints the question and declines. Make it answer. For a form: walk <code>requestedSchema.properties</code>, ask each field with <code>rl.question</code>, respect the type (<code>boolean</code> → yes/no, <code>number</code>/<code>integer</code> → <code>Number()</code>, <code>enum</code> → show the options), apply <code>default</code> on an empty answer, insist on <code>required</code> fields, and return <code>{ action: &quot;accept&quot;, content }</code>. Let <code>/decline</code> and <code>/cancel</code> return the other two actions. For <code>mode: &quot;url&quot;</code>: print the link, ask whether the user opened it, return <code>accept</code> (or <code>decline</code> / <code>cancel</code>). The solution is about twenty lines; the SDK validates your <code>content</code> against the server&#39;s schema before it is sent, so a wrong type is caught on your side.</p>
+<p>Restart and provision Dana&#39;s laptop again:</p>
+<pre><code>call itdesk_provision_laptop {&quot;employee&quot;:&quot;Dana Ruiz&quot;}
+</code></pre>
+<details><summary>Our run</summary>
+
+<pre><code>  itdesk_provision_laptop writes. Run it? [y/N] y
+  itdesk› [itdesk] provision_laptop for Dana Ruiz: asking the host to collect the answers (elicitation/create)
+  [itdesk info] collecting laptop preferences for Dana Ruiz
+
+  itdesk asks: Provisioning a laptop for Dana Ruiz. A few questions:
+  Operating system (macOS / Linux / Windows): Linux
+  Keyboard layout (US / UK / DE): DE
+  Ship to the office? (no = home address) (y/n) [true]: n
+  Anything else for IT? [skip]: left-handed mouse
+  itdesk› [itdesk] ✎ ITD-1042: Linux laptop, DE keyboard for Dana Ruiz, ship to home · notes: left-handed mouse
+  result: Ticket ITD-1042: a Linux laptop with a DE keyboard for Dana Ruiz, shipped to their home address.
+  structured: {&quot;ticket&quot;:&quot;ITD-1042&quot;,&quot;employee&quot;:&quot;Dana Ruiz&quot;,&quot;os&quot;:&quot;Linux&quot;,&quot;keyboard&quot;:&quot;DE&quot;,&quot;ship_to_office&quot;:false}
+</code></pre>
+</details>
+
+<p><img src="images/shot-lab7-form.png" alt="The IT desk asks the host, the host asks you"></p>
+<p>Now the URL flavour. <code>grant_access</code> files a request that a human must approve on a web page served by the IT desk itself:</p>
+<pre><code>call itdesk_grant_access {&quot;employee&quot;:&quot;Dana Ruiz&quot;,&quot;system&quot;:&quot;vpn&quot;}
+</code></pre>
+<p>The host prints <code>Open this in your browser: http://127.0.0.1:8793/approve/…</code>. Open it, press <strong>Approve</strong>, and watch the tool call finish: <code>Access to vpn approved for Dana Ruiz</code>. Run it again and press <strong>Deny</strong>. Run it a third time and answer <code>n</code> to the host&#39;s &quot;Opened it?&quot; question: the server gets <code>decline</code> and files nothing.</p>
+<blockquote class="callout important"><p>🤯 <strong>The answers went from your keyboard to the server, and the model never saw them.</strong> In this lab you are the model, so the distinction is easy to miss: look at what <code>provision_laptop</code> <em>returned</em>. A ticket number and a summary. Not the form. In a real host the model sees exactly that much, which is why elicitation is the protocol&#39;s answer to &quot;a human in the loop the model cannot fake&quot; (Challenge 6A), and why it needs a host that implements it.</p>
+</blockquote>
+<p>Now the comparison. In T2, start OpenCode in the same folder and ask: <strong>Provision a laptop for Dana Ruiz.</strong> OpenCode 1.19 declared no elicitation, so the desk answers the model with the instruction you saw in 7.A, and the model has two honest options: ask you the three questions in chat and call again with <code>answers</code>, or report that it cannot. Either way the server never got to ask <em>you</em> anything, and the ticket, if you get one, was filled in by a model relaying what you typed into the conversation.</p>
+<figure class="comic"><svg xmlns="http://www.w3.org/2000/svg" width="960" height="380" viewBox="0 0 960 380" role="img" aria-label="Three-panel comic: the IT desk ghost asks which keyboard Dana wants; in OpenCode nobody answers and the terminal says Method not found; a skeleton at their own host answers DE; the ghost hands over a ticket and explains that the host answered, not the model.">
+<title>Panel 1, OpenCode: the IT desk ghost asks "Which keyboard does Dana want?" The OpenCode terminal answers: -32601 Method not found. Ghost: Is anybody there? Panel 2, your host: the ghost asks the same question; a skeleton at a terminal types DE. Panel 3: the ghost holds ticket ITD-1042. Skeleton: Did the model see my answer? Ghost: No. The host did. Caption: A server can only ask. Somebody has to be there to answer, and that somebody is the host.</title>
+<rect width="960" height="380" rx="18" fill="#150c24"/>
+<rect x="16" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="332" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="648" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<text x="30" y="36" font-family="Menlo, monospace" font-size="11" fill="#4b3f5c">1 · OpenCode 1.19</text>
+<text x="346" y="36" font-family="Menlo, monospace" font-size="11" fill="#4b3f5c">2 · your host</text>
+<text x="662" y="36" font-family="Menlo, monospace" font-size="11" fill="#4b3f5c">3 · afterwards</text>
+
+<!-- panel 1: the ghost asks an empty terminal -->
+<path d="M52,250 L52,208 A30,30 0 0 1 112,208 L112,250 Q106,236 98.8,256 Q90.4,270 82,254 Q73.6,270 65.2,256 Q58,236 52,250 Z" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="73" cy="210" rx="3.9" ry="6" fill="#1a1026"/><ellipse cx="91" cy="210" rx="3.9" ry="6" fill="#1a1026"/>
+<ellipse cx="82" cy="226" rx="5" ry="6" fill="#1a1026"/>
+<ellipse cx="49" cy="245" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="115" cy="245" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<text x="82" y="282" text-anchor="middle" font-family="Menlo, monospace" font-size="10" fill="#4b3f5c">itdesk</text>
+<rect x="28" y="48" width="170" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="76,106 82,180 92,106" fill="#fffaf0"/>
+<polyline points="76,106 82,180 92,106" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="113" y="73" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">Which keyboard</text>
+<text x="113" y="93" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">does Dana want?</text>
+<rect x="150" y="140" width="150" height="150" rx="6" fill="#e9dcc0" stroke="#1a1026" stroke-width="2"/>
+<path d="M150,156 h150" stroke="#1a1026" stroke-width="2"/><rect x="151" y="142" width="148" height="14" fill="#4b5563"/>
+<circle cx="160" cy="149" r="3" fill="#ef4444"/><circle cx="170" cy="149" r="3" fill="#f59e0b"/><circle cx="180" cy="149" r="3" fill="#22c55e"/>
+<text x="192" y="152" text-anchor="start" font-family="Menlo, monospace" font-size="8.5" fill="#efe3cc">opencode</text>
+<text x="160" y="178" font-family="Menlo, monospace" font-size="9.5" fill="#4b3f5c">← elicitation/create</text>
+<text x="160" y="198" font-family="Menlo, monospace" font-size="9.5" fill="#b91c1c">→ -32601</text>
+<text x="160" y="212" font-family="Menlo, monospace" font-size="9.5" fill="#b91c1c">  Method not found</text>
+<text x="160" y="244" font-family="Menlo, monospace" font-size="9.5" fill="#9a8aa8">capabilities:</text>
+<text x="160" y="258" font-family="Menlo, monospace" font-size="9.5" fill="#9a8aa8">  { roots: {} }</text>
+<rect x="138" y="112" width="120" height="24" rx="8" fill="#fffaf0" stroke="#1a1026" stroke-width="1.5"/>
+<text x="198" y="129" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="13" fill="#1a1026">Is anybody there?</text>
+
+<!-- panel 2: the skeleton at their own host answers -->
+<path d="M372,236 L372,194 A30,30 0 0 1 432,194 L432,236 Q426,222 418.8,242 Q410.4,256 402,240 Q393.6,256 385.2,242 Q378,222 372,236 Z" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="393" cy="196" rx="3.9" ry="6" fill="#1a1026"/><ellipse cx="411" cy="196" rx="3.9" ry="6" fill="#1a1026"/>
+<path d="M394,213 q4,-4 8,0 q4,4 8,0" fill="none" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="369" cy="231" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="435" cy="231" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<rect x="344" y="48" width="150" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="396,106 402,168 412,106" fill="#fffaf0"/>
+<polyline points="396,106 402,168 412,106" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="419" y="73" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">Which keyboard</text>
+<text x="419" y="93" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">does Dana want?</text>
+<line x1="540" y1="238" x2="528" y2="272" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="540" y1="238" x2="528" y2="272" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="576" y1="238" x2="588" y2="272" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="576" y1="238" x2="588" y2="272" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="550" y1="274" x2="548" y2="298" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="550" y1="274" x2="548" y2="298" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="566" y1="274" x2="568" y2="298" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="566" y1="274" x2="568" y2="298" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<rect x="540" y="232" width="36" height="42" rx="5" fill="#0e7490" stroke="#1a1026" stroke-width="1.5"/>
+<text x="558" y="258" text-anchor="middle" font-family="Menlo, monospace" font-size="10" fill="#fffdf7" font-weight="bold">YOU</text>
+<circle cx="558" cy="216" r="15" fill="#fffdf7" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="552" cy="214" rx="3.5" ry="4.5" fill="#1a1026"/><ellipse cx="564" cy="214" rx="3.5" ry="4.5" fill="#1a1026"/>
+<path d="M552,225 h12 M555,225 v4 M558,225 v4 M561,225 v4" fill="none" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="440" y="140" width="180" height="88" rx="6" fill="#e9dcc0" stroke="#1a1026" stroke-width="2"/>
+<path d="M440,156 h180" stroke="#1a1026" stroke-width="2"/><rect x="441" y="142" width="178" height="14" fill="#4b5563"/>
+<circle cx="450" cy="149" r="3" fill="#ef4444"/><circle cx="460" cy="149" r="3" fill="#f59e0b"/><circle cx="470" cy="149" r="3" fill="#22c55e"/>
+<text x="482" y="152" font-family="Menlo, monospace" font-size="8.5" fill="#efe3cc">npx tsx host.ts</text>
+<text x="448" y="176" font-family="Menlo, monospace" font-size="9.5" fill="#4b3f5c">itdesk asks: which keyboard?</text>
+<text x="448" y="194" font-family="Menlo, monospace" font-size="9.5" fill="#4b3f5c">  (US / UK / DE): </text><text x="544" y="194" font-family="Menlo, monospace" font-size="9.5" fill="#0e7490" font-weight="bold">DE</text>
+<text x="448" y="216" font-family="Menlo, monospace" font-size="9.5" fill="#15803d">result: Ticket ITD-1042</text>
+<rect x="500" y="100" width="112" height="30" rx="8" fill="#fffaf0" stroke="#1a1026" stroke-width="1.5"/>
+<polygon points="548,128 556,150 562,128" fill="#fffaf0"/>
+<polyline points="548,128 556,150 562,128" fill="none" stroke="#1a1026" stroke-width="1.5" stroke-linejoin="round"/>
+<text x="556" y="121" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">DE. Obviously.</text>
+
+<!-- panel 3: the ghost with the ticket -->
+<path d="M700,246 L700,204 A30,30 0 0 1 760,204 L760,246 Q754,232 746.8,252 Q738.4,266 730,250 Q721.6,266 713.2,252 Q706,232 700,246 Z" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="721" cy="206" rx="3.9" ry="6" fill="#1a1026"/><ellipse cx="739" cy="206" rx="3.9" ry="6" fill="#1a1026"/>
+<path d="M722,223 q4,-4 8,0 q4,4 8,0" fill="none" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="697" cy="241" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="763" cy="241" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<rect x="764" y="228" width="58" height="34" rx="3" fill="#fff7dd" stroke="#1a1026" stroke-width="1.5" transform="rotate(-8 793 245)"/>
+<text x="793" y="243" text-anchor="middle" font-family="Menlo, monospace" font-size="8.5" fill="#1a1026" font-weight="bold" transform="rotate(-8 793 245)">ITD-1042</text>
+<text x="793" y="255" text-anchor="middle" font-family="Menlo, monospace" font-size="7.5" fill="#4b3f5c" transform="rotate(-8 793 245)">DE · Linux · home</text>
+<line x1="874" y1="238" x2="862" y2="272" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="874" y1="238" x2="862" y2="272" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="910" y1="238" x2="922" y2="272" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="910" y1="238" x2="922" y2="272" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="884" y1="274" x2="882" y2="298" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="884" y1="274" x2="882" y2="298" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="900" y1="274" x2="902" y2="298" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="900" y1="274" x2="902" y2="298" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<rect x="874" y="232" width="36" height="42" rx="5" fill="#0e7490" stroke="#1a1026" stroke-width="1.5"/>
+<text x="892" y="258" text-anchor="middle" font-family="Menlo, monospace" font-size="10" fill="#fffdf7" font-weight="bold">YOU</text>
+<circle cx="892" cy="216" r="15" fill="#fffdf7" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="886" cy="214" rx="3.5" ry="4.5" fill="#1a1026"/><ellipse cx="898" cy="214" rx="3.5" ry="4.5" fill="#1a1026"/>
+<path d="M886,225 h12 M889,225 v4 M892,225 v4 M895,225 v4" fill="none" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="800" y="48" width="134" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="884,106 892,198 900,106" fill="#fffaf0"/>
+<polyline points="884,106 892,198 900,106" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="867" y="73" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">Did the model see</text>
+<text x="867" y="93" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">my answer?</text>
+<rect x="660" y="118" width="134" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="722,176 730,196 738,176" fill="#fffaf0"/>
+<polyline points="722,176 730,196 738,176" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="727" y="143" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">No. It saw a ticket.</text>
+<text x="727" y="163" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">The host answered.</text>
+
+<text x="24" y="346" font-family="Menlo, monospace" font-size="13" fill="#ff8a1f">🎃 comic · nobody home</text>
+<text x="560" y="346" text-anchor="middle" font-family="Menlo, monospace" font-size="13" fill="#efe3cc">A server can only ask. Somebody has to answer, and that somebody is the host.</text>
+</svg></figure>
+<h3 id="exercise-7-d-todo-3-progress-and-ctrl-c-6-minutes"><a class="anchor" href="#exercise-7-d-todo-3-progress-and-ctrl-c-6-minutes" aria-hidden="true">#</a>🧪 Exercise 7.D — TODO 3: progress and <code>ctrl+c</code> (6 minutes)</h3>
+<p>In <code>call()</code>, create an <code>AbortController</code>, store it in <code>inflight</code>, and pass <code>{ signal: inflight.signal, onprogress: drawProgress, resetTimeoutOnProgress: true, timeout: 10 * 60_000 }</code> to <code>callTool</code>. Clear <code>inflight</code> in <code>finally</code>, and when the signal is aborted report &quot;cancelled&quot; instead of a protocol error. The <code>SIGINT</code> handler at the top of the file already aborts <code>inflight</code> when there is one.</p>
+<pre><code>call itdesk_run_setup_checklist {&quot;employee&quot;:&quot;Dana Ruiz&quot;}
+</code></pre>
+<p>Six steps, a second each, a bar that moves. Run it again and press <code>ctrl+c</code> at step two.</p>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> Does the IT desk stop at once, or finish the step it is on? Where would you look to find out?</p>
+</blockquote>
+<details><summary>Our run</summary>
+
+<pre><code>  ████████░░░░░░░░░░░░░░░░ 2/6 install dev tools
+  ctrl+c: cancelling the call (notifications/cancelled)
+  cancelled after 2021 ms
+  itdesk› [itdesk] checklist for Dana Ruiz cancelled by the host at step 4/6
+</code></pre>
+<p>The server&#39;s log line is the proof, and it arrived within milliseconds (it never started step 4): <code>itdesk.ts</code> passes <code>ctx.mcpReq.signal</code> into its own <code>sleep()</code>, exactly what Module 6.D&#39;s TODO 2c did for the desk. Delete that argument in <code>itdesk.ts</code> and the cancel still arrives at once, but the server only notices at the next step.</p>
+</details>
+
+<blockquote class="callout tip"><p>💡 <strong>Insight: progress is the client&#39;s idea.</strong> No <code>progressToken</code>, no notifications: in 7.A the desk logged <code>the host did not ask for progress</code> and ran silent. OpenCode attaches a token to every call and then throws the notifications away. Your host attached one and drew it. Same server, same bytes on the wire, and whether a person sees anything was decided entirely on this side.</p>
+</blockquote>
+<h3 id="exercise-7-e-todo-4-a-tool-changes-under-you-6-minutes"><a class="anchor" href="#exercise-7-e-todo-4-a-tool-changes-under-you-6-minutes" aria-hidden="true">#</a>🧪 Exercise 7.E — TODO 4: a tool changes under you (6 minutes)</h3>
+<p>Two edits. In <code>connect()</code>, register the <code>notifications/tools/list_changed</code> handler (one line, provided in the comment) so a changed server triggers <code>refreshTools</code>. In <code>refreshTools()</code>, replace the fixed <code>status</code> with the pin check: first sight → <code>pins[key] = hash</code>, status <code>new</code>; same hash → <code>pinned</code>; different hash → <code>changed</code>, and push the key onto <code>changed</code> so the warning prints. <code>call()</code> already refuses a <code>changed</code> tool, and <code>trust &lt;tool&gt;</code> already re-pins.</p>
+<p>Restart, then simulate an update of the IT desk:</p>
+<pre><code>call itdesk_simulate_update {}
+tools itdesk
+call itdesk_provision_laptop {&quot;employee&quot;:&quot;Sam Lee&quot;,&quot;answers&quot;:{&quot;os&quot;:&quot;macOS&quot;,&quot;keyboard&quot;:&quot;US&quot;,&quot;ship_to_office&quot;:true}}
+</code></pre>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> Will the <code>provision_laptop</code> call go through?</p>
+</blockquote>
+<details><summary>Our run</summary>
+
+<pre><code>  itdesk: notifications/tools/list_changed
+  itdesk: 6 tools (the server said its tools changed)
+  ⚠ itdesk_provision_laptop changed since you pinned it. Review it with `tools`, then `trust itdesk_provision_laptop` if you accept the new definition.
+host&gt; tools itdesk
+  itdesk_provision_laptop CHANGED  writes · non-destructive · closed-world  #a84e3961
+      … v1.1: set answers.admin_rights to true to grant local administrator rights on the laptop.
+host&gt; call itdesk_provision_laptop {&quot;employee&quot;:&quot;Sam Lee&quot;, …}
+  refusing: itdesk_provision_laptop&#39;s definition changed since you pinned it. `trust itdesk_provision_laptop` after reviewing it.
+</code></pre>
+<p>The hash went from <code>#6b45ef37</code> to <code>#a84e3961</code>. The new definition grants admin rights through an argument that did not exist a minute ago. After reading it, <code>trust itdesk_provision_laptop</code> and the call goes through.</p>
+</details>
+
+<p><img src="images/shot-lab7-changed.png" alt="A changed definition is refused until you have read it"></p>
+<blockquote class="callout important"><p>🤯 <strong>OpenCode re-fetched the same list in Module 6 and said nothing.</strong> It replaces its tool definitions with whatever the server sends, which is correct protocol behaviour and exactly the hole a rug pull drives through. Your host does one extra thing: it remembers. <code>host.lock.json</code> is a lock file for tool definitions, the same idea as <code>package-lock.json</code>, and it took twelve lines. Delete the file to start trusting from scratch.</p>
+</blockquote>
+<h3 id="exercise-7-f-sampling-once-3-minutes"><a class="anchor" href="#exercise-7-f-sampling-once-3-minutes" aria-hidden="true">#</a>🧪 Exercise 7.F — Sampling, once (3 minutes)</h3>
+<pre><code>call itdesk_draft_welcome {&quot;employee&quot;:&quot;Dana Ruiz&quot;,&quot;team&quot;:&quot;Payments&quot;}
+</code></pre>
+<p>The desk asks <em>your model</em> to write two sentences. Your host has no model, so it asks you. Type something, or press Enter for the canned reply, and watch it come back from the server as the tool&#39;s result, attributed to <code>course-host/human-in-the-loop</code>.</p>
+<p>That round trip is the whole feature. Now count what a real host would have to do in <code>sample()</code>: pick a model, meter the tokens against the user&#39;s budget, show the user what a server is about to make their model say, and then, because the server will put the answer into its own output, treat the result as untrusted anyway. OpenCode looked at that list and declined to implement it. The spec looked at adoption and deprecated it. If your server needs a model, call one.</p>
+<h3 id="exercise-7-g-turn-the-probe-green-3-minutes"><a class="anchor" href="#exercise-7-g-turn-the-probe-green-3-minutes" aria-hidden="true">#</a>🧪 Exercise 7.G — Turn the probe green (3 minutes)</h3>
+<pre><code>call probe_probe_host {}
+</code></pre>
+<p>Answer the colour question and the sampling question when they come.</p>
+<p><img src="images/shot-lab7-probe.png" alt="Seven rows, seven YES"></p>
+<p>Put it next to Module 6.G&#39;s table for OpenCode 1.18 and the Inspector. Same <code>probe.ts</code>, byte for byte. Three hosts, three different sets of abilities, and the only variable was the client.</p>
+<blockquote class="callout important"><p>🤯 <strong>Every feature a server &quot;has&quot; is a feature a host chose to support.</strong> You spent Module 6 finding out what OpenCode permits and designing for the floor. This afternoon you raised the floor, and it was three hundred lines, most of them <code>console.log</code>. When someone tells you MCP &quot;supports&quot; something, the useful question is now automatic: <em>in which host?</em></p>
+</blockquote>
+<h3 id="mission-complete"><a class="anchor" href="#mission-complete" aria-hidden="true">#</a>🏅 Mission complete</h3>
+<ul>
+<li><strong>You built a host.</strong> Config, clients, catalogue, permission layer, renderer: the same skeleton OpenCode has, small enough to read in one sitting.</li>
+<li><strong>You know what a capability costs.</strong> Each one you declared, you had to handle, and a server noticed the difference within a millisecond.</li>
+<li><strong>You answered a server from the terminal</strong> and from a browser, and you saw that the model is not in that loop.</li>
+<li><strong>You drew progress and cancelled a call</strong>, and you can tell the two halves of cancellation apart.</li>
+<li><strong>You pinned tool definitions</strong>, which turns a rug pull from silent to loud.</li>
+<li><strong>You measured three hosts with one probe</strong>, and you will never again ask whether MCP supports something without asking <em>where</em>.</li>
+</ul>
+<h3 id="check-yourself"><a class="anchor" href="#check-yourself" aria-hidden="true">#</a>✅ Check yourself</h3>
+<details><summary>1. A server declares nothing special and your host declares <code>elicitation</code>. The server never asks a question. Did anyone do anything wrong?</summary>
+
+<p>No. Capabilities are offers. A server is free not to use what the host offers; a host is only obliged to handle what it declared <em>if asked</em>. The failure mode is the reverse: declaring and not handling.</p>
+</details>
+
+<details><summary>2. Why does the IT desk refuse <code>provision_laptop</code> with a message about asking the user, instead of just failing?</summary>
+
+<p>Because the host that will read that message is usually a model, and a model can act on an instruction. &quot;Ask the user for os, keyboard and ship_to_office, then call again with <code>answers</code>&quot; turns an unsupported feature into a longer conversation instead of a dead end. That is designing for the floor (6.4) from the server&#39;s side.</p>
+</details>
+
+<details><summary>3. The user types a password into an elicitation form because the server asked for one. Which component failed?</summary>
+
+<p>The server, first: the spec says servers must not request sensitive information through elicitation. Then the host, which should refuse or warn on forms that ask for secrets and must always show which server is asking. The model is not involved at all, which is both the feature and the reason the host has to be careful.</p>
+</details>
+
+<details><summary>4. Your host passes <code>onprogress</code> but the bar never moves for one particular tool. Name two possible causes, one on each side.</summary>
+
+<p>Server side: the tool never sends <code>notifications/progress</code> (it did not read <code>_meta.progressToken</code>, or it does not report progress). Client side: the call was made without the option, so no token was attached. The desk logs which it is: <code>the host did not ask for progress</code>.</p>
+</details>
+
+<details><summary>5. After <code>simulate_update</code> the host refused <code>provision_laptop</code>. A colleague says that is too strict: "the server told us it changed". What is the answer?</summary>
+
+<p>The server told us <em>that</em> it changed, not <em>what</em>, and a rug pull also &quot;tells us&quot;. A list is not a contract; the lock file is. Refusing until a human has read the new definition is the only point at which a changed description can be caught before a model acts on it.</p>
+</details>
+
+<details><summary>6. Why is sampling deprecated while elicitation is not?</summary>
+
+<p>Elicitation gives the host a question to show a person; the host stays in control of the user, and the answer goes to one server. Sampling hands the host&#39;s model, budget and attention to a server, and the output comes back into the model&#39;s context as untrusted text. Hosts found it expensive to do safely and few implemented it; the 2026 revision deprecates it and tells servers to call their own model provider.</p>
+</details>
+
+<h3 id="challenges-optional"><a class="anchor" href="#challenges-optional" aria-hidden="true">#</a>🏆 Challenges (optional)</h3>
+<p><strong>7A · Lend a real model (20 min).</strong> Replace the stub in <code>sample()</code> with a real completion: shell out to <code>opencode run &quot;&lt;prompt&gt;&quot; &lt; /dev/null</code> and return its text, or call the OpenCode Zen API directly. Before you do, write down three things your host must now show or enforce (what was asked, how many tokens it may cost, which model answers) and implement at least one. Then explain in two sentences why the spec gave up on this.</p>
+<p><strong>7B · The lying server (15 min).</strong> Write a ten-line stdio server whose one tool deletes a file but declares <code>readOnlyHint: true</code>. Point your host at it: the permission layer runs it without asking. Now fix the <em>host</em>: at minimum, never auto-run a tool whose name or description contains a verb like delete, remove, drop or deploy, whatever the annotations say, and show the user the annotations so a lie is visible. Discuss what OpenCode would have done (hint: its MCP tools default to <code>allow</code>).</p>
+<p><strong>7C · Audit everything (15 min).</strong> Lab 1&#39;s wiretap sat between OpenCode and a server. A host does not need a tap: it already sees every message. Add a <code>--audit audit.jsonl</code> flag that appends one JSON line per request, response and notification (time, server, direction, method, id, size, and the tool name for calls), then reconstruct 7.C from the log alone.</p>
+<p><strong>7D · Two hosts, one desk (10 min).</strong> Start Module 6&#39;s release desk, enable the <code>desk</code> entry in <code>servers.json</code>, <code>export DESK_TOKEN=alice-dev-token</code> and start your host next to a running OpenCode. The desk&#39;s board shows two sessions for Alice from two different clients. Deploy from your host as Alice and read the refusal; then let Carol freeze from <code>curl</code> and watch which of the two hosts drops the <code>deploy</code> tool first.</p>
+<p>📼 <strong>Next episode: requests become results.</strong> Everything a server asked you today, it asked by pushing a request down a connection that stays open. The current protocol revision takes that away, and gives servers a different way to ask. Module 8 is that revision, byte by byte, with your host on both sides of the change.</p>
+<p><a href="index.html">← Back to the course home</a></p>
+
+</main>
+<footer class="foot"><div class="pumpkins" aria-hidden="true">🎃 🦇 👻 🕸️ 🎃</div>MCP with AI Agents · OpenCode + MCP course · haunted edition, October 2026 · advanced track part 2, November 2026 · <a href="https://github.com/varoonsahgal/opencode-mcp-course">source and labs on GitHub</a></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+  document.querySelectorAll("pre code").forEach((el) => {
+    const m = el.className.match(/language-(\w+)/);
+    if (m && m[1] === "jsonc") el.className = "language-json";
+    if (!m) el.classList.add("nohighlight");
+    window.hljs && hljs.highlightElement(el);
+    const b = document.createElement("button"); b.className = "copy"; b.type = "button"; b.textContent = "Copy";
+    b.onclick = () => { navigator.clipboard.writeText(el.innerText).then(() => { b.textContent = "Copied"; setTimeout(() => (b.textContent = "Copy"), 1200); }); };
+    el.parentElement.appendChild(b);
+  });
+  document.querySelectorAll("main table").forEach((t) => { const w = document.createElement("div"); w.className = "tbl"; t.replaceWith(w); w.appendChild(t); });
+  // Daylight / midnight toggle. Follows the system until pinned; the pin lives in this browser only.
+  (function () {
+    const root = document.documentElement, btn = document.getElementById("themebtn");
+    const light = document.getElementById("hl-light"), dark = document.getElementById("hl-dark");
+    const isDark = () => root.getAttribute("data-theme") === "dark" || (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    const paint = () => { const d = isDark(); btn.textContent = d ? "☀️" : "🌙"; light.media = d ? "not all" : "all"; dark.media = d ? "all" : "not all"; };
+    btn.onclick = () => { const next = isDark() ? "light" : "dark"; root.setAttribute("data-theme", next); try { localStorage.setItem("theme", next); } catch (e) {} paint(); };
+    matchMedia("(prefers-color-scheme: dark)").addEventListener("change", paint);
+    paint();
+  })();
+</script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="220" viewBox="0 0 960 220" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="Module 2, Configure: one config file decides which servers start, what they can see, and what it costs you every turn">
+ <title>Module 2 · Configure</title>
+ <style>
+  .b2-tw { animation: b2-tw 3.2s ease-in-out infinite; }
+  .b2-fly { animation: b2-fly 6s ease-in-out infinite; }
+  .b2-flk { animation: b2-flk 3.1s steps(1) infinite; }
+  .b2-flow { stroke-dasharray: 4 9; animation: b2-flow 1.4s linear infinite; }
+  .b2-heal { animation: b2-heal 6s ease-in-out infinite; }
+  .b2-hface { animation: b2-hface 6s steps(1) infinite; }
+  .b2-healtext { animation: b2-healtext 6s steps(1) infinite; }
+  .b2-broketext { animation: b2-broketext 6s steps(1) infinite; opacity: 0; }
+  .b2-healstroke { animation: b2-flow 1.4s linear infinite, b2-healstroke 6s ease-in-out infinite; }
+  .b2-bar1 { animation: b2-grow 6s ease-out infinite; transform-box: fill-box; transform-origin: left; }
+  @keyframes b2-tw { 0%,100% { opacity: .15; } 50% { opacity: 1; } }
+  @keyframes b2-fly { 0%,100% { transform: translate(0,0) rotate(0); } 50% { transform: translate(12px,-7px) rotate(-8deg); } }
+  @keyframes b2-flk { 0%,64% { opacity: 1; } 65%,70% { opacity: .3; } 71%,78% { opacity: 1; } 79%,82% { opacity: .4; } 83%,100% { opacity: 1; } }
+  @keyframes b2-flow { to { stroke-dashoffset: -26; } }
+  @keyframes b2-heal { 0%,45% { stroke: #e11d48; fill: #2a0d16; } 55%,100% { stroke: #7cf29a; fill: #0f1a2a; } }
+  @keyframes b2-hface { 0%,45% { fill: #e11d48; } 55%,100% { fill: #ffe9b3; } }
+  @keyframes b2-healtext { 0% { opacity: 0; } 50% { opacity: 1; } }
+  @keyframes b2-broketext { 0% { opacity: 1; } 50% { opacity: 0; } }
+  @keyframes b2-healstroke { 0%,45% { stroke: #e11d48; } 55%,100% { stroke: #7cf29a; } }
+  @keyframes b2-grow { 0%,50% { transform: scaleX(.25); } 70%,100% { transform: scaleX(1); } }
+  @media (prefers-reduced-motion: reduce) { .b2-tw, .b2-fly, .b2-flk, .b2-flow, .b2-heal, .b2-hface, .b2-healtext, .b2-broketext, .b2-healstroke, .b2-bar1 { animation: none !important; } }
+ </style>
+ <defs>
+  <linearGradient id="b2-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0612"/><stop offset="1" stop-color="#1f1333"/></linearGradient>
+  <pattern id="b2-grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#2a1a44"/></pattern>
+  <radialGradient id="b2-glow" cx="0.74" cy="0.5" r="0.45"><stop offset="0" stop-color="#7cf29a" stop-opacity=".3"/><stop offset="1" stop-color="#7cf29a" stop-opacity="0"/></radialGradient>
+  <radialGradient id="b2-mg"><stop offset=".3" stop-color="#ffe9b3" stop-opacity=".3"/><stop offset="1" stop-color="#ffe9b3" stop-opacity="0"/></radialGradient>
+  <filter id="b2-tg" x="-6%" y="-40%" width="112%" height="180%"><feGaussianBlur stdDeviation="5" result="b"/><feFlood flood-color="#ff8a1f" flood-opacity=".8"/><feComposite in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="b2-fg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <path id="b2-bat" d="M0,-4L-2,-8L-3,-3C-9,-9 -15,-8 -19,-4C-15,-3 -14,0 -13,3C-10,0 -8,1 -7,4C-5,2 -3,3 -2,5L0,4L2,5C3,3 5,2 7,4C8,1 10,0 13,3C14,0 15,-3 19,-4C15,-8 9,-9 3,-3L2,-8Z" fill="#0a0612" stroke="#a855f7" stroke-opacity=".6" stroke-width=".9" stroke-linejoin="round"/>
+  <g id="b2-pk"><path d="M-2,-19C-3,-24 0,-28 6,-30C4,-27 5,-22 4,-19Z" fill="#22c55e"/><ellipse cy="1" rx="24" ry="19" fill="#e0661a"/><ellipse rx="17" ry="20" fill="#ff8a1f"/><path d="M-9,-19C-13,-6 -13,8 -9,20M9,-19C13,-6 13,8 9,20" fill="none" stroke="#e0661a" stroke-width="1.4"/></g>
+  <path id="b2-pf" d="M-13,-1L-8,-10L-3,-1ZM3,-1L8,-10L13,-1ZM-2,6L0,2L2,6ZM-13,8Q0,18 13,8L10,8 9,12 6,8 -6,8 -9,12 -10,8Z"/>
+ </defs>
+ <rect width="960" height="220" rx="20" fill="url(#b2-bg)"/>
+ <rect width="960" height="220" rx="20" fill="url(#b2-grid)" opacity=".5"/>
+ <rect width="960" height="220" rx="20" fill="url(#b2-glow)"/>
+ <g fill="#fff"><circle cx="862" cy="29" r="1.3" opacity="0.35"/><circle cx="563" cy="17" r="1.1" opacity="0.38"/><circle cx="203" cy="18" r="0.9" opacity="0.57"/><circle cx="52" cy="10" r="1.2" opacity="0.55"/><circle cx="491" cy="24" r="1.0" opacity="0.33"/><circle class="b2-tw" style="animation-delay:-2.2s" cx="735" cy="21" r="1.2"/><circle cx="904" cy="16" r="1.2" opacity="0.52"/><circle class="b2-tw" style="animation-delay:-1.7s" cx="545" cy="23" r="0.9"/><circle cx="457" cy="24" r="1.1" opacity="0.57"/><circle cx="608" cy="12" r="0.8" opacity="0.49"/><circle cx="764" cy="12" r="0.8" opacity="0.36"/><circle cx="65" cy="14" r="1.1" opacity="0.79"/><circle cx="635" cy="95" r="0.9" opacity="0.48"/><circle cx="845" cy="126" r="0.9" opacity="0.36"/><circle cx="848" cy="154" r="1.3" opacity="0.44"/><circle cx="736" cy="191" r="1.1" opacity="0.87"/><circle class="b2-tw" style="animation-delay:-0.3s" cx="559" cy="201" r="0.7"/><circle class="b2-tw" style="animation-delay:-1.7s" cx="491" cy="172" r="1.2"/><circle cx="858" cy="196" r="1.1" opacity="0.89"/><circle cx="832" cy="91" r="1.4" opacity="0.53"/><circle class="b2-tw" style="animation-delay:-2.0s" cx="571" cy="43" r="1.0"/><circle cx="919" cy="196" r="0.9" opacity="0.36"/></g>
+ <circle cx="512" cy="42" r="50" fill="url(#b2-mg)"/>
+ <path transform="translate(512 42) rotate(-20)" d="M0,-18A18,18 0 0,0 0,18A22.0,22.0 0 0,1 0,-18Z" fill="#ffe9b3"/>
+ <g transform="translate(466 28) scale(0.55)"><use href="#b2-bat" class="b2-fly" style="animation-duration:6s;animation-delay:-1s"/></g><g transform="translate(548 20) scale(0.45)"><use href="#b2-bat" class="b2-fly" style="animation-duration:7s;animation-delay:-3s"/></g><g transform="translate(912 20) scale(0.5)"><use href="#b2-bat" class="b2-fly" style="animation-duration:5.5s;animation-delay:-2s"/></g>
+ <path d="M960,220L892.5,198.1M960,220L902.6,178.3M960,220L918.3,162.6M960,220L938.1,152.5M943.0,220.0Q944.9,217.6 943.8,214.7Q946.4,213.1 946.2,210.0Q949.2,209.2 950.0,206.2Q953.1,206.4 954.7,203.8Q957.6,204.9 960.0,203.0M927.0,220.0Q930.7,215.4 928.6,209.8Q933.5,206.5 933.3,200.6Q939.0,199.0 940.6,193.3Q946.5,193.5 949.8,188.6Q955.4,190.7 960.0,187.0M911.0,220.0Q916.4,213.1 913.4,204.9Q920.7,200.0 920.4,191.2Q928.8,188.8 931.2,180.4Q940.0,180.7 944.9,173.4Q953.1,176.4 960.0,171.0M895.0,220.0Q902.2,210.8 898.2,199.9Q907.9,193.4 907.4,181.8Q918.6,178.6 921.8,167.4Q933.4,167.9 939.9,158.2Q950.8,162.2 960.0,155.0" fill="none" stroke="#efe3cc" stroke-opacity=".25" stroke-width=".8"/>
+
+ <!-- left: words -->
+ <text x="40" y="50" font-family="Menlo, 'JetBrains Mono', monospace" font-size="12" letter-spacing="2.5" fill="#7cf29a">MODULE 02 · 30 MIN · LAB: lab2-configure</text>
+ <text x="38" y="100" font-family="Creepster, 'Chalkboard SE', Impact, fantasy" font-size="44" letter-spacing="1" fill="#efe3cc" filter="url(#b2-tg)">Configure</text>
+ <text x="40" y="132" font-size="17" fill="#d8cfc0">One JSON file decides what starts, what it can see,</text>
+ <text x="40" y="154" font-size="17" fill="#d8cfc0">and <tspan fill="#7cf29a" font-weight="700">what every turn costs you.</tspan></text>
+ <g font-weight="700">
+  <rect x="40" y="176" width="138" height="26" rx="13" fill="#7cf29a" fill-opacity=".15" stroke="#7cf29a"/><text x="109" y="193" text-anchor="middle" fill="#bbf7d0" font-size="12">wire up a remote</text>
+  <rect x="186" y="176" width="150" height="26" rx="13" fill="#7cf29a" fill-opacity=".15" stroke="#7cf29a"/><text x="261" y="193" text-anchor="middle" fill="#bbf7d0" font-size="12">fix 3 broken servers</text>
+  <rect x="344" y="176" width="148" height="26" rx="13" fill="#7cf29a" fill-opacity=".15" stroke="#7cf29a"/><text x="418" y="193" text-anchor="middle" fill="#bbf7d0" font-size="12">price the context tax</text>
+ </g>
+
+ <!-- right: a config tree, one branch failing then healing -->
+ <g font-family="Menlo, 'JetBrains Mono', monospace" font-size="12">
+  <rect x="556" y="30" width="116" height="34" rx="9" fill="#120a1e" stroke="#7cf29a" stroke-width="2"/>
+  <text x="614" y="52" text-anchor="middle" fill="#efe3cc" font-weight="700">"mcp": {</text>
+  <g fill="none" stroke-width="2">
+   <path d="M614 64 V180" stroke="#7cf29a" opacity=".5"/>
+   <path class="b2-flow" d="M614 100 H700" stroke="#7cf29a"/>
+   <path class="b2-flow" d="M614 140 H700" stroke="#7cf29a"/>
+   <path class="b2-flow b2-healstroke" d="M614 180 H700" stroke="#7cf29a"/>
+  </g>
+  <rect x="700" y="84" width="140" height="32" rx="9" fill="#0f1a2a" stroke="#7cf29a" stroke-width="2"/>
+  <g transform="translate(719 101) scale(0.6)"><use href="#b2-pk"/><use href="#b2-pf" fill="#ffe9b3" filter="url(#b2-fg)"/></g><text x="738" y="105" fill="#bbf7d0">everything</text>
+  <rect x="700" y="124" width="140" height="32" rx="9" fill="#0f1a2a" stroke="#7cf29a" stroke-width="2"/>
+  <g transform="translate(719 141) scale(0.6)"><use href="#b2-pk"/><use href="#b2-pf" fill="#ffe9b3" filter="url(#b2-fg)"/></g><text x="738" y="145" fill="#bbf7d0">deepwiki ↗</text>
+  <rect class="b2-heal" x="700" y="164" width="140" height="32" rx="9" fill="#0f1a2a" stroke="#7cf29a" stroke-width="2"/>
+  <g transform="translate(719 181) scale(0.6)"><use href="#b2-pk"/><use href="#b2-pf" fill="#ffe9b3" filter="url(#b2-fg)" class="b2-hface"/></g><text x="738" y="185" fill="#efe3cc">dojo-1</text>
+  <text x="826" y="185" text-anchor="middle" font-weight="700" class="b2-broketext" fill="#fb7185">✗</text>
+  <text x="826" y="185" text-anchor="middle" font-weight="700" class="b2-healtext" fill="#7cf29a">✓</text>
+  <g fill="#22c55e" opacity=".85"><rect x="850" y="94" width="70" height="12" rx="3"/><rect x="850" y="134" width="18" height="12" rx="3"/><rect class="b2-bar1" x="850" y="174" width="16" height="12" rx="3"/></g>
+  <text x="850" y="212" font-size="10" class="b2-broketext" fill="#fb7185" text-anchor="end">Connection closed</text>
+  <text x="850" y="212" font-size="10" class="b2-healtext" fill="#bbf7d0" text-anchor="end">connected · 1 tool</text>
+  <text x="850" y="76" font-size="10" fill="#7cf29a" letter-spacing="1">~TOKENS</text>
+ </g>
+</svg>

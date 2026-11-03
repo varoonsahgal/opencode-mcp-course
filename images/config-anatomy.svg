@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ca" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0d9488"/></marker>
+  </defs>
+  <rect width="960" height="520" rx="18" fill="#fbfbfd"/>
+  <text x="32" y="40" font-size="22" font-weight="700" fill="#0f172a">Anatomy of an MCP entry in opencode.json</text>
+  <text x="32" y="64" font-size="14" fill="#475569">Two shapes, one key. The server name you choose becomes the prefix of every tool it exposes.</text>
+  <rect x="32" y="86" width="560" height="400" rx="14" fill="#0f172a"/>
+  <g font-family="Menlo, Monaco, monospace" font-size="12.5" fill="#e2e8f0">
+    <text x="52" y="114">{</text>
+    <text x="52" y="134">  <tspan fill="#7dd3fc">"$schema"</tspan>: <tspan fill="#fbbf24">"https://opencode.ai/config.json"</tspan>,</text>
+    <text x="52" y="154">  <tspan fill="#7dd3fc">"model"</tspan>: <tspan fill="#fbbf24">"opencode/gpt-5.4-mini"</tspan>,</text>
+    <text x="52" y="174">  <tspan fill="#7dd3fc">"mcp"</tspan>: {</text>
+    <text x="52" y="194">    <tspan fill="#f472b6">"time"</tspan>: {</text>
+    <text x="52" y="214">      <tspan fill="#7dd3fc">"type"</tspan>: <tspan fill="#fbbf24">"local"</tspan>,</text>
+    <text x="52" y="234">      <tspan fill="#7dd3fc">"command"</tspan>: [<tspan fill="#fbbf24">"uvx"</tspan>, <tspan fill="#fbbf24">"mcp-server-time"</tspan>],</text>
+    <text x="52" y="254">      <tspan fill="#7dd3fc">"environment"</tspan>: { <tspan fill="#7dd3fc">"TZ"</tspan>: <tspan fill="#fbbf24">"UTC"</tspan>, <tspan fill="#7dd3fc">"API_KEY"</tspan>: <tspan fill="#fbbf24">"{env:MY_KEY}"</tspan> },</text>
+    <text x="52" y="274">      <tspan fill="#7dd3fc">"cwd"</tspan>: <tspan fill="#fbbf24">"."</tspan>,</text>
+    <text x="52" y="294">      <tspan fill="#7dd3fc">"timeout"</tspan>: <tspan fill="#a5f3fc">60000</tspan>,</text>
+    <text x="52" y="314">      <tspan fill="#7dd3fc">"enabled"</tspan>: <tspan fill="#a5f3fc">true</tspan></text>
+    <text x="52" y="334">    },</text>
+    <text x="52" y="354">    <tspan fill="#f472b6">"deepwiki"</tspan>: {</text>
+    <text x="52" y="374">      <tspan fill="#7dd3fc">"type"</tspan>: <tspan fill="#fbbf24">"remote"</tspan>,</text>
+    <text x="52" y="394">      <tspan fill="#7dd3fc">"url"</tspan>: <tspan fill="#fbbf24">"https://mcp.deepwiki.com/mcp"</tspan>,</text>
+    <text x="52" y="414">      <tspan fill="#7dd3fc">"headers"</tspan>: { <tspan fill="#7dd3fc">"Authorization"</tspan>: <tspan fill="#fbbf24">"Bearer {file:~/.secrets/dw}"</tspan> },</text>
+    <text x="52" y="434">      <tspan fill="#7dd3fc">"oauth"</tspan>: <tspan fill="#a5f3fc">false</tspan></text>
+    <text x="52" y="454">    }</text>
+    <text x="52" y="474">  }</text>
+    <text x="52" y="494">}</text>
+  </g>
+  <g font-size="12" fill="#134e4a">
+    <rect x="620" y="176" width="308" height="52" rx="10" fill="#ccfbf1" stroke="#0d9488"/>
+    <text x="634" y="196" font-weight="700">server name → tool prefix</text>
+    <text x="634" y="214">"time" exposes  time_get_current_time</text>
+    <line x1="618" y1="200" x2="300" y2="194" stroke="#0d9488" stroke-width="1.5" marker-end="url(#ca)"/>
+    <rect x="620" y="236" width="308" height="52" rx="10" fill="#ccfbf1" stroke="#0d9488"/>
+    <text x="634" y="256" font-weight="700">command is an ARRAY, not a string</text>
+    <text x="634" y="274">no shell: no pipes, no globs, no $VARS</text>
+    <line x1="618" y1="260" x2="420" y2="234" stroke="#0d9488" stroke-width="1.5" marker-end="url(#ca)"/>
+    <rect x="620" y="296" width="308" height="52" rx="10" fill="#ccfbf1" stroke="#0d9488"/>
+    <text x="634" y="316" font-weight="700">secrets via {env:…} or {file:…}</text>
+    <text x="634" y="334">never paste a real key into a committed file</text>
+    <line x1="618" y1="320" x2="560" y2="254" stroke="#0d9488" stroke-width="1.5" marker-end="url(#ca)"/>
+    <rect x="620" y="356" width="308" height="52" rx="10" fill="#ccfbf1" stroke="#0d9488"/>
+    <text x="634" y="376" font-weight="700">timeout covers startup AND each call</text>
+    <text x="634" y="394">default 30000 ms; raise it for slow npx/uvx</text>
+    <line x1="618" y1="380" x2="250" y2="294" stroke="#0d9488" stroke-width="1.5" marker-end="url(#ca)"/>
+    <rect x="620" y="416" width="308" height="52" rx="10" fill="#ccfbf1" stroke="#0d9488"/>
+    <text x="634" y="436" font-weight="700">enabled: false keeps the entry, unloads it</text>
+    <text x="634" y="454">same effect as toggling in /mcps, but persistent</text>
+    <line x1="618" y1="440" x2="260" y2="314" stroke="#0d9488" stroke-width="1.5" marker-end="url(#ca)"/>
+  </g>
+  <text x="32" y="508" font-size="12" fill="#64748b">Remote-only fields: url, headers, oauth ({} to force OAuth, false to disable auto-detection). Local-only: command, environment, cwd.</text>
+</svg>

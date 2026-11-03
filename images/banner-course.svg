@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="300" viewBox="0 0 960 300" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="MCP with AI Agents: one host, many servers, every connection a decision">
+ <title>MCP with AI Agents</title>
+ <style>
+  .bc-tw { animation: bc-tw 3.2s ease-in-out infinite; }
+  .bc-fly { animation: bc-fly 6s ease-in-out infinite; }
+  .bc-flk { animation: bc-flk 3.1s steps(1) infinite; }
+  .bc-flow { stroke-dasharray: 4 10; animation: bc-flow 1.6s linear infinite; }
+  .bc-slow { animation-duration: 2.4s; }
+  .bc-pulse { animation: bc-pulse 2.4s ease-in-out infinite; }
+  .bc-blink { animation: bc-blink 2.4s steps(1) infinite; }
+  .bc-halo { animation: bc-halo 3.2s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes bc-tw { 0%,100% { opacity: .15; } 50% { opacity: 1; } }
+  @keyframes bc-fly { 0%,100% { transform: translate(0,0) rotate(0); } 50% { transform: translate(12px,-7px) rotate(-8deg); } }
+  @keyframes bc-flk { 0%,64% { opacity: 1; } 65%,70% { opacity: .3; } 71%,78% { opacity: 1; } 79%,82% { opacity: .4; } 83%,100% { opacity: 1; } }
+  @keyframes bc-flow { to { stroke-dashoffset: -28; } }
+  @keyframes bc-pulse { 0%,100% { opacity: .55; } 50% { opacity: 1; } }
+  @keyframes bc-blink { 0%,60% { opacity: 1; } 61%,100% { opacity: .25; } }
+  @keyframes bc-halo { 0% { opacity: .5; transform: scale(.9); } 100% { opacity: 0; transform: scale(1.6); } }
+  @media (prefers-reduced-motion: reduce) { .bc-tw, .bc-fly, .bc-flk, .bc-flow, .bc-pulse, .bc-blink, .bc-halo { animation: none !important; } }
+ </style>
+ <defs>
+  <linearGradient id="bc-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0612"/><stop offset="1" stop-color="#1f1333"/></linearGradient>
+  <pattern id="bc-grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#2a1a44"/></pattern>
+  <radialGradient id="bc-glow" cx="0.73" cy="0.5" r="0.45"><stop offset="0" stop-color="#ff8a1f" stop-opacity=".3"/><stop offset="1" stop-color="#ff8a1f" stop-opacity="0"/></radialGradient>
+  <radialGradient id="bc-mg"><stop offset=".3" stop-color="#ffe9b3" stop-opacity=".3"/><stop offset="1" stop-color="#ffe9b3" stop-opacity="0"/></radialGradient>
+  <filter id="bc-tg" x="-6%" y="-40%" width="112%" height="180%"><feGaussianBlur stdDeviation="5" result="b"/><feFlood flood-color="#ff8a1f" flood-opacity=".8"/><feComposite in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="bc-fg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <path id="bc-bat" d="M0,-4L-2,-8L-3,-3C-9,-9 -15,-8 -19,-4C-15,-3 -14,0 -13,3C-10,0 -8,1 -7,4C-5,2 -3,3 -2,5L0,4L2,5C3,3 5,2 7,4C8,1 10,0 13,3C14,0 15,-3 19,-4C15,-8 9,-9 3,-3L2,-8Z" fill="#0a0612" stroke="#a855f7" stroke-opacity=".6" stroke-width=".9" stroke-linejoin="round"/>
+  <g id="bc-pk"><path d="M-2,-19C-3,-24 0,-28 6,-30C4,-27 5,-22 4,-19Z" fill="#22c55e"/><ellipse cy="1" rx="24" ry="19" fill="#e0661a"/><ellipse rx="17" ry="20" fill="#ff8a1f"/><path d="M-9,-19C-13,-6 -13,8 -9,20M9,-19C13,-6 13,8 9,20" fill="none" stroke="#e0661a" stroke-width="1.4"/></g>
+  <path id="bc-pf" d="M-13,-1L-8,-10L-3,-1ZM3,-1L8,-10L13,-1ZM-2,6L0,2L2,6ZM-13,8Q0,18 13,8L10,8 9,12 6,8 -6,8 -9,12 -10,8Z"/>
+ </defs>
+ <rect width="960" height="300" rx="20" fill="url(#bc-bg)"/>
+ <rect width="960" height="300" rx="20" fill="url(#bc-grid)" opacity=".5"/>
+ <rect width="960" height="300" rx="20" fill="url(#bc-glow)"/>
+ <g fill="#fff"><circle cx="321" cy="12" r="1.2" opacity="0.34"/><circle cx="512" cy="18" r="0.7" opacity="0.6"/><circle class="bc-tw" style="animation-delay:-2.5s" cx="64" cy="20" r="0.7"/><circle cx="412" cy="31" r="0.8" opacity="0.43"/><circle class="bc-tw" style="animation-delay:-2.3s" cx="595" cy="35" r="1.1"/><circle cx="909" cy="9" r="1.3" opacity="0.47"/><circle cx="160" cy="11" r="0.9" opacity="0.79"/><circle class="bc-tw" style="animation-delay:-2.3s" cx="193" cy="24" r="1.1"/><circle cx="523" cy="10" r="0.7" opacity="0.42"/><circle cx="642" cy="20" r="0.9" opacity="0.65"/><circle cx="438" cy="16" r="1.3" opacity="0.72"/><circle class="bc-tw" style="animation-delay:-1.5s" cx="250" cy="24" r="1.1"/><circle class="bc-tw" style="animation-delay:-1.2s" cx="820" cy="112" r="1.4"/><circle cx="671" cy="229" r="0.8" opacity="0.59"/><circle cx="489" cy="207" r="1.2" opacity="0.64"/><circle cx="890" cy="118" r="1.2" opacity="0.66"/><circle cx="748" cy="154" r="1.3" opacity="0.87"/><circle cx="698" cy="206" r="0.7" opacity="0.72"/><circle cx="781" cy="288" r="1.3" opacity="0.47"/><circle cx="655" cy="207" r="0.7" opacity="0.58"/><circle cx="551" cy="69" r="0.7" opacity="0.76"/><circle class="bc-tw" style="animation-delay:-2.2s" cx="532" cy="102" r="1.0"/><circle cx="509" cy="152" r="1.1" opacity="0.83"/><circle cx="863" cy="256" r="0.9" opacity="0.55"/></g>
+ <circle cx="700" cy="44" r="50" fill="url(#bc-mg)"/>
+ <path transform="translate(700 44) rotate(-20)" d="M0,-18A18,18 0 0,0 0,18A22.0,22.0 0 0,1 0,-18Z" fill="#ffe9b3"/>
+ <g transform="translate(646 30) scale(0.6)"><use href="#bc-bat" class="bc-fly" style="animation-duration:6s;animation-delay:-1s"/></g><g transform="translate(752 60) scale(0.5)"><use href="#bc-bat" class="bc-fly" style="animation-duration:7s;animation-delay:-3s"/></g><g transform="translate(930 24) scale(0.45)"><use href="#bc-bat" class="bc-fly" style="animation-duration:5.5s;animation-delay:-2s"/></g><g transform="translate(482 44) scale(0.5)"><use href="#bc-bat" class="bc-fly" style="animation-duration:6.5s;animation-delay:-4s"/></g>
+ <path d="M960,300L892.5,278.1M960,300L902.6,258.3M960,300L918.3,242.6M960,300L938.1,232.5M943.0,300.0Q944.9,297.6 943.8,294.7Q946.4,293.1 946.2,290.0Q949.2,289.2 950.0,286.2Q953.1,286.4 954.7,283.8Q957.6,284.9 960.0,283.0M927.0,300.0Q930.7,295.4 928.6,289.8Q933.5,286.5 933.3,280.6Q939.0,279.0 940.6,273.3Q946.5,273.5 949.8,268.6Q955.4,270.7 960.0,267.0M911.0,300.0Q916.4,293.1 913.4,284.9Q920.7,280.0 920.4,271.2Q928.8,268.8 931.2,260.4Q940.0,260.7 944.9,253.4Q953.1,256.4 960.0,251.0M895.0,300.0Q902.2,290.8 898.2,279.9Q907.9,273.4 907.4,261.8Q918.6,258.6 921.8,247.4Q933.4,247.9 939.9,238.2Q950.8,242.2 960.0,235.0" fill="none" stroke="#efe3cc" stroke-opacity=".25" stroke-width=".8"/>
+
+ <!-- left: words -->
+ <text x="40" y="62" font-family="Menlo, 'JetBrains Mono', monospace" font-size="12" letter-spacing="2.5" fill="#ff8a1f">STUDENT COURSE PACK · 4 HOURS · 5 LABS</text>
+ <text x="38" y="118" font-family="Creepster, 'Chalkboard SE', Impact, fantasy" font-size="50" letter-spacing="1" fill="#efe3cc" filter="url(#bc-tg)">MCP with AI Agents</text>
+ <text x="40" y="152" font-size="18" fill="#d8cfc0">Connect it. Configure it. Build it.</text>
+ <text x="40" y="176" font-size="18" fill="#d8cfc0">Break it on purpose. <tspan fill="#fb7185" font-weight="700">Then lock it down.</tspan></text>
+ <g font-weight="700">
+  <rect x="40" y="214" width="88" height="28" rx="14" fill="#a855f7" fill-opacity=".18" stroke="#a855f7"/><text x="84" y="232" text-anchor="middle" fill="#d8b4fe" font-size="12">01 Connect</text>
+  <rect x="136" y="214" width="98" height="28" rx="14" fill="#7cf29a" fill-opacity=".18" stroke="#7cf29a"/><text x="185" y="232" text-anchor="middle" fill="#bbf7d0" font-size="12">02 Configure</text>
+  <rect x="242" y="214" width="72" height="28" rx="14" fill="#ff8a1f" fill-opacity=".18" stroke="#ff8a1f"/><text x="278" y="232" text-anchor="middle" fill="#ffd1a3" font-size="12">03 Build</text>
+  <rect x="322" y="214" width="80" height="28" rx="14" fill="#e11d48" fill-opacity=".18" stroke="#e11d48"/><text x="362" y="232" text-anchor="middle" fill="#fecdd3" font-size="12">04 Secure</text>
+  <rect x="410" y="214" width="74" height="28" rx="14" fill="#22c55e" fill-opacity=".18" stroke="#22c55e"/><text x="447" y="232" text-anchor="middle" fill="#bbf7d0" font-size="12">05 Apply</text>
+ </g>
+ <text x="40" y="272" font-family="Menlo, 'JetBrains Mono', monospace" font-size="11" fill="#8b7fa3">agent: OpenCode · model: opencode/gpt-5.4-mini · whole course &lt; $2</text>
+
+ <!-- right: one haunted house, five jack-o'-lanterns, live wires -->
+ <g fill="none" stroke-width="2">
+  <path class="bc-flow" d="M700 160 L560 72" stroke="#a855f7"/>
+  <path class="bc-flow bc-slow" d="M700 160 L588 232" stroke="#7cf29a"/>
+  <path class="bc-flow" d="M700 160 L846 66" stroke="#ff8a1f"/>
+  <path class="bc-flow bc-slow" d="M700 160 L884 160" stroke="#22c55e"/>
+  <path d="M700 160 L812 244" stroke="#e11d48" stroke-dasharray="4 6" opacity=".6"/>
+ </g>
+ <g font-family="Menlo, 'JetBrains Mono', monospace" font-size="11" text-anchor="middle" fill="#efe3cc">
+  <g transform="translate(560 72) scale(1)"><use href="#bc-pk"/><use href="#bc-pf" fill="#ffe9b3" filter="url(#bc-fg)"/></g><text x="560" y="106">time</text>
+  <g transform="translate(588 232) scale(1)"><use href="#bc-pk"/><use href="#bc-pf" fill="#ffe9b3" filter="url(#bc-fg)"/></g><text x="588" y="266" font-size="10">deepwiki</text>
+  <g transform="translate(846 66) scale(1)"><use href="#bc-pk"/><use href="#bc-pf" fill="#ffe9b3" filter="url(#bc-fg)"/></g><text x="846" y="100">weather</text>
+  <g transform="translate(884 160) scale(1)"><use href="#bc-pk"/><use href="#bc-pf" fill="#ffe9b3" filter="url(#bc-fg)"/></g><text x="884" y="194">oncall</text>
+  <circle class="bc-halo" cx="812" cy="245" r="27" fill="none" stroke="#e11d48" stroke-width="2"/>
+  <g transform="translate(812 244) scale(1)"><use href="#bc-pk"/><use href="#bc-pf" fill="#e11d48" filter="url(#bc-fg)"/></g><text x="812" y="278" fill="#fb7185">teamdb</text>
+  <g class="bc-blink" transform="translate(776 217)"><rect x="-30" y="-11" width="60" height="22" rx="11" fill="#e11d48"/><text x="0" y="4" fill="#fff" font-weight="700" font-size="10">ASK</text></g>
+ </g>
+ <circle class="bc-halo" cx="700" cy="150" r="46" fill="none" stroke="#a855f7" stroke-width="2"/>
+ <g transform="translate(700 186) scale(1.25)">
+  <path d="M-36,0V-18L-26,-30L-16,-18V-34L0,-52L16,-34V-18L26,-30L36,-18V0Z" fill="#0a0612" stroke="#a855f7" stroke-width="1.4" stroke-linejoin="round"/>
+  <path d="M0,-52V-61M30,-25.2V-32h4v11.6" fill="none" stroke="#a855f7" stroke-width="1.4"/>
+  <g fill="#ffe9b3" filter="url(#bc-fg)"><path d="M-4,-24v-5a4,4 0 0 1 8,0v5z"/><rect x="-29" y="-14" width="6" height="8"/><rect class="bc-flk" x="23" y="-14" width="6" height="8"/><path d="M-5,0v-8a5,5 0 0 1 10,0v8z" opacity=".85"/></g>
+ </g>
+ <text x="700" y="206" text-anchor="middle" font-size="14" font-weight="800" fill="#efe3cc">OpenCode</text>
+ <text x="700" y="222" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="10" fill="#d8b4fe" class="bc-pulse">host · 5 clients</text>
+</svg>

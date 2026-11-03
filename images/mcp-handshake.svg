@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="560" viewBox="0 0 960 560" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4f46e5"/></marker>
+    <marker id="a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d97706"/></marker>
+  </defs>
+  <rect width="960" height="560" rx="18" fill="#fbfbfd"/>
+  <text x="32" y="40" font-size="22" font-weight="700" fill="#0f172a">What actually goes over the wire</text>
+  <text x="32" y="64" font-size="14" fill="#475569">Every message is JSON-RPC 2.0. You will watch this exact exchange in Lab 1 with the wiretap.</text>
+
+  <!-- lifelines -->
+  <rect x="120" y="86" width="180" height="40" rx="10" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+  <text x="210" y="111" text-anchor="middle" font-size="14" font-weight="700" fill="#3730a3">OpenCode (client)</text>
+  <rect x="660" y="86" width="180" height="40" rx="10" fill="#fff7ed" stroke="#d97706" stroke-width="2"/>
+  <text x="750" y="111" text-anchor="middle" font-size="14" font-weight="700" fill="#9a3412">time server</text>
+  <line x1="210" y1="126" x2="210" y2="530" stroke="#c7d2fe" stroke-width="2" stroke-dasharray="6 5"/>
+  <line x1="750" y1="126" x2="750" y2="530" stroke="#fed7aa" stroke-width="2" stroke-dasharray="6 5"/>
+
+  <!-- phase labels -->
+  <rect x="32" y="150" width="70" height="120" rx="8" fill="#f1f5f9"/>
+  <text x="67" y="205" text-anchor="middle" font-size="11.5" font-weight="700" fill="#334155" transform="rotate(-90 67 205)">HANDSHAKE</text>
+  <rect x="32" y="290" width="70" height="90" rx="8" fill="#f1f5f9"/>
+  <text x="67" y="335" text-anchor="middle" font-size="11.5" font-weight="700" fill="#334155" transform="rotate(-90 67 335)">DISCOVERY</text>
+  <rect x="32" y="400" width="70" height="120" rx="8" fill="#f1f5f9"/>
+  <text x="67" y="460" text-anchor="middle" font-size="11.5" font-weight="700" fill="#334155" transform="rotate(-90 67 460)">EXECUTION</text>
+
+  <!-- 1 initialize -->
+  <line x1="214" y1="166" x2="744" y2="166" stroke="#4f46e5" stroke-width="2" marker-end="url(#a1)"/>
+  <text x="230" y="158" font-size="12" font-weight="700" fill="#3730a3">1  initialize</text>
+  <text x="350" y="158" font-size="11" fill="#475569" font-family="Menlo, monospace">{"protocolVersion":"2025-06-18","clientInfo":{…}}</text>
+  <!-- 2 result -->
+  <line x1="746" y1="206" x2="216" y2="206" stroke="#d97706" stroke-width="2" marker-end="url(#a2)"/>
+  <text x="230" y="198" font-size="12" font-weight="700" fill="#9a3412">2  result</text>
+  <text x="300" y="198" font-size="11" fill="#475569" font-family="Menlo, monospace">{"capabilities":{"tools":{}},"serverInfo":{"name":"mcp-time"}}</text>
+  <!-- 3 initialized -->
+  <line x1="214" y1="246" x2="744" y2="246" stroke="#4f46e5" stroke-width="2" marker-end="url(#a1)"/>
+  <text x="230" y="238" font-size="12" font-weight="700" fill="#3730a3">3  notifications/initialized</text>
+  <text x="430" y="238" font-size="11" fill="#475569">(no id → no reply expected)</text>
+
+  <!-- 4 tools/list -->
+  <line x1="214" y1="316" x2="744" y2="316" stroke="#4f46e5" stroke-width="2" marker-end="url(#a1)"/>
+  <text x="230" y="308" font-size="12" font-weight="700" fill="#3730a3">4  tools/list</text>
+  <line x1="746" y1="356" x2="216" y2="356" stroke="#d97706" stroke-width="2" marker-end="url(#a2)"/>
+  <text x="230" y="348" font-size="12" font-weight="700" fill="#9a3412">5  result</text>
+  <text x="300" y="348" font-size="11" fill="#475569" font-family="Menlo, monospace">{"tools":[{"name":"get_current_time","inputSchema":{…}}]}</text>
+  <text x="230" y="376" font-size="11" fill="#0f766e" font-weight="600">→ names get prefixed (time_get_current_time) and the descriptions go into the model's context</text>
+
+  <!-- 6 tools/call -->
+  <line x1="214" y1="436" x2="744" y2="436" stroke="#4f46e5" stroke-width="2" marker-end="url(#a1)"/>
+  <text x="230" y="428" font-size="12" font-weight="700" fill="#3730a3">6  tools/call</text>
+  <text x="310" y="428" font-size="10.5" fill="#475569" font-family="Menlo, monospace">{"name":"get_current_time","arguments":{"timezone":"Asia/Tokyo"}}</text>
+  <line x1="746" y1="486" x2="216" y2="486" stroke="#d97706" stroke-width="2" marker-end="url(#a2)"/>
+  <text x="230" y="478" font-size="12" font-weight="700" fill="#9a3412">7  result</text>
+  <text x="300" y="478" font-size="11" fill="#475569" font-family="Menlo, monospace">{"content":[{"type":"text","text":"{\"datetime\":\"…06:03+09:00\"}"}]}</text>
+  <text x="230" y="508" font-size="11" fill="#0f766e" font-weight="600">→ the host feeds this text back to the model, which writes the final answer</text>
+
+  <text x="32" y="546" font-size="12" fill="#64748b">Steps 1–5 happen once at startup. Step 6–7 happen every time the model decides to use the tool. The model never sees steps 1–3.</text>
+</svg>

@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="420" viewBox="0 0 960 420" role="img" aria-label="MCP and the model's native tool calling are two different layers" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>MCP and the model's native tool calling are two different layers</title>
+  <defs>
+    <marker id="fc-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker>
+  </defs>
+  <rect width="960" height="420" rx="18" fill="#fbfbfd"/>
+  <text x="32" y="40" font-size="22" font-weight="700" fill="#0f172a">MCP and the model's native tool calling are two different layers</text>
+  <text x="32" y="64" font-size="14" fill="#475569">The model's side existed before MCP and is unchanged. MCP standardises where the catalogue comes from and how a call is executed.</text>
+
+  <!-- column headers -->
+  <g font-size="11" font-weight="800" letter-spacing="1.2">
+    <text x="32" y="96" fill="#475569">MODEL (provider API)</text>
+    <text x="312" y="96" fill="#4f46e5">HOST (OpenCode) <tspan font-weight="500" font-style="italic" letter-spacing="0">— the translator</tspan></text>
+    <text x="664" y="96" fill="#c2410c">MCP SERVERS</text>
+  </g>
+
+  <!-- model card -->
+  <rect x="32" y="108" width="232" height="192" rx="14" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="48" y="134" font-size="13" font-weight="700" fill="#0f172a">native tool calling</text>
+  <g font-size="11.5" fill="#334155">
+    <circle cx="51" cy="155" r="2" fill="#64748b"/>
+    <text x="58" y="159">receives a list of tool definitions</text>
+    <text x="58" y="174">in the provider's format</text>
+    <circle cx="51" cy="195" r="2" fill="#64748b"/>
+    <text x="58" y="199">emits a structured call:</text>
+    <text x="58" y="214" font-family="Menlo, 'JetBrains Mono', monospace" font-size="11">name + JSON arguments</text>
+    <circle cx="51" cy="235" r="2" fill="#64748b"/>
+    <text x="58" y="239">reads the result as text</text>
+  </g>
+  <g font-size="10.5" fill="#64748b">
+    <text x="32" y="322">OpenAI 'function calling' 2023 ·</text>
+    <text x="32" y="337">Anthropic 'tool use' 2024 ·</text>
+    <text x="32" y="352">every provider has its own format</text>
+  </g>
+
+  <!-- host card -->
+  <rect x="312" y="108" width="304" height="192" rx="14" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+  <g text-anchor="middle">
+    <text x="464" y="134" font-size="11.5" font-weight="700" fill="#3730a3">tools/list result → provider tool definitions</text>
+    <text x="464" y="150" font-size="11" fill="#4f46e5" font-family="Menlo, 'JetBrains Mono', monospace">(prefixed server_tool)</text>
+    <text x="464" y="190" font-size="11.5" font-weight="700" fill="#3730a3">model's tool call → permission check</text>
+    <text x="464" y="206" font-size="11.5" font-weight="700" fill="#3730a3">(allow / ask / deny) → tools/call</text>
+    <rect x="376" y="236" width="176" height="22" rx="11" fill="#4f46e5"/>
+    <text x="464" y="251" font-size="11" font-weight="700" fill="#ffffff">permission rules live here</text>
+    <text x="464" y="284" font-size="11" font-style="italic" fill="#4f46e5">one MCP client, written once</text>
+  </g>
+
+  <!-- servers -->
+  <g>
+    <rect x="680" y="112" width="200" height="52" rx="10" fill="#ffedd5" stroke="#ea580c" stroke-width="1.5"/>
+    <rect x="680" y="178" width="200" height="52" rx="10" fill="#ffedd5" stroke="#ea580c" stroke-width="1.5"/>
+    <rect x="680" y="244" width="200" height="52" rx="10" fill="#ffedd5" stroke="#ea580c" stroke-width="1.5"/>
+    <g text-anchor="middle">
+      <text x="780" y="133" font-size="12.5" font-weight="700" fill="#9a3412">time</text>
+      <text x="780" y="199" font-size="12.5" font-weight="700" fill="#9a3412">weather</text>
+      <text x="780" y="265" font-size="12.5" font-weight="700" fill="#9a3412">teamdb</text>
+      <g font-size="10.5" fill="#c2410c" font-family="Menlo, 'JetBrains Mono', monospace">
+        <text x="780" y="152">tools/list · tools/call</text>
+        <text x="780" y="218">tools/list · tools/call</text>
+        <text x="780" y="284">tools/list · tools/call</text>
+      </g>
+      <g font-size="11" fill="#9a3412">
+        <text x="796" y="322">one protocol, any number of servers</text>
+        <text x="796" y="337">(local stdio or remote HTTP)</text>
+      </g>
+    </g>
+    <path d="M888 112 h8 v184 h-8 M896 204 h8" fill="none" stroke="#c2410c" stroke-width="1.5"/>
+    <!-- bus into the servers -->
+    <path d="M664 138 V270 M664 138 H680 M664 204 H680 M664 270 H680" fill="none" stroke="#ea580c" stroke-width="2"/>
+  </g>
+
+  <!-- the two flows through the host -->
+  <line x1="664" y1="160" x2="268" y2="160" stroke="#334155" stroke-width="2" marker-end="url(#fc-arrow)"/>
+  <line x1="268" y1="216" x2="660" y2="216" stroke="#334155" stroke-width="2" marker-end="url(#fc-arrow)"/>
+
+  <rect x="32" y="370" width="896" height="34" rx="10" fill="#f1f5f9"/>
+  <text x="48" y="392" font-size="12.5" fill="#334155"><tspan font-weight="700">Without MCP,</tspan> the host hand-wires every integration. <tspan font-weight="700">With MCP,</tspan> the host writes one client and the model never notices the difference.</text>
+</svg>

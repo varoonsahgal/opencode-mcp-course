@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="470" viewBox="0 0 960 470" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker>
+    <marker id="arrTeal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#0d9488"/></marker>
+  </defs>
+  <rect width="960" height="470" rx="18" fill="#fbfbfd"/>
+  <text x="32" y="40" font-size="22" font-weight="700" fill="#0f172a">The MCP architecture, as it runs on your laptop</text>
+  <text x="32" y="64" font-size="14" fill="#475569">One host, one client per server, any number of servers. The host is the only thing that talks to the model.</text>
+
+  <!-- Host box -->
+  <rect x="32" y="92" width="420" height="330" rx="16" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+  <text x="52" y="122" font-size="15" font-weight="700" fill="#3730a3">MCP HOST  ·  OpenCode (the AI application)</text>
+  <text x="52" y="142" font-size="12.5" fill="#4338ca">owns the conversation, the model, permissions, and the tool loop</text>
+
+  <!-- LLM pill -->
+  <rect x="52" y="160" width="380" height="54" rx="12" fill="#ffffff" stroke="#c7d2fe"/>
+  <text x="70" y="183" font-size="13.5" font-weight="700" fill="#1e1b4b">LLM (opencode/gpt-5.4-mini)</text>
+  <text x="70" y="202" font-size="12" fill="#475569">sees ONE merged tool list: built-in tools + every MCP tool, prefixed server_tool</text>
+
+  <!-- Clients -->
+  <rect x="52" y="232" width="176" height="78" rx="12" fill="#ccfbf1" stroke="#0d9488" stroke-width="1.5"/>
+  <text x="140" y="258" text-anchor="middle" font-size="13.5" font-weight="700" fill="#134e4a">MCP CLIENT #1</text>
+  <text x="140" y="277" text-anchor="middle" font-size="11.5" fill="#115e59">1 connection → 1 server</text>
+  <text x="140" y="294" text-anchor="middle" font-size="11.5" fill="#115e59">tools/list · tools/call</text>
+
+  <rect x="256" y="232" width="176" height="78" rx="12" fill="#ccfbf1" stroke="#0d9488" stroke-width="1.5"/>
+  <text x="344" y="258" text-anchor="middle" font-size="13.5" font-weight="700" fill="#134e4a">MCP CLIENT #2</text>
+  <text x="344" y="277" text-anchor="middle" font-size="11.5" fill="#115e59">1 connection → 1 server</text>
+  <text x="344" y="294" text-anchor="middle" font-size="11.5" fill="#115e59">resources/read · prompts/get</text>
+
+  <rect x="52" y="326" width="380" height="78" rx="12" fill="#ffffff" stroke="#c7d2fe"/>
+  <text x="70" y="350" font-size="13" font-weight="700" fill="#1e1b4b">Built-in tools</text>
+  <text x="70" y="369" font-size="12" fill="#475569">read · edit · bash · grep · glob · webfetch …</text>
+  <text x="70" y="388" font-size="12" fill="#475569">same permission system as MCP tools (allow / ask / deny)</text>
+
+  <!-- Servers -->
+  <rect x="540" y="200" width="180" height="92" rx="14" fill="#fff7ed" stroke="#d97706" stroke-width="2"/>
+  <text x="630" y="228" text-anchor="middle" font-size="13.5" font-weight="700" fill="#9a3412">MCP SERVER A</text>
+  <text x="630" y="248" text-anchor="middle" font-size="12" fill="#9a3412">local · stdio</text>
+  <text x="630" y="266" text-anchor="middle" font-size="11.5" fill="#7c2d12">child process you spawn</text>
+  <text x="630" y="282" text-anchor="middle" font-size="11.5" fill="#7c2d12">e.g. uvx mcp-server-time</text>
+
+  <rect x="540" y="316" width="180" height="92" rx="14" fill="#fff7ed" stroke="#d97706" stroke-width="2"/>
+  <text x="630" y="344" text-anchor="middle" font-size="13.5" font-weight="700" fill="#9a3412">MCP SERVER B</text>
+  <text x="630" y="364" text-anchor="middle" font-size="12" fill="#9a3412">remote · Streamable HTTP</text>
+  <text x="630" y="382" text-anchor="middle" font-size="11.5" fill="#7c2d12">someone else's process</text>
+  <text x="630" y="398" text-anchor="middle" font-size="11.5" fill="#7c2d12">e.g. mcp.deepwiki.com</text>
+
+  <!-- External systems -->
+  <rect x="780" y="200" width="150" height="92" rx="14" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="5 4"/>
+  <text x="855" y="235" text-anchor="middle" font-size="12.5" font-weight="700" fill="#334155">system clock</text>
+  <text x="855" y="256" text-anchor="middle" font-size="11.5" fill="#64748b">files · DBs · shells</text>
+  <text x="855" y="274" text-anchor="middle" font-size="11.5" fill="#64748b">(your machine)</text>
+
+  <rect x="780" y="316" width="150" height="92" rx="14" fill="#f8fafc" stroke="#94a3b8" stroke-dasharray="5 4"/>
+  <text x="855" y="351" text-anchor="middle" font-size="12.5" font-weight="700" fill="#334155">GitHub wikis</text>
+  <text x="855" y="372" text-anchor="middle" font-size="11.5" fill="#64748b">SaaS APIs · clouds</text>
+  <text x="855" y="390" text-anchor="middle" font-size="11.5" fill="#64748b">(the internet)</text>
+
+  <!-- connections -->
+  <path d="M228 271 C 300 271, 300 246, 540 246" fill="none" stroke="#0d9488" stroke-width="2.5" marker-end="url(#arrTeal)"/>
+  <path d="M432 271 C 480 271, 480 362, 540 362" fill="none" stroke="#0d9488" stroke-width="2.5" marker-end="url(#arrTeal)"/>
+  <text x="470" y="232" font-size="11" fill="#0f766e" font-weight="600">JSON-RPC over stdin/stdout</text>
+  <text x="470" y="347" font-size="11" fill="#0f766e" font-weight="600">JSON-RPC over HTTPS</text>
+  <path d="M720 246 L 780 246" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+  <path d="M720 362 L 780 362" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="750" y="238" text-anchor="middle" font-size="10.5" fill="#475569">native</text>
+  <text x="750" y="354" text-anchor="middle" font-size="10.5" fill="#475569">native</text>
+
+  <!-- you -->
+  <circle cx="500" cy="130" r="18" fill="#fde68a" stroke="#d97706" stroke-width="2"/>
+  <text x="500" y="135" text-anchor="middle" font-size="13" font-weight="700" fill="#7c2d12">you</text>
+  <path d="M482 134 C 470 150, 460 160, 440 186" fill="none" stroke="#475569" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="520" y="124" font-size="12" fill="#475569">type a prompt, approve tool calls</text>
+  <text x="520" y="141" font-size="12" fill="#475569">(the only human in the loop)</text>
+
+  <text x="32" y="452" font-size="12" fill="#64748b">Vocabulary check: “server” means the program that provides tools, even when it runs on your own laptop.</text>
+</svg>

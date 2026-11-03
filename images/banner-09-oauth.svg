@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="220" viewBox="0 0 960 220" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="Module 9: identity for real. A person signs in at an authorization server, which hands a sealed token to the client; the pumpkin desk checks it before answering.">
+ <title>Module 9 · Identity, for real</title>
+ <style>
+  .b9-tw { animation: b9-tw 3.2s ease-in-out infinite; }
+  .b9-fly { animation: b9-fly 6s ease-in-out infinite; }
+  .b9-flow { stroke-dasharray: 4 10; animation: b9-flow 1.4s linear infinite; }
+  .b9-pulse { animation: b9-pulse 2.4s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+  .b9-tick { animation: b9-tick 2.8s steps(1) infinite; }
+  @keyframes b9-tw { 0%,100% { opacity: .15; } 50% { opacity: 1; } }
+  @keyframes b9-fly { 0%,100% { transform: translate(0,0) rotate(0); } 50% { transform: translate(12px,-7px) rotate(-8deg); } }
+  @keyframes b9-flow { to { stroke-dashoffset: -28; } }
+  @keyframes b9-pulse { 0% { opacity: .55; transform: scale(.96); } 100% { opacity: 0; transform: scale(1.45); } }
+  @keyframes b9-tick { 0%,33% { opacity: 1; } 34%,66% { opacity: .35; } 67%,100% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .b9-tw, .b9-fly, .b9-flow, .b9-pulse, .b9-tick { animation: none !important; } }
+ </style>
+ <defs>
+  <linearGradient id="b9-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0612"/><stop offset="1" stop-color="#1f1333"/></linearGradient>
+  <pattern id="b9-grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#2a1a44"/></pattern>
+  <radialGradient id="b9-glow" cx="0.72" cy="0.5" r="0.45"><stop offset="0" stop-color="#fb7185" stop-opacity=".25"/><stop offset="1" stop-color="#fb7185" stop-opacity="0"/></radialGradient>
+  <radialGradient id="b9-mg"><stop offset=".3" stop-color="#ffe9b3" stop-opacity=".3"/><stop offset="1" stop-color="#ffe9b3" stop-opacity="0"/></radialGradient>
+  <filter id="b9-tg" x="-6%" y="-40%" width="112%" height="180%"><feGaussianBlur stdDeviation="5" result="b"/><feFlood flood-color="#fb7185" flood-opacity=".7"/><feComposite in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="b9-fg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <path id="b9-bat" d="M0,-4L-2,-8L-3,-3C-9,-9 -15,-8 -19,-4C-15,-3 -14,0 -13,3C-10,0 -8,1 -7,4C-5,2 -3,3 -2,5L0,4L2,5C3,3 5,2 7,4C8,1 10,0 13,3C14,0 15,-3 19,-4C15,-8 9,-9 3,-3L2,-8Z" fill="#0a0612" stroke="#a855f7" stroke-opacity=".6" stroke-width=".9" stroke-linejoin="round"/>
+  <g id="b9-pk"><path d="M-2,-19C-3,-24 0,-28 6,-30C4,-27 5,-22 4,-19Z" fill="#22c55e"/><ellipse cy="1" rx="24" ry="19" fill="#e0661a"/><ellipse rx="17" ry="20" fill="#ff8a1f"/><path d="M-9,-19C-13,-6 -13,8 -9,20M9,-19C13,-6 13,8 9,20" fill="none" stroke="#e0661a" stroke-width="1.4"/></g>
+  <path id="b9-pf" d="M-13,-1L-8,-10L-3,-1ZM3,-1L8,-10L13,-1ZM-2,6L0,2L2,6ZM-13,8Q0,18 13,8L10,8 9,12 6,8 -6,8 -9,12 -10,8Z"/>
+  <g id="b9-witch"><polygon points="-14,26 14,26 8,2 -8,2" fill="#1a1026"/><circle cy="-6" r="9" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.2"/><circle cx="-3" cy="-7" r="1.3" fill="#1a1026"/><circle cx="3" cy="-7" r="1.3" fill="#1a1026"/><ellipse cy="-13" rx="17" ry="3.5" fill="#6d28d9" stroke="#1a1026" stroke-width="1"/><path d="M-11,-13 L11,-13 L4,-34 Q5,-50 -3,-52 Q1,-42 -4,-34 Z" fill="#6d28d9" stroke="#1a1026" stroke-width="1"/></g>
+  <g id="b9-token"><rect x="-26" y="-11" width="52" height="22" rx="5" fill="#fff7dd" stroke="#1a1026" stroke-width="1.2"/><circle cx="-14" r="5" fill="#e11d48" stroke="#1a1026" stroke-width=".8"/><text x="4" y="4" text-anchor="middle" font-family="Menlo, monospace" font-size="8" font-weight="700" fill="#1a1026">JWT</text></g>
+ </defs>
+ <rect width="960" height="220" rx="20" fill="url(#b9-bg)"/>
+ <rect width="960" height="220" rx="20" fill="url(#b9-grid)" opacity=".5"/>
+ <rect width="960" height="220" rx="20" fill="url(#b9-glow)"/>
+ <g fill="#fff"><circle cx="97" cy="25" r="1.4" opacity="0.55"/><circle cx="880" cy="17" r="1.1" opacity="0.85"/><circle cx="213" cy="9" r="0.8" opacity="0.32"/><circle cx="426" cy="11" r="0.8" opacity="0.48"/><circle cx="364" cy="8" r="1.4" opacity="0.76"/><circle class="b9-tw" style="animation-delay:-2.8s" cx="67" cy="16" r="1.0"/><circle class="b9-tw" style="animation-delay:-0.9s" cx="33" cy="27" r="0.9"/><circle cx="575" cy="27" r="1.1" opacity="0.74"/><circle class="b9-tw" style="animation-delay:-2.3s" cx="737" cy="200" r="0.9"/><circle class="b9-tw" style="animation-delay:-0.7s" cx="614" cy="40" r="1.2"/></g>
+ <circle cx="926" cy="32" r="42" fill="url(#b9-mg)"/>
+ <path transform="translate(926 32) rotate(-20)" d="M0,-15A15,15 0 0,0 0,15A18.3,18.3 0 0,1 0,-15Z" fill="#ffe9b3"/>
+ <g transform="translate(578 24) scale(0.5)"><use href="#b9-bat" class="b9-fly" style="animation-duration:6s;animation-delay:-1s"/></g><g transform="translate(884 22) scale(0.5)"><use href="#b9-bat" class="b9-fly" style="animation-duration:5.5s;animation-delay:-2s"/></g>
+ <path d="M960,220L892.5,198.1M960,220L902.6,178.3M960,220L918.3,162.6M960,220L938.1,152.5M943.0,220.0Q944.9,217.6 943.8,214.7Q946.4,213.1 946.2,210.0Q949.2,209.2 950.0,206.2Q953.1,206.4 954.7,203.8Q957.6,204.9 960.0,203.0M927.0,220.0Q930.7,215.4 928.6,209.8Q933.5,206.5 933.3,200.6Q939.0,199.0 940.6,193.3Q946.5,193.5 949.8,188.6Q955.4,190.7 960.0,187.0M911.0,220.0Q916.4,213.1 913.4,204.9Q920.7,200.0 920.4,191.2Q928.8,188.8 931.2,180.4Q940.0,180.7 944.9,173.4Q953.1,176.4 960.0,171.0" fill="none" stroke="#efe3cc" stroke-opacity=".25" stroke-width=".8"/>
+
+ <text x="40" y="50" font-family="Menlo, 'JetBrains Mono', monospace" font-size="12" letter-spacing="2.5" fill="#fb7185">MODULE 09 · 60 MIN · ADVANCED TRACK · LAB: lab9-oauth</text>
+ <text x="38" y="100" font-family="Creepster, 'Chalkboard SE', Impact, fantasy" font-size="44" letter-spacing="1" fill="#efe3cc" filter="url(#b9-tg)" textLength="480" lengthAdjust="spacingAndGlyphs">Identity, for Real</text>
+ <text x="40" y="132" font-size="17" fill="#d8cfc0">Three strings in a table become a login page, a sealed token</text>
+ <text x="40" y="154" font-size="17" fill="#d8cfc0">with an audience and a clock, <tspan fill="#fda4af" font-weight="700">and a desk that checks all three.</tspan></text>
+ <g font-weight="700">
+  <rect x="40" y="174" width="92" height="26" rx="13" fill="#fb7185" fill-opacity=".18" stroke="#fb7185"/><text x="86" y="191" text-anchor="middle" fill="#ffe4e6" font-size="12">OAuth 2.1</text>
+  <rect x="142" y="174" width="74" height="26" rx="13" fill="#fb7185" fill-opacity=".18" stroke="#fb7185"/><text x="179" y="191" text-anchor="middle" fill="#ffe4e6" font-size="12">PKCE</text>
+  <rect x="226" y="174" width="98" height="26" rx="13" fill="#fb7185" fill-opacity=".18" stroke="#fb7185"/><text x="275" y="191" text-anchor="middle" fill="#ffe4e6" font-size="12">audience</text>
+  <rect x="334" y="174" width="98" height="26" rx="13" fill="#fb7185" fill-opacity=".18" stroke="#fb7185"/><text x="383" y="191" text-anchor="middle" fill="#ffe4e6" font-size="12">step-up</text>
+  <rect x="442" y="174" width="86" height="26" rx="13" fill="#fb7185" fill-opacity=".18" stroke="#fb7185"/><text x="485" y="191" text-anchor="middle" fill="#ffe4e6" font-size="12">refresh</text>
+ </g>
+
+ <!-- right: the witch (authorization server) hands a token to the ghost client, who presents it to the desk -->
+ <g transform="translate(612 128)"><use href="#b9-witch"/></g>
+ <text x="612" y="178" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="9.5" fill="#d8b4fe">auth server</text>
+ <g class="b9-tick" transform="translate(700 104)"><use href="#b9-token"/></g>
+ <text x="700" y="128" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="8.5" fill="#fda4af">sub · aud · scope · exp</text>
+ <g fill="none" stroke-width="2">
+  <path class="b9-flow" d="M636 104 C650 100 660 104 672 104" stroke="#c084fc"/>
+  <path class="b9-flow" d="M728 104 C760 104 770 104 816 104" stroke="#fb7185"/>
+ </g>
+ <circle class="b9-pulse" cx="852" cy="104" r="46" fill="none" stroke="#fb7185" stroke-width="2"/>
+ <g transform="translate(852 104) scale(1.15)"><use href="#b9-pk"/><use href="#b9-pf" fill="#ffe9b3" filter="url(#b9-fg)"/></g>
+ <text x="852" y="148" text-anchor="middle" font-size="13" font-weight="800" fill="#efe3cc">release desk</text>
+ <text x="852" y="162" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="10" fill="#fda4af">401 → 403 → 200</text>
+</svg>

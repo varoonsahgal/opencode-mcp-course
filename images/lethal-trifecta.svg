@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="440" viewBox="0 0 960 440" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <rect width="960" height="440" rx="18" fill="#fbfbfd"/>
+  <text x="32" y="40" font-size="22" font-weight="700" fill="#0f172a">The lethal trifecta</text>
+  <text x="32" y="64" font-size="14" fill="#475569">Simon Willison's rule of thumb: when an agent has all three at once, someone will eventually steal your data. MCP makes all three one config line away.</text>
+  <g opacity="0.85">
+    <circle cx="330" cy="235" r="120" fill="#c7d2fe"/>
+    <circle cx="470" cy="235" r="120" fill="#fed7aa"/>
+    <circle cx="400" cy="335" r="120" fill="#fecaca"/>
+  </g>
+  <text x="270" y="190" text-anchor="middle" font-size="14" font-weight="800" fill="#312e81">PRIVATE DATA</text>
+  <text x="270" y="208" text-anchor="middle" font-size="11.5" fill="#3730a3">DB rows, repos, email,</text>
+  <text x="270" y="224" text-anchor="middle" font-size="11.5" fill="#3730a3">.env files, tokens</text>
+  <text x="535" y="190" text-anchor="middle" font-size="14" font-weight="800" fill="#7c2d12">UNTRUSTED INPUT</text>
+  <text x="535" y="208" text-anchor="middle" font-size="11.5" fill="#9a3412">tickets, issues, web pages,</text>
+  <text x="535" y="224" text-anchor="middle" font-size="11.5" fill="#9a3412">tool descriptions, docs</text>
+  <text x="400" y="400" text-anchor="middle" font-size="14" font-weight="800" fill="#7f1d1d">EXFILTRATION CHANNEL</text>
+  <text x="400" y="418" text-anchor="middle" font-size="11.5" fill="#991b1b">write tools, HTTP fetch, email, PR comments, DNS</text>
+  <circle cx="400" cy="268" r="34" fill="#0f172a"/>
+  <text x="400" y="264" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">GAME</text>
+  <text x="400" y="279" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">OVER</text>
+  <rect x="640" y="96" width="288" height="320" rx="14" fill="#f1f5f9"/>
+  <text x="656" y="124" font-size="13.5" font-weight="700" fill="#0f172a">Real incidents, one per leg</text>
+  <text x="656" y="150" font-size="12" font-weight="700" fill="#3730a3">GitHub MCP (May 2025)</text>
+  <text x="656" y="167" font-size="11.5" fill="#334155">A public issue told the agent to copy</text>
+  <text x="656" y="183" font-size="11.5" fill="#334155">private-repo data into a public PR.</text>
+  <text x="656" y="211" font-size="12" font-weight="700" fill="#7c2d12">Supabase MCP (July 2025)</text>
+  <text x="656" y="228" font-size="11.5" fill="#334155">A support ticket told the agent to read</text>
+  <text x="656" y="244" font-size="11.5" fill="#334155">integration_tokens and post them back.</text>
+  <text x="656" y="272" font-size="12" font-weight="700" fill="#7f1d1d">postmark-mcp (Sept 2025)</text>
+  <text x="656" y="289" font-size="11.5" fill="#334155">A trojaned npm server BCC'd every email</text>
+  <text x="656" y="305" font-size="11.5" fill="#334155">it sent to the attacker. ~1,500 downloads.</text>
+  <text x="656" y="333" font-size="12" font-weight="700" fill="#0f172a">Break ONE leg and the attack fails:</text>
+  <text x="656" y="351" font-size="11.5" fill="#334155">• read-only data?  no exfil via writes</text>
+  <text x="656" y="367" font-size="11.5" fill="#334155">• no untrusted content?  no injection</text>
+  <text x="656" y="383" font-size="11.5" fill="#334155">• no private data?  nothing to steal</text>
+  <text x="656" y="404" font-size="11.5" fill="#64748b">You usually can't remove all three. Pick one.</text>
+  <text x="32" y="124" font-size="12" fill="#64748b">Lab 4's teamdb-v1 has all three:</text>
+  <text x="32" y="142" font-size="12" fill="#64748b">customers (private) + ticket bodies</text>
+  <text x="32" y="160" font-size="12" fill="#64748b">(untrusted) + run_sql writes (exfil).</text>
+</svg>

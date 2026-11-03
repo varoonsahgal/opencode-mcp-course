@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="300" viewBox="0 0 960 300" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="cm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#94a3b8"/></marker>
+  </defs>
+  <rect width="960" height="300" rx="18" fill="#fbfbfd"/>
+  <text x="32" y="40" font-size="22" font-weight="700" fill="#0f172a">MCP with AI Agents: four hours, five modules, one agent you can trust</text>
+  <text x="32" y="64" font-size="14" fill="#475569">Each module ends with a hands-on lab in OpenCode. Challenges are optional stretch work with instructor solutions.</text>
+
+  <g font-size="12">
+    <rect x="32" y="96" width="166" height="150" rx="14" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+    <text x="115" y="124" text-anchor="middle" font-size="24" font-weight="800" fill="#4f46e5">1</text>
+    <text x="115" y="150" text-anchor="middle" font-weight="700" fill="#1e1b4b">Connect</text>
+    <text x="115" y="170" text-anchor="middle" fill="#3730a3">what MCP is, how</text>
+    <text x="115" y="186" text-anchor="middle" fill="#3730a3">agents find and call tools</text>
+    <text x="115" y="214" text-anchor="middle" fill="#64748b">40 min · Lab: first contact</text>
+
+    <rect x="218" y="96" width="166" height="150" rx="14" fill="#ecfeff" stroke="#0891b2" stroke-width="2"/>
+    <text x="301" y="124" text-anchor="middle" font-size="24" font-weight="800" fill="#0891b2">2</text>
+    <text x="301" y="150" text-anchor="middle" font-weight="700" fill="#083344">Configure</text>
+    <text x="301" y="170" text-anchor="middle" fill="#155e75">local, remote, env vars,</text>
+    <text x="301" y="186" text-anchor="middle" fill="#155e75">enable/disable, debug</text>
+    <text x="301" y="214" text-anchor="middle" fill="#64748b">30 min · Lab: wire it up</text>
+
+    <rect x="404" y="96" width="166" height="150" rx="14" fill="#fff7ed" stroke="#d97706" stroke-width="2"/>
+    <text x="487" y="124" text-anchor="middle" font-size="24" font-weight="800" fill="#d97706">3</text>
+    <text x="487" y="150" text-anchor="middle" font-weight="700" fill="#431407">Build</text>
+    <text x="487" y="170" text-anchor="middle" fill="#9a3412">your own server with</text>
+    <text x="487" y="186" text-anchor="middle" fill="#9a3412">the TypeScript SDK</text>
+    <text x="487" y="214" text-anchor="middle" fill="#64748b">55 min · Lab: weather server</text>
+
+    <rect x="590" y="96" width="166" height="150" rx="14" fill="#ffe4e6" stroke="#e11d48" stroke-width="2"/>
+    <text x="673" y="124" text-anchor="middle" font-size="24" font-weight="800" fill="#e11d48">4</text>
+    <text x="673" y="150" text-anchor="middle" font-weight="700" fill="#4c0519">Secure</text>
+    <text x="673" y="170" text-anchor="middle" fill="#9f1239">trust chain, injection,</text>
+    <text x="673" y="186" text-anchor="middle" fill="#9f1239">least privilege, approvals</text>
+    <text x="673" y="214" text-anchor="middle" fill="#64748b">50 min · Lab: the over-permissioned DB</text>
+
+    <rect x="776" y="96" width="152" height="150" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+    <text x="852" y="124" text-anchor="middle" font-size="24" font-weight="800" fill="#16a34a">5</text>
+    <text x="852" y="150" text-anchor="middle" font-weight="700" fill="#052e16">Apply</text>
+    <text x="852" y="170" text-anchor="middle" fill="#14532d">design, build, lock down</text>
+    <text x="852" y="186" text-anchor="middle" fill="#14532d">an on-call helper</text>
+    <text x="852" y="214" text-anchor="middle" fill="#64748b">40 min · Challenge</text>
+  </g>
+  <text x="32" y="280" font-size="12" fill="#64748b">Plus: 10 min setup check at the start, two short breaks. Model for everything: opencode/gpt-5.4-mini via OpenCode Zen (a full run costs well under $2).</text>
+</svg>

@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="470" viewBox="0 0 960 470" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="tc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker>
+    <marker id="tr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#e11d48"/></marker>
+  </defs>
+  <rect width="960" height="470" rx="18" fill="#fbfbfd"/>
+  <text x="32" y="40" font-size="22" font-weight="700" fill="#0f172a">The trust chain, and where it can be hijacked</text>
+  <text x="32" y="64" font-size="14" fill="#475569">Every arrow is a hand-off of authority. MCP standardises the hand-offs; it does not check any of them.</text>
+
+  <!-- chain -->
+  <g font-size="12.5">
+    <rect x="32" y="150" width="150" height="70" rx="14" fill="#fde68a" stroke="#d97706" stroke-width="2"/>
+    <text x="107" y="178" text-anchor="middle" font-weight="700" fill="#78350f">User</text>
+    <text x="107" y="198" text-anchor="middle" fill="#78350f">has intent + authority</text>
+
+    <rect x="222" y="150" width="150" height="70" rx="14" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+    <text x="297" y="178" text-anchor="middle" font-weight="700" fill="#3730a3">AI agent (LLM)</text>
+    <text x="297" y="198" text-anchor="middle" fill="#3730a3">interprets text</text>
+
+    <rect x="412" y="150" width="150" height="70" rx="14" fill="#ccfbf1" stroke="#0d9488" stroke-width="2"/>
+    <text x="487" y="178" text-anchor="middle" font-weight="700" fill="#134e4a">MCP client</text>
+    <text x="487" y="198" text-anchor="middle" fill="#134e4a">OpenCode, permissions</text>
+
+    <rect x="602" y="150" width="150" height="70" rx="14" fill="#fff7ed" stroke="#d97706" stroke-width="2"/>
+    <text x="677" y="178" text-anchor="middle" font-weight="700" fill="#9a3412">MCP server</text>
+    <text x="677" y="198" text-anchor="middle" fill="#9a3412">someone's code + creds</text>
+
+    <rect x="792" y="150" width="136" height="70" rx="14" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>
+    <text x="860" y="178" text-anchor="middle" font-weight="700" fill="#334155">External system</text>
+    <text x="860" y="198" text-anchor="middle" fill="#334155">DB · API · files</text>
+  </g>
+  <line x1="182" y1="185" x2="220" y2="185" stroke="#334155" stroke-width="2.5" marker-end="url(#tc)"/>
+  <line x1="372" y1="185" x2="410" y2="185" stroke="#334155" stroke-width="2.5" marker-end="url(#tc)"/>
+  <line x1="562" y1="185" x2="600" y2="185" stroke="#334155" stroke-width="2.5" marker-end="url(#tc)"/>
+  <line x1="752" y1="185" x2="790" y2="185" stroke="#334155" stroke-width="2.5" marker-end="url(#tc)"/>
+
+  <!-- attack callouts (above) -->
+  <g font-size="11.5">
+    <rect x="200" y="84" width="200" height="48" rx="10" fill="#ffe4e6" stroke="#e11d48"/>
+    <text x="300" y="104" text-anchor="middle" font-weight="700" fill="#9f1239">Prompt injection</text>
+    <text x="300" y="121" text-anchor="middle" fill="#9f1239">tool results, files, tickets, web pages</text>
+    <line x1="300" y1="132" x2="297" y2="148" stroke="#e11d48" stroke-width="2" marker-end="url(#tr)"/>
+
+    <rect x="580" y="84" width="200" height="48" rx="10" fill="#ffe4e6" stroke="#e11d48"/>
+    <text x="680" y="104" text-anchor="middle" font-weight="700" fill="#9f1239">Tool poisoning · rug pull</text>
+    <text x="680" y="121" text-anchor="middle" fill="#9f1239">malicious descriptions, changed tools</text>
+    <line x1="680" y1="132" x2="677" y2="148" stroke="#e11d48" stroke-width="2" marker-end="url(#tr)"/>
+  </g>
+
+  <!-- attack callouts (below) -->
+  <g font-size="11.5">
+    <rect x="32" y="250" width="180" height="62" rx="10" fill="#ffe4e6" stroke="#e11d48"/>
+    <text x="122" y="270" text-anchor="middle" font-weight="700" fill="#9f1239">Over-broad intent</text>
+    <text x="122" y="287" text-anchor="middle" fill="#9f1239">"clean up the database"</text>
+    <text x="122" y="303" text-anchor="middle" fill="#9f1239">"allow always"</text>
+    <line x1="112" y1="248" x2="107" y2="222" stroke="#e11d48" stroke-width="2" marker-end="url(#tr)"/>
+
+    <rect x="392" y="250" width="190" height="62" rx="10" fill="#ffe4e6" stroke="#e11d48"/>
+    <text x="487" y="270" text-anchor="middle" font-weight="700" fill="#9f1239">Permissions default to allow</text>
+    <text x="487" y="287" text-anchor="middle" fill="#9f1239">--auto, "*": "allow",</text>
+    <text x="487" y="303" text-anchor="middle" fill="#9f1239">client CVEs (mcp-remote RCE)</text>
+    <line x1="487" y1="248" x2="487" y2="222" stroke="#e11d48" stroke-width="2" marker-end="url(#tr)"/>
+
+    <rect x="602" y="250" width="150" height="62" rx="10" fill="#ffe4e6" stroke="#e11d48"/>
+    <text x="677" y="270" text-anchor="middle" font-weight="700" fill="#9f1239">Supply chain</text>
+    <text x="677" y="287" text-anchor="middle" fill="#9f1239">npx -y latest, backdoors</text>
+    <text x="677" y="303" text-anchor="middle" fill="#9f1239">(postmark-mcp)</text>
+    <line x1="677" y1="248" x2="677" y2="222" stroke="#e11d48" stroke-width="2" marker-end="url(#tr)"/>
+
+    <rect x="772" y="250" width="156" height="62" rx="10" fill="#ffe4e6" stroke="#e11d48"/>
+    <text x="850" y="270" text-anchor="middle" font-weight="700" fill="#9f1239">Excessive privilege</text>
+    <text x="850" y="287" text-anchor="middle" fill="#9f1239">service-role keys, rw DB</text>
+    <text x="850" y="303" text-anchor="middle" fill="#9f1239">user, admin tokens in env</text>
+    <line x1="850" y1="248" x2="856" y2="222" stroke="#e11d48" stroke-width="2" marker-end="url(#tr)"/>
+  </g>
+
+  <rect x="32" y="340" width="896" height="112" rx="12" fill="#f1f5f9"/>
+  <text x="48" y="366" font-size="13" font-weight="700" fill="#0f172a">Three facts to internalise</text>
+  <text x="48" y="388" font-size="12.5" fill="#334155">1. A tool can do anything the server process can do. The protocol has no concept of "read-only" that anyone enforces; readOnlyHint is a hint.</text>
+  <text x="48" y="408" font-size="12.5" fill="#334155">2. The model cannot tell instructions from data. Anything that reaches its context can steer it (the confused deputy).</text>
+  <text x="48" y="428" font-size="12.5" fill="#334155">3. Therefore the real boundaries are: what the server can reach, what the client lets through, and what credentials you handed over.</text>
+</svg>

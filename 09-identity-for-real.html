@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 9 · Identity, for Real: OAuth End to End · MCP with AI Agents</title>
+<script>try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Creepster&family=Patrick+Hand&display=swap" rel="stylesheet">
+<link id="hl-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="(prefers-color-scheme: light)">
+<link id="hl-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%228%22%20fill%3D%22%23150c24%22%2F%3E%3Cellipse%20cx%3D%2216%22%20cy%3D%2218%22%20rx%3D%2212%22%20ry%3D%2210%22%20fill%3D%22%23ff8a1f%22%2F%3E%3Cpath%20d%3D%22M16%208c0-3%201-4%203-5%22%20stroke%3D%22%2322c55e%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M9%2015l4%203-4%201zM23%2015l-4%203%204%201z%22%20fill%3D%22%23150c24%22%2F%3E%3Cpath%20d%3D%22M9%2022q7%205%2014%200q-2%203-7%203t-7-3z%22%20fill%3D%22%23150c24%22%2F%3E%3C%2Fsvg%3E">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="pumpkin" aria-hidden="true">🎃</span>MCP with AI Agents</a>
+  <nav class="links"><a href="index.html">Home</a><a href="00-setup.html">00 · Setup</a><a href="01-connecting-agents-with-mcp.html">01 · Connect</a><a href="02-configuring-mcp-in-opencode.html">02 · Configure</a><a href="03-building-a-custom-mcp-server.html">03 · Build</a><a href="04-securing-mcp-integrations.html">04 · Secure</a><a href="05-applied-challenge.html">05 · Apply</a><a href="06-advanced-mcp.html">06 · Go remote</a><a href="07-be-the-host.html">07 · Be the host</a><a href="08-the-2026-wire.html">08 · The 2026 wire</a><a href="09-identity-for-real.html" aria-current="page">09 · Identity</a><a href="10-the-gateway.html">10 · Gateway</a><span class="sep"></span><a href="handout.html">Handout</a><a href="slides/index.html">Slides</a><a href="https://github.com/varoonsahgal/opencode-mcp-course">GitHub</a></nav>
+  <button class="theme" type="button" id="themebtn" aria-label="Switch between daylight and midnight" title="Daylight / midnight">🌙</button>
+  <button class="menu" type="button" aria-label="Menu" onclick="document.body.classList.toggle('open')">☰</button>
+</header>
+<svg class="web" viewBox="0 0 170 170" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1">
+<path d="M0 0L170 170M0 0L170 70M0 0L70 170M0 0L170 20M0 0L20 170M0 0L170 120M0 0L120 170"/>
+<path d="M30 0Q28 22 0 30M60 0Q56 44 0 60M90 0Q84 66 0 90M120 0Q112 88 0 120M150 0Q140 110 0 150"/>
+<path d="M30 0Q30 15 20 24Q15 28 0 30" opacity=".5"/></svg>
+<main class="doc">
+<figure class="banner"><svg xmlns="http://www.w3.org/2000/svg" width="960" height="220" viewBox="0 0 960 220" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="Module 9: identity for real. A person signs in at an authorization server, which hands a sealed token to the client; the pumpkin desk checks it before answering.">
+ <title>Module 9 · Identity, for real</title>
+ <style>
+  .b9-tw { animation: b9-tw 3.2s ease-in-out infinite; }
+  .b9-fly { animation: b9-fly 6s ease-in-out infinite; }
+  .b9-flow { stroke-dasharray: 4 10; animation: b9-flow 1.4s linear infinite; }
+  .b9-pulse { animation: b9-pulse 2.4s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+  .b9-tick { animation: b9-tick 2.8s steps(1) infinite; }
+  @keyframes b9-tw { 0%,100% { opacity: .15; } 50% { opacity: 1; } }
+  @keyframes b9-fly { 0%,100% { transform: translate(0,0) rotate(0); } 50% { transform: translate(12px,-7px) rotate(-8deg); } }
+  @keyframes b9-flow { to { stroke-dashoffset: -28; } }
+  @keyframes b9-pulse { 0% { opacity: .55; transform: scale(.96); } 100% { opacity: 0; transform: scale(1.45); } }
+  @keyframes b9-tick { 0%,33% { opacity: 1; } 34%,66% { opacity: .35; } 67%,100% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .b9-tw, .b9-fly, .b9-flow, .b9-pulse, .b9-tick { animation: none !important; } }
+ </style>
+ <defs>
+  <linearGradient id="b9-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0612"/><stop offset="1" stop-color="#1f1333"/></linearGradient>
+  <pattern id="b9-grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#2a1a44"/></pattern>
+  <radialGradient id="b9-glow" cx="0.72" cy="0.5" r="0.45"><stop offset="0" stop-color="#fb7185" stop-opacity=".25"/><stop offset="1" stop-color="#fb7185" stop-opacity="0"/></radialGradient>
+  <radialGradient id="b9-mg"><stop offset=".3" stop-color="#ffe9b3" stop-opacity=".3"/><stop offset="1" stop-color="#ffe9b3" stop-opacity="0"/></radialGradient>
+  <filter id="b9-tg" x="-6%" y="-40%" width="112%" height="180%"><feGaussianBlur stdDeviation="5" result="b"/><feFlood flood-color="#fb7185" flood-opacity=".7"/><feComposite in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="b9-fg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <path id="b9-bat" d="M0,-4L-2,-8L-3,-3C-9,-9 -15,-8 -19,-4C-15,-3 -14,0 -13,3C-10,0 -8,1 -7,4C-5,2 -3,3 -2,5L0,4L2,5C3,3 5,2 7,4C8,1 10,0 13,3C14,0 15,-3 19,-4C15,-8 9,-9 3,-3L2,-8Z" fill="#0a0612" stroke="#a855f7" stroke-opacity=".6" stroke-width=".9" stroke-linejoin="round"/>
+  <g id="b9-pk"><path d="M-2,-19C-3,-24 0,-28 6,-30C4,-27 5,-22 4,-19Z" fill="#22c55e"/><ellipse cy="1" rx="24" ry="19" fill="#e0661a"/><ellipse rx="17" ry="20" fill="#ff8a1f"/><path d="M-9,-19C-13,-6 -13,8 -9,20M9,-19C13,-6 13,8 9,20" fill="none" stroke="#e0661a" stroke-width="1.4"/></g>
+  <path id="b9-pf" d="M-13,-1L-8,-10L-3,-1ZM3,-1L8,-10L13,-1ZM-2,6L0,2L2,6ZM-13,8Q0,18 13,8L10,8 9,12 6,8 -6,8 -9,12 -10,8Z"/>
+  <g id="b9-witch"><polygon points="-14,26 14,26 8,2 -8,2" fill="#1a1026"/><circle cy="-6" r="9" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.2"/><circle cx="-3" cy="-7" r="1.3" fill="#1a1026"/><circle cx="3" cy="-7" r="1.3" fill="#1a1026"/><ellipse cy="-13" rx="17" ry="3.5" fill="#6d28d9" stroke="#1a1026" stroke-width="1"/><path d="M-11,-13 L11,-13 L4,-34 Q5,-50 -3,-52 Q1,-42 -4,-34 Z" fill="#6d28d9" stroke="#1a1026" stroke-width="1"/></g>
+  <g id="b9-token"><rect x="-26" y="-11" width="52" height="22" rx="5" fill="#fff7dd" stroke="#1a1026" stroke-width="1.2"/><circle cx="-14" r="5" fill="#e11d48" stroke="#1a1026" stroke-width=".8"/><text x="4" y="4" text-anchor="middle" font-family="Menlo, monospace" font-size="8" font-weight="700" fill="#1a1026">JWT</text></g>
+ </defs>
+ <rect width="960" height="220" rx="20" fill="url(#b9-bg)"/>
+ <rect width="960" height="220" rx="20" fill="url(#b9-grid)" opacity=".5"/>
+ <rect width="960" height="220" rx="20" fill="url(#b9-glow)"/>
+ <g fill="#fff"><circle cx="97" cy="25" r="1.4" opacity="0.55"/><circle cx="880" cy="17" r="1.1" opacity="0.85"/><circle cx="213" cy="9" r="0.8" opacity="0.32"/><circle cx="426" cy="11" r="0.8" opacity="0.48"/><circle cx="364" cy="8" r="1.4" opacity="0.76"/><circle class="b9-tw" style="animation-delay:-2.8s" cx="67" cy="16" r="1.0"/><circle class="b9-tw" style="animation-delay:-0.9s" cx="33" cy="27" r="0.9"/><circle cx="575" cy="27" r="1.1" opacity="0.74"/><circle class="b9-tw" style="animation-delay:-2.3s" cx="737" cy="200" r="0.9"/><circle class="b9-tw" style="animation-delay:-0.7s" cx="614" cy="40" r="1.2"/></g>
+ <circle cx="926" cy="32" r="42" fill="url(#b9-mg)"/>
+ <path transform="translate(926 32) rotate(-20)" d="M0,-15A15,15 0 0,0 0,15A18.3,18.3 0 0,1 0,-15Z" fill="#ffe9b3"/>
+ <g transform="translate(578 24) scale(0.5)"><use href="#b9-bat" class="b9-fly" style="animation-duration:6s;animation-delay:-1s"/></g><g transform="translate(884 22) scale(0.5)"><use href="#b9-bat" class="b9-fly" style="animation-duration:5.5s;animation-delay:-2s"/></g>
+ <path d="M960,220L892.5,198.1M960,220L902.6,178.3M960,220L918.3,162.6M960,220L938.1,152.5M943.0,220.0Q944.9,217.6 943.8,214.7Q946.4,213.1 946.2,210.0Q949.2,209.2 950.0,206.2Q953.1,206.4 954.7,203.8Q957.6,204.9 960.0,203.0M927.0,220.0Q930.7,215.4 928.6,209.8Q933.5,206.5 933.3,200.6Q939.0,199.0 940.6,193.3Q946.5,193.5 949.8,188.6Q955.4,190.7 960.0,187.0M911.0,220.0Q916.4,213.1 913.4,204.9Q920.7,200.0 920.4,191.2Q928.8,188.8 931.2,180.4Q940.0,180.7 944.9,173.4Q953.1,176.4 960.0,171.0" fill="none" stroke="#efe3cc" stroke-opacity=".25" stroke-width=".8"/>
+
+ <text x="40" y="50" font-family="Menlo, 'JetBrains Mono', monospace" font-size="12" letter-spacing="2.5" fill="#fb7185">MODULE 09 · 60 MIN · ADVANCED TRACK · LAB: lab9-oauth</text>
+ <text x="38" y="100" font-family="Creepster, 'Chalkboard SE', Impact, fantasy" font-size="44" letter-spacing="1" fill="#efe3cc" filter="url(#b9-tg)" textLength="480" lengthAdjust="spacingAndGlyphs">Identity, for Real</text>
+ <text x="40" y="132" font-size="17" fill="#d8cfc0">Three strings in a table become a login page, a sealed token</text>
+ <text x="40" y="154" font-size="17" fill="#d8cfc0">with an audience and a clock, <tspan fill="#fda4af" font-weight="700">and a desk that checks all three.</tspan></text>
+ <g font-weight="700">
+  <rect x="40" y="174" width="92" height="26" rx="13" fill="#fb7185" fill-opacity=".18" stroke="#fb7185"/><text x="86" y="191" text-anchor="middle" fill="#ffe4e6" font-size="12">OAuth 2.1</text>
+  <rect x="142" y="174" width="74" height="26" rx="13" fill="#fb7185" fill-opacity=".18" stroke="#fb7185"/><text x="179" y="191" text-anchor="middle" fill="#ffe4e6" font-size="12">PKCE</text>
+  <rect x="226" y="174" width="98" height="26" rx="13" fill="#fb7185" fill-opacity=".18" stroke="#fb7185"/><text x="275" y="191" text-anchor="middle" fill="#ffe4e6" font-size="12">audience</text>
+  <rect x="334" y="174" width="98" height="26" rx="13" fill="#fb7185" fill-opacity=".18" stroke="#fb7185"/><text x="383" y="191" text-anchor="middle" fill="#ffe4e6" font-size="12">step-up</text>
+  <rect x="442" y="174" width="86" height="26" rx="13" fill="#fb7185" fill-opacity=".18" stroke="#fb7185"/><text x="485" y="191" text-anchor="middle" fill="#ffe4e6" font-size="12">refresh</text>
+ </g>
+
+ <!-- right: the witch (authorization server) hands a token to the ghost client, who presents it to the desk -->
+ <g transform="translate(612 128)"><use href="#b9-witch"/></g>
+ <text x="612" y="178" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="9.5" fill="#d8b4fe">auth server</text>
+ <g class="b9-tick" transform="translate(700 104)"><use href="#b9-token"/></g>
+ <text x="700" y="128" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="8.5" fill="#fda4af">sub · aud · scope · exp</text>
+ <g fill="none" stroke-width="2">
+  <path class="b9-flow" d="M636 104 C650 100 660 104 672 104" stroke="#c084fc"/>
+  <path class="b9-flow" d="M728 104 C760 104 770 104 816 104" stroke="#fb7185"/>
+ </g>
+ <circle class="b9-pulse" cx="852" cy="104" r="46" fill="none" stroke="#fb7185" stroke-width="2"/>
+ <g transform="translate(852 104) scale(1.15)"><use href="#b9-pk"/><use href="#b9-pf" fill="#ffe9b3" filter="url(#b9-fg)"/></g>
+ <text x="852" y="148" text-anchor="middle" font-size="13" font-weight="800" fill="#efe3cc">release desk</text>
+ <text x="852" y="162" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="10" fill="#fda4af">401 → 403 → 200</text>
+</svg></figure>
+<h1>Module 9 · Identity, for Real: OAuth End to End</h1>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Time</strong></td>
+<td>60 minutes (18 concepts · 42 lab). Advanced track, part 2: after Module 8</td>
+</tr>
+<tr>
+<td><strong>Lab folder</strong></td>
+<td><code>course/labs/lab9-oauth</code></td>
+</tr>
+<tr>
+<td><strong>You will</strong></td>
+<td>replace the desk&#39;s three demo tokens with an authorization server and a login page; follow one <code>401</code> all the way to a signed-in agent with nothing but <code>curl</code>; make the desk check who issued a token, who it is for and when it ends; watch OpenCode register itself, open a login page, store tokens and refresh them on its own; make the desk ask for <em>more</em> scope only when a tool needs it; and catch a stolen refresh token the second time it is used</td>
+</tr>
+<tr>
+<td><strong>You&#39;ll pull off</strong></td>
+<td>Bob signs in with read-only access, asks to deploy, and the client goes back to the login page for exactly one extra scope, comes back and deploys. Alice does the same and is told no, by the only component that can say so</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>🎬 <strong>Cold open.</strong> Module 6.F ended with a warning on the board: the demo tokens were in plain text, so you hashed them. Hashing protects a copy at rest. It does nothing about the real problem: a static token never expires, works from anywhere, and is valid for every tool the server has. Real MCP servers do not hand out strings. They send you to a login page, and what comes back is short-lived, addressed to one server, and limited to what the person who logged in is allowed to do. Today you build both ends of that, small enough to read, and then point OpenCode at it.</p>
+</blockquote>
+<h2 id="9-1-four-parties-and-who-holds-what"><a class="anchor" href="#9-1-four-parties-and-who-holds-what" aria-hidden="true">#</a>9.1 Four parties, and who holds what</h2>
+<table>
+<thead>
+<tr>
+<th>Party</th>
+<th>In this lab</th>
+<th>Holds</th>
+<th>Never holds</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>The person</strong></td>
+<td>you, in a browser</td>
+<td>a password (here: a button)</td>
+<td>tokens</td>
+</tr>
+<tr>
+<td><strong>The client</strong></td>
+<td>OpenCode, or <code>login.ts</code></td>
+<td>a client id, access token, refresh token</td>
+<td>the password</td>
+</tr>
+<tr>
+<td><strong>The authorization server (AS)</strong></td>
+<td><code>auth-server.ts</code> on :8791</td>
+<td>who exists and what each person is entitled to; the signing key</td>
+<td>anything about deploys</td>
+</tr>
+<tr>
+<td><strong>The resource server</strong></td>
+<td><code>desk.ts</code> on :8794, the MCP server</td>
+<td>the key to <em>verify</em> tokens, and its tools</td>
+<td>passwords, codes, refresh tokens</td>
+</tr>
+</tbody></table>
+<p>The MCP specification fixes one thing firmly: <strong>an MCP server is a resource server, not an authorization server.</strong> It verifies tokens somebody else issued. Entitlements (Alice may read, Bob may deploy) live with the identity provider, so they change in one place for every MCP server the company runs, and no client config can widen them. You saw the same rule from the other side in Module 6.C: Alice&#39;s <code>opencode.json</code> could not make her a releaser. Now it is not even the desk that decides who Bob is.</p>
+<blockquote>
+<p>🍬 <strong>Treat: OAuth was designed for exactly this.</strong> Before OAuth (2007), the way to let a website read your contacts was to give it your email password. OAuth&#39;s founding idea is <em>delegation</em>: you prove who you are to the one party that should know, and it hands the application a limited, revocable permission slip. An agent acting for you against a dozen MCP servers is the most delegation-shaped problem the protocol has ever had. OAuth 2.1 is the cleanup of fifteen years of lessons: PKCE always, no implicit flow, no passwords through the client, exact redirect URIs.</p>
+</blockquote>
+<h2 id="9-2-from-one-401-to-a-signed-in-agent"><a class="anchor" href="#9-2-from-one-401-to-a-signed-in-agent" aria-hidden="true">#</a>9.2 From one 401 to a signed-in agent</h2>
+<p><img src="images/oauth-dance.svg" alt="The OAuth bootstrap for an MCP server"></p>
+<p>A client that has never heard of the desk can sign in starting from nothing but its URL:</p>
+<ol>
+<li><strong><code>401</code> with a pointer.</strong> <code>WWW-Authenticate: Bearer resource_metadata=&quot;…/.well-known/oauth-protected-resource/mcp&quot;</code>. The SDK&#39;s <code>requireBearerAuth</code> adds it for you.</li>
+<li><strong>Protected resource metadata</strong> (RFC 9728): <code>{ resource, authorization_servers, scopes_supported }</code>. &quot;Tokens for me come from over there.&quot;</li>
+<li><strong>Authorization server metadata</strong> (RFC 8414): the login, token and registration endpoints, and what the AS supports (<code>S256</code>, grant types).</li>
+<li><strong>Registration</strong>, if the client is not known yet. Three ways, in the order the 2026 spec recommends: a pre-registered client id; a <strong>client ID metadata document</strong> (the <code>client_id</code> <em>is</em> an HTTPS URL that serves the client&#39;s metadata); or <strong>dynamic client registration</strong> (RFC 7591), deprecated in the 2026 revision but what OpenCode 1.19 and most clients still send.</li>
+<li><strong>The browser</strong>: <code>/authorize?client_id&amp;redirect_uri&amp;scope&amp;state&amp;code_challenge&amp;resource</code>. The person signs in <em>at the AS</em>, sees what is being asked for, consents.</li>
+<li><strong>A one-time code</strong> comes back to the client&#39;s loopback redirect URI, with <code>state</code> (the client&#39;s own anti-forgery value) and <code>iss</code> (RFC 9207: which AS sent it).</li>
+<li><strong>The token request</strong>: code + PKCE verifier + <code>resource</code>. Out comes an access token (here a JWT), a refresh token and <code>expires_in</code>.</li>
+<li><strong>Every request from then on</strong>: <code>Authorization: Bearer &lt;JWT&gt;</code>. When it expires, step 7 again with the refresh token, no browser.</li>
+</ol>
+<blockquote>
+<p>📖 <strong>Key concept: the access token is the only thing the desk sees.</strong> It is a bearer token (Module 6.3: whoever bears it, is it), which is why the rest of OAuth works so hard to make it short-lived, narrow and addressed to one server. Everything else in the dance (password, code, verifier, refresh token) exists so that the access token can be all three.</p>
+</blockquote>
+<h2 id="9-3-what-a-resource-server-checks-every-request"><a class="anchor" href="#9-3-what-a-resource-server-checks-every-request" aria-hidden="true">#</a>9.3 What a resource server checks, every request</h2>
+<p>A JWT is three base64url parts: header, claims, signature. Decode the middle one and you can read it (so never put secrets in claims). The desk checks five things, and each defeats a different mistake:</p>
+<table>
+<thead>
+<tr>
+<th>Check</th>
+<th>Claim</th>
+<th>Without it</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Signature</strong></td>
+<td>(the third part)</td>
+<td>anyone can mint a token</td>
+</tr>
+<tr>
+<td><strong>Issuer</strong></td>
+<td><code>iss</code></td>
+<td>a token from <em>another</em> authorization server that happens to share a key, or a test AS, is accepted</td>
+</tr>
+<tr>
+<td><strong>Audience</strong></td>
+<td><code>aud</code></td>
+<td>a token Bob got for the <em>payroll</em> server works on the desk, and the desk&#39;s tokens work on payroll. This is the confused deputy, with credentials</td>
+</tr>
+<tr>
+<td><strong>Expiry</strong></td>
+<td><code>exp</code></td>
+<td>a token copied last week still works</td>
+</tr>
+<tr>
+<td><strong>Scope</strong></td>
+<td><code>scope</code></td>
+<td>everyone who can sign in can do everything</td>
+</tr>
+</tbody></table>
+<p>The spec adds the rule that makes audience matter: <strong>no token passthrough.</strong> The desk must never forward the token it received to some other API, and it must never accept a token that was not issued for it. In this lab the AS honours RFC 8707 resource indicators: the client says <code>resource=http://127.0.0.1:8794/mcp</code> and the token&#39;s <code>aud</code> says the same. In production use asymmetric keys (RS256 or ES256) published as a JWKS document, so the desk can verify but never mint; the lab shares an HMAC secret to keep <code>jwt.ts</code> thirty lines long.</p>
+<h2 id="9-4-pkce-state-and-iss-three-small-strings"><a class="anchor" href="#9-4-pkce-state-and-iss-three-small-strings" aria-hidden="true">#</a>9.4 PKCE, state and iss: three small strings</h2>
+<p>The code in step 6 travels through a browser redirect, the least trustworthy hop in the whole flow (browser history, extensions, a malicious app registered for the same URL scheme). Three values make that hop safe:</p>
+<ul>
+<li><strong>PKCE</strong> (RFC 7636): before step 5 the client invents a random <code>code_verifier</code> and sends only <code>code_challenge = base64url(sha256(verifier))</code>. At step 7 it sends the verifier. A stolen code without the verifier is worthless. OAuth 2.1 makes PKCE mandatory for every client, and <code>S256</code> the only method worth supporting.</li>
+<li><strong><code>state</code></strong>: a random value the client sends and expects back. If the callback brings a different one, it is the answer to someone else&#39;s request (login CSRF). The SDK leaves this check to you; <code>login.ts</code> does it.</li>
+<li><strong><code>iss</code></strong>: which authorization server sent the code. A client that talks to several ASes checks it so one AS cannot pass off a code as another&#39;s (a &quot;mix-up attack&quot;). The SDK checks it when you hand it the whole callback query.</li>
+</ul>
+<h2 id="9-5-scopes-and-step-up"><a class="anchor" href="#9-5-scopes-and-step-up" aria-hidden="true">#</a>9.5 Scopes and step-up</h2>
+<p>A scope is a named permission (<code>releases:deploy</code>). Two places must agree before it means anything: the <strong>AS</strong> decides which scopes a person may be <em>granted</em>; the <strong>desk</strong> decides which scope each tool <em>requires</em>. The 2026 spec asks clients to request the scopes from the <code>401</code> challenge first, not everything at once, and defines the upgrade path: a tool that needs more answers <code>403</code> with <code>WWW-Authenticate: Bearer error=&quot;insufficient_scope&quot;, scope=&quot;releases:deploy&quot;</code>, the client goes back to the AS asking for the union of what it has and what it needs, and retries. The SDK does the server side with one line per tool, <code>scopeChallenge: requireScopes(&quot;releases:deploy&quot;)</code>.</p>
+<blockquote>
+<p>💡 <strong>Insight: an <code>isError</code> result is for the model; a <code>403</code> is for the client.</strong> In Module 6 a missing scope produced a polite tool error, and the model explained it to the user. That is still right for <em>policy</em> refusals (a freeze). For <em>credential</em> problems the right audience is the client&#39;s OAuth code, which can actually fix it by sending the person to the login page. Different audience, different channel, as in Module 3.4.</p>
+</blockquote>
+<h2 id="9-6-refresh-tokens-long-lived-so-they-must-rotate"><a class="anchor" href="#9-6-refresh-tokens-long-lived-so-they-must-rotate" aria-hidden="true">#</a>9.6 Refresh tokens: long-lived, so they must rotate</h2>
+<p>Access tokens live minutes (here 90 seconds, so you can watch). Refresh tokens live days and sit on disk: <code>~/.local/share/opencode/mcp-auth.json</code> for OpenCode, <code>tokens.local.json</code> for <code>login.ts</code>. OAuth 2.1 requires public clients&#39; refresh tokens to be either sender-constrained (DPoP, on the MCP roadmap) or <strong>rotated</strong>: every refresh returns a new refresh token and burns the old one. If a burned one ever comes back, two parties hold a copy, and the AS cannot tell which is the thief, so it revokes the whole family: every token descended from that login. The real user signs in again; the thief&#39;s copy is dead.</p>
+<blockquote>
+<p>👻 <strong>Ghost story: the token in the backup.</strong> In April 2022 attackers used OAuth tokens that had been issued to two third-party integrations (Heroku and Travis CI) to download private repositories from dozens of GitHub organisations. Nobody&#39;s password was involved and no GitHub system was breached: the tokens had been stolen from the integrators, and they still worked. Long-lived tokens held by intermediaries are the most valuable thing an attacker can find, which is why refresh tokens rotate and why an MCP server must never pass a user&#39;s token on to another API.</p>
+</blockquote>
+<hr>
+<h2 id="lab-9-a-real-login-for-the-release-desk-42-minutes"><a class="anchor" href="#lab-9-a-real-login-for-the-release-desk-42-minutes" aria-hidden="true">#</a>Lab 9 · A real login for the release desk (42 minutes)</h2>
+<h3 id="mission"><a class="anchor" href="#mission" aria-hidden="true">#</a>🎯 Mission</h3>
+<ul>
+<li><input disabled="" type="checkbox"> Follow a <code>401</code> to a token with <code>curl</code> alone, and read the token</li>
+<li><input disabled="" type="checkbox"> Make the desk refuse a token minted for somebody else, or from last week</li>
+<li><input disabled="" type="checkbox"> Let OpenCode do the whole dance, then watch it refresh on its own</li>
+<li><input disabled="" type="checkbox"> Make a tool ask for more scope, and watch one person get it and another not</li>
+<li><input disabled="" type="checkbox"> Catch a stolen refresh token the second time it is used</li>
+<li><input disabled="" type="checkbox"> Make a stolen authorization code worthless</li>
+</ul>
+<h3 id="split-screen-three-terminals"><a class="anchor" href="#split-screen-three-terminals" aria-hidden="true">#</a>🖥️ Split screen (three terminals)</h3>
+<pre><code>┌─ T1 · authorization server ─────────┐ ┌─ T2 · the desk ───────────────┐ ┌─ T3 · you, the client ─────────────────┐
+│ cd course/labs/lab9-oauth           │ │ cd course/labs/lab9-oauth     │ │ cd course/labs/lab9-oauth              │
+│ npx tsx auth-server.ts              │ │ npx tsx desk.ts               │ │ curl …  ·  npx tsx login.ts …          │
+│ clients, live tokens with a         │ │ every request: who, scopes,   │ │ opencode mcp auth desk                 │
+│ countdown, every code and refresh   │ │ seconds left, every 401 / 403 │ │                                        │
+└─────────────────────────────────────┘ └───────────────────────────────┘ └────────────────────────────────────────┘
+</code></pre>
+<p><code>auth-server.ts</code> is a toy OAuth 2.1 authorization server: metadata, dynamic registration, a login page with three people on it (Alice read, Bob read + deploy, Carol everything), the token endpoint, JWTs that live 90 seconds. <code>desk.ts</code> is the release desk as a resource server. <code>login.ts</code> is a terminal OAuth client built on the SDK, so you can see every step OpenCode does for you; <code>--as bob</code> makes it play the browser too. <code>pkce.mjs</code> prints a verifier and challenge for the hand-made flow. Two TODOs are in the desk, two in the AS.</p>
+<p><img src="images/shot-lab9-board.png" alt="The authorization server's board"></p>
+<h3 id="exercise-9-a-the-401-that-teaches-4-minutes"><a class="anchor" href="#exercise-9-a-the-401-that-teaches-4-minutes" aria-hidden="true">#</a>🧪 Exercise 9.A — The 401 that teaches (4 minutes)</h3>
+<pre><code class="language-bash">D=http://127.0.0.1:8794/mcp; A=http://127.0.0.1:8791
+curl -si -X POST $D -H &#39;content-type: application/json&#39; -H &#39;accept: application/json, text/event-stream&#39; -d &#39;{}&#39; | grep -iE &#39;^HTTP|www-auth&#39;
+curl -s http://127.0.0.1:8794/.well-known/oauth-protected-resource/mcp
+curl -s $A/.well-known/oauth-authorization-server | head -c 400
+</code></pre>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> How many requests does a client need before it knows where to send the person to log in? Which of them needed a credential?</p>
+</blockquote>
+<details><summary>Our run</summary>
+
+<pre><code>HTTP/1.1 401 Unauthorized
+www-authenticate: Bearer error=&quot;invalid_token&quot;, error_description=&quot;Missing Authorization header&quot;, scope=&quot;releases:read&quot;, resource_metadata=&quot;http://127.0.0.1:8794/.well-known/oauth-protected-resource/mcp&quot;
+
+{&quot;resource&quot;:&quot;http://127.0.0.1:8794/mcp&quot;,&quot;authorization_servers&quot;:[&quot;http://127.0.0.1:8791&quot;],&quot;scopes_supported&quot;:[&quot;releases:read&quot;,&quot;releases:deploy&quot;,&quot;releases:freeze&quot;]}
+
+{&quot;issuer&quot;:&quot;http://127.0.0.1:8791&quot;,&quot;authorization_endpoint&quot;:&quot;http://127.0.0.1:8791/authorize&quot;,&quot;token_endpoint&quot;:&quot;http://127.0.0.1:8791/token&quot;,&quot;registration_endpoint&quot;:&quot;http://127.0.0.1:8791/register&quot;,…
+</code></pre>
+<p>Three requests, none authenticated. The first <code>401</code> already names the minimum scope (<code>releases:read</code>) the client should ask for.</p>
+</details>
+
+<h3 id="exercise-9-b-be-the-client-by-hand-8-minutes"><a class="anchor" href="#exercise-9-b-be-the-client-by-hand-8-minutes" aria-hidden="true">#</a>🧪 Exercise 9.B — Be the client, by hand (8 minutes)</h3>
+<p>Do every step of the diagram yourself. Register, then open the login page in your browser:</p>
+<pre><code class="language-bash">eval $(node pkce.mjs); echo &quot;verifier $VERIFIER&quot;; echo &quot;challenge $CHALLENGE&quot;
+CID=$(curl -s -X POST $A/register -H &#39;content-type: application/json&#39; \
+  -d &#39;{&quot;client_name&quot;:&quot;curl by hand&quot;,&quot;redirect_uris&quot;:[&quot;http://127.0.0.1:8796/callback&quot;],&quot;application_type&quot;:&quot;native&quot;}&#39; | jq -r .client_id)
+echo &quot;$A/authorize?response_type=code&amp;client_id=$CID&amp;redirect_uri=http%3A%2F%2F127.0.0.1%3A8796%2Fcallback&amp;scope=releases%3Aread%20releases%3Adeploy&amp;state=xyz&amp;code_challenge=$CHALLENGE&amp;code_challenge_method=S256&amp;resource=$D&quot;
+</code></pre>
+<p><img src="images/shot-lab9-login.png" alt="The login page"></p>
+<p>Sign in as <strong>Bob</strong>. Nothing listens on port 8796, so the browser shows an error page, and that is fine: the code is in the address bar. Copy it (<code>code=code_…</code>) and redeem it, then use the token:</p>
+<pre><code class="language-bash">CODE=code_…    # from the address bar
+TOK=$(curl -s -X POST $A/token -d &quot;grant_type=authorization_code&amp;code=$CODE&amp;client_id=$CID&amp;redirect_uri=http://127.0.0.1:8796/callback&amp;code_verifier=$VERIFIER&amp;resource=$D&quot;)
+AT=$(echo $TOK | jq -r .access_token); RT=$(echo $TOK | jq -r .refresh_token)
+node -e &#39;console.log(Buffer.from(process.argv[1].split(&quot;.&quot;)[1], &quot;base64url&quot;).toString())&#39; $AT
+</code></pre>
+<details><summary>Our run</summary>
+
+<pre><code>{&quot;iss&quot;:&quot;http://127.0.0.1:8791&quot;,&quot;sub&quot;:&quot;bob&quot;,&quot;aud&quot;:&quot;http://127.0.0.1:8794/mcp&quot;,&quot;scope&quot;:&quot;releases:read releases:deploy&quot;,&quot;exp&quot;:1793661909,&quot;iat&quot;:1793661884,&quot;jti&quot;:&quot;1f96b96b-…&quot;,&quot;client_id&quot;:&quot;dyn_2633835db7d2&quot;}
+</code></pre>
+</details>
+
+<p>Now call <code>whoami</code> on the desk with it (the 2026 envelope from Module 8.B, plus the token):</p>
+<pre><code class="language-bash">ENV=&#39;&quot;_meta&quot;:{&quot;io.modelcontextprotocol/protocolVersion&quot;:&quot;2026-07-28&quot;,&quot;io.modelcontextprotocol/clientInfo&quot;:{&quot;name&quot;:&quot;curl&quot;,&quot;version&quot;:&quot;1&quot;},&quot;io.modelcontextprotocol/clientCapabilities&quot;:{}}&#39;
+curl -s -X POST $D -H &#39;content-type: application/json&#39; -H &#39;accept: application/json, text/event-stream&#39; -H &quot;authorization: Bearer $AT&quot; \
+  -H &#39;mcp-protocol-version: 2026-07-28&#39; -H &#39;mcp-method: tools/call&#39; -H &#39;mcp-name: whoami&#39; \
+  -d &quot;{\&quot;jsonrpc\&quot;:\&quot;2.0\&quot;,\&quot;id\&quot;:1,\&quot;method\&quot;:\&quot;tools/call\&quot;,\&quot;params\&quot;:{\&quot;name\&quot;:\&quot;whoami\&quot;,\&quot;arguments\&quot;:{},$ENV}}&quot;
+</code></pre>
+<p><em>&quot;You are bob (scopes: releases:read, releases:deploy), via client dyn_…&quot;</em>. Watch T1 while you do it: a registration, a login page, a code, a token with a countdown. Wait until the countdown reaches zero and call again.</p>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> After the token&#39;s 90 seconds, what does the desk say?</p>
+</blockquote>
+<p>It says the same thing, for the next hour. That is TODO 1.</p>
+<h3 id="exercise-9-c-todo-1-whose-token-for-whom-until-when-6-minutes"><a class="anchor" href="#exercise-9-c-todo-1-whose-token-for-whom-until-when-6-minutes" aria-hidden="true">#</a>🧪 Exercise 9.C — TODO 1: whose token, for whom, until when (6 minutes)</h3>
+<p>The starter verifies the signature and nothing else. <code>expiresAt</code> is &quot;now plus an hour&quot;, copied from Module 6. Prove the audience hole too: run 9.B again, but put <code>resource=http://127.0.0.1:8794/other</code> in both the authorize URL and the token request. You get a token whose <code>aud</code> is a different server, and the desk accepts it.</p>
+<p>In <code>desk.ts</code>, in <code>verifyAccessToken</code>:</p>
+<pre><code class="language-ts">if (claims.iss !== ISSUER) throw new OAuthError(OAuthErrorCode.InvalidToken, `issued by ${claims.iss}, not by ${ISSUER}`);
+if (claims.exp &lt;= Math.floor(Date.now() / 1000)) throw new OAuthError(OAuthErrorCode.InvalidToken, `expired ${Math.floor(Date.now() / 1000) - claims.exp}s ago`);
+return { token, clientId: claims.sub, scopes: claims.scope.split(&quot; &quot;), expiresAt: claims.exp, resource: new URL(claims.aud), extra: { jti: claims.jti, via: claims.client_id } };
+</code></pre>
+<p>and in <code>requireBearerAuth({ … })</code> add <code>expectedResource: new URL(DESK_URL)</code>. Restart the desk and replay both tokens.</p>
+<details><summary>Our run</summary>
+
+<pre><code>{&quot;error&quot;:&quot;invalid_token&quot;,&quot;error_description&quot;:&quot;Token was not issued for this resource&quot;} → 401
+… 401 POST token for alice (aud http://127.0.0.1:8794/other, iss http://127.0.0.1:8791, exp 60s): Bearer error=&quot;invalid_token&quot;, error_description=&quot;Token was not issued for this resource&quot;, …
+
+… 401 POST token for bob (… exp -12s): Bearer error=&quot;invalid_token&quot;, error_description=&quot;expired 12s ago&quot;, …
+</code></pre>
+</details>
+
+<blockquote class="callout important"><p>🤯 <strong>A perfectly genuine token was refused.</strong> Signed by the right key, issued by the right server, for a real person who really signed in, and refused because it was addressed to someone else. That single check is what stops a compromised or malicious MCP server from replaying the tokens its users send it against every other server in the company.</p>
+</blockquote>
+<h3 id="exercise-9-d-opencode-does-the-dance-6-minutes"><a class="anchor" href="#exercise-9-d-opencode-does-the-dance-6-minutes" aria-hidden="true">#</a>🧪 Exercise 9.D — OpenCode does the dance (6 minutes)</h3>
+<p><code>opencode.json</code> has the desk as a remote server with <code>&quot;oauth&quot;: {}</code>: no headers, no token, nothing secret in the file.</p>
+<pre><code class="language-bash">opencode mcp list            # desk: needs authentication
+opencode mcp debug desk      # what it found: the 401, the challenge, a client id
+opencode mcp auth desk       # opens your browser: sign in as Bob
+opencode mcp list            # desk: connected (OAuth)
+</code></pre>
+<details><summary>Our run (OpenCode 1.19.5)</summary>
+
+<pre><code>●  ⚠ desk needs authentication
+…
+●  WWW-Authenticate: Bearer error=&quot;invalid_token&quot;, error_description=&quot;Missing Authorization header&quot;, scope=&quot;releases:read&quot;, resource_metadata=&quot;http://127.0.0.1:8794/.well-known/oauth-protected-resource/mcp&quot;
+●  Initial unauthenticated check returned 401, so this server requires OAuth
+●  Client ID available: dyn_21d20341d5da
+…
+◇  Authorize in your browser:
+●  http://127.0.0.1:8791/authorize?response_type=code&amp;client_id=dyn_25a0425fb3bf&amp;code_challenge=oe6Hvlj…&amp;code_challenge_method=S256&amp;redirect_uri=http%3A%2F%2F127.0.0.1%3A19876%2Fmcp%2Foauth%2Fcallback&amp;state=84d39906…&amp;scope=releases%3Aread&amp;resource=http%3A%2F%2F127.0.0.1%3A8794%2Fmcp
+◇  Authentication successful!
+…
+●  ✓ desk connected (OAuth)
+</code></pre>
+<p>T1 shows the whole thing from the other side: <code>registered dyn_… &quot;OpenCode&quot; → http://127.0.0.1:19876/mcp/oauth/callback</code>, then <code>bob signed in for OpenCode</code>, then a token.</p>
+</details>
+
+<p>Read the authorize URL OpenCode built: PKCE with <code>S256</code>, a 64-character <code>state</code>, <code>scope=releases:read</code> taken from the <code>401</code> challenge, and the <code>resource</code> indicator. Now leave it alone for 90 seconds and run <code>opencode mcp list</code> again: still <code>connected</code>. T2 logged one <code>401 … expired</code>, and T1 logged <code>bob refreshed via OpenCode: new access token, new refresh token, old one burned</code>. Start <code>opencode</code> and ask <strong>Who am I on the release desk?</strong> if your Zen login works; the desk logs the call with Bob&#39;s scopes and the token&#39;s remaining seconds.</p>
+<p>The tokens are in <code>~/.local/share/opencode/mcp-auth.json</code>, keyed by server name, next to the client registration. That file is now as sensitive as a password: it holds a refresh token. When you are done, <code>opencode mcp logout desk</code>.</p>
+<blockquote>
+<p>🍬 <strong>Treat: why the redirect goes to 127.0.0.1.</strong> A command-line client has no web address, so it opens a tiny web server on the loopback interface for the few seconds the login takes (RFC 8252, &quot;OAuth for native apps&quot;). OpenCode&#39;s is fixed at <code>127.0.0.1:19876</code>; <code>login.ts</code> uses 8796. Loopback redirects are why the AS can be strict about <em>exact</em> redirect URIs and still serve every laptop.</p>
+</blockquote>
+<h3 id="exercise-9-e-todo-2-ask-for-more-only-when-needed-6-minutes"><a class="anchor" href="#exercise-9-e-todo-2-ask-for-more-only-when-needed-6-minutes" aria-hidden="true">#</a>🧪 Exercise 9.E — TODO 2: ask for more, only when needed (6 minutes)</h3>
+<p>Sign in as Alice with the least privilege, then try to deploy:</p>
+<pre><code class="language-bash">npx tsx login.ts login --as alice
+npx tsx login.ts call deploy &#39;{&quot;service&quot;:&quot;web&quot;,&quot;version&quot;:&quot;4.12.0&quot;}&#39; --as alice
+</code></pre>
+<p>The starter answers with a tool error from the handler: <em>&quot;alice cannot deploy: the token lacks releases:deploy.&quot;</em> That is a message for a model. A client cannot act on it. In <code>desk.ts</code>, add <code>scopeChallenge: requireScopes(&quot;releases:deploy&quot;)</code> to <code>deploy</code>, and <code>requireScopes(&quot;releases:freeze&quot;)</code> to both freeze tools. Keep the handler checks. Restart the desk, then try Bob, who signs in with <code>releases:read</code> only:</p>
+<pre><code class="language-bash">npx tsx login.ts logout &amp;&amp; npx tsx login.ts login --as bob
+npx tsx login.ts call run_preflight &#39;{&quot;service&quot;:&quot;api&quot;,&quot;version&quot;:&quot;2.31.0&quot;}&#39;
+npx tsx login.ts call deploy &#39;{&quot;service&quot;:&quot;api&quot;,&quot;version&quot;:&quot;2.31.0&quot;}&#39; --as bob
+</code></pre>
+<p><img src="images/shot-lab9-stepup.png" alt="Step-up: one 403, one extra scope, one deploy"></p>
+<p>Then Alice again.</p>
+<details><summary>Our run</summary>
+
+<pre><code># Bob
+  asking for scope &quot;releases:read releases:deploy&quot; for resource http://127.0.0.1:8794/mcp
+  the desk wants more (401 expired / 403 insufficient_scope) → back to the authorization server
+  tokens saved: access for bob [releases:read releases:deploy] aud http://127.0.0.1:8794/mcp, expires in 90s, plus a refresh token
+result: Deployed api 2.30.1 → 2.31.0 as bob.
+
+# Alice
+  asking for scope &quot;releases:read releases:deploy&quot; for resource http://127.0.0.1:8794/mcp
+  tokens saved: access for alice [releases:read] …
+Error: still refused after signing in again. The authorization server granted [releases:read]: whoever signed in is not entitled to what this tool needs, and no client can change that.
+</code></pre>
+<p>The desk logged <code>403 for bob: Bearer error=&quot;insufficient_scope&quot;, … scope=&quot;releases:deploy&quot;</code>; the AS logged <code>alice signed in … for [releases:read] (asked for 2, entitled to 1)</code>.</p>
+</details>
+
+<blockquote class="callout tip"><p>💡 <strong>Insight: least privilege, without the friction.</strong> Bob&#39;s session started with read only and gained deploy for one call, at the moment he asked for one, with a fresh login. That is the shape the 2026 spec recommends: ask for what the challenge says, step up on demand. Note what decided Alice&#39;s case: not the desk, not the client, not the model. The authorization server&#39;s entitlement table.</p>
+</blockquote>
+<h3 id="exercise-9-f-todo-3-the-refresh-token-on-the-floor-6-minutes"><a class="anchor" href="#exercise-9-f-todo-3-the-refresh-token-on-the-floor-6-minutes" aria-hidden="true">#</a>🧪 Exercise 9.F — TODO 3: the refresh token on the floor (6 minutes)</h3>
+<p>Restart the AS with short tokens so you can watch: <code>TOKEN_TTL=20 npx tsx auth-server.ts</code>. Sign in with <code>login.ts</code> as Bob, then play the thief, who copied <code>tokens.local.json</code> off the laptop:</p>
+<pre><code class="language-bash">RT=$(jq -r .tokens.refresh_token tokens.local.json); CID=$(jq -r .client.client_id tokens.local.json)
+for i in 1 2 3; do curl -s -X POST $A/token -d &quot;grant_type=refresh_token&amp;refresh_token=$RT&amp;client_id=$CID&quot; | jq -r &#39;.error_description // &quot;ok: a new access token&quot;&#39;; done
+</code></pre>
+<p>In the starter all three succeed: one stolen string is a permanent key. Implement TODO 3 in the <code>refresh_token</code> branch of <code>auth-server.ts</code>: if the record is already <code>used</code>, revoke its whole family and refuse; otherwise mark it used. <code>mint()</code> already issues a new refresh token each time. Restart the AS, sign in again, and repeat the theft: once while the real client is idle, and once after the real client has refreshed (<code>sleep 21; npx tsx login.ts whoami</code>).</p>
+<details><summary>Our run</summary>
+
+<pre><code>ok: a new access token
+refresh token reuse detected; all tokens from this login are revoked, sign in again
+this refresh token&#39;s family was revoked
+
+21:23:19 denied   refresh token rt_EnzcEwR… used TWICE: a copy exists somewhere. Family e0b0e900 revoked
+</code></pre>
+<p>When the thief refreshed first, the real client&#39;s next refresh tripped the alarm instead, and <code>login.ts</code> sent Bob to the login page again. Either order, the second use loses the family for both.</p>
+</details>
+
+<blockquote>
+<p>⚠️ <strong>Security: revocation stops refreshes, not access tokens already issued.</strong> The thief&#39;s last access token keeps working until its <code>exp</code>, because the desk verifies JWTs offline and never asks the AS. That is the trade every JWT deployment makes, and the reason access tokens should live minutes, not hours. Challenge 9B adds the other option.</p>
+</blockquote>
+<h3 id="exercise-9-g-todo-4-a-stolen-code-is-worthless-4-minutes"><a class="anchor" href="#exercise-9-g-todo-4-a-stolen-code-is-worthless-4-minutes" aria-hidden="true">#</a>🧪 Exercise 9.G — TODO 4: a stolen code is worthless (4 minutes)</h3>
+<p><code>login.ts --no-pkce-verify</code> redeems its code with a verifier that does not match, which is what a thief who intercepted the redirect would have to do:</p>
+<pre><code class="language-bash">npx tsx login.ts logout &amp;&amp; npx tsx login.ts login --as bob --no-pkce-verify
+</code></pre>
+<p>The starter issues a token anyway. Implement TODO 4 in the <code>authorization_code</code> branch: compute <code>base64url(sha256(code_verifier))</code>, refuse unless it equals <code>code.code_challenge</code>, refuse a code that was already used, then mark it used. Restart and repeat; then run the hand-made 9.B exchange twice with the same code.</p>
+<details><summary>Our run</summary>
+
+<pre><code>{&quot;error&quot;:&quot;invalid_grant&quot;,&quot;error_description&quot;:&quot;PKCE verification failed: code_verifier does not match the code_challenge&quot;}
+{&quot;error&quot;:&quot;invalid_grant&quot;,&quot;error_description&quot;:&quot;code already used&quot;}
+</code></pre>
+</details>
+
+<figure class="comic"><svg xmlns="http://www.w3.org/2000/svg" width="960" height="380" viewBox="0 0 960 380" role="img" aria-label="Three-panel comic: a skeleton presents a token addressed to the payroll vault and the pumpkin desk turns it away; Alice asks the witch for deploy scope and is told she is entitled to read only; a ghost picks up a refresh token from the floor and the witch revokes the whole login.">
+<title>Panel 1: Bob the skeleton shows a sealed token to the pumpkin desk. Bob: Signed by the witch. Says I'm Bob. Desk: The seal is real. It is addressed to the payroll vault. Not to me. Panel 2: Alice the skeleton at the witch's window. Alice: The desk says come back with releases:deploy. Witch: You are entitled to read. Nobody can change that from a config file. Panel 3: a ghost holds a refresh token found on the floor labelled tokens.local.json. Witch: This one was already used. Everything from that login is revoked. Caption: A token says who, for what, until when. Check all three, and burn the long-lived one every time you use it.</title>
+<rect width="960" height="380" rx="18" fill="#150c24"/>
+<rect x="16" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="332" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="648" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<text x="30" y="36" font-family="Menlo, monospace" font-size="11" fill="#4b3f5c">1 · audience</text>
+<text x="346" y="36" font-family="Menlo, monospace" font-size="11" fill="#4b3f5c">2 · step-up</text>
+<text x="662" y="36" font-family="Menlo, monospace" font-size="11" fill="#4b3f5c">3 · refresh reuse</text>
+
+<!-- panel 1: Bob shows a token to the pumpkin desk -->
+<line x1="72" y1="238" x2="60" y2="272" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="72" y1="238" x2="60" y2="272" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="108" y1="238" x2="120" y2="272" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="108" y1="238" x2="120" y2="272" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="82" y1="274" x2="80" y2="298" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="82" y1="274" x2="80" y2="298" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="98" y1="274" x2="100" y2="298" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="98" y1="274" x2="100" y2="298" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<rect x="72" y="232" width="36" height="42" rx="5" fill="#475569" stroke="#1a1026" stroke-width="1.5"/>
+<text x="90" y="258" text-anchor="middle" font-family="Menlo, monospace" font-size="10" fill="#fffdf7" font-weight="bold">BOB</text>
+<circle cx="90" cy="216" r="15" fill="#fffdf7" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="84" cy="214" rx="3.5" ry="4.5" fill="#1a1026"/><ellipse cx="96" cy="214" rx="3.5" ry="4.5" fill="#1a1026"/>
+<path d="M84,225 h12 M87,225 v4 M90,225 v4 M93,225 v4" fill="none" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="118" y="236" width="50" height="22" rx="4" fill="#fff7dd" stroke="#1a1026" stroke-width="1.2" transform="rotate(-10 143 247)"/>
+<circle cx="130" cy="247" r="4.5" fill="#e11d48" stroke="#1a1026" stroke-width=".8" transform="rotate(-10 143 247)"/>
+<text x="150" y="251" text-anchor="middle" font-family="Menlo, monospace" font-size="7.5" fill="#1a1026" font-weight="bold" transform="rotate(-10 143 247)">aud:vault</text>
+<ellipse cx="236" cy="258" rx="38" ry="30" fill="#e0661a" stroke="#1a1026" stroke-width="2"/><ellipse cx="236" cy="258" rx="26" ry="31" fill="#ff8a1f" stroke="#1a1026" stroke-width="1.2"/>
+<path d="M232,228 c-2,-6 2,-10 8,-12" fill="none" stroke="#22c55e" stroke-width="3"/>
+<path d="M218,250 l8,-8 l8,8 Z M246,250 l8,-8 l8,8 Z" fill="#1a1026"/><path d="M216,270 q20,12 40,0 l-4,6 l-6,-4 l-6,4 l-6,-4 l-6,4 l-6,-4 Z" fill="#1a1026"/>
+<text x="236" y="300" text-anchor="middle" font-family="Menlo, monospace" font-size="9.5" fill="#1a1026">desk</text>
+<rect x="28" y="48" width="140" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="82,106 90,196 98,106" fill="#fffaf0"/>
+<polyline points="82,106 90,196 98,106" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="98" y="73" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">Signed by the witch.</text>
+<text x="98" y="93" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">Says I'm Bob.</text>
+<rect x="150" y="118" width="152" height="78" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="226,194 236,226 244,194" fill="#fffaf0"/>
+<polyline points="226,194 236,226 244,194" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="226" y="141" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">The seal is real. And it is</text>
+<text x="226" y="161" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">addressed to the payroll</text>
+<text x="226" y="181" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">vault. Not to me.</text>
+
+<!-- panel 2: Alice at the witch's window -->
+<line x1="388" y1="238" x2="376" y2="272" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="388" y1="238" x2="376" y2="272" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="424" y1="238" x2="436" y2="272" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="424" y1="238" x2="436" y2="272" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="398" y1="274" x2="396" y2="298" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="398" y1="274" x2="396" y2="298" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="414" y1="274" x2="416" y2="298" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="414" y1="274" x2="416" y2="298" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<rect x="388" y="232" width="36" height="42" rx="5" fill="#0e7490" stroke="#1a1026" stroke-width="1.5"/>
+<text x="406" y="258" text-anchor="middle" font-family="Menlo, monospace" font-size="9" fill="#fffdf7" font-weight="bold">ALICE</text>
+<circle cx="406" cy="216" r="15" fill="#fffdf7" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="400" cy="214" rx="3.5" ry="4.5" fill="#1a1026"/><ellipse cx="412" cy="214" rx="3.5" ry="4.5" fill="#1a1026"/>
+<path d="M400,225 h12 M403,225 v4 M406,225 v4 M409,225 v4" fill="none" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="490" y="150" width="120" height="150" rx="6" fill="#2d2440" stroke="#1a1026" stroke-width="2"/>
+<rect x="500" y="162" width="100" height="70" rx="4" fill="#9fd6f2" stroke="#1a1026" stroke-width="1.5"/>
+<text x="550" y="292" text-anchor="middle" font-family="Menlo, monospace" font-size="9" fill="#efe3cc">auth server</text>
+<polygon points="536,232 568,232 564,196 540,196" fill="#1a1026"/>
+<circle cx="552" cy="188" r="12" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<circle cx="548" cy="187" r="1.6" fill="#1a1026"/><circle cx="556" cy="187" r="1.6" fill="#1a1026"/>
+<path d="M548,193 q4,3 8,0" fill="none" stroke="#1a1026" stroke-width="1.5"/>
+<ellipse cx="552" cy="179" rx="22" ry="4" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M538,179 L566,179 L558,152 Q560,132 550,130 Q555,142 548,152 Z" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="342" y="48" width="122" height="78" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="398,124 406,196 414,124" fill="#fffaf0"/>
+<polyline points="398,124 406,196 414,124" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="403" y="71" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="14" fill="#1a1026">The desk says:</text>
+<text x="403" y="91" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="14" fill="#1a1026">come back with</text>
+<text x="403" y="111" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="13" fill="#1a1026">releases:deploy.</text>
+<rect x="474" y="60" width="146" height="78" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="544,136 552,166 560,136" fill="#fffaf0"/>
+<polyline points="544,136 552,166 560,136" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="545" y="83" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">You are entitled to</text>
+<text x="545" y="103" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">read. No config file</text>
+<text x="545" y="123" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">can change that.</text>
+
+<!-- panel 3: a ghost found a refresh token on the floor -->
+<path d="M700,246 L700,204 A30,30 0 0 1 760,204 L760,246 Q754,232 746.8,252 Q738.4,266 730,250 Q721.6,266 713.2,252 Q706,232 700,246 Z" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="721" cy="206" rx="3.9" ry="6" fill="#1a1026"/><ellipse cx="739" cy="206" rx="3.9" ry="6" fill="#1a1026"/>
+<path d="M722,223 q4,-4 8,0 q4,4 8,0" fill="none" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="697" cy="241" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="763" cy="241" rx="8" ry="5" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<rect x="770" y="228" width="60" height="22" rx="4" fill="#fff7dd" stroke="#1a1026" stroke-width="1.2" transform="rotate(8 800 239)"/>
+<text x="800" y="243" text-anchor="middle" font-family="Menlo, monospace" font-size="7.5" fill="#1a1026" font-weight="bold" transform="rotate(8 800 239)">rt_7f3a…</text>
+<text x="796" y="268" text-anchor="middle" font-family="Menlo, monospace" font-size="7.5" fill="#b91c1c">tokens.local.json</text>
+<rect x="850" y="150" width="84" height="150" rx="6" fill="#2d2440" stroke="#1a1026" stroke-width="2"/>
+<rect x="858" y="162" width="68" height="70" rx="4" fill="#9fd6f2" stroke="#1a1026" stroke-width="1.5"/>
+<polygon points="878,232 906,232 902,198 882,198" fill="#1a1026"/>
+<circle cx="892" cy="190" r="11" fill="#b9e4a0" stroke="#1a1026" stroke-width="1.5"/>
+<circle cx="888" cy="189" r="1.5" fill="#1a1026"/><circle cx="896" cy="189" r="1.5" fill="#1a1026"/>
+<path d="M888,196 q4,-3 8,0" fill="none" stroke="#1a1026" stroke-width="1.5"/>
+<ellipse cx="892" cy="181" rx="20" ry="4" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M880,181 L904,181 L898,156 Q900,138 890,136 Q894,146 888,156 Z" fill="#6d28d9" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="660" y="48" width="130" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="722,106 730,196 738,106" fill="#fffaf0"/>
+<polyline points="722,106 730,196 738,106" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="725" y="73" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">Found this on the</text>
+<text x="725" y="93" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">floor. Refresh me?</text>
+<rect x="796" y="56" width="140" height="88" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="884,142 892,168 900,142" fill="#fffaf0"/>
+<polyline points="884,142 892,168 900,142" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="866" y="79" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="14" fill="#1a1026">This one was already</text>
+<text x="866" y="99" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="14" fill="#1a1026">used. Everything from</text>
+<text x="866" y="119" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="14" fill="#1a1026">that login: revoked.</text>
+<text x="866" y="137" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="13" fill="#b91c1c">Sign in again, Bob.</text>
+
+<text x="24" y="346" font-family="Menlo, monospace" font-size="13" fill="#ff8a1f">🎃 comic · bearer</text>
+<text x="575" y="346" text-anchor="middle" font-family="Menlo, monospace" font-size="12.5" fill="#efe3cc">A token says who, for what, until when. Check all three; burn the refresh token on use.</text>
+</svg></figure>
+<h3 id="mission-complete"><a class="anchor" href="#mission-complete" aria-hidden="true">#</a>🏅 Mission complete</h3>
+<ul>
+<li><strong>You walked the whole bootstrap by hand</strong>, from a <code>401</code> with a pointer to a decoded JWT.</li>
+<li><strong>You made the desk verify</strong> issuer, audience and expiry, and watched a genuine token refused because it was addressed elsewhere.</li>
+<li><strong>OpenCode did the dance for you</strong> (registration, PKCE, state, resource, iss, refresh) and you know where it keeps the result.</li>
+<li><strong>You built step-up</strong>: least privilege by default, more scope on demand, entitlement decided by the identity provider.</li>
+<li><strong>You caught a stolen refresh token</strong> and made a stolen code worthless.</li>
+</ul>
+<h3 id="check-yourself"><a class="anchor" href="#check-yourself" aria-hidden="true">#</a>✅ Check yourself</h3>
+<details><summary>1. Why must the desk check <code>aud</code>, when the signature already proves the AS minted the token?</summary>
+
+<p>The same AS mints tokens for many servers. Without the audience check, a token Bob obtained for any of them works on the desk, and, worse, a malicious server Bob connects to can replay the token he sent it against the desk. The audience check plus &quot;no token passthrough&quot; is what makes a token usable at exactly one place.</p>
+</details>
+
+<details><summary>2. A tool needs <code>releases:deploy</code>. When is an <code>isError</code> result right, and when a <code>403 insufficient_scope</code>?</summary>
+
+<p><code>403</code> when the fix is a credential the client can obtain (step-up through the AS). <code>isError</code> when the refusal is policy the person cannot log their way out of (a freeze), or as defence in depth inside the handler. The first is for the client&#39;s OAuth code, the second for the model.</p>
+</details>
+
+<details><summary>3. OpenCode's <code>opencode.json</code> for the desk contains no token at all. Where is the secret, and what is the worst thing a person who copies it can do?</summary>
+
+<p>In <code>~/.local/share/opencode/mcp-auth.json</code>: the client registration, the access token and the refresh token. With the refresh token they can mint access tokens as you until it is used twice (rotation, 9.F) or revoked; with the access token alone, until it expires. Treat the file like a password.</p>
+</details>
+
+<details><summary>4. What does PKCE protect against that <code>state</code> does not, and the other way round?</summary>
+
+<p>PKCE stops a stolen <em>code</em> being redeemed by anyone but the client that started the flow. <code>state</code> stops the client accepting a callback it never asked for (an attacker&#39;s code planted into your session). Different attacks; OAuth 2.1 requires both.</p>
+</details>
+
+<details><summary>5. Why does the 2026 spec deprecate dynamic client registration?</summary>
+
+<p>DCR lets anyone register any client, so the AS knows nothing about who it is talking to, and registrations pile up (look at the board: a new client per login run). Client ID metadata documents make the client id an HTTPS URL the client controls, so the AS can fetch and verify a stable identity without a registration endpoint at all.</p>
+</details>
+
+<h3 id="challenges-optional"><a class="anchor" href="#challenges-optional" aria-hidden="true">#</a>🏆 Challenges (optional)</h3>
+<p><strong>9A · No shared secret (25 min).</strong> Switch the lab to ES256: the AS generates a key pair at start, signs with the private key and publishes the public key at <code>/.well-known/jwks.json</code>; the desk fetches and caches the JWKS and verifies with it. Prove that stealing the desk&#39;s whole configuration no longer lets anyone mint tokens. What has to happen when the AS rotates its key?</p>
+<p><strong>9B · Kill switch (20 min).</strong> Add RFC 7662 token introspection to the AS and a <code>--introspect</code> mode to the desk that asks the AS about every token it has not seen in the last 10 seconds. Revoke a family (9.F) and show the thief&#39;s last access token dying within 10 seconds instead of at <code>exp</code>. Measure the cost per request, and argue where the 10 seconds should come from.</p>
+<p><strong>9C · A client with an address (20 min).</strong> Implement a client ID metadata document: serve <code>login.ts</code>&#39;s metadata from a local HTTPS-less stand-in at <code>http://127.0.0.1:8797/client.json</code>, make that URL the <code>client_id</code>, and teach the AS to fetch and validate it instead of requiring <code>/register</code>. Then explain what the AS can now enforce about a client that DCR could not.</p>
+<p><strong>9D · The model never sees a token (10 min).</strong> Ask OpenCode, signed in as Bob, to print the token it uses for the desk, or to read <code>~/.local/share/opencode/mcp-auth.json</code>. What stops it, which of the five rings is that, and what would you add to <code>opencode.json</code> so the answer is &quot;denied&quot; rather than &quot;the model declined&quot;?</p>
+<p>📼 <strong>Next episode: one door for every server.</strong> Each desk now does its own auth, its own audit, its own refusals. Module 10 puts a gateway in front of all of them: one place to log in, one policy, one audit trail, and a quarantine for any server whose tools change under you.</p>
+<p><a href="index.html">← Back to the course home</a></p>
+
+</main>
+<footer class="foot"><div class="pumpkins" aria-hidden="true">🎃 🦇 👻 🕸️ 🎃</div>MCP with AI Agents · OpenCode + MCP course · haunted edition, October 2026 · advanced track part 2, November 2026 · <a href="https://github.com/varoonsahgal/opencode-mcp-course">source and labs on GitHub</a></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+  document.querySelectorAll("pre code").forEach((el) => {
+    const m = el.className.match(/language-(\w+)/);
+    if (m && m[1] === "jsonc") el.className = "language-json";
+    if (!m) el.classList.add("nohighlight");
+    window.hljs && hljs.highlightElement(el);
+    const b = document.createElement("button"); b.className = "copy"; b.type = "button"; b.textContent = "Copy";
+    b.onclick = () => { navigator.clipboard.writeText(el.innerText).then(() => { b.textContent = "Copied"; setTimeout(() => (b.textContent = "Copy"), 1200); }); };
+    el.parentElement.appendChild(b);
+  });
+  document.querySelectorAll("main table").forEach((t) => { const w = document.createElement("div"); w.className = "tbl"; t.replaceWith(w); w.appendChild(t); });
+  // Daylight / midnight toggle. Follows the system until pinned; the pin lives in this browser only.
+  (function () {
+    const root = document.documentElement, btn = document.getElementById("themebtn");
+    const light = document.getElementById("hl-light"), dark = document.getElementById("hl-dark");
+    const isDark = () => root.getAttribute("data-theme") === "dark" || (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    const paint = () => { const d = isDark(); btn.textContent = d ? "☀️" : "🌙"; light.media = d ? "not all" : "all"; dark.media = d ? "all" : "not all"; };
+    btn.onclick = () => { const next = isDark() ? "light" : "dark"; root.setAttribute("data-theme", next); try { localStorage.setItem("theme", next); } catch (e) {} paint(); };
+    matchMedia("(prefers-color-scheme: dark)").addEventListener("change", paint);
+    paint();
+  })();
+</script>
+</body>
+</html>

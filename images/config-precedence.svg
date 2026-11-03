@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" viewBox="0 0 960 360" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="pa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#334155"/></marker>
+  </defs>
+  <rect width="960" height="360" rx="18" fill="#fbfbfd"/>
+  <text x="32" y="40" font-size="22" font-weight="700" fill="#0f172a">Where OpenCode reads MCP config from (and who wins)</text>
+  <text x="32" y="64" font-size="14" fill="#475569">Configs are merged, not replaced. Later sources override earlier ones only where keys collide.</text>
+  <g font-size="12.5">
+    <rect x="32" y="100" width="200" height="120" rx="14" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+    <text x="132" y="128" text-anchor="middle" font-weight="700" fill="#334155">1 · Organization</text>
+    <text x="132" y="150" text-anchor="middle" fill="#475569" font-family="Menlo, monospace" font-size="11">.well-known/opencode</text>
+    <text x="132" y="172" text-anchor="middle" fill="#475569">approved servers,</text>
+    <text x="132" y="190" text-anchor="middle" fill="#475569">often shipped disabled</text>
+    <rect x="266" y="100" width="200" height="120" rx="14" fill="#eef2ff" stroke="#4f46e5" stroke-width="1.5"/>
+    <text x="366" y="128" text-anchor="middle" font-weight="700" fill="#3730a3">2 · Global (you)</text>
+    <text x="366" y="150" text-anchor="middle" fill="#3730a3" font-family="Menlo, monospace" font-size="11">~/.config/opencode/</text>
+    <text x="366" y="166" text-anchor="middle" fill="#3730a3" font-family="Menlo, monospace" font-size="11">opencode.json(c)</text>
+    <text x="366" y="190" text-anchor="middle" fill="#3730a3">where `opencode mcp add` writes</text>
+    <rect x="500" y="100" width="200" height="120" rx="14" fill="#fff7ed" stroke="#d97706" stroke-width="1.5"/>
+    <text x="600" y="128" text-anchor="middle" font-weight="700" fill="#9a3412">3 · Project</text>
+    <text x="600" y="150" text-anchor="middle" fill="#9a3412" font-family="Menlo, monospace" font-size="11">./opencode.json</text>
+    <text x="600" y="172" text-anchor="middle" fill="#9a3412">found walking up from cwd</text>
+    <text x="600" y="190" text-anchor="middle" fill="#9a3412">what the labs use</text>
+    <rect x="734" y="100" width="194" height="120" rx="14" fill="#ffe4e6" stroke="#e11d48" stroke-width="1.5"/>
+    <text x="831" y="128" text-anchor="middle" font-weight="700" fill="#9f1239">4 · Managed</text>
+    <text x="831" y="150" text-anchor="middle" fill="#9f1239" font-family="Menlo, monospace" font-size="10">macOS: /Library/Application</text>
+    <text x="831" y="166" text-anchor="middle" fill="#9f1239" font-family="Menlo, monospace" font-size="10">Support/opencode · /etc/opencode</text>
+    <text x="831" y="190" text-anchor="middle" fill="#9f1239">admin-controlled, wins last</text>
+  </g>
+  <line x1="232" y1="160" x2="264" y2="160" stroke="#334155" stroke-width="2" marker-end="url(#pa)"/>
+  <line x1="466" y1="160" x2="498" y2="160" stroke="#334155" stroke-width="2" marker-end="url(#pa)"/>
+  <line x1="700" y1="160" x2="732" y2="160" stroke="#334155" stroke-width="2" marker-end="url(#pa)"/>
+  <text x="480" y="246" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">lower precedence  ───────────────────────────────────────────▶  higher precedence</text>
+  <rect x="32" y="268" width="896" height="72" rx="12" fill="#f1f5f9"/>
+  <text x="48" y="292" font-size="12.5" fill="#334155"><tspan font-weight="700">Also in the mix:</tspan> OPENCODE_CONFIG (a custom file, between global and project) and OPENCODE_CONFIG_CONTENT (inline JSON, after project).</text>
+  <text x="48" y="312" font-size="12.5" fill="#334155"><tspan font-weight="700">Debug it:</tspan> `opencode debug config` prints the fully merged result. If a server you removed keeps appearing, it lives in another layer.</text>
+  <text x="48" y="332" font-size="12.5" fill="#334155"><tspan font-weight="700">Guardrail idea:</tspan> org defaults can list approved servers with enabled:false; users opt in locally. Managed config can pin a deny policy nobody can override.</text>
+</svg>

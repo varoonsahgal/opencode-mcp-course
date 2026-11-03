@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="380" viewBox="0 0 960 380" role="img" aria-label="Three-panel comic: the IT desk ghost asks which keyboard Dana wants; in OpenCode nobody answers and the terminal says Method not found; a skeleton at their own host answers DE; the ghost hands over a ticket and explains that the host answered, not the model.">
+<title>Panel 1, OpenCode: the IT desk ghost asks "Which keyboard does Dana want?" The OpenCode terminal answers: -32601 Method not found. Ghost: Is anybody there? Panel 2, your host: the ghost asks the same question; a skeleton at a terminal types DE. Panel 3: the ghost holds ticket ITD-1042. Skeleton: Did the model see my answer? Ghost: No. The host did. Caption: A server can only ask. Somebody has to be there to answer, and that somebody is the host.</title>
+<rect width="960" height="380" rx="18" fill="#150c24"/>
+<rect x="16" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="332" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="648" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<text x="30" y="36" font-family="Menlo, monospace" font-size="11" fill="#4b3f5c">1 · OpenCode 1.19</text>
+<text x="346" y="36" font-family="Menlo, monospace" font-size="11" fill="#4b3f5c">2 · your host</text>
+<text x="662" y="36" font-family="Menlo, monospace" font-size="11" fill="#4b3f5c">3 · afterwards</text>
+
+<!-- panel 1: the ghost asks an empty terminal -->
+<path d="M52,250 L52,208 A30,30 0 0 1 112,208 L112,250 Q106,236 98.8,256 Q90.4,270 82,254 Q73.6,270 65.2,256 Q58,236 52,250 Z" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="73" cy="210" rx="3.9" ry="6" fill="#1a1026"/><ellipse cx="91" cy="210" rx="3.9" ry="6" fill="#1a1026"/>
+<ellipse cx="82" cy="226" rx="5" ry="6" fill="#1a1026"/>
+<ellipse cx="49" cy="245" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="115" cy="245" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<text x="82" y="282" text-anchor="middle" font-family="Menlo, monospace" font-size="10" fill="#4b3f5c">itdesk</text>
+<rect x="28" y="48" width="170" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="76,106 82,180 92,106" fill="#fffaf0"/>
+<polyline points="76,106 82,180 92,106" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="113" y="73" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">Which keyboard</text>
+<text x="113" y="93" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">does Dana want?</text>
+<rect x="150" y="140" width="150" height="150" rx="6" fill="#e9dcc0" stroke="#1a1026" stroke-width="2"/>
+<path d="M150,156 h150" stroke="#1a1026" stroke-width="2"/><rect x="151" y="142" width="148" height="14" fill="#4b5563"/>
+<circle cx="160" cy="149" r="3" fill="#ef4444"/><circle cx="170" cy="149" r="3" fill="#f59e0b"/><circle cx="180" cy="149" r="3" fill="#22c55e"/>
+<text x="192" y="152" text-anchor="start" font-family="Menlo, monospace" font-size="8.5" fill="#efe3cc">opencode</text>
+<text x="160" y="178" font-family="Menlo, monospace" font-size="9.5" fill="#4b3f5c">← elicitation/create</text>
+<text x="160" y="198" font-family="Menlo, monospace" font-size="9.5" fill="#b91c1c">→ -32601</text>
+<text x="160" y="212" font-family="Menlo, monospace" font-size="9.5" fill="#b91c1c">  Method not found</text>
+<text x="160" y="244" font-family="Menlo, monospace" font-size="9.5" fill="#9a8aa8">capabilities:</text>
+<text x="160" y="258" font-family="Menlo, monospace" font-size="9.5" fill="#9a8aa8">  { roots: {} }</text>
+<rect x="138" y="112" width="120" height="24" rx="8" fill="#fffaf0" stroke="#1a1026" stroke-width="1.5"/>
+<text x="198" y="129" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="13" fill="#1a1026">Is anybody there?</text>
+
+<!-- panel 2: the skeleton at their own host answers -->
+<path d="M372,236 L372,194 A30,30 0 0 1 432,194 L432,236 Q426,222 418.8,242 Q410.4,256 402,240 Q393.6,256 385.2,242 Q378,222 372,236 Z" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="393" cy="196" rx="3.9" ry="6" fill="#1a1026"/><ellipse cx="411" cy="196" rx="3.9" ry="6" fill="#1a1026"/>
+<path d="M394,213 q4,-4 8,0 q4,4 8,0" fill="none" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="369" cy="231" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="435" cy="231" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<rect x="344" y="48" width="150" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="396,106 402,168 412,106" fill="#fffaf0"/>
+<polyline points="396,106 402,168 412,106" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="419" y="73" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">Which keyboard</text>
+<text x="419" y="93" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">does Dana want?</text>
+<line x1="540" y1="238" x2="528" y2="272" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="540" y1="238" x2="528" y2="272" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="576" y1="238" x2="588" y2="272" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="576" y1="238" x2="588" y2="272" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="550" y1="274" x2="548" y2="298" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="550" y1="274" x2="548" y2="298" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="566" y1="274" x2="568" y2="298" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="566" y1="274" x2="568" y2="298" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<rect x="540" y="232" width="36" height="42" rx="5" fill="#0e7490" stroke="#1a1026" stroke-width="1.5"/>
+<text x="558" y="258" text-anchor="middle" font-family="Menlo, monospace" font-size="10" fill="#fffdf7" font-weight="bold">YOU</text>
+<circle cx="558" cy="216" r="15" fill="#fffdf7" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="552" cy="214" rx="3.5" ry="4.5" fill="#1a1026"/><ellipse cx="564" cy="214" rx="3.5" ry="4.5" fill="#1a1026"/>
+<path d="M552,225 h12 M555,225 v4 M558,225 v4 M561,225 v4" fill="none" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="440" y="140" width="180" height="88" rx="6" fill="#e9dcc0" stroke="#1a1026" stroke-width="2"/>
+<path d="M440,156 h180" stroke="#1a1026" stroke-width="2"/><rect x="441" y="142" width="178" height="14" fill="#4b5563"/>
+<circle cx="450" cy="149" r="3" fill="#ef4444"/><circle cx="460" cy="149" r="3" fill="#f59e0b"/><circle cx="470" cy="149" r="3" fill="#22c55e"/>
+<text x="482" y="152" font-family="Menlo, monospace" font-size="8.5" fill="#efe3cc">npx tsx host.ts</text>
+<text x="448" y="176" font-family="Menlo, monospace" font-size="9.5" fill="#4b3f5c">itdesk asks: which keyboard?</text>
+<text x="448" y="194" font-family="Menlo, monospace" font-size="9.5" fill="#4b3f5c">  (US / UK / DE): </text><text x="544" y="194" font-family="Menlo, monospace" font-size="9.5" fill="#0e7490" font-weight="bold">DE</text>
+<text x="448" y="216" font-family="Menlo, monospace" font-size="9.5" fill="#15803d">result: Ticket ITD-1042</text>
+<rect x="500" y="100" width="112" height="30" rx="8" fill="#fffaf0" stroke="#1a1026" stroke-width="1.5"/>
+<polygon points="548,128 556,150 562,128" fill="#fffaf0"/>
+<polyline points="548,128 556,150 562,128" fill="none" stroke="#1a1026" stroke-width="1.5" stroke-linejoin="round"/>
+<text x="556" y="121" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">DE. Obviously.</text>
+
+<!-- panel 3: the ghost with the ticket -->
+<path d="M700,246 L700,204 A30,30 0 0 1 760,204 L760,246 Q754,232 746.8,252 Q738.4,266 730,250 Q721.6,266 713.2,252 Q706,232 700,246 Z" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="721" cy="206" rx="3.9" ry="6" fill="#1a1026"/><ellipse cx="739" cy="206" rx="3.9" ry="6" fill="#1a1026"/>
+<path d="M722,223 q4,-4 8,0 q4,4 8,0" fill="none" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="697" cy="241" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="763" cy="241" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<rect x="764" y="228" width="58" height="34" rx="3" fill="#fff7dd" stroke="#1a1026" stroke-width="1.5" transform="rotate(-8 793 245)"/>
+<text x="793" y="243" text-anchor="middle" font-family="Menlo, monospace" font-size="8.5" fill="#1a1026" font-weight="bold" transform="rotate(-8 793 245)">ITD-1042</text>
+<text x="793" y="255" text-anchor="middle" font-family="Menlo, monospace" font-size="7.5" fill="#4b3f5c" transform="rotate(-8 793 245)">DE · Linux · home</text>
+<line x1="874" y1="238" x2="862" y2="272" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="874" y1="238" x2="862" y2="272" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="910" y1="238" x2="922" y2="272" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="910" y1="238" x2="922" y2="272" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="884" y1="274" x2="882" y2="298" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="884" y1="274" x2="882" y2="298" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="900" y1="274" x2="902" y2="298" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="900" y1="274" x2="902" y2="298" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<rect x="874" y="232" width="36" height="42" rx="5" fill="#0e7490" stroke="#1a1026" stroke-width="1.5"/>
+<text x="892" y="258" text-anchor="middle" font-family="Menlo, monospace" font-size="10" fill="#fffdf7" font-weight="bold">YOU</text>
+<circle cx="892" cy="216" r="15" fill="#fffdf7" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="886" cy="214" rx="3.5" ry="4.5" fill="#1a1026"/><ellipse cx="898" cy="214" rx="3.5" ry="4.5" fill="#1a1026"/>
+<path d="M886,225 h12 M889,225 v4 M892,225 v4 M895,225 v4" fill="none" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="800" y="48" width="134" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="884,106 892,198 900,106" fill="#fffaf0"/>
+<polyline points="884,106 892,198 900,106" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="867" y="73" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">Did the model see</text>
+<text x="867" y="93" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">my answer?</text>
+<rect x="660" y="118" width="134" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="722,176 730,196 738,176" fill="#fffaf0"/>
+<polyline points="722,176 730,196 738,176" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="727" y="143" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">No. It saw a ticket.</text>
+<text x="727" y="163" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">The host answered.</text>
+
+<text x="24" y="346" font-family="Menlo, monospace" font-size="13" fill="#ff8a1f">🎃 comic · nobody home</text>
+<text x="560" y="346" text-anchor="middle" font-family="Menlo, monospace" font-size="13" fill="#efe3cc">A server can only ask. Somebody has to answer, and that somebody is the host.</text>
+</svg>

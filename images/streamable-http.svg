@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="430" viewBox="0 0 900 430" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="Streamable HTTP: the client POSTs initialize and gets a session id; later POSTs carry the session id and can be answered by an SSE stream with progress before the result; a GET opens a stream for server-initiated notifications such as tools/list_changed; DELETE ends the session.">
+  <title>Streamable HTTP, one endpoint</title>
+  <rect width="900" height="430" rx="16" fill="#ffffff"/>
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#475569"/></marker>
+  <marker id="b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#7c3aed"/></marker></defs>
+  <rect x="20" y="24" width="210" height="44" rx="10" fill="#eef2ff" stroke="#6366f1"/><text x="125" y="51" text-anchor="middle" font-weight="700" font-size="14" fill="#1e1b4b">MCP client (OpenCode)</text>
+  <rect x="660" y="24" width="230" height="44" rx="10" fill="#f5f3ff" stroke="#7c3aed"/><text x="775" y="51" text-anchor="middle" font-weight="700" font-size="14" fill="#2e1065">MCP server · one URL: /mcp</text>
+  <line x1="125" y1="68" x2="125" y2="410" stroke="#cbd5e1" stroke-dasharray="4 4"/><line x1="775" y1="68" x2="775" y2="410" stroke="#cbd5e1" stroke-dasharray="4 4"/>
+  <g font-size="13" fill="#0f172a">
+    <line x1="125" y1="96" x2="770" y2="96" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <text x="140" y="89">POST initialize · Authorization: Bearer … · Accept: application/json, text/event-stream</text>
+    <line x1="775" y1="126" x2="130" y2="126" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <text x="300" y="119">200 · <tspan font-weight="700">Mcp-Session-Id: 8990e1e1…</tspan> · result (JSON or one SSE event)</text>
+    <line x1="125" y1="164" x2="770" y2="164" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <text x="140" y="157">POST notifications/initialized + session id → 202, no body</text>
+    <line x1="125" y1="202" x2="770" y2="202" stroke="#7c3aed" stroke-width="1.6" marker-end="url(#b)"/>
+    <text x="140" y="195" fill="#5b21b6">GET + session id → a long-lived SSE stream for server-initiated messages</text>
+    <line x1="125" y1="244" x2="770" y2="244" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <text x="140" y="237">POST tools/call run_preflight · _meta.progressToken = 2</text>
+    <rect x="300" y="256" width="460" height="74" rx="8" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="316" y="276" font-family="Menlo, monospace" font-size="12" fill="#334155">content-type: text/event-stream</text>
+    <text x="316" y="296" font-family="Menlo, monospace" font-size="12" fill="#7c3aed">event: notifications/progress 1/5 … 4/5</text>
+    <text x="316" y="316" font-family="Menlo, monospace" font-size="12" fill="#0f766e">event: result {"content":[…]}  (stream closes)</text>
+    <line x1="290" y1="292" x2="130" y2="292" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <line x1="775" y1="356" x2="130" y2="356" stroke="#7c3aed" stroke-width="1.6" marker-end="url(#b)"/>
+    <text x="300" y="349" fill="#5b21b6">on the GET stream: notifications/tools/list_changed</text>
+    <line x1="125" y1="394" x2="770" y2="394" stroke="#475569" stroke-width="1.6" marker-end="url(#a)"/>
+    <text x="140" y="387">DELETE + session id → session ends · unknown id later → 404, initialize again</text>
+  </g>
+</svg>

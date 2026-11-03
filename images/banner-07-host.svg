@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="220" viewBox="0 0 960 220" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="Module 7: be the host. A person at a terminal answers a question a server asked; the probe table turns green.">
+ <title>Module 7 · Be the host</title>
+ <style>
+  .b7-tw { animation: b7-tw 3.2s ease-in-out infinite; }
+  .b7-fly { animation: b7-fly 6s ease-in-out infinite; }
+  .b7-cursor { animation: b7-cursor 1s steps(1) infinite; }
+  .b7-flow { stroke-dasharray: 4 10; animation: b7-flow 1.4s linear infinite; }
+  .b7-flowback { stroke-dasharray: 3 9; animation: b7-flowback 1.8s linear infinite; }
+  .b7-tick { animation: b7-tick 6s ease-out infinite; }
+  @keyframes b7-tw { 0%,100% { opacity: .15; } 50% { opacity: 1; } }
+  @keyframes b7-fly { 0%,100% { transform: translate(0,0) rotate(0); } 50% { transform: translate(12px,-7px) rotate(-8deg); } }
+  @keyframes b7-cursor { 0%,49% { opacity: 1; } 50%,100% { opacity: 0; } }
+  @keyframes b7-flow { to { stroke-dashoffset: -28; } }
+  @keyframes b7-flowback { to { stroke-dashoffset: 24; } }
+  @keyframes b7-tick { 0% { opacity: 0; } 12% { opacity: 1; } 100% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .b7-tw, .b7-fly, .b7-cursor, .b7-flow, .b7-flowback, .b7-tick { animation: none !important; } }
+ </style>
+ <defs>
+  <linearGradient id="b7-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0612"/><stop offset="1" stop-color="#1a1033"/></linearGradient>
+  <pattern id="b7-grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#2a1a44"/></pattern>
+  <radialGradient id="b7-glow" cx="0.72" cy="0.55" r="0.45"><stop offset="0" stop-color="#22d3ee" stop-opacity=".28"/><stop offset="1" stop-color="#22d3ee" stop-opacity="0"/></radialGradient>
+  <radialGradient id="b7-mg"><stop offset=".3" stop-color="#ffe9b3" stop-opacity=".3"/><stop offset="1" stop-color="#ffe9b3" stop-opacity="0"/></radialGradient>
+  <filter id="b7-tg" x="-6%" y="-40%" width="112%" height="180%"><feGaussianBlur stdDeviation="5" result="b"/><feFlood flood-color="#22d3ee" flood-opacity=".7"/><feComposite in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <path id="b7-bat" d="M0,-4L-2,-8L-3,-3C-9,-9 -15,-8 -19,-4C-15,-3 -14,0 -13,3C-10,0 -8,1 -7,4C-5,2 -3,3 -2,5L0,4L2,5C3,3 5,2 7,4C8,1 10,0 13,3C14,0 15,-3 19,-4C15,-8 9,-9 3,-3L2,-8Z" fill="#0a0612" stroke="#a855f7" stroke-opacity=".6" stroke-width=".9" stroke-linejoin="round"/>
+  <g id="b7-gh"><path d="M-9,11V-3a9,9 0 0 1 18,0V11l-3,-3-3,3-3,-3-3,3-3,-3z" fill="#efe3cc" opacity=".92"/><circle cx="-3.3" cy="-3" r="1.6" fill="#0a0612"/><circle cx="3.3" cy="-3" r="1.6" fill="#0a0612"/><path d="M-2.5,2 q2.5,2.5 5,0" fill="none" stroke="#0a0612" stroke-width="1.2"/></g>
+ </defs>
+ <rect width="960" height="220" rx="20" fill="url(#b7-bg)"/>
+ <rect width="960" height="220" rx="20" fill="url(#b7-grid)" opacity=".5"/>
+ <rect width="960" height="220" rx="20" fill="url(#b7-glow)"/>
+ <g fill="#fff"><circle cx="97" cy="25" r="1.4" opacity="0.55"/><circle cx="880" cy="17" r="1.1" opacity="0.85"/><circle cx="213" cy="9" r="0.8" opacity="0.32"/><circle cx="426" cy="11" r="0.8" opacity="0.48"/><circle cx="391" cy="27" r="0.7" opacity="0.69"/><circle cx="847" cy="24" r="0.8" opacity="0.39"/><circle cx="364" cy="8" r="1.4" opacity="0.76"/><circle cx="758" cy="22" r="1.4" opacity="0.53"/><circle class="b7-tw" style="animation-delay:-2.8s" cx="67" cy="16" r="1.0"/><circle class="b7-tw" style="animation-delay:-0.9s" cx="33" cy="27" r="0.9"/><circle cx="575" cy="27" r="1.1" opacity="0.74"/><circle class="b7-tw" style="animation-delay:-2.3s" cx="737" cy="200" r="0.9"/><circle cx="679" cy="206" r="1.2" opacity="0.71"/><circle class="b7-tw" style="animation-delay:-0.7s" cx="614" cy="40" r="1.2"/></g>
+ <circle cx="926" cy="32" r="42" fill="url(#b7-mg)"/>
+ <path transform="translate(926 32) rotate(-20)" d="M0,-15A15,15 0 0,0 0,15A18.3,18.3 0 0,1 0,-15Z" fill="#ffe9b3"/>
+ <g transform="translate(578 24) scale(0.5)"><use href="#b7-bat" class="b7-fly" style="animation-duration:6s;animation-delay:-1s"/></g><g transform="translate(884 22) scale(0.5)"><use href="#b7-bat" class="b7-fly" style="animation-duration:5.5s;animation-delay:-2s"/></g>
+ <path d="M960,220L892.5,198.1M960,220L902.6,178.3M960,220L918.3,162.6M960,220L938.1,152.5M943.0,220.0Q944.9,217.6 943.8,214.7Q946.4,213.1 946.2,210.0Q949.2,209.2 950.0,206.2Q953.1,206.4 954.7,203.8Q957.6,204.9 960.0,203.0M927.0,220.0Q930.7,215.4 928.6,209.8Q933.5,206.5 933.3,200.6Q939.0,199.0 940.6,193.3Q946.5,193.5 949.8,188.6Q955.4,190.7 960.0,187.0M911.0,220.0Q916.4,213.1 913.4,204.9Q920.7,200.0 920.4,191.2Q928.8,188.8 931.2,180.4Q940.0,180.7 944.9,173.4Q953.1,176.4 960.0,171.0" fill="none" stroke="#efe3cc" stroke-opacity=".25" stroke-width=".8"/>
+
+ <!-- left: words -->
+ <text x="40" y="50" font-family="Menlo, 'JetBrains Mono', monospace" font-size="12" letter-spacing="2.5" fill="#22d3ee">MODULE 07 · 50 MIN · ADVANCED TRACK · LAB: lab7-host</text>
+ <text x="38" y="100" font-family="Creepster, 'Chalkboard SE', Impact, fantasy" font-size="44" letter-spacing="1" fill="#efe3cc" filter="url(#b7-tg)" textLength="470" lengthAdjust="spacingAndGlyphs">Be the Host</text>
+ <text x="40" y="132" font-size="17" fill="#d8cfc0">Five servers written, zero clients. Today you build the</text>
+ <text x="40" y="154" font-size="17" fill="#d8cfc0">thing that listens when a server asks, <tspan fill="#67e8f9" font-weight="700">and decides.</tspan></text>
+ <g font-weight="700">
+  <rect x="40" y="174" width="118" height="26" rx="13" fill="#22d3ee" fill-opacity=".18" stroke="#22d3ee"/><text x="99" y="191" text-anchor="middle" fill="#cffafe" font-size="12">capabilities</text>
+  <rect x="168" y="174" width="112" height="26" rx="13" fill="#22d3ee" fill-opacity=".18" stroke="#22d3ee"/><text x="224" y="191" text-anchor="middle" fill="#cffafe" font-size="12">elicitation</text>
+  <rect x="290" y="174" width="98" height="26" rx="13" fill="#22d3ee" fill-opacity=".18" stroke="#22d3ee"/><text x="339" y="191" text-anchor="middle" fill="#cffafe" font-size="12">progress</text>
+  <rect x="398" y="174" width="88" height="26" rx="13" fill="#22d3ee" fill-opacity=".18" stroke="#22d3ee"/><text x="442" y="191" text-anchor="middle" fill="#cffafe" font-size="12">pinning</text>
+ </g>
+
+ <!-- right: a terminal window where the host answers the server -->
+ <rect x="590" y="46" width="300" height="150" rx="12" fill="#120a1e" stroke="#22d3ee" stroke-opacity=".7"/>
+ <rect x="590" y="46" width="300" height="24" rx="12" fill="#1f1333"/><rect x="590" y="58" width="300" height="12" fill="#1f1333"/>
+ <circle cx="606" cy="58" r="4" fill="#ff5f57"/><circle cx="619" cy="58" r="4" fill="#febc2e"/><circle cx="632" cy="58" r="4" fill="#28c840"/>
+ <text x="740" y="62" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="10" fill="#a898bd">npx tsx host.ts</text>
+ <g font-family="Menlo, 'JetBrains Mono', monospace" font-size="11.5">
+  <text x="604" y="90" fill="#efe3cc"><tspan font-weight="700">host&gt;</tspan> call itdesk_provision_laptop</text>
+  <text x="604" y="110" fill="#d8b4fe">itdesk asks: Which keyboard for Dana?</text>
+  <text x="604" y="128" fill="#a898bd">  (US / UK / DE):</text><text x="722" y="128" fill="#efe3cc">DE</text><rect class="b7-cursor" x="740" y="119" width="7" height="12" fill="#67e8f9"/>
+  <text x="604" y="150" fill="#4ade80">result: Ticket ITD-1042 · DE keyboard</text>
+  <g class="b7-tick"><text x="604" y="172" fill="#86efac">roots ✓  elicitation ✓  sampling ✓</text></g>
+  <text x="604" y="188" fill="#67e8f9">probe: 7 of 7 YES</text>
+ </g>
+ <!-- the server ghost asking, with the question flowing in and the answer flowing back -->
+ <g transform="translate(556 104) scale(1.3)"><use href="#b7-gh"/></g>
+ <text x="556" y="136" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="9.5" fill="#d8b4fe">itdesk</text>
+ <g fill="none" stroke-width="2">
+  <path class="b7-flow" d="M568 96 C580 92 584 104 596 106" stroke="#c084fc"/>
+  <path class="b7-flowback" d="M596 126 C584 128 578 118 568 112" stroke="#67e8f9" opacity=".8"/>
+ </g>
+</svg>

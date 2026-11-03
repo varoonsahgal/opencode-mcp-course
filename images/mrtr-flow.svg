@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="520" viewBox="0 0 960 520" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="Two ways a server asks the user something. Left, 2025: the server pushes an elicitation/create request down the open connection and waits for the response before finishing the tool call. Right, 2026: the server answers the tool call with an input_required result carrying the question and a signed requestState; the client shows the form, then retries the same call with the answers and the state attached; the server verifies the state and finishes.">
+  <defs>
+    <marker id="mr-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4f46e5"/></marker>
+    <marker id="mr-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b45309"/></marker>
+    <marker id="mr-c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7e22ce"/></marker>
+  </defs>
+  <rect width="960" height="520" rx="18" fill="#fbfbfd"/>
+  <text x="32" y="40" font-size="22" font-weight="700" fill="#0f172a">Asking the user: push (2025) versus multi round-trip (2026)</text>
+  <text x="32" y="64" font-size="14" fill="#475569">Same question, same answer. What changes is who holds the connection open while a person thinks.</text>
+
+  <!-- left: 2025 push -->
+  <text x="60" y="100" font-size="14" font-weight="800" fill="#3730a3">2025-11-25 · server-initiated request</text>
+  <rect x="60" y="112" width="130" height="34" rx="9" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="125" y="134" text-anchor="middle" font-size="13" font-weight="700" fill="#3730a3">client</text>
+  <rect x="300" y="112" width="130" height="34" rx="9" fill="#fff7ed" stroke="#d97706" stroke-width="2"/><text x="365" y="134" text-anchor="middle" font-size="13" font-weight="700" fill="#9a3412">server instance</text>
+  <line x1="125" y1="146" x2="125" y2="470" stroke="#c7d2fe" stroke-width="2" stroke-dasharray="6 5"/>
+  <line x1="365" y1="146" x2="365" y2="470" stroke="#fed7aa" stroke-width="2" stroke-dasharray="6 5"/>
+  <g font-size="12" font-family="Menlo, 'JetBrains Mono', monospace">
+    <line x1="127" y1="180" x2="361" y2="180" stroke="#4f46e5" stroke-width="2" marker-end="url(#mr-a)"/><text x="245" y="172" text-anchor="middle" fill="#3730a3">tools/call deploy  #7</text>
+    <rect x="357" y="192" width="16" height="200" rx="4" fill="#fff7ed" stroke="#d97706"/>
+    <line x1="361" y1="222" x2="129" y2="222" stroke="#b45309" stroke-width="2" marker-end="url(#mr-b)"/><text x="245" y="214" text-anchor="middle" fill="#9a3412">elicitation/create  #s1  (a request!)</text>
+    <rect x="70" y="236" width="110" height="44" rx="8" fill="#f1f5f9" stroke="#94a3b8"/><text x="125" y="254" text-anchor="middle" font-family="Inter" fill="#334155">show the form</text><text x="125" y="271" text-anchor="middle" font-family="Inter" fill="#64748b" font-size="11">…minutes pass…</text>
+    <line x1="127" y1="310" x2="361" y2="310" stroke="#4f46e5" stroke-width="2" marker-end="url(#mr-a)"/><text x="245" y="302" text-anchor="middle" fill="#3730a3">response #s1  {accept, content}</text>
+    <line x1="361" y1="380" x2="129" y2="380" stroke="#b45309" stroke-width="2" marker-end="url(#mr-b)"/><text x="245" y="372" text-anchor="middle" fill="#9a3412">result #7  "deployed"</text>
+  </g>
+  <rect x="60" y="400" width="370" height="60" rx="10" fill="#fff1f2" stroke="#e11d48" stroke-width="1.5"/>
+  <text x="245" y="422" text-anchor="middle" font-size="12" font-weight="700" fill="#9f1239">the same instance must wait the whole time</text>
+  <text x="245" y="440" text-anchor="middle" font-size="11.5" fill="#9f1239">needs a session; a second replica cannot take over; a stateless server</text>
+  <text x="245" y="455" text-anchor="middle" font-size="11.5" fill="#9f1239">has nobody to route the answer to (your 6C result)</text>
+
+  <!-- right: 2026 MRTR -->
+  <text x="530" y="100" font-size="14" font-weight="800" fill="#6b21a8">2026-07-28 · multi round-trip (input_required)</text>
+  <rect x="530" y="112" width="130" height="34" rx="9" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/><text x="595" y="134" text-anchor="middle" font-size="13" font-weight="700" fill="#3730a3">client</text>
+  <rect x="770" y="112" width="130" height="34" rx="9" fill="#fff7ed" stroke="#d97706" stroke-width="2"/><text x="835" y="134" text-anchor="middle" font-size="13" font-weight="700" fill="#9a3412">any instance</text>
+  <line x1="595" y1="146" x2="595" y2="470" stroke="#c7d2fe" stroke-width="2" stroke-dasharray="6 5"/>
+  <line x1="835" y1="146" x2="835" y2="470" stroke="#fed7aa" stroke-width="2" stroke-dasharray="6 5"/>
+  <g font-size="12" font-family="Menlo, 'JetBrains Mono', monospace">
+    <line x1="597" y1="180" x2="831" y2="180" stroke="#4f46e5" stroke-width="2" marker-end="url(#mr-a)"/><text x="715" y="172" text-anchor="middle" fill="#3730a3">tools/call deploy  #7</text>
+    <rect x="827" y="170" width="16" height="44" rx="4" fill="#fff7ed" stroke="#d97706"/>
+    <line x1="831" y1="212" x2="599" y2="212" stroke="#7e22ce" stroke-width="2" marker-end="url(#mr-c)"/><text x="715" y="204" text-anchor="middle" fill="#6b21a8">result #7  resultType: input_required</text>
+    <text x="715" y="228" text-anchor="middle" fill="#6b21a8" font-size="10.5">inputRequests: {confirm: elicitation/create…}</text>
+    <text x="715" y="243" text-anchor="middle" fill="#6b21a8" font-size="10.5">requestState: "v1.eyJ…" (signed by the server)</text>
+    <rect x="540" y="252" width="110" height="40" rx="8" fill="#f1f5f9" stroke="#94a3b8"/><text x="595" y="269" text-anchor="middle" font-family="Inter" fill="#334155">show the form</text><text x="595" y="285" text-anchor="middle" font-family="Inter" fill="#64748b" font-size="11">…minutes pass…</text>
+    <line x1="597" y1="316" x2="831" y2="316" stroke="#4f46e5" stroke-width="2" marker-end="url(#mr-a)"/><text x="715" y="308" text-anchor="middle" fill="#3730a3">tools/call deploy  #8  (a NEW request)</text>
+    <text x="715" y="332" text-anchor="middle" fill="#3730a3" font-size="10.5">+ inputResponses: {confirm: {accept, content}}</text>
+    <text x="715" y="347" text-anchor="middle" fill="#3730a3" font-size="10.5">+ requestState: "v1.eyJ…" echoed byte for byte</text>
+    <rect x="827" y="306" width="16" height="70" rx="4" fill="#fff7ed" stroke="#d97706"/>
+    <text x="848" y="366" text-anchor="start" fill="#9a3412" font-size="10" font-family="Inter">verify MAC, TTL,</text>
+    <text x="848" y="378" text-anchor="start" fill="#9a3412" font-size="10" font-family="Inter">and the binding</text>
+    <line x1="831" y1="392" x2="599" y2="392" stroke="#b45309" stroke-width="2" marker-end="url(#mr-b)"/><text x="715" y="386" text-anchor="middle" fill="#9a3412">result #8  "deployed"</text>
+  </g>
+  <rect x="530" y="400" width="370" height="60" rx="10" fill="#f0fdf4" stroke="#15803d" stroke-width="1.5"/>
+  <text x="715" y="422" text-anchor="middle" font-size="12" font-weight="700" fill="#14532d">nothing waits; each request stands alone</text>
+  <text x="715" y="440" text-anchor="middle" font-size="11.5" fill="#14532d">round two can land on another replica, after a restart, behind a load balancer;</text>
+  <text x="715" y="455" text-anchor="middle" font-size="11.5" fill="#14532d">the state travelled through the client, so it is signed and checked</text>
+  <text x="480" y="500" text-anchor="middle" font-size="12" fill="#475569">SDK v2 writes the handler once (inputRequired) and serves 2025 clients through a shim: the push arrow on the left is generated for them.</text>
+</svg>

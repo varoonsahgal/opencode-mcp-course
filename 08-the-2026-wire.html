@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Module 8 · The 2026 Wire: Requests That Stand Alone · MCP with AI Agents</title>
+<script>try{var t=localStorage.getItem("theme");if(t==="dark"||t==="light")document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&family=Creepster&family=Patrick+Hand&display=swap" rel="stylesheet">
+<link id="hl-light" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" media="(prefers-color-scheme: light)">
+<link id="hl-dark" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" media="(prefers-color-scheme: dark)">
+<link rel="stylesheet" href="assets/site.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2032%2032%22%3E%3Crect%20width%3D%2232%22%20height%3D%2232%22%20rx%3D%228%22%20fill%3D%22%23150c24%22%2F%3E%3Cellipse%20cx%3D%2216%22%20cy%3D%2218%22%20rx%3D%2212%22%20ry%3D%2210%22%20fill%3D%22%23ff8a1f%22%2F%3E%3Cpath%20d%3D%22M16%208c0-3%201-4%203-5%22%20stroke%3D%22%2322c55e%22%20stroke-width%3D%222.5%22%20fill%3D%22none%22%2F%3E%3Cpath%20d%3D%22M9%2015l4%203-4%201zM23%2015l-4%203%204%201z%22%20fill%3D%22%23150c24%22%2F%3E%3Cpath%20d%3D%22M9%2022q7%205%2014%200q-2%203-7%203t-7-3z%22%20fill%3D%22%23150c24%22%2F%3E%3C%2Fsvg%3E">
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><span class="pumpkin" aria-hidden="true">🎃</span>MCP with AI Agents</a>
+  <nav class="links"><a href="index.html">Home</a><a href="00-setup.html">00 · Setup</a><a href="01-connecting-agents-with-mcp.html">01 · Connect</a><a href="02-configuring-mcp-in-opencode.html">02 · Configure</a><a href="03-building-a-custom-mcp-server.html">03 · Build</a><a href="04-securing-mcp-integrations.html">04 · Secure</a><a href="05-applied-challenge.html">05 · Apply</a><a href="06-advanced-mcp.html">06 · Go remote</a><a href="07-be-the-host.html">07 · Be the host</a><a href="08-the-2026-wire.html" aria-current="page">08 · The 2026 wire</a><a href="09-identity-for-real.html">09 · Identity</a><a href="10-the-gateway.html">10 · Gateway</a><span class="sep"></span><a href="handout.html">Handout</a><a href="slides/index.html">Slides</a><a href="https://github.com/varoonsahgal/opencode-mcp-course">GitHub</a></nav>
+  <button class="theme" type="button" id="themebtn" aria-label="Switch between daylight and midnight" title="Daylight / midnight">🌙</button>
+  <button class="menu" type="button" aria-label="Menu" onclick="document.body.classList.toggle('open')">☰</button>
+</header>
+<svg class="web" viewBox="0 0 170 170" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1">
+<path d="M0 0L170 170M0 0L170 70M0 0L70 170M0 0L170 20M0 0L20 170M0 0L170 120M0 0L120 170"/>
+<path d="M30 0Q28 22 0 30M60 0Q56 44 0 60M90 0Q84 66 0 90M120 0Q112 88 0 120M150 0Q140 110 0 150"/>
+<path d="M30 0Q30 15 20 24Q15 28 0 30" opacity=".5"/></svg>
+<main class="doc">
+<figure class="banner"><svg xmlns="http://www.w3.org/2000/svg" width="960" height="220" viewBox="0 0 960 220" font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img" aria-label="Module 8: the 2026 wire. Self-describing requests travel as sealed envelopes to a server that answers with input_required instead of asking back.">
+ <title>Module 8 · The 2026 wire</title>
+ <style>
+  .b8-tw { animation: b8-tw 3.2s ease-in-out infinite; }
+  .b8-fly { animation: b8-fly 6s ease-in-out infinite; }
+  .b8-flow { stroke-dasharray: 4 10; animation: b8-flow 1.4s linear infinite; }
+  .b8-flowback { stroke-dasharray: 3 9; animation: b8-flowback 1.8s linear infinite; }
+  .b8-env { animation: b8-env 4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+  .b8-pulse { animation: b8-pulse 2.4s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+  @keyframes b8-tw { 0%,100% { opacity: .15; } 50% { opacity: 1; } }
+  @keyframes b8-fly { 0%,100% { transform: translate(0,0) rotate(0); } 50% { transform: translate(12px,-7px) rotate(-8deg); } }
+  @keyframes b8-flow { to { stroke-dashoffset: -28; } }
+  @keyframes b8-flowback { to { stroke-dashoffset: 24; } }
+  @keyframes b8-env { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+  @keyframes b8-pulse { 0% { opacity: .55; transform: scale(.96); } 100% { opacity: 0; transform: scale(1.45); } }
+  @media (prefers-reduced-motion: reduce) { .b8-tw, .b8-fly, .b8-flow, .b8-flowback, .b8-env, .b8-pulse { animation: none !important; } }
+ </style>
+ <defs>
+  <linearGradient id="b8-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a0612"/><stop offset="1" stop-color="#1a1033"/></linearGradient>
+  <pattern id="b8-grid" width="24" height="24" patternUnits="userSpaceOnUse"><path d="M24 0H0V24" fill="none" stroke="#2a1a44"/></pattern>
+  <radialGradient id="b8-glow" cx="0.74" cy="0.5" r="0.45"><stop offset="0" stop-color="#fbbf24" stop-opacity=".22"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></radialGradient>
+  <radialGradient id="b8-mg"><stop offset=".3" stop-color="#ffe9b3" stop-opacity=".3"/><stop offset="1" stop-color="#ffe9b3" stop-opacity="0"/></radialGradient>
+  <filter id="b8-tg" x="-6%" y="-40%" width="112%" height="180%"><feGaussianBlur stdDeviation="5" result="b"/><feFlood flood-color="#fbbf24" flood-opacity=".7"/><feComposite in2="b" operator="in" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="b8-fg" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <path id="b8-bat" d="M0,-4L-2,-8L-3,-3C-9,-9 -15,-8 -19,-4C-15,-3 -14,0 -13,3C-10,0 -8,1 -7,4C-5,2 -3,3 -2,5L0,4L2,5C3,3 5,2 7,4C8,1 10,0 13,3C14,0 15,-3 19,-4C15,-8 9,-9 3,-3L2,-8Z" fill="#0a0612" stroke="#a855f7" stroke-opacity=".6" stroke-width=".9" stroke-linejoin="round"/>
+  <g id="b8-pk"><path d="M-2,-19C-3,-24 0,-28 6,-30C4,-27 5,-22 4,-19Z" fill="#22c55e"/><ellipse cy="1" rx="24" ry="19" fill="#e0661a"/><ellipse rx="17" ry="20" fill="#ff8a1f"/><path d="M-9,-19C-13,-6 -13,8 -9,20M9,-19C13,-6 13,8 9,20" fill="none" stroke="#e0661a" stroke-width="1.4"/></g>
+  <path id="b8-pf" d="M-13,-1L-8,-10L-3,-1ZM3,-1L8,-10L13,-1ZM-2,6L0,2L2,6ZM-13,8Q0,18 13,8L10,8 9,12 6,8 -6,8 -9,12 -10,8Z"/>
+  <g id="b8-envelope"><rect x="-34" y="-22" width="68" height="44" rx="5" fill="#fff7dd" stroke="#1a1026" stroke-width="1.5"/><path d="M-34,-22 L0,4 L34,-22" fill="none" stroke="#1a1026" stroke-width="1.5"/><circle cy="4" r="6" fill="#e11d48" stroke="#1a1026" stroke-width="1"/></g>
+ </defs>
+ <rect width="960" height="220" rx="20" fill="url(#b8-bg)"/>
+ <rect width="960" height="220" rx="20" fill="url(#b8-grid)" opacity=".5"/>
+ <rect width="960" height="220" rx="20" fill="url(#b8-glow)"/>
+ <g fill="#fff"><circle cx="97" cy="25" r="1.4" opacity="0.55"/><circle cx="880" cy="17" r="1.1" opacity="0.85"/><circle cx="213" cy="9" r="0.8" opacity="0.32"/><circle cx="426" cy="11" r="0.8" opacity="0.48"/><circle cx="391" cy="27" r="0.7" opacity="0.69"/><circle cx="847" cy="24" r="0.8" opacity="0.39"/><circle cx="364" cy="8" r="1.4" opacity="0.76"/><circle class="b8-tw" style="animation-delay:-2.8s" cx="67" cy="16" r="1.0"/><circle class="b8-tw" style="animation-delay:-0.9s" cx="33" cy="27" r="0.9"/><circle cx="575" cy="27" r="1.1" opacity="0.74"/><circle class="b8-tw" style="animation-delay:-2.3s" cx="737" cy="200" r="0.9"/><circle cx="679" cy="206" r="1.2" opacity="0.71"/><circle class="b8-tw" style="animation-delay:-0.7s" cx="614" cy="40" r="1.2"/></g>
+ <circle cx="926" cy="32" r="42" fill="url(#b8-mg)"/>
+ <path transform="translate(926 32) rotate(-20)" d="M0,-15A15,15 0 0,0 0,15A18.3,18.3 0 0,1 0,-15Z" fill="#ffe9b3"/>
+ <g transform="translate(578 24) scale(0.5)"><use href="#b8-bat" class="b8-fly" style="animation-duration:6s;animation-delay:-1s"/></g><g transform="translate(884 22) scale(0.5)"><use href="#b8-bat" class="b8-fly" style="animation-duration:5.5s;animation-delay:-2s"/></g>
+ <path d="M960,220L892.5,198.1M960,220L902.6,178.3M960,220L918.3,162.6M960,220L938.1,152.5M943.0,220.0Q944.9,217.6 943.8,214.7Q946.4,213.1 946.2,210.0Q949.2,209.2 950.0,206.2Q953.1,206.4 954.7,203.8Q957.6,204.9 960.0,203.0M927.0,220.0Q930.7,215.4 928.6,209.8Q933.5,206.5 933.3,200.6Q939.0,199.0 940.6,193.3Q946.5,193.5 949.8,188.6Q955.4,190.7 960.0,187.0M911.0,220.0Q916.4,213.1 913.4,204.9Q920.7,200.0 920.4,191.2Q928.8,188.8 931.2,180.4Q940.0,180.7 944.9,173.4Q953.1,176.4 960.0,171.0" fill="none" stroke="#efe3cc" stroke-opacity=".25" stroke-width=".8"/>
+
+ <text x="40" y="50" font-family="Menlo, 'JetBrains Mono', monospace" font-size="12" letter-spacing="2.5" fill="#fbbf24">MODULE 08 · 50 MIN · ADVANCED TRACK · LAB: lab8-wire-2026</text>
+ <text x="38" y="100" font-family="Creepster, 'Chalkboard SE', Impact, fantasy" font-size="44" letter-spacing="1" fill="#efe3cc" filter="url(#b8-tg)" textLength="520" lengthAdjust="spacingAndGlyphs">The 2026 Wire</text>
+ <text x="40" y="132" font-size="17" fill="#d8cfc0">No handshake, no sessions, every request stands alone,</text>
+ <text x="40" y="154" font-size="17" fill="#d8cfc0">and a server that needs an answer <tspan fill="#fde68a" font-weight="700">asks by answering.</tspan></text>
+ <g font-weight="700">
+  <rect x="40" y="174" width="128" height="26" rx="13" fill="#fbbf24" fill-opacity=".18" stroke="#fbbf24"/><text x="104" y="191" text-anchor="middle" fill="#fef3c7" font-size="12">server/discover</text>
+  <rect x="178" y="174" width="128" height="26" rx="13" fill="#fbbf24" fill-opacity=".18" stroke="#fbbf24"/><text x="242" y="191" text-anchor="middle" fill="#fef3c7" font-size="12">_meta envelope</text>
+  <rect x="316" y="174" width="118" height="26" rx="13" fill="#fbbf24" fill-opacity=".18" stroke="#fbbf24"/><text x="375" y="191" text-anchor="middle" fill="#fef3c7" font-size="12">input_required</text>
+  <rect x="444" y="174" width="80" height="26" rx="13" fill="#fbbf24" fill-opacity=".18" stroke="#fbbf24"/><text x="484" y="191" text-anchor="middle" fill="#fef3c7" font-size="12">listen</text>
+ </g>
+
+ <!-- right: a sealed envelope flies to the pumpkin server; a ticket flies back -->
+ <g class="b8-env" transform="translate(660 92)"><use href="#b8-envelope"/></g>
+ <g font-family="Menlo, 'JetBrains Mono', monospace" font-size="9" fill="#fde68a" text-anchor="middle">
+  <text x="660" y="130">_meta: protocolVersion</text><text x="660" y="142">clientInfo · clientCapabilities</text>
+ </g>
+ <g fill="none" stroke-width="2">
+  <path class="b8-flow" d="M700 92 C750 92 760 104 820 104" stroke="#fbbf24"/>
+  <path class="b8-flowback" d="M820 118 C770 118 756 150 706 150" stroke="#f0abfc" opacity=".8"/>
+ </g>
+ <rect x="596" y="150" width="104" height="22" rx="6" fill="#120a1e" stroke="#c084fc"/><text x="648" y="165" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="9.5" fill="#e9d5ff">input_required</text>
+ <circle class="b8-pulse" cx="846" cy="104" r="46" fill="none" stroke="#fbbf24" stroke-width="2"/>
+ <g transform="translate(846 104) scale(1.15)"><use href="#b8-pk"/><use href="#b8-pf" fill="#ffe9b3" filter="url(#b8-fg)"/></g>
+ <text x="846" y="148" text-anchor="middle" font-size="13" font-weight="800" fill="#efe3cc">desk · 2026</text>
+ <text x="846" y="162" text-anchor="middle" font-family="Menlo, 'JetBrains Mono', monospace" font-size="10" fill="#fde68a">no sessions</text>
+</svg></figure>
+<h1>Module 8 · The 2026 Wire: Requests That Stand Alone</h1>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>Time</strong></td>
+<td>50 minutes (18 concepts · 32 lab). Advanced track, part 2: after Module 7</td>
+</tr>
+<tr>
+<td><strong>Lab folder</strong></td>
+<td><code>course/labs/lab8-wire-2026</code></td>
+</tr>
+<tr>
+<td><strong>You will</strong></td>
+<td>serve the release desk on the current protocol revision, <code>2026-07-28</code>, and watch both eras on the wire with a client you control: <code>server/discover</code> instead of <code>initialize</code>, a <code>_meta</code> envelope on every request, headers that mirror the body, no sessions, a tool that asks the person for confirmation by <em>answering</em> with <code>input_required</code>, a signed <code>requestState</code> that defeats a tampered retry, a <code>subscriptions/listen</code> stream that brings the freeze notification back to a stateless server, and a cache hint that stops a client re-fetching your catalogue every turn</td>
+</tr>
+<tr>
+<td><strong>You&#39;ll pull off</strong></td>
+<td>the same <code>deploy</code> call, made twice: the first answer is a question, the second is a deploy; then you tamper with the retry in flight and the server rejects it before your handler even runs</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>🎬 <strong>Cold open.</strong> Challenge 6C ended on a question. Served statelessly, the desk lost two things: cancellation (the cancel arrived at a different instance) and the freeze notification (there was no session to push it down). &quot;What would you have to build to get the freeze notification back?&quot; The protocol&#39;s own answer shipped on 28 July 2026, and it did not add sessions back. It removed the reasons you needed them.</p>
+</blockquote>
+<h2 id="8-1-what-changed-and-why-it-is-not-an-increment"><a class="anchor" href="#8-1-what-changed-and-why-it-is-not-an-increment" aria-hidden="true">#</a>8.1 What changed, and why it is not an increment</h2>
+<p>The <code>2026-07-28</code> revision is a redesign of the core, not a feature release. The spec&#39;s own changelog calls it a breaking change. Its one organising idea: <strong>every request carries everything the server needs to process it</strong>, so no server has to remember anything between two requests.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>up to <code>2025-11-25</code> (&quot;legacy&quot;)</th>
+<th><code>2026-07-28</code> (&quot;modern&quot;)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Handshake</td>
+<td><code>initialize</code> → <code>notifications/initialized</code></td>
+<td>none; a client <em>may</em> ask <code>server/discover</code> first</td>
+</tr>
+<tr>
+<td>Who the client is</td>
+<td>said once at <code>initialize</code></td>
+<td>in every request&#39;s <code>_meta</code> envelope</td>
+</tr>
+<tr>
+<td>Sessions</td>
+<td><code>Mcp-Session-Id</code>, <code>GET</code> stream, <code>DELETE</code></td>
+<td>none; <code>GET</code> and <code>DELETE</code> answer <code>405</code></td>
+</tr>
+<tr>
+<td>Server asks the user</td>
+<td>pushes <code>elicitation/create</code> down the connection</td>
+<td>returns an <code>input_required</code> result; the client retries</td>
+</tr>
+<tr>
+<td>Server pushes changes</td>
+<td><code>list_changed</code> on the GET stream</td>
+<td>the client opens <code>subscriptions/listen</code> and says what it wants</td>
+</tr>
+<tr>
+<td>Progress, logging</td>
+<td><code>notifications/progress</code>, <code>notifications/message</code></td>
+<td>progress unchanged; logging per request (<code>_meta.logLevel</code>), deprecated</td>
+</tr>
+<tr>
+<td>Roots, sampling</td>
+<td>client capabilities</td>
+<td>deprecated (SEP-2577); pass paths as arguments, call your own model</td>
+</tr>
+<tr>
+<td>HTTP headers</td>
+<td><code>MCP-Protocol-Version</code></td>
+<td>plus <code>Mcp-Method</code>, <code>Mcp-Name</code>, <code>Mcp-Param-*</code> mirroring the body</td>
+</tr>
+<tr>
+<td>Results</td>
+<td>just <code>result</code></td>
+<td>every result has a <code>resultType</code>: <code>complete</code>, <code>input_required</code>, or an extension&#39;s</td>
+</tr>
+<tr>
+<td>Caching</td>
+<td>none</td>
+<td><code>ttlMs</code> + <code>cacheScope</code> on list results and <code>server/discover</code></td>
+</tr>
+<tr>
+<td>Errors</td>
+<td><code>-32000…</code></td>
+<td>reserved <code>-32020</code> header mismatch, <code>-32021</code> missing client capability, <code>-32022</code> unsupported version</td>
+</tr>
+</tbody></table>
+<p>The SDK you have been using all course (v2) implements both. It calls them <strong>eras</strong>: a server built with <code>createMcpHandler</code> or <code>serveStdio</code> serves both from one factory; a client picks with <code>versionNegotiation</code> (the default is legacy, which is what OpenCode 1.x speaks). The next revision is scheduled for 30 March 2027, and the spec now promises at least twelve months between deprecating a feature and removing it.</p>
+<blockquote>
+<p>🍬 <strong>Treat: why the handshake had to go.</strong> <code>initialize</code> was a conversation: &quot;I speak 2025-11-25 and I can do elicitation&quot;, &quot;I speak 2025-11-25 and I have tools&quot;. That only works if the thing that heard you is the thing that answers your next request. Put two replicas behind a load balancer, or restart one, and the second request lands on a server that never heard the first. Sessions were the patch: an id that routes you back to the instance that remembers. The 2026 revision does the arithmetic the other way round: if remembering is the problem, stop needing to remember. Say who you are every time.</p>
+</blockquote>
+<h2 id="8-2-the-envelope-and-the-headers"><a class="anchor" href="#8-2-the-envelope-and-the-headers" aria-hidden="true">#</a>8.2 The envelope and the headers</h2>
+<p>A modern request is a normal JSON-RPC request whose <code>params._meta</code> carries three reserved keys:</p>
+<pre><code class="language-json">{ &quot;jsonrpc&quot;: &quot;2.0&quot;, &quot;id&quot;: 7, &quot;method&quot;: &quot;tools/call&quot;,
+  &quot;params&quot;: { &quot;name&quot;: &quot;deploy&quot;, &quot;arguments&quot;: { &quot;service&quot;: &quot;web&quot;, &quot;version&quot;: &quot;4.12.0&quot; },
+    &quot;_meta&quot;: { &quot;io.modelcontextprotocol/protocolVersion&quot;: &quot;2026-07-28&quot;,
+               &quot;io.modelcontextprotocol/clientInfo&quot;: { &quot;name&quot;: &quot;wire&quot;, &quot;version&quot;: &quot;1.0.0&quot; },
+               &quot;io.modelcontextprotocol/clientCapabilities&quot;: { &quot;elicitation&quot;: { &quot;form&quot;: {}, &quot;url&quot;: {} } } } } }
+</code></pre>
+<p><code>protocolVersion</code> and <code>clientCapabilities</code> are required; <code>clientInfo</code> should be there. Miss one and the server answers <code>-32602</code> with the key named. The SDK lifts them out of <code>_meta</code> before your handler runs and hands them to you as <code>ctx.mcpReq.envelope</code>; your tool arguments never see them.</p>
+<p>Over Streamable HTTP the same request carries three headers that <strong>mirror the body</strong>: <code>MCP-Protocol-Version: 2026-07-28</code>, <code>Mcp-Method: tools/call</code> and <code>Mcp-Name: deploy</code> (the tool, resource or prompt name). A tool argument can be mirrored too, as <code>Mcp-Param-&lt;Name&gt;</code>, if its schema says <code>x-mcp-header</code>. If a header and the body disagree, the server refuses with <code>-32020</code> and never parses further. The point is the thing in the middle: a proxy, a gateway or a rate limiter can now route, authorise and meter <em>without reading JSON bodies</em>. Module 10 builds one.</p>
+<p><strong><code>server/discover</code></strong> replaces the handshake for clients that want to know what they are talking to before they talk. It returns <code>supportedVersions</code>, <code>capabilities</code>, <code>instructions</code> and a <code>ttlMs</code>, and a client may cache it. A client that already knows may skip it and send <code>tools/call</code> cold; a bare request to an unknown server is legal. The SDK client&#39;s <code>auto</code> mode sends <code>server/discover</code> first and falls back to <code>initialize</code> if the answer does not look modern, which is how one client talks to both eras.</p>
+<h2 id="8-3-asking-by-answering-multi-round-trip-requests"><a class="anchor" href="#8-3-asking-by-answering-multi-round-trip-requests" aria-hidden="true">#</a>8.3 Asking by answering: multi round-trip requests</h2>
+<p><img src="images/mrtr-flow.svg" alt="Push versus multi round-trip"></p>
+<p>In Module 7 the IT desk <em>pushed</em> <code>elicitation/create</code> at your host and waited, holding the connection. A stateless server cannot do that: when the answer comes back as a new HTTP request, it may land on a different instance, and the one that asked is gone. The 2026 revision turns the question into a <strong>result</strong>:</p>
+<pre><code class="language-json">{ &quot;result&quot;: { &quot;resultType&quot;: &quot;input_required&quot;,
+    &quot;inputRequests&quot;: { &quot;confirm&quot;: { &quot;method&quot;: &quot;elicitation/create&quot;, &quot;params&quot;: { &quot;mode&quot;: &quot;form&quot;, &quot;message&quot;: &quot;Deploy web 4.11.0 → 4.12.0 to production?&quot;, &quot;requestedSchema&quot;: { … } } } },
+    &quot;requestState&quot;: &quot;v1.eyJwIjp7InVzZXIiOiJib2Ii…&quot; } }
+</code></pre>
+<p>The client shows the form, then <strong>retries the same call</strong> with a new request id, the original arguments, <code>inputResponses: { confirm: { action: &quot;accept&quot;, content: { confirm: true } } }</code>, and <code>requestState</code> echoed <strong>byte for byte</strong>. The server sees a normal <code>tools/call</code> whose handler can now read the answers. Only <code>tools/call</code>, <code>resources/read</code> and <code>prompts/get</code> may answer this way. Elicitation (form and URL), sampling and roots all ride it; the server→client request channel is gone.</p>
+<blockquote>
+<p>📖 <strong>Key concept: <code>requestState</code> is the server&#39;s memory, carried by the client.</strong> The server has nothing between the two rounds except what it put in that string, so the string holds what was asked, for whom, about what. And since it travels through the client, it comes back as <strong>attacker-controlled input</strong>. The spec is blunt: servers MUST integrity-protect it (HMAC or AEAD) and SHOULD bind it to the principal, a TTL and a digest of the original request. The SDK gives you <code>createRequestStateCodec</code> (HMAC-SHA256, signed not encrypted) and verifies it before your handler runs. You still have to check that the retry is about the same thing.</p>
+</blockquote>
+<blockquote>
+<p>🍬 <strong>Treat: write once, serve both.</strong> An SDK v2 handler that returns <code>inputRequired(…)</code> works for a 2025 client too: the SDK&#39;s <em>legacy shim</em> turns the result into a push-style <code>elicitation/create</code> on the open connection, waits, and re-enters your handler with the answers filled in. That is why Module 7&#39;s IT desk could have been written the 2026 way. The shim needs a connection that stays open, though, which a stateless server does not have. You will meet that edge in 8.C.</p>
+</blockquote>
+<h2 id="8-4-listening-instead-of-being-pushed-to"><a class="anchor" href="#8-4-listening-instead-of-being-pushed-to" aria-hidden="true">#</a>8.4 Listening instead of being pushed to</h2>
+<p>Without a GET stream, how does a client learn that tools changed? It asks for exactly the notifications it wants: <code>subscriptions/listen</code> with a filter (<code>toolsListChanged</code>, <code>promptsListChanged</code>, <code>resourcesListChanged</code>, <code>resourceSubscriptions: [uri, …]</code>). The server answers with an SSE stream that stays open: first <code>notifications/subscriptions/acknowledged</code> with the filter it honours and a <code>subscriptionId</code>, then each notification tagged with that id. Closing the stream ends the subscription. <code>notifications/progress</code> and <code>notifications/message</code> never travel on it; they belong to the request that caused them.</p>
+<p>Behind <code>createMcpHandler</code> the handler object has a publish side: <code>mcp.notify.toolsChanged()</code>, <code>mcp.notify.resourceUpdated(uri)</code>. Every open listen stream that opted in gets the event. Replace the in-process bus with your pub/sub backend and every replica&#39;s listeners hear every replica&#39;s changes. That is 6C&#39;s missing piece.</p>
+<h2 id="8-5-cache-hints"><a class="anchor" href="#8-5-cache-hints" aria-hidden="true">#</a>8.5 Cache hints</h2>
+<p>Module 2 measured the context tax of a tool catalogue; OpenCode pays it once per session because it keeps the list. A client that re-fetches <code>tools/list</code> on every turn pays a request, too. The 2026 revision puts <code>ttlMs</code> and <code>cacheScope</code> (<code>private</code> to this client, or <code>public</code>) on every cacheable result: <code>tools/list</code>, the other lists, <code>resources/read</code> and <code>server/discover</code>. The SDK&#39;s default is the honest one, <code>ttlMs: 0</code>; <code>cacheHints</code> in the server options sets the rest. The SDK client keeps a cache and invalidates it on <code>list_changed</code>, which is why TODO 3 matters for TODO 4.</p>
+<h2 id="8-6-what-is-deprecated-and-what-to-do-instead"><a class="anchor" href="#8-6-what-is-deprecated-and-what-to-do-instead" aria-hidden="true">#</a>8.6 What is deprecated, and what to do instead</h2>
+<p>SEP-2577 deprecates three things at once, with removal no earlier than mid-2027: <strong>roots</strong> (pass paths as tool arguments, resource URIs or configuration), <strong>sampling</strong> (call your model provider; Module 7.F showed why), and the <strong>logging channel</strong> (log to stderr for stdio servers, or OpenTelemetry; <code>logging/setLevel</code> is gone, and a per-request <code>_meta.logLevel</code> is the only way a modern client receives <code>notifications/message</code> at all). <code>ping</code> is gone. Resumability (<code>Last-Event-ID</code>) is gone: a broken response stream loses the in-flight request and the client re-sends it, which is only safe because requests now stand alone.</p>
+<hr>
+<h2 id="lab-8-the-desk-reborn-32-minutes"><a class="anchor" href="#lab-8-the-desk-reborn-32-minutes" aria-hidden="true">#</a>Lab 8 · The desk, reborn (32 minutes)</h2>
+<h3 id="mission"><a class="anchor" href="#mission" aria-hidden="true">#</a>🎯 Mission</h3>
+<ul>
+<li><input disabled="" type="checkbox"> See both handshakes on the wire and count the requests</li>
+<li><input disabled="" type="checkbox"> Make a server refuse a hand-written request four different ways</li>
+<li><input disabled="" type="checkbox"> Turn <code>deploy</code> into a question the person answers, then a deploy</li>
+<li><input disabled="" type="checkbox"> Tamper with the retry and watch the server reject it before the handler runs</li>
+<li><input disabled="" type="checkbox"> Bring the freeze notification back to a stateless server</li>
+<li><input disabled="" type="checkbox"> Stop a client re-fetching your catalogue every turn</li>
+</ul>
+<h3 id="split-screen"><a class="anchor" href="#split-screen" aria-hidden="true">#</a>🖥️ Split screen</h3>
+<pre><code>┌─ T1 · the desk ───────────────────────┐ ┌─ T2 · the wire ──────────────────────────┐
+│ cd course/labs/lab8-wire-2026         │ │ cd course/labs/lab8-wire-2026            │
+│ npx tsx desk2026.ts                   │ │ npx tsx wire.ts --era auto handshake     │
+│                                       │ │ npx tsx wire.ts --era legacy handshake   │
+│ every request: era, mirrored headers, │ │                                          │
+│ resultType, input_required, listeners │ │ T3: curl, and a listener                 │
+└───────────────────────────────────────┘ └──────────────────────────────────────────┘
+</code></pre>
+<p><code>desk2026.ts</code> is Module 6&#39;s release desk served by <code>createMcpHandler</code>: the same tools and demo tokens (<code>alice-dev-token</code> read, <code>bob-releaser-token</code> deploy, <code>carol-lead-token</code> freeze), no sessions, both eras. It works end to end and has four TODOs. <code>wire.ts</code> is the client for this lab: it prints every HTTP exchange, answers elicitation from the terminal, and takes <code>--era legacy|auto|2026</code>. <code>opencode.json</code> points OpenCode (a 2025 client) at the same desk.</p>
+<h3 id="exercise-8-a-two-handshakes-5-minutes"><a class="anchor" href="#exercise-8-a-two-handshakes-5-minutes" aria-hidden="true">#</a>🧪 Exercise 8.A — Two handshakes (5 minutes)</h3>
+<p>T1: <code>npx tsx desk2026.ts</code>. T2:</p>
+<pre><code class="language-bash">npx tsx wire.ts --era auto handshake
+npx tsx wire.ts --era legacy handshake
+</code></pre>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> How many HTTP requests does each take to be ready to call a tool? What does the legacy client do that gets a <code>405</code>?</p>
+</blockquote>
+<details><summary>Our run</summary>
+
+<pre><code>→ POST /mcp  mcp-method: server/discover · mcp-protocol-version: 2026-07-28
+  {&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:&quot;server-discover-probe-1&quot;,&quot;method&quot;:&quot;server/discover&quot;,&quot;params&quot;:{&quot;_meta&quot;:{&quot;io.modelcontextprotocol/protocolVersion&quot;:&quot;2026-07-28&quot;,…
+← 200 application/json resultType=complete ttlMs=0 cacheScope=private
+connected in 1 request, 78 ms: era modern, protocol 2026-07-28
+
+→ POST /mcp  {&quot;method&quot;:&quot;initialize&quot;,&quot;params&quot;:{&quot;protocolVersion&quot;:&quot;2025-11-25&quot;,…
+← 200 text/event-stream
+→ POST /mcp  {&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;method&quot;:&quot;notifications/initialized&quot;}
+← 202 (no body)
+→ GET /mcp  mcp-protocol-version: 2025-11-25
+connected in 3 requests, 62 ms: era legacy, protocol 2025-11-25
+</code></pre>
+<p>One request against three. The legacy client&#39;s <code>GET</code> is it opening the server→client stream it expects; the desk answers <code>405 Method not allowed</code>, because there is no session to stream to, and the client carries on without one. The board in T1 shows <code>fresh instance for one modern request</code> and <code>fresh instance for one legacy request</code>: the same factory, called once per request, for both.</p>
+</details>
+
+<p>Now <code>npx tsx wire.ts call whoami &#39;{}&#39;</code> in both eras. The modern answer names the client, the revision and the envelope keys that arrived; the legacy answer says <em>&quot;speaking legacy from a 2025 client. Your host declares: {}&quot;</em>. It is not that the legacy client declared nothing: it declared plenty, at <code>initialize</code>, to an instance that was thrown away. A stateless server serving 2025 traffic knows nothing about who is calling except the bearer token.</p>
+<h3 id="exercise-8-b-refuse-me-four-ways-5-minutes"><a class="anchor" href="#exercise-8-b-refuse-me-four-ways-5-minutes" aria-hidden="true">#</a>🧪 Exercise 8.B — Refuse me four ways (5 minutes)</h3>
+<p>Be the client with <code>curl</code> in T3. First a modern <code>tools/list</code> by hand, so you have a working baseline:</p>
+<pre><code class="language-bash">U=http://127.0.0.1:8792/mcp
+H=(-H &#39;content-type: application/json&#39; -H &#39;accept: application/json, text/event-stream&#39; -H &#39;authorization: Bearer alice-dev-token&#39;)
+ENV=&#39;&quot;_meta&quot;:{&quot;io.modelcontextprotocol/protocolVersion&quot;:&quot;2026-07-28&quot;,&quot;io.modelcontextprotocol/clientInfo&quot;:{&quot;name&quot;:&quot;curl&quot;,&quot;version&quot;:&quot;1&quot;},&quot;io.modelcontextprotocol/clientCapabilities&quot;:{}}&#39;
+curl -s -X POST $U &quot;${H[@]}&quot; -H &#39;mcp-protocol-version: 2026-07-28&#39; -H &#39;mcp-method: tools/list&#39; \
+  -d &quot;{\&quot;jsonrpc\&quot;:\&quot;2.0\&quot;,\&quot;id\&quot;:1,\&quot;method\&quot;:\&quot;tools/list\&quot;,\&quot;params\&quot;:{$ENV}}&quot; | cut -c1-200
+</code></pre>
+<p>Then break it, one thing at a time, and read each refusal:</p>
+<pre><code class="language-bash"># b) forget the Mcp-Method header
+curl -s -X POST $U &quot;${H[@]}&quot; -H &#39;mcp-protocol-version: 2026-07-28&#39; -d &quot;{\&quot;jsonrpc\&quot;:\&quot;2.0\&quot;,\&quot;id\&quot;:2,\&quot;method\&quot;:\&quot;tools/list\&quot;,\&quot;params\&quot;:{$ENV}}&quot; -w &#39; → %{http_code}\n&#39;
+# c) claim a revision the server does not speak (change it in the header AND the envelope)
+curl -s -X POST $U &quot;${H[@]}&quot; -H &#39;mcp-protocol-version: 2027-03-30&#39; -H &#39;mcp-method: tools/list&#39; -d &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:3,&quot;method&quot;:&quot;tools/list&quot;,&quot;params&quot;:{&quot;_meta&quot;:{&quot;io.modelcontextprotocol/protocolVersion&quot;:&quot;2027-03-30&quot;,&quot;io.modelcontextprotocol/clientInfo&quot;:{&quot;name&quot;:&quot;curl&quot;,&quot;version&quot;:&quot;1&quot;},&quot;io.modelcontextprotocol/clientCapabilities&quot;:{}}}}&#39; -w &#39; → %{http_code}\n&#39;
+# d) leave clientCapabilities out of the envelope
+curl -s -X POST $U &quot;${H[@]}&quot; -H &#39;mcp-protocol-version: 2026-07-28&#39; -H &#39;mcp-method: tools/list&#39; -d &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:4,&quot;method&quot;:&quot;tools/list&quot;,&quot;params&quot;:{&quot;_meta&quot;:{&quot;io.modelcontextprotocol/protocolVersion&quot;:&quot;2026-07-28&quot;}}}&#39; -w &#39; → %{http_code}\n&#39;
+# e) open a 2025 stream
+curl -s -X GET $U &quot;${H[@]}&quot; -H &#39;mcp-protocol-version: 2025-11-25&#39; -w &#39; → %{http_code}\n&#39;
+# f) a bare 2025 tools/list with no initialize at all
+curl -s -X POST $U &quot;${H[@]}&quot; -H &#39;mcp-protocol-version: 2025-11-25&#39; -d &#39;{&quot;jsonrpc&quot;:&quot;2.0&quot;,&quot;id&quot;:5,&quot;method&quot;:&quot;tools/list&quot;}&#39; -w &#39; → %{http_code}\n&#39; | head -3
+</code></pre>
+<details><summary>Our run</summary>
+
+<pre><code>b) {&quot;error&quot;:{&quot;code&quot;:-32020,&quot;message&quot;:&quot;Bad Request: the request headers and body disagree: the body names method tools/list but the required Mcp-Method header is absent&quot;,…}} → 400
+c) {&quot;error&quot;:{&quot;code&quot;:-32022,&quot;message&quot;:&quot;Unsupported protocol version: 2027-03-30&quot;,&quot;data&quot;:{&quot;supported&quot;:[&quot;2026-07-28&quot;],&quot;requested&quot;:&quot;2027-03-30&quot;}}} → 400
+d) {&quot;error&quot;:{&quot;code&quot;:-32602,&quot;message&quot;:&quot;Invalid _meta envelope for protocol revision 2026-07-28: io.modelcontextprotocol/clientCapabilities: missing&quot;,…}} → 400
+e) {&quot;error&quot;:{&quot;code&quot;:-32000,&quot;message&quot;:&quot;Method not allowed.&quot;}} → 405
+f) event: message
+   data: {&quot;result&quot;:{&quot;tools&quot;:[{&quot;name&quot;:&quot;whoami&quot;,…        → 200
+</code></pre>
+</details>
+
+<p>Read (f) twice. A 2025-shaped request with <strong>no handshake at all</strong> was served. In stateless legacy mode there is nothing to initialise; the handshake was always ceremony for the client&#39;s benefit. And read (c)&#39;s <code>data.supported</code>: a client that gets <code>-32022</code> is told what to send instead, which is how the spec expects version negotiation to work from now on, with no round trip reserved for it.</p>
+<blockquote class="callout note"><p>🔬 <strong>Under the hood.</strong> The order of checks in <code>desk2026.ts</code>&#39;s <code>handle()</code> is the one every modern server runs: <code>Host</code>/<code>Origin</code> first (DNS rebinding, Module 6.2), then the bearer token, then the handler, which validates headers against the body before it even looks at the JSON-RPC method. A request fails as early and as cheaply as possible, and a proxy that only reads headers reaches the same conclusions as the server.</p>
+</blockquote>
+<h3 id="exercise-8-c-todo-1-ask-by-answering-8-minutes"><a class="anchor" href="#exercise-8-c-todo-1-ask-by-answering-8-minutes" aria-hidden="true">#</a>🧪 Exercise 8.C — TODO 1: ask by answering (8 minutes)</h3>
+<p>As delivered, <code>deploy</code> deploys. Bob with a passing preflight gets <code>Deployed web 4.11.0 → 4.12.0</code> and nobody was asked. Make the desk ask the person, through the protocol, before anything changes. In the <code>deploy</code> handler, after the scope, freeze and preflight checks, add the first round:</p>
+<pre><code class="language-ts">const view = inputResponse(ctx.mcpReq.inputResponses, &quot;confirm&quot;);
+if (view.kind === &quot;missing&quot;) {                                   // round one: nobody has answered yet
+  if (era(ctx) === &quot;legacy&quot;) return refuse(`Deploying needs the person&#39;s confirmation, and this desk can only ask through the 2026-07-28 protocol. Your host spoke the 2025 revision.`);
+  if (!clientCaps(ctx).elicitation) return refuse(`Deploying needs the person&#39;s confirmation, and your host declared no elicitation capability.`);
+  const state = JSON.stringify({ user, service, version });      // naive, for now: TODO 2 signs it
+  return inputRequired({
+    inputRequests: { confirm: inputRequired.elicit({ message: `Deploy ${service} ${desk.services[service].version} → ${version} to production?`, requestedSchema: Confirm }) },
+    requestState: state,
+  });
+}
+if (view.kind === &quot;elicit&quot; &amp;&amp; view.action !== &quot;accept&quot;) return refuse(`${user} ${view.action}d the confirmation. Nothing deployed.`);
+const answer = acceptedContent(ctx.mcpReq.inputResponses, &quot;confirm&quot;, Confirm);
+if (answer?.confirm !== true) return refuse(&quot;The confirmation was not a yes. Nothing deployed.&quot;);
+</code></pre>
+<p>Restart the desk. In T2, as Bob:</p>
+<pre><code class="language-bash">npx tsx wire.ts --token bob-releaser-token call run_preflight &#39;{&quot;service&quot;:&quot;web&quot;,&quot;version&quot;:&quot;4.12.0&quot;}&#39;
+npx tsx wire.ts --token bob-releaser-token call deploy &#39;{&quot;service&quot;:&quot;web&quot;,&quot;version&quot;:&quot;4.12.0&quot;}&#39;
+</code></pre>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> How many <code>tools/call</code> requests will the deploy take, and will they have the same <code>id</code>?</p>
+</blockquote>
+<p><img src="images/shot-lab8-confirm.png" alt="One deploy, two requests"></p>
+<p>Two requests, different ids, and the second carries <code>inputResponses</code> and your <code>requestState</code>. The desk&#39;s board counts it under <code>input_required</code>. Now the same deploy from a 2025 client: <code>npx tsx wire.ts --era legacy --token bob-releaser-token call deploy &#39;{&quot;service&quot;:&quot;web&quot;,&quot;version&quot;:&quot;4.12.0&quot;}&#39;</code>, and from OpenCode (<code>export DESK_TOKEN=bob-releaser-token; opencode</code>, then <em>Deploy web 4.12.0</em>): both get the polite refusal. OpenCode 1.19 is a 2025 client; it connects (<code>opencode mcp list</code> says so), reads, runs preflights, and cannot be asked.</p>
+<blockquote class="callout important"><p>🤯 <strong>The server asked a question without holding a connection open.</strong> Between the two requests the desk kept nothing about the conversation: no session, no pending promise, no instance. The second request is complete on its own, so any replica could have answered it, as long as the facts it checks (here, the passed preflight) live in a store every replica shares rather than in one process&#39;s memory. Challenge 6A built a human-in-the-loop out of a six-digit code because the host could not be asked; this is the protocol doing the same job, with the question in the result and the memory in the client&#39;s pocket.</p>
+</blockquote>
+<blockquote>
+<p>⚠️ <strong>Security: the refusal for legacy hosts is a feature-detect, not a bug.</strong> The SDK&#39;s shim could push <code>elicitation/create</code> at a 2025 client, but on a stateless server the answer would arrive at a different instance (6C). Detecting the era and saying so is the honest behaviour. Challenge 8A routes legacy traffic to a sessionful desk instead.</p>
+</blockquote>
+<h3 id="exercise-8-d-todo-2-seal-the-state-7-minutes"><a class="anchor" href="#exercise-8-d-todo-2-seal-the-state-7-minutes" aria-hidden="true">#</a>🧪 Exercise 8.D — TODO 2: seal the state (7 minutes)</h3>
+<p>Your <code>requestState</code> is plain JSON, and the retry is a brand-new request that <em>anything</em> between client and server can edit: a proxy, a buggy host, or a model that confirmed one thing and called with another. <code>wire.ts --tamper</code> plays that part: on the retry it changes <code>arguments.version</code> to another version, after you have confirmed the real one. Give it a version that has also passed preflight, so nothing else stands in the way:</p>
+<pre><code class="language-bash">npx tsx wire.ts --token bob-releaser-token --quiet call run_preflight &#39;{&quot;service&quot;:&quot;api&quot;,&quot;version&quot;:&quot;2.31.0&quot;}&#39;
+npx tsx wire.ts --token bob-releaser-token --quiet call run_preflight &#39;{&quot;service&quot;:&quot;api&quot;,&quot;version&quot;:&quot;2.32.0&quot;}&#39;
+npx tsx wire.ts --token bob-releaser-token --tamper --tamper-to 2.32.0 call deploy &#39;{&quot;service&quot;:&quot;api&quot;,&quot;version&quot;:&quot;2.31.0&quot;}&#39;
+</code></pre>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> With TODO 1 as written, what gets deployed?</p>
+</blockquote>
+<details><summary>Our run (naive TODO 1)</summary>
+
+<pre><code>the desk asks: Deploy api 2.30.1 → 2.31.0 to production?
+Yes, deploy it (y/n): y
+✂ tampered the retry: arguments.version → 2.32.0 (the person confirmed 2.31.0)
+result: Deployed api 2.30.1 → 2.32.0 as bob.
+</code></pre>
+<p>Bob confirmed 2.31.0; 2.32.0 is in production. The confirmation and the thing confirmed were never tied together. (Without the second preflight the desk would have refused <code>2.32.0</code> for a different reason, which is luck, not a control.)</p>
+</details>
+
+<p>Now seal it. The codec is already constructed at the top of the file (<code>createRequestStateCodec</code>, a random 32-byte key per process, 120-second TTL). Three edits:</p>
+<ol>
+<li>In the server options, <code>requestState: { verify: codec.verify }</code>, so the SDK verifies the signature and the TTL before any handler runs.</li>
+<li>In round one, <code>const state = await codec.mint({ user, service, version, nonce: randomUUID() }, ctx);</code> instead of the JSON string.</li>
+<li>In round two, after the yes, read it back and compare it with the request:</li>
+</ol>
+<pre><code class="language-ts">const pending = ctx.mcpReq.requestState&lt;Pending&gt;();
+if (!pending) return refuse(&quot;The confirmation came back without its state. Start the deploy again.&quot;);
+if (pending.user !== user || pending.service !== service || pending.version !== version)
+  return refuse(`Confirmation mismatch: what was confirmed (${pending.service}@${pending.version}) is not what you asked to deploy (${service}@${version}). Nothing deployed.`);
+</code></pre>
+<p>Restart and run the tampered deploy again, then once more with <code>--tamper-state --tamper-to 2.32.0</code>, which also flips two characters of the echoed state.</p>
+<details><summary>Our run</summary>
+
+<pre><code>✂ tampered the retry: arguments.version → 2.32.0 (the person confirmed 2.31.0)
+tool error: Confirmation mismatch: what was confirmed (api@2.31.0) is not what you asked to deploy (api@2.32.0). Nothing deployed.
+
+✂ tampered the retry: arguments.version → 2.32.0 (the person confirmed 2.31.0)
+✂ tampered the requestState too: flipped its last two characters
+← 200 application/json error -32602: Invalid or expired requestState
+ProtocolError: Invalid or expired requestState
+</code></pre>
+<p>The first attack reaches your handler and dies on the comparison. The second never reaches it: <code>-32602 Invalid or expired requestState</code> comes from the SDK, and the board logs <code>TAMPERED</code> only for the first.</p>
+</details>
+
+<p><img src="images/shot-lab8-board.png" alt="The board during 8.C and 8.D: eras, an input_required, a tampered retry, a listener"></p>
+<figure class="comic"><svg xmlns="http://www.w3.org/2000/svg" width="960" height="380" viewBox="0 0 960 380" role="img" aria-label="Three-panel comic: a ghost server tries to push a question down a connection that no longer leads anywhere; instead it hands the skeleton a sealed envelope to bring back with the answer; the skeleton returns with the seal broken and the ghost refuses it.">
+<title>Panel 1: Ghost (the server) shouts "Do you confirm?" into a pipe that ends in a brick wall labelled load balancer. Ghost: Hello? Anybody? Panel 2: Ghost hands a sealed envelope to the skeleton. Ghost: Bring this back with your answer. The wax seal is my signature. Panel 3: the skeleton returns with the envelope open and a different version written on it. Ghost: The seal is broken. Nice try. Caption: A request that stands alone can be answered by anyone. State that round-trips must be sealed.</title>
+<rect width="960" height="380" rx="18" fill="#150c24"/>
+<rect x="16" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="332" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<rect x="648" y="16" width="296" height="290" rx="10" fill="#f4e8d2" stroke="#1a1026" stroke-width="3"/>
+<text x="30" y="36" font-family="Menlo, monospace" font-size="11" fill="#4b3f5c">1 · push (2025)</text>
+<text x="346" y="36" font-family="Menlo, monospace" font-size="11" fill="#4b3f5c">2 · input_required (2026)</text>
+<text x="662" y="36" font-family="Menlo, monospace" font-size="11" fill="#4b3f5c">3 · the retry</text>
+
+<!-- panel 1: ghost shouts into a pipe ending at a brick wall -->
+<path d="M52,250 L52,208 A30,30 0 0 1 112,208 L112,250 Q106,236 98.8,256 Q90.4,270 82,254 Q73.6,270 65.2,256 Q58,236 52,250 Z" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="73" cy="210" rx="3.9" ry="6" fill="#1a1026"/><ellipse cx="91" cy="210" rx="3.9" ry="6" fill="#1a1026"/>
+<ellipse cx="82" cy="228" rx="6" ry="7" fill="#1a1026"/>
+<ellipse cx="49" cy="245" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="115" cy="245" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<rect x="118" y="218" width="96" height="26" rx="4" fill="#9ca3af" stroke="#1a1026" stroke-width="2"/>
+<text x="166" y="235" text-anchor="middle" font-family="Menlo, monospace" font-size="9" fill="#1a1026">the open stream</text>
+<rect x="214" y="170" width="86" height="124" fill="#b45309" stroke="#1a1026" stroke-width="2"/>
+<g stroke="#1a1026" stroke-width="1.2" fill="none"><path d="M214,194 h86 M214,218 h86 M214,242 h86 M214,266 h86 M257,170 v24 M236,194 v24 M278,194 v24 M257,218 v24 M236,242 v24 M278,242 v24 M257,266 v28"/></g>
+<text x="257" y="160" text-anchor="middle" font-family="Menlo, monospace" font-size="9.5" fill="#1a1026">load balancer</text>
+<rect x="28" y="48" width="196" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="76,106 82,180 92,106" fill="#fffaf0"/>
+<polyline points="76,106 82,180 92,106" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="126" y="73" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">Do you confirm the deploy?</text>
+<text x="126" y="93" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">…hello? Anybody?</text>
+<text x="166" y="262" text-anchor="middle" font-family="Menlo, monospace" font-size="9" fill="#b91c1c">your 6C result</text>
+
+<!-- panel 2: ghost hands over a sealed envelope -->
+<path d="M372,236 L372,194 A30,30 0 0 1 432,194 L432,236 Q426,222 418.8,242 Q410.4,256 402,240 Q393.6,256 385.2,242 Q378,222 372,236 Z" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="393" cy="196" rx="3.9" ry="6" fill="#1a1026"/><ellipse cx="411" cy="196" rx="3.9" ry="6" fill="#1a1026"/>
+<path d="M394,213 q4,-4 8,0 q4,4 8,0" fill="none" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="369" cy="231" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="435" cy="231" rx="8" ry="5" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<rect x="446" y="214" width="64" height="40" rx="4" fill="#fff7dd" stroke="#1a1026" stroke-width="1.5"/>
+<path d="M446,214 L478,240 L510,214" fill="none" stroke="#1a1026" stroke-width="1.5"/>
+<circle cx="478" cy="240" r="6" fill="#e11d48" stroke="#1a1026" stroke-width="1"/>
+<text x="478" y="268" text-anchor="middle" font-family="Menlo, monospace" font-size="8.5" fill="#1a1026">requestState · HMAC</text>
+<line x1="540" y1="238" x2="528" y2="272" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="540" y1="238" x2="528" y2="272" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="576" y1="238" x2="588" y2="272" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="576" y1="238" x2="588" y2="272" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="550" y1="274" x2="548" y2="298" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="550" y1="274" x2="548" y2="298" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="566" y1="274" x2="568" y2="298" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="566" y1="274" x2="568" y2="298" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<rect x="540" y="232" width="36" height="42" rx="5" fill="#475569" stroke="#1a1026" stroke-width="1.5"/>
+<text x="558" y="258" text-anchor="middle" font-family="Menlo, monospace" font-size="10" fill="#fffdf7" font-weight="bold">BOB</text>
+<circle cx="558" cy="216" r="15" fill="#fffdf7" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="552" cy="214" rx="3.5" ry="4.5" fill="#1a1026"/><ellipse cx="564" cy="214" rx="3.5" ry="4.5" fill="#1a1026"/>
+<path d="M552,225 h12 M555,225 v4 M558,225 v4 M561,225 v4" fill="none" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="344" y="48" width="196" height="78" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="396,124 402,168 412,124" fill="#fffaf0"/>
+<polyline points="396,124 402,168 412,124" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="442" y="72" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">Take this envelope. Bring it</text>
+<text x="442" y="92" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">back with your answer. The</text>
+<text x="442" y="112" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">wax seal is my signature.</text>
+
+<!-- panel 3: the skeleton returns with the envelope opened and rewritten -->
+<path d="M700,246 L700,204 A30,30 0 0 1 760,204 L760,246 Q754,232 746.8,252 Q738.4,266 730,250 Q721.6,266 713.2,252 Q706,232 700,246 Z" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="721" cy="206" rx="3.9" ry="6" fill="#1a1026"/><ellipse cx="739" cy="206" rx="3.9" ry="6" fill="#1a1026"/>
+<path d="M722,226 q4,4 8,0 q4,-4 8,0" fill="none" stroke="#1a1026" stroke-width="2"/>
+<path d="M714,198 l12,-4 M746,194 l-12,4" fill="none" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="697" cy="241" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<ellipse cx="763" cy="241" rx="5" ry="8" fill="#fffdf7" stroke="#1a1026" stroke-width="2"/>
+<line x1="874" y1="238" x2="862" y2="272" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="874" y1="238" x2="862" y2="272" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="910" y1="238" x2="922" y2="272" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="910" y1="238" x2="922" y2="272" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="884" y1="274" x2="882" y2="298" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="884" y1="274" x2="882" y2="298" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<line x1="900" y1="274" x2="902" y2="298" stroke="#1a1026" stroke-width="6" stroke-linecap="round"/><line x1="900" y1="274" x2="902" y2="298" stroke="#fffdf7" stroke-width="3" stroke-linecap="round"/>
+<rect x="874" y="232" width="36" height="42" rx="5" fill="#475569" stroke="#1a1026" stroke-width="1.5"/>
+<text x="892" y="258" text-anchor="middle" font-family="Menlo, monospace" font-size="10" fill="#fffdf7" font-weight="bold">BOB</text>
+<circle cx="892" cy="216" r="15" fill="#fffdf7" stroke="#1a1026" stroke-width="1.8"/>
+<ellipse cx="886" cy="214" rx="3.5" ry="4.5" fill="#1a1026"/><ellipse cx="898" cy="214" rx="3.5" ry="4.5" fill="#1a1026"/>
+<path d="M886,225 h12 M889,225 v4 M892,225 v4 M895,225 v4" fill="none" stroke="#1a1026" stroke-width="1.5"/>
+<rect x="796" y="222" width="64" height="40" rx="4" fill="#fff7dd" stroke="#1a1026" stroke-width="1.5" transform="rotate(10 828 242)"/>
+<path d="M796,222 L828,200 L860,222" fill="#fff7dd" stroke="#1a1026" stroke-width="1.5" transform="rotate(10 828 242)"/>
+<path d="M822,246 l6,-6 l6,6" fill="none" stroke="#e11d48" stroke-width="2" transform="rotate(10 828 242)"/>
+<text x="828" y="256" text-anchor="middle" font-family="Menlo, monospace" font-size="8" fill="#b91c1c" transform="rotate(10 828 242)">version: 9.9.9</text>
+<text x="828" y="280" text-anchor="middle" font-family="Menlo, monospace" font-size="8.5" fill="#b91c1c">seal broken</text>
+<rect x="660" y="48" width="170" height="60" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="722,106 730,196 738,106" fill="#fffaf0"/>
+<polyline points="722,106 730,196 738,106" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="745" y="73" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">The seal is broken and</text>
+<text x="745" y="93" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">that is not the version. No.</text>
+<rect x="838" y="120" width="96" height="42" rx="10" fill="#fffaf0" stroke="#1a1026" stroke-width="1.8"/>
+<polygon points="884,160 892,198 900,160" fill="#fffaf0"/>
+<polyline points="884,160 892,198 900,160" fill="none" stroke="#1a1026" stroke-width="1.8" stroke-linejoin="round"/>
+<text x="886" y="146" text-anchor="middle" font-family="'Patrick Hand', 'Chalkboard SE', 'Comic Sans MS', 'Comic Neue', cursive" font-size="15" fill="#1a1026">Worth a try.</text>
+
+<text x="24" y="346" font-family="Menlo, monospace" font-size="13" fill="#ff8a1f">🎃 comic · sealed</text>
+<text x="560" y="346" text-anchor="middle" font-family="Menlo, monospace" font-size="13" fill="#efe3cc">A request that stands alone can be answered by anyone. State that round-trips must be sealed.</text>
+</svg></figure>
+<blockquote class="callout tip"><p>💡 <strong>Insight: two checks, two different attackers.</strong> The signature proves the state is one <em>this server</em> minted and nobody edited. The comparison proves the state is about <em>this request</em>. A valid, unedited state can still be replayed against different arguments, which is why <code>requestState</code> should carry (or digest) the original request and why the handler compares. Signed is not the same as bound; you need both.</p>
+</blockquote>
+<h3 id="exercise-8-e-todo-3-the-freeze-heard-again-6-minutes"><a class="anchor" href="#exercise-8-e-todo-3-the-freeze-heard-again-6-minutes" aria-hidden="true">#</a>🧪 Exercise 8.E — TODO 3: the freeze, heard again (6 minutes)</h3>
+<p>In T3, open a listener as Bob:</p>
+<pre><code class="language-bash">npx tsx wire.ts --token bob-releaser-token listen 60
+</code></pre>
+<p>It sends <code>subscriptions/listen</code> with <code>toolsListChanged: true</code> and <code>resourceSubscriptions: [&quot;desk://status&quot;]</code>; the board shows <code>listen streams open 1</code>. In T2, Carol freezes: <code>npx tsx wire.ts --token carol-lead-token call declare_freeze &#39;{&quot;reason&quot;:&quot;payments incident&quot;}&#39;</code>.</p>
+<blockquote>
+<p>🔮 <strong>Predict.</strong> Does the listener hear anything? What did the desk do in Module 6 at this point, and why can it not do that now?</p>
+</blockquote>
+<p>Nothing arrives, because <code>declare_freeze</code> and <code>lift_freeze</code> publish nothing yet, and there is no session list to walk (Module 6&#39;s <code>setDeployAvailable</code> looped over <code>sessions</code>; there are none). Implement TODO 3: in both freeze tools, <code>mcp.notify.toolsChanged(); mcp.notify.resourceUpdated(&quot;desk://status&quot;);</code> and in <code>deploy</code>, after the write, <code>mcp.notify.resourceUpdated(&quot;desk://status&quot;)</code>. Restart, listen again, freeze and lift again:</p>
+<p><img src="images/shot-lab8-listen.png" alt="A listener hears a freeze and a lift"></p>
+<p>Both notifications carry <code>io.modelcontextprotocol/subscriptionId: &quot;listen:0&quot;</code>, the id of the listen request they belong to. Try <code>--era legacy listen</code>: the client tells you <code>subscriptions/listen</code> does not exist in <code>2025-11-25</code>, tries <code>resources/subscribe</code> instead, and gets <code>Method not found</code>.</p>
+<blockquote class="callout important"><p>🤯 <strong>6C&#39;s missing feature came back without sessions.</strong> The listener is just another request, one that the server answers slowly. Any replica can serve it, and <code>mcp.bus</code> is where you plug in Redis or NATS so every replica&#39;s <code>notify</code> reaches every replica&#39;s listeners. Nothing about the desk remembers Bob; Bob remembers the desk.</p>
+</blockquote>
+<h3 id="exercise-8-f-todo-4-stop-re-fetching-the-catalogue-4-minutes"><a class="anchor" href="#exercise-8-f-todo-4-stop-re-fetching-the-catalogue-4-minutes" aria-hidden="true">#</a>🧪 Exercise 8.F — TODO 4: stop re-fetching the catalogue (4 minutes)</h3>
+<pre><code class="language-bash">npx tsx wire.ts --quiet tools
+</code></pre>
+<p>Two <code>tools/list</code> calls; both went out, because every list result says <code>ttlMs=0</code>. Add to the server options: <code>cacheHints: { &quot;tools/list&quot;: { ttlMs: TOOLS_LIST_TTL_MS, cacheScope: &quot;private&quot; } }</code>, restart, run it again.</p>
+<details><summary>Our run</summary>
+
+<pre><code>tools/list #1: whoami, release_status, run_preflight, deploy, declare_freeze, lift_freeze  (1 request)
+tools/list #2: whoami, release_status, run_preflight, deploy, declare_freeze, lift_freeze  (served from the client&#39;s cache: no request went out)
+</code></pre>
+<p>The board shows the result went out with <code>ttlMs=60000 cacheScope=private</code>.</p>
+</details>
+
+<p>Now the interplay: with a listener open and a freeze declared, the client&#39;s cached list is invalidated by <code>tools/list_changed</code>, so the next <code>tools/list</code> goes to the server and comes back without <code>deploy</code>. Comment out TODO 3 again and the cache serves a <code>deploy</code> tool that the server would refuse, for up to a minute. A cache hint without a change feed is a stale catalogue with a timer on it.</p>
+<h3 id="mission-complete"><a class="anchor" href="#mission-complete" aria-hidden="true">#</a>🏅 Mission complete</h3>
+<ul>
+<li><strong>You read two handshakes</strong> and know why one of them is one request.</li>
+<li><strong>You refused yourself four ways</strong> and can decode <code>-32020</code>, <code>-32022</code>, <code>-32602</code> and a <code>405</code> on sight.</li>
+<li><strong>You asked a question by answering</strong>, and your server kept nothing between the rounds.</li>
+<li><strong>You sealed the state</strong> and watched a tampered retry die before your code ran.</li>
+<li><strong>You brought the freeze back</strong> to a stateless server, through a stream the client asked for.</li>
+<li><strong>You set a cache hint</strong> and saw why it needs the change feed next to it.</li>
+</ul>
+<h3 id="check-yourself"><a class="anchor" href="#check-yourself" aria-hidden="true">#</a>✅ Check yourself</h3>
+<details><summary>1. A modern request arrives with no <code>Mcp-Method</code> header. What happens, and why does the spec insist on it?</summary>
+
+<p><code>400</code> with <code>-32020 HeaderMismatch</code>, before the body&#39;s method is acted on. The headers exist so that intermediaries (proxies, gateways, rate limiters, WAFs) can route and authorise a request without parsing JSON. If the header could be omitted, every intermediary would have to parse the body anyway, and the headers would be worthless.</p>
+</details>
+
+<details><summary>2. Why does the desk refuse to ask a 2025 client for confirmation, when the SDK has a shim that could?</summary>
+
+<p>The shim pushes <code>elicitation/create</code> down the open connection and waits for the response on the same instance. Served statelessly, the response arrives as a fresh HTTP request at an instance that never asked. On a sessionful server the shim works; <code>desk2026.ts</code> is not one, so it says so instead of hanging.</p>
+</details>
+
+<details><summary>3. Your <code>requestState</code> is signed and the SDK verifies it. A reviewer says the comparison in round two is redundant. Is it?</summary>
+
+<p>No. The signature proves the server minted the state and it was not edited; it says nothing about whether the retry&#39;s arguments match it. A client can send an untouched state with different arguments, which is exactly <code>--tamper</code>. Binding (compare, or digest the original request into the state) catches that; the signature cannot.</p>
+</details>
+
+<details><summary>4. What happens to an open <code>subscriptions/listen</code> stream when the desk restarts, and what does the client do?</summary>
+
+<p>The stream breaks. The client sees a remote close and must re-issue <code>subscriptions/listen</code> (the SDK&#39;s subscription reports <code>closed: &#39;remote&#39;</code>). Nothing is replayed: there is no <code>Last-Event-ID</code> in 2026, so a client that cares re-fetches <code>tools/list</code> after reconnecting. Requests stand alone; so do subscriptions.</p>
+</details>
+
+<details><summary>5. The legacy curl (f) worked with no <code>initialize</code>. Is the desk broken?</summary>
+
+<p>No. In stateless legacy mode there is nothing for <code>initialize</code> to set up, so the handler serves the request from a fresh instance. The capability declaration the client would have made is lost, which is why <code>whoami</code> reports <code>Your host declares: {}</code> for legacy callers, and why the desk cannot ask them anything.</p>
+</details>
+
+<details><summary>6. Which of Module 6's features survive on this desk for a 2026 client, and which for a 2025 client?</summary>
+
+<p>2026 client: authentication, authorization, progress, cancellation (the cancel is the client closing the stream), confirmation, <code>list_changed</code> and resource updates via <code>listen</code>, cache hints. 2025 client: authentication, authorization, progress; no cancellation routing, no notifications, no confirmation. Same server, same factory. The era decides.</p>
+</details>
+
+<h3 id="challenges-optional"><a class="anchor" href="#challenges-optional" aria-hidden="true">#</a>🏆 Challenges (optional)</h3>
+<p><strong>8A · Two desks, one URL (20 min).</strong> Route by era: <code>isLegacyRequest(request)</code> in front, Module 6&#39;s sessionful desk (with its GET stream and the shim-powered confirmation) for 2025 traffic, <code>createMcpHandler(..., { legacy: &quot;reject&quot; })</code> for 2026 traffic. Both share the <code>desk</code> object. Prove that OpenCode now gets asked to confirm (through the shim) and that <code>wire.ts --era auto</code> still gets <code>input_required</code>.</p>
+<p><strong>8B · Route on a header (15 min).</strong> Add <code>x-mcp-header: true</code> to <code>deploy</code>&#39;s <code>service</code> argument so it is mirrored as <code>Mcp-Param-Service</code>. Put a twenty-line reverse proxy in front of the desk that refuses any <code>Mcp-Param-Service: payments</code> request from a token that is not Carol&#39;s, <em>without parsing the body</em>. Discuss what a mirrored header can and cannot be trusted for (hint: <code>-32020</code>).</p>
+<p><strong>8C · Signed, bound, and digested (15 min).</strong> Replace the three-field comparison with a SHA-256 digest of the original request (<code>method</code>, <code>name</code>, canonical <code>arguments</code>) stored in the state, as the spec suggests. Then try to defeat it: change an argument the digest does not cover. Which arguments should it cover, and what is the cost of covering all of them?</p>
+<p><strong>8D · The long task (30 min, hard).</strong> The 2026 tasks extension (<code>io.modelcontextprotocol/tasks</code>, beta) lets <code>tools/call</code> answer <code>resultType: &quot;task&quot;</code> with a <code>taskId</code>, after which the client polls <code>tasks/get</code>. The SDK has no server-side helper yet. Using <code>server.server.setRequestHandler(&quot;tasks/get&quot;, { params, result }, …)</code>, make <code>run_preflight</code> return a task when the client declares the extension, keep running in the background, and answer polls until <code>completed</code>. What has to be true about where the task runs before this works behind a load balancer?</p>
+<p>📼 <strong>Next episode: a real login.</strong> The desk still trusts three strings from a table. Module 9 replaces them with an authorization server, a login page, PKCE, scopes that step up, tokens that expire, and OpenCode doing the whole dance by itself.</p>
+<p><a href="index.html">← Back to the course home</a></p>
+
+</main>
+<footer class="foot"><div class="pumpkins" aria-hidden="true">🎃 🦇 👻 🕸️ 🎃</div>MCP with AI Agents · OpenCode + MCP course · haunted edition, October 2026 · advanced track part 2, November 2026 · <a href="https://github.com/varoonsahgal/opencode-mcp-course">source and labs on GitHub</a></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+  document.querySelectorAll("pre code").forEach((el) => {
+    const m = el.className.match(/language-(\w+)/);
+    if (m && m[1] === "jsonc") el.className = "language-json";
+    if (!m) el.classList.add("nohighlight");
+    window.hljs && hljs.highlightElement(el);
+    const b = document.createElement("button"); b.className = "copy"; b.type = "button"; b.textContent = "Copy";
+    b.onclick = () => { navigator.clipboard.writeText(el.innerText).then(() => { b.textContent = "Copied"; setTimeout(() => (b.textContent = "Copy"), 1200); }); };
+    el.parentElement.appendChild(b);
+  });
+  document.querySelectorAll("main table").forEach((t) => { const w = document.createElement("div"); w.className = "tbl"; t.replaceWith(w); w.appendChild(t); });
+  // Daylight / midnight toggle. Follows the system until pinned; the pin lives in this browser only.
+  (function () {
+    const root = document.documentElement, btn = document.getElementById("themebtn");
+    const light = document.getElementById("hl-light"), dark = document.getElementById("hl-dark");
+    const isDark = () => root.getAttribute("data-theme") === "dark" || (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    const paint = () => { const d = isDark(); btn.textContent = d ? "☀️" : "🌙"; light.media = d ? "not all" : "all"; dark.media = d ? "all" : "not all"; };
+    btn.onclick = () => { const next = isDark() ? "light" : "dark"; root.setAttribute("data-theme", next); try { localStorage.setItem("theme", next); } catch (e) {} paint(); };
+    matchMedia("(prefers-color-scheme: dark)").addEventListener("change", paint);
+    paint();
+  })();
+</script>
+</body>
+</html>
